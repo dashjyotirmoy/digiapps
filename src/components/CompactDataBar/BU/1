@@ -1,0 +1,187 @@
+import React, { Component } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft, faTh } from '@fortawesome/free-solid-svg-icons'
+import styled from 'styled-components';
+
+const Styles = styled.div`
+.data-header{
+    height:100%;
+    background-color:rgb(242,242,242);
+}
+`;
+class CompactDataBar extends Component {
+    state = {
+        userName: "Executive",
+        designation: "Business Lead",
+        data1: [
+            { name: "Total Products", value: "13" },
+            { name: "Team Members", value: "222" },
+            { name: "Total Hours", value: "1234" }
+        ]
+    }
+    render() {
+
+        return (
+            <div className="h-10">
+                <Styles style={{ "height": "100%" }}>
+                    <Container fluid className="data-header">
+                        <main className="align-items-center d-flex h-100 w-100">
+                            <Row className="h-75 m-0 p-0 row w-100">
+                                <section className="av-data-bar-header h-100 d-none d-md-block d-lg-block d-xl-block">
+                                    {/* <Col className="data-brand  pr-md-0 pl-xl-0" md={2} lg={1} xl={1}> */}
+                                    <Row className="d-flex p-0 m-0 w-100 h-100">
+                                        <Col md={2} lg={1} xl={2} className="h-100 p-0 d-flex  h-100 align-items-center">
+                                            <FontAwesomeIcon icon={faArrowLeft}>
+
+                                            </FontAwesomeIcon>
+                                        </Col>
+                                        <Col md={8} lg={8} xl={8} className="h-100 p-0 d-flex align-items-center justify-item-center">
+                                            <div className="">
+                                                <p className="font-size-smaller m-0 text-left text-black m-0">
+                                                    {this.state.userName}
+                                                </p>
+                                                <p className="font-size-smaller m-0 text-center text-black-50 m-0">
+                                                    <small>{this.state.designation}</small>
+                                                </p>
+                                            </div>
+                                        </Col>
+                                        <Col md={2} lg={2} xl={2} className="h-100 p-0 d-flex h-100 align-items-center">
+                                            <FontAwesomeIcon icon={faTh}>
+
+                                            </FontAwesomeIcon>
+                                        </Col>
+                                    </Row>
+                                    {/* </Col> */}
+                                </section>
+                                <section className="av-data-bar-main">
+                                    <Row className="h-100 m-0 p-0 row w-100">
+                                        <article className="data-compact px-xl-2 px-lg-2 bg-white rounded w-auto d-inline-block">
+                                            <div className="p-2 d-inline-block">
+                                                <p className="font-aggegate-main m-0 text-left text-black m-0">
+                                                    13
+                                                </p>
+                                                <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                    <small>Total Products</small>
+                                                </p>
+                                            </div>
+                                            <div className="p-2 d-inline-block">
+                                                <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+                                                    222
+                                                </p>
+                                                <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                    <small>Team Members</small>
+                                                </p>
+                                            </div>
+                                            <div className="p-2 d-inline-block">
+                                                <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+                                                    1233
+                                                </p>
+                                                <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                    <small>Total Hours</small>
+                                                </p>
+                                            </div>
+                                        </article>
+                                        {/* <Col className="data-compact px-xl-2 px-lg-2 " sm={4} md={3} lg={3} xl={3}>
+                                            <Row className="bg-white rounded p-0 m-0 h-100 w-100">
+                                                <Col className="h-100 m-0 p-0" sm={4} md={4} lg={4} xl={4}>
+                                                    <div className="p-2">
+                                                        <p className="font-aggegate-main m-0 text-left text-black m-0">
+                                                            13
+                                                </p>
+                                                        <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                            <small>Total Products</small>
+                                                        </p>
+                                                    </div>
+                                                </Col>
+                                                <Col className="h-100 m-0 p-0" sm={4} md={4} lg={4} xl={4}>
+                                                    <div className="p-2">
+                                                        <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+                                                            222
+                                                </p>
+                                                        <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                            <small>Team Members</small>
+                                                        </p>
+                                                    </div>
+                                                </Col>
+                                                <Col className="h-100 m-0 p-0" sm={4} md={4} lg={4} xl={4}>
+                                                    <div className="p-2">
+                                                        <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+                                                            1233
+                                                </p>
+                                                        <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                            <small>Total Hours</small>
+                                                        </p>
+                                                    </div>
+
+                                                </Col>
+                                            </Row>
+                                        </Col> */}
+                                        <Col className="data-wide p-0" sm={8} md={9} lg={9} xl={9}>
+                                            <Row className="h-100 w-100 m-0 p-0">
+                                                <Col xs={2} sm={2} md={2} lg={2} xl={2} className="pl-0 max-w-20 h-100 w-100">
+                                                    <div className="bg-white rounded  h-100 w-100 p-2">
+                                                        <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+                                                            25D
+                                                </p>
+                                                        <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                            <small>Av Released Cycle</small>
+                                                        </p>
+                                                    </div>
+                                                </Col>
+                                                <Col xs={2} sm={2} md={2} lg={2} xl={2} className="pl-0 max-w-20 h-100 w-100">
+                                                    <div className="bg-white rounded p-2 h-100 w-100">
+                                                        <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+                                                            35D
+                                                </p>
+                                                        <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                            <small>Av Deployment Lead Time</small>
+                                                        </p>
+                                                    </div>
+                                                </Col>
+                                                <Col xs={2} sm={2} md={2} lg={2} xl={2} className="pl-0 max-w-20 h-100 w-100">
+                                                    <div className="bg-white rounded p-2 h-100 w-100">
+                                                        <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+                                                            9D
+                                                </p>
+                                                        <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                            <small>Av MTTD</small>
+                                                        </p>
+                                                    </div>
+                                                </Col>
+                                                <Col xs={2} sm={2} md={2} lg={2} xl={2} className="pl-0 max-w-20 h-100 w-100">
+                                                    <div className="bg-white rounded p-2 h-100 w-100">
+                                                        <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+                                                            6D
+                                                </p>
+                                                        <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                            <small>Av MTTR</small>
+                                                        </p>
+                                                    </div>
+                                                </Col>
+                                                <Col xs={2} sm={2} md={2} lg={2} xl={2} className="pl-0 max-w-20 h-100 w-100">
+                                                    <div className="bg-white rounded p-2 h-100 w-100">
+                                                        <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+                                                            8
+                                                </p>
+                                                        <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">
+                                                            <small>Av Customer Rating</small>
+                                                        </p>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+
+                                    </Row>
+                                </section>
+                            </Row>
+                        </main>
+
+                    </Container>
+                </Styles>
+            </div>
+        );
+    }
+}
+
+export default CompactDataBar;
