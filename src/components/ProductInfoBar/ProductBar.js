@@ -61,7 +61,7 @@ const ProductInfoBar = () => {
                   </Col>
                   <Col md={6}>
                     <Row>
-                      <Col md={5} className="p-0"><CircularProgress percentage={50} ></CircularProgress></Col>
+                      <Col md={5} className="p-0"><CircularProgress percentage={30} color={"turquoise"}></CircularProgress></Col>
                       <Col md={7}>texcct1</Col>
                     </Row>
                   </Col>
