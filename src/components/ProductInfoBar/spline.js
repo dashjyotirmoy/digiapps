@@ -12,16 +12,35 @@ const options = {
   title: {
     text: null
   },
-
-  yAxis: {
+  yAxis: [{
     labels: {
       enabled: false
     },
     title: {
-      text: '',
+      text: 'Start date',
       rotation: 0
-    }
-  },
+    },
+    plotBands: [{
+      from: 0,
+      to: 5,
+      color: '#EEFCFC'
+    }, {
+      from: 5,
+      to: 8,
+      color: "#FAFAE5"
+    }, {
+      from: 8,
+      to: 10,
+      color: '#FBDED4'
+    }]
+  }, {
+    title: {
+      text: 'End date',
+      rotation: 0
+    },
+    gridLineWidth: 0,
+    opposite: true
+  }],
 
   legend: {
     enabled: false

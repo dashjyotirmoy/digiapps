@@ -55,7 +55,7 @@ const ProductInfoBar = () => {
             <Row className="h-100">
               <Col md={7} xl={8} lg={8}>
                 <Row className="p-0 m-0 w-100 border-right">
-                  <Col md={2} xl={2} lg={2} className="p-0 d-flex justify-content-center align-items-center" >
+                  {/* <Col md={2} xl={2} lg={2} className="p-0 d-flex justify-content-center align-items-center" >
                     <div id="start-date" className="d-inline-block">
                       <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
                         <small>Start Date</small>
@@ -65,12 +65,12 @@ const ProductInfoBar = () => {
                     </p>
                     </div>
 
-                  </Col>
-                  <Col md={8} xl={8} lg={8}>
+                  </Col> */}
+                  <Col md={12} xl={12} lg={12} className="pl-0">
                     <Spline></Spline>
 
                   </Col>
-                  <Col md={2} xl={2} lg={2} className="p-0 d-flex align-items-center justify-content-center" >
+                  {/* <Col md={2} xl={2} lg={2} className="p-0 d-flex align-items-center justify-content-center" >
                     <div id="end-date" className="d-inline-block">
                       <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
                         <small>End Date</small>
@@ -79,7 +79,7 @@ const ProductInfoBar = () => {
                         1/2/2019
                     </p>
                     </div>
-                  </Col>
+                  </Col> */}
                 </Row>
               </Col>
               <Col lg={4} xl={4} md={5} className="d-md-block p-0 d-lg-block d-xl-block d-sm-none">
@@ -101,7 +101,7 @@ const ProductInfoBar = () => {
                   </Col>
                   <Col md={6} className="border-right p-0">
                     <Row className="p-0 m-0 w-100 d-flex align-items-center h-100">
-                      <Col md={5} className="p-0"><CircularProgress percentage={50} ></CircularProgress></Col>
+                      <Col md={5} className="p-0"><CircularProgress percentage={30} color={"turquoise"} ></CircularProgress></Col>
                       <Col md={7} className="p-0 d-flex align-items-center justify-content-center" >
                         <div id="backlog-info" className="d-inline-block">
                           <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
