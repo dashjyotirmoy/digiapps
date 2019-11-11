@@ -11,12 +11,12 @@ class CustDropdown extends Component {
             return <Dropdown.Item key={index}>{val}</Dropdown.Item>
         })
         return (
-            <Dropdown className="d-xl-block d-lg-block d-md-block d-sm-none d-sx-none d-none">
-                <Dropdown.Toggle as={DropdownToggle} id="dropdown-custom-components" >
+            <Dropdown className="d-xl-block d-lg-block d-md-block d-sm-none d-sx-none d-none w-100">
+                <Dropdown.Toggle as={DropdownToggle} id="dropdown-custom-components" drop={this.props.direction} >
                     {this.props.children}
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu as={DropdownMenu} className="dropdown-menu dropdown-menu-right mt-2 mr-0">
+                <Dropdown.Menu as={DropdownMenu} className="dropdown-menu width-fit-content dropdown-menu-right font-aggegate-sub-text mr-0">
                     {dropdownItems}
                 </Dropdown.Menu>
             </Dropdown>

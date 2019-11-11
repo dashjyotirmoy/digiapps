@@ -10,6 +10,10 @@ body {
   height: 100%;
   width: 100%;
 }
+a{
+  color:unset;
+  text-decoration: none;
+}
 /* custom height/width */
 .h-10{
   height: 10%;
@@ -25,6 +29,9 @@ body {
   height: 75%;
 }
 
+.width-fit-content{
+  min-width: fit-content;
+}
 .max-w-18{
   flex: 18% !important;
   min-width: fit-content !important;

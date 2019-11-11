@@ -18,7 +18,7 @@ const options = {
       enabled: false
     },
     title: {
-      text: 'Start date',
+      text: '',
       rotation: 0
     }
   },

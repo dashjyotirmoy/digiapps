@@ -47,7 +47,7 @@ class CompactDataBar extends Component {
                                 <section className="h-100 px-xl-2 px-lg-2 bg-white rounded w-auto d-inline-block">
 
                                     <div className="p-2 d-inline-block">
-                                        <p className="font-aggegate-main m-0 text-left text-black m-0">
+                                        <p className="font-aggegate-main-text m-0 text-left text-black m-0">
                                             13
                                                 </p>
                                         <p className="font-aggegate-sub-text m-0 text-left text-black-50 m-0">

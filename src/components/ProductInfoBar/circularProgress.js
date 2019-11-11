@@ -7,7 +7,7 @@ function CircularProgress(props) {
   const text = props.text
   return (
     <div>
-      <div style={{ width: "60px" }}>
+      <div style={{ width: "100%" }}>
         <CircularProgressbar value={percentage} text={`${percentage}%`} />
 
       </div>
