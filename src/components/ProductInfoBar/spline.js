@@ -5,7 +5,6 @@ import HighchartsReact from 'highcharts-react-official';
 const options = {
   chart: {
     type: 'spline',
-    height: '69x',
     backgroundColor: "#F0F0F0"
   },
 
@@ -77,7 +76,7 @@ const options = {
 function Spline() {
   return (
 
-    <HighchartsReact highcharts={Highcharts} options={options} />
+    <HighchartsReact highcharts={Highcharts} containerProps={{ style: { height: "100%", width: "100%" } }} options={options} />
 
   );
 }

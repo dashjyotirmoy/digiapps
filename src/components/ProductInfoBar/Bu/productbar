@@ -14,7 +14,7 @@ const ProductInfoBar = () => {
     <div className="h-10" style={{ backgroundColor: "#F0F0F0" }}>
       <Container fluid className="h-100">
         <Row className="h-100 border p-0 m-0">
-          <Col className="h-100" sm={12} md={5} lg={5} xl={5}>
+          <Col className="h-100" md={5}>
             <Row className="h-100">
               <Col md={4} lg={4} xl={4} className="h-100 justify-content-center d-flex align-items-center" style={{ backgroundColor: "#C9D2F9" }}>
                 <Dropdown listData={list} direction="down">
@@ -25,7 +25,9 @@ const ProductInfoBar = () => {
                     </p>
                     </Col>
                     <Col md={3} lg={3} xl={3} className="font-aggegate-sub-text p-0">
-                      <FontAwesomeIcon icon={faChevronDown} />
+                      <FontAwesomeIcon icon={faChevronDown}>
+
+                      </FontAwesomeIcon>
                     </Col>
                   </Row>
                 </Dropdown>
@@ -51,11 +53,32 @@ const ProductInfoBar = () => {
           </Col>
           <Col md={7} className="h-100">
             <Row className="h-100">
-              <Col md={7} xl={8} lg={8} className="h-100">
-                <Row className="p-0 m-0 h-100 w-100 border-right ">
-                  <Col md={12} xl={12} lg={12} className="h-100 pl-0 py-1">
+              <Col md={7} xl={8} lg={8}>
+                <Row className="p-0 m-0 w-100 border-right d-flex align-item-center ">
+                  {/* <Col md={2} xl={2} lg={2} className="p-0 d-flex justify-content-center align-items-center" >
+                    <div id="start-date" className="d-inline-block">
+                      <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
+                        <small>Start Date</small>
+                      </p>
+                      <p className="font-size-xs m-0 text-black-50 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
+                        1/2/2019
+                    </p>
+                    </div>
+
+                  </Col> */}
+                  <Col md={12} xl={12} lg={12} className="pl-0">
                     <Spline></Spline>
                   </Col>
+                  {/* <Col md={2} xl={2} lg={2} className="p-0 d-flex align-items-center justify-content-center" >
+                    <div id="end-date" className="d-inline-block">
+                      <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
+                        <small>End Date</small>
+                      </p>
+                      <p className="font-size-xs m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
+                        1/2/2019
+                    </p>
+                    </div>
+                  </Col> */}
                 </Row>
               </Col>
               <Col lg={4} xl={4} md={5} className="d-md-block p-0 d-lg-block d-xl-block d-sm-none">
