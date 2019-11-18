@@ -1,11 +1,9 @@
 import React from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-
+import ChartHOC from '../ChartHOC/ChartHOC';
 const options = {
   chart: {
     type: 'spline',
-    backgroundColor: "#F0F0F0"
+    backgroundColor: ""
   },
 
   title: {
@@ -75,9 +73,7 @@ const options = {
 
 function Spline() {
   return (
-
-    <HighchartsReact highcharts={Highcharts} containerProps={{ style: { height: "100%", width: "100%" } }} options={options} />
-
+    <ChartHOC options={options} />
   );
 }
 

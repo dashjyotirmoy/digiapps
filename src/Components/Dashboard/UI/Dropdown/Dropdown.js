@@ -11,7 +11,7 @@ class CustDropdown extends Component {
             return <Dropdown.Item key={index}>{val}</Dropdown.Item>
         })
         return (
-            <Dropdown className="d-xl-block d-lg-block d-md-block d-sm-none d-sx-none d-none w-100">
+            <Dropdown className="d-xl-block d-lg-block d-md-block d-sm-block d-sx-none d-none w-100">
                 <Dropdown.Toggle as={DropdownToggle} id="dropdown-custom-components" drop={this.props.direction} >
                     {this.props.children}
                 </Dropdown.Toggle>

@@ -15,30 +15,30 @@ const ProductInfoBar = () => {
     <div className="h-10" style={{ backgroundColor: "#1c2531" }}>
       <Container fluid className="h-100 border-bottom border-dark border-top">
         <Row className="h-100  p-0 m-0" style={{ backgroundColor: "#1d2632" }} >
-          <Col className="h-100" sm={12} md={5} lg={5} xl={5}>
+          <Col className="h-100" sm={5} md={5} lg={5} xl={5}>
             <Row className="h-100">
-              <Col md={4} lg={4} xl={4} className="h-100 justify-content-center d-flex align-items-center" style={{ backgroundColor: "#334154" }}>
+              <Col sm={4} md={4} lg={4} xl={4} className="h-100 justify-content-center d-flex align-items-center" style={{ backgroundColor: "#334154" }}>
                 <Dropdown listData={list} direction="down">
                   <Row className="h-100" >
-                    <Col md={9} lg={9} xl={9}>
+                    <Col sm={10} md={9} lg={9} xl={9}>
                       <p className="font-aggegate-sub-text text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
                         Product 1
                     </p>
                     </Col>
-                    <Col md={3} lg={3} xl={3} className="font-aggegate-sub-text p-0 text-white">
+                    <Col sm={2} md={2} md={3} lg={3} xl={3} className="font-aggegate-sub-text p-0 text-white">
                       <FontAwesomeIcon icon={faChevronDown} />
                     </Col>
                   </Row>
                 </Dropdown>
               </Col>
-              <Col md={4} lg={4} xl={4} style={{ backgroundColor: "#25303f" }}>
+              <Col sm={4} md={4} lg={4} xl={4} style={{ backgroundColor: "#25303f" }}>
                 <Row className="h-100" >
                   <Col md={12} className="m-auto">
                     <p className="font-aggegate-sub-text m-auto text-center text-white-50">Product Aggregate view</p>
                   </Col>
                 </Row>
               </Col>
-              <Col md={4} lg={4} xl={4} className="border-right p-0">
+              <Col sm={4} md={4} lg={4} xl={4} className="border-right p-0">
                 <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center" >
                   <div>
                     <p className="font-aggegate-main-text text-white d-inline">
@@ -50,7 +50,7 @@ const ProductInfoBar = () => {
               </Col>
             </Row>
           </Col>
-          <Col md={7} className="h-100">
+          <Col sm={7} md={7} lg={7} xl={7} className="h-100">
             <Row className="h-100">
               <Col md={7} xl={8} lg={8} className="h-100">
                 <Row className="p-0 m-0 h-100 w-100 border-right ">
