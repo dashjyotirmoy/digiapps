@@ -2,10 +2,10 @@
   "widgets": [
     {
       "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
-      "name": "NavigationBar",
+      "name": "Header",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "AnalyticalLibrary/NavigationBar/NavigationBar",
+      "path": "Header/Header",
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
         "graphPath": "/dev/dashboard/sprint/",
@@ -86,10 +86,10 @@
 
     {
       "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dfcee4",
-      "name": "CompactDataBar",
+      "name": "SummaryView",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "AnalyticalLibrary/ExecutiveDetails/ExecutiveDetails",
+      "path": "SummaryView/SummaryView",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
@@ -179,7 +179,7 @@
       "name": "ProductInfoBar",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "AnalyticalLibrary/ProductAggregate/ProductAggregate",
+      "path": "ProductInfoBar/ProductInfoBar",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
@@ -259,10 +259,10 @@
     },
     {
       "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
-      "name": "VelocityTab",
+      "name": "ProductDefBar",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "AnalyticalLibrary/ProductDefBar/ProductDefBar",
+      "path": "ProductDefinationBar/ProductDefBar",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
@@ -342,10 +342,176 @@
     },
     {
       "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
-      "name": "Grid",
+      "name": "Customer",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "AnalyticalLibrary/Grid/Grid",
+      "path": "ProductDefinationBar/ProductDefinition/Customer",
+      "position": 1,
+      "render": {
+        "licenseKey": "lic-ex-sprint-summaryv01-22453135",
+        "graphPath": "/dev/dashboard/sprint/",
+        "group": ["Default", "All"],
+        "securityRoles": ["Admins"]
+      },
+      "executor": {
+        "apiURI": "/dev/dashboard/v1/sprint/{id}",
+        "licenseKey": "lic-ex-sprint-summaryv01-22453135"
+      },
+      "attributes": [
+        {
+          "name": "Sprint",
+          "value": "1"
+        },
+        {
+          "name": "StartDate",
+          "value": ""
+        },
+        {
+          "name": "EndDate",
+          "value": ""
+        },
+        {
+          "name": "Stories",
+          "value": "4"
+        }
+      ],
+      "dimensions": [
+        {
+          "name": "Project Status",
+          "title": "Overview",
+          "description": "Current Project Status",
+          "priority": 1,
+          "uri": "/dimensions/{name}",
+          "graph": {
+            "type": "pie",
+            "expression": "value",
+            "datamodel": "schema"
+          }
+        },
+        {
+          "name": "GoLive",
+          "title": "GoLive Data",
+          "description": "Go Live",
+          "priority": 2,
+          "uri": "/dimensions/{Golive}",
+          "graph": {
+            "type": "line",
+            "expression": "value",
+            "datamodel": "schema"
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "name": "burndown",
+          "title": "burndown",
+          "description": "burndown",
+          "uri": "/metric/{name}",
+          "mapping": {
+            "dimensions": ["Project Status", "GoLive"],
+            "attributes": ["Sprint"]
+          },
+          "expression": "value",
+          "data": ""
+        }
+      ],
+      "dragPosition": [
+        {
+          "currPos": 1,
+          "defPos": 2,
+          "role": "Admin"
+        }
+      ]
+    },
+    {
+      "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
+      "name": "Quality",
+      "title": "EY DevOps",
+      "description": "EY DevOps",
+      "path": "ProductDefinationBar/ProductDefinition/Quality",
+      "position": 1,
+      "render": {
+        "licenseKey": "lic-ex-sprint-summaryv01-22453135",
+        "graphPath": "/dev/dashboard/sprint/",
+        "group": ["Default", "All"],
+        "securityRoles": ["Admins"]
+      },
+      "executor": {
+        "apiURI": "/dev/dashboard/v1/sprint/{id}",
+        "licenseKey": "lic-ex-sprint-summaryv01-22453135"
+      },
+      "attributes": [
+        {
+          "name": "Sprint",
+          "value": "1"
+        },
+        {
+          "name": "StartDate",
+          "value": ""
+        },
+        {
+          "name": "EndDate",
+          "value": ""
+        },
+        {
+          "name": "Stories",
+          "value": "4"
+        }
+      ],
+      "dimensions": [
+        {
+          "name": "Project Status",
+          "title": "Overview",
+          "description": "Current Project Status",
+          "priority": 1,
+          "uri": "/dimensions/{name}",
+          "graph": {
+            "type": "pie",
+            "expression": "value",
+            "datamodel": "schema"
+          }
+        },
+        {
+          "name": "GoLive",
+          "title": "GoLive Data",
+          "description": "Go Live",
+          "priority": 2,
+          "uri": "/dimensions/{Golive}",
+          "graph": {
+            "type": "line",
+            "expression": "value",
+            "datamodel": "schema"
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "name": "burndown",
+          "title": "burndown",
+          "description": "burndown",
+          "uri": "/metric/{name}",
+          "mapping": {
+            "dimensions": ["Project Status", "GoLive"],
+            "attributes": ["Sprint"]
+          },
+          "expression": "value",
+          "data": ""
+        }
+      ],
+      "dragPosition": [
+        {
+          "currPos": 1,
+          "defPos": 2,
+          "role": "Admin"
+        }
+      ]
+    },
+    {
+      "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
+      "name": "Velocity",
+      "title": "EY DevOps",
+      "description": "EY DevOps",
+      "path": "ProductDefinationBar/ProductDefinition/Velocity",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
