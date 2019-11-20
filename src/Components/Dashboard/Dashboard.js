@@ -1,25 +1,29 @@
-import React from "react";
-import App from "../../App";
-let configData = require('./config.json');
+import React, { Suspense } from "react";
+var dot = require("dot-object");
+const configData = require("../ConfigurationManager/Config.json");
 
-const displayView = ()=>{
-
+function LazyComponent() {
+  let components = {};
+  configData.widgets.map((widget, index) => {
+    components[widget.name] = React.lazy(() => {
+      return import("../../libs/" + widget.path);
+    });
+  });
+  return components;
 }
-const dashboard = () => {
-  return (
-    <React.Fragment>
-      <App>{displayView()}
-      {/* 1. Iterate the configData
-    
-          2. if widget.position === value show widgets*
-          3. Pass the dimesnsion array into each widgets
-          4. Inside the widget components , dimesion array will be recieved as props and will iterate it
-          5. Based on the priority or type call the respective analytical components based on priority
-          6. */}
-      
-      
-      </App>
-      
-    </React.Fragment>
-  );
-};
+
+export default function Dashboard(props) {
+  const Components = new LazyComponent();
+  return props.data.map((item, index) => {
+    const widgetData = dot.pick(
+      "widgets[" + index + "]" + ".dimensions",
+      configData
+    );
+    const Component = Components[item];
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Component data={widgetData} />
+      </Suspense>
+    );
+  });
+}

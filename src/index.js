@@ -1,9 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from './components/App';
-import reducers from './reducers'
-ReactDOM.render(
-   
- <App/>,
-    document.querySelector('#root') 
-);
+import App from "./Container/App";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
+
+ReactDOM.render(<App />, document.getElementById("root"));

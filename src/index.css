@@ -1,0 +1,136 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+/* reset margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+}
+/* setting viewport height */
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+a{
+  color:unset;
+  text-decoration: none;
+  cursor: pointer;
+}
+a:hover{
+  color:unset;
+  text-decoration: none;
+}
+/* custom height/width */
+.h-10{
+  height: 10%;
+  min-height: 70px;
+}
+.h-15{
+  height: 15%;
+}
+.h-20{
+  height: 20%;
+}
+.h-80{
+  height: 75%;
+}
+
+.width-fit-content{
+  min-width: fit-content;
+}
+.max-w-18{
+  flex: 18% !important;
+  min-width: fit-content !important;
+  max-width: 18% !important;
+}
+.av-data-bar-header{
+  width:10% !important;
+}
+.av-data-bar-main{
+  width:90% !important;
+}
+
+/* updating root div */
+#root {
+  background: #f5f5f5;
+  height: inherit;
+}
+
+/* colors */
+.text-red{
+  color: red;
+}
+.text-green{
+  color:rgb(53, 184, 53);
+}
+.text-yellow{
+  color:rgb(216, 211, 52);
+}
+.text-orange{
+  color:rgb(240, 180, 69);
+}
+/* custom font sizes */
+.font-aggegate-main-text{
+  font-size: large;
+}
+.font-aggegate-sub-text{
+  font-size: smaller;
+}
+.font-size-smaller{
+  font-size: smaller;
+}
+.font-size-small{
+  font-size: small;
+}
+.font-size-xs{
+  font-size: x-small;
+}
+@media (min-width: 576px) { 
+  .font-aggegate-sub-text{
+    font-size: x-small;
+  }
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .font-aggegate-sub-text{
+    font-size: x-small;
+  }
+  }
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  .font-aggegate-sub-text{
+    font-size: small;
+  }
+ }
+
+/* // Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+  /* .col-xl-1{
+    min-width: 125.488px;
+  } */
+  .font-aggegate-sub-text{
+    font-size: smaller;
+  }
+ }
+
+
+/* alignment classes */
+.vertical-super{
+  vertical-align: super;
+}
+.vertical-initial{
+  vertical-align: initial
+}
+
+/* flex  */
+
+.justify-content-space-around{
+  justify-content: space-around;
+}
+
+/* bootstrap style overrides */
+
+.navbar-light .navbar-toggler-icon{
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
