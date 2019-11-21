@@ -1,23 +1,22 @@
-import React, { Component } from 'react';
-import Header from './Components/Dashboard/Header/Header';
-import SummaryView from './Components/Dashboard/SummaryView/SummaryView';
-import ProductInfoBar from './Components/Dashboard/ProductInfoBar/ProductInfoBar';
-import ProductDefBar from './Components/Dashboard/ProductDefinationBar/ProductDefBar';
+import React from "react";
+import Dashboard from "./Components/Dashboard/DashboardController";
 
-
-
-class App extends Component {
+class App extends React.Component {
   render() {
+    const componentImports = [
+      "Header",
+      "SummaryView",
+      "ProductInfoBar",
+      "ProductDefBar",
+      "Customer",
+      "Quality",
+      "Velocity"
+    ];
     return (
       <React.Fragment>
-        <Header />
-        <SummaryView />
-        <ProductInfoBar />
-        <ProductDefBar />
-        {/* <Grid></Grid> */}
+        <Dashboard data={componentImports} />
       </React.Fragment>
     );
   }
 }
-
 export default App;
