@@ -1,0 +1,33 @@
+resources:
+  repositories:
+    - repository: templates
+      type: "git"
+      name: "FinCrime Core/build-templates"
+      ref: refs/heads/master
+
+trigger:
+  branches:
+    include:
+    - "*"
+  paths:
+    include:
+    - "*"
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.9.0'
+    architecture: 'x64'
+  displayName: 'Install Node.js'
+
+- task: Npm@1
+  displayName: 'Install dependencies'
+  inputs:
+      command: install    
+
+- script: |
+    npm run build
+  displayName: 'npm build'
