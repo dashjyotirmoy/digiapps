@@ -1,15 +1,5 @@
-resources:
-  repositories:
-    - repository: templates
-      type: "git"
-      name: "FinCrime Core/build-templates"
-      ref: refs/heads/master
-
 trigger:
   branches:
-    include:
-    - "*"
-  paths:
     include:
     - "*"
 
