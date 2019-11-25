@@ -5,6 +5,9 @@ import { faArrowLeft, faCircle, faArrowUp, faArrowDown, faTh } from '@fortawesom
 import styled from 'styled-components';
 import ItemMetric from './Metrics/ItemMetric';
 import MainMetrics from './Metrics/MainMetrics';
+import Translate from '../Translations/Translations';
+import axios from 'axios';
+
 
 const Styles = styled.div`
 .data-header{
@@ -14,18 +17,41 @@ const Styles = styled.div`
 `;
 class SummaryView extends Component {
     state = {
-        userName: "Executive",
-        designation: "Business Lead",
-        data1: [
-            { name: "Total Products", value: "13" },
-            { name: "Team Members", value: "222" },
-            { name: "Total Hours", value: "1234" }
-        ]
+        data: {},
+        flag: false
     }
-    render() {
 
+    componentDidMount() {
+        axios.get("/JsonData/SummaryBarData.json")
+            .then(res => {
+                const data = res.data;
+                this.setState({ data: data, flag: true });
+            }
+            )
+    }
+
+    render() {
+        const nameArr = ["Total Product", "totalMembers", "totalHrs"];
+        const NameVal = nameArr.map((item, key) => {
+            return {
+                name: Translate[item] || item,
+                value: this.state.data[item] || 0
+            }
+        })
+
+        const ItemArr = ["averageReleaseCycle", "averageDeploymentLeadTime", "Av MTTD", "Av MTTR", "Av Customer Rating"];
+
+        const ItemNameVal = ItemArr.map((item, key) => {
+            return {
+                name: Translate[item] || item,
+                value: this.state.data[item] || 0
+            }
+
+
+        })
         return (
             <div className="h-10">
+
                 <Styles style={{ "height": "100%" }}>
                     <Container fluid className="data-header">
                         <main className="align-items-center d-flex h-100 w-100">
@@ -36,10 +62,10 @@ class SummaryView extends Component {
                                             <FontAwesomeIcon className="font-size-smaller" icon={faArrowLeft} />
                                             <div className="w-100 px-1">
                                                 <p className="font-size-smaller m-0 text-center text-black m-0">
-                                                    {this.state.userName}
+                                                    {this.state.data.name}
                                                 </p>
                                                 <p className="font-aggegate-sub-text m-0 text-center text-white-50 m-0">
-                                                    <small>{this.state.designation}</small>
+                                                    <small>{this.state.data.designation}</small>
                                                 </p>
                                             </div>
                                             <FontAwesomeIcon icon={faTh} />
@@ -47,10 +73,10 @@ class SummaryView extends Component {
                                     </Row>
                                 </div>
                                 <div className="h-100 px-xl-2 px-lg-2 grid-graph-comp rounded w-auto d-inline-block">
-                                    <MainMetrics />
+                                    {this.state.flag ? <MainMetrics NameVal={NameVal} /> : "loading"}
                                 </div>
-                                <div className="h-100 px-xl-2 px-lg-2 d-inline-block d-flex flex-grow-1 justify-content-space-around d-inline-block">
-                                    <ItemMetric />
+                                <div className="h-100 px-xl-2 px-lg-2 d-inline-block d-flex flex-grow-1 d-inline-block">
+                                    {this.state.flag ? <ItemMetric ItemNameVal={ItemNameVal} /> : "loading"}
                                 </div>
                             </Row>
                         </main>

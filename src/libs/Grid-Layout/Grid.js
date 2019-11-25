@@ -1,33 +1,28 @@
-import React, { Component } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Responsive, WidthProvider } from "react-grid-layout";
-import ColumnHigh from "../Charts/ColumnHigh/ColumnHigh";
+import React, { Component } from 'react';
+import { Container } from 'react-bootstrap';
+import { Responsive, WidthProvider } from 'react-grid-layout';
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
+
 class Grid extends Component {
   render() {
-    const gridItem = this.props.layouts["lg"].map(ele => {
-      return (
-        <div className="border border-dark grid-graph-comp" key={ele.i}>
-          <ColumnHigh />{" "}
+    const gridItem = this.props.layouts["lg"].map((ele, index) => {
+      return (<div className="border border-dark grid-graph-comp" key={ele.i}>
+        <div className="position-absolute px-2 text-right text-white w-100" style={{ zIndex: "100" }}>
+          <p className="show-cursor d-inline" onClick={() => this.props.removeDelegate(index)}>x</p>
         </div>
-      );
-    });
-    //onDragStop={(updatedArray, oldEle, newEle, placeHolde) => this.onDropHanndler(updatedArray, oldEle, newEle, placeHolde)}
+        {this.props.chartData[ele.i].component}
+      </div >)
+    })
     return (
       <Container fluid>
-        <ResponsiveGridLayout
-          maxRows={2}
-          className="layout"
-          autoSize={false}
-          layouts={this.props.layouts}
-          compactType={"vertical"}
-          breakpoints={this.props.breakpoint}
-          cols={this.props.columnSize}
-          preventCollision={false}
-        >
+        <ResponsiveGridLayout maxRows={2} className="layout"
+          autoSize={false} layouts={this.props.layouts}
+          compactType={"vertical"} breakpoints={this.props.breakpoint}
+          cols={this.props.columnSize} preventCollision={false}>
           {gridItem}
         </ResponsiveGridLayout>
-      </Container>
+      </Container >
     );
   }
 }

@@ -1,0 +1,20 @@
+{
+    "id": "2729002",
+    "name": "Prod Name",
+    "sprints": [
+        {
+            "id": "1",
+            "name": "Prod2spr 1",
+            "startDate": "",
+            "endDate": "",
+            "state": ""
+        },
+        {
+            "id": "2",
+            "name": "Prod2spr 2",
+            "startDate": "",
+            "endDate": "",
+            "state": ""
+        }
+    ]
+}

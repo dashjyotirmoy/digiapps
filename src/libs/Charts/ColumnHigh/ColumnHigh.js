@@ -17,7 +17,12 @@ class ColumnHigh extends Component {
             },
 
             title: {
-                text: null
+                text: "",
+                align: 'left',
+                style: {
+                    color: '#f5f5f5',
+                    fontWeight: 'bold'
+                }
             },
             xAxis: {
                 //max: 8,
@@ -26,37 +31,34 @@ class ColumnHigh extends Component {
                     day: '%b %e'
                 },
                 minorTicks: false,
-                /*labels: {
-                    format: 'date: '
-                },*/
-                lineWidth: 0,
+                lineWidth: 1,
                 minorGridLineWidth: 0,
-                lineColor: 'transparent',
+                // lineColor: 'transparent',
                 minorTickLength: 0,
-                tickLength: 0
+                tickLength: 0,
+                style: {
+                    color: '#f5f5f5'
+                }
+
             },
             yAxis: {
                 min: 0,
+                gridLineColor: "transparent",
                 title: {
-                    text: 'temp title'
+                    text: 'y title',
+                    style: {
+                        color: '#f5f5f5'
+                    }
                 },
+                lineColor: 'blue',
                 stackLabels: {
                     enabled: true,
-                    /*style: {
-                        fontWeight: 'bold',
-                        color: ( // theme
-                            Highcharts.defaultOptions.title.style &&
-                            Highcharts.defaultOptions.title.style.color
-                        ) || 'gray'
-                    }*/
                 }
             },
             legend: {
                 enabled: false,
                 align: 'right',
-                //x: -30,
                 verticalAlign: 'top',
-                //y: 25,
                 floating: true,
                 backgroundColor:
                     Highcharts.defaultOptions.legend.backgroundColor || 'white',
@@ -81,30 +83,49 @@ class ColumnHigh extends Component {
                 {
                     "name": "A",
                     "data": [5, 3, 4, 7, 8],
-                    "color": "#E5E7E9",
+                    "color": "#7d12ff", "borderWidth": 0,
                     pointStart: Date.UTC(2019, 10, 15),
-                    pointInterval: 86400000
+                    pointInterval: 86400000,
+                    pointWidth: 10
                 },
                 {
                     "name": "B",
                     "data": [2, 2, 3, 2, 6],
-                    "color": "#BDC3C7",
+                    "color": "#ab20fd",
+                    "borderWidth": 0,
                     pointStart: Date.UTC(2019, 10, 15),
-                    pointInterval: 86400000
+                    pointInterval: 86400000,
+                    pointWidth: 10
                 },
                 {
                     "name": "C",
                     "data": [3, 4, 4, 2, 5],
-                    "color": "#797D7F",
+                    "color": "#200589",
+                    "borderWidth": 0,
                     pointStart: Date.UTC(2019, 10, 15),
-                    pointInterval: 86400000
+                    pointInterval: 86400000,
+                    pointWidth: 10
                 }
             ]
         }
     };
 
+    componentWillReceiveProps(nextprops) {
+        debugger;
+        if (this.props.title !== nextprops.title) {
+            const updatedOptions = Object.assign({}, this.state.options);
+            updatedOptions.title.text = nextprops.title;
+            console.log(updatedOptions)
+            this.setState({
+                ...this.state,
+                options: updatedOptions
+            })
+        }
+    }
+
 
     render() {
+        this.state.options.title.text = this.props.title;
         return (
             <ChartHOC options={this.state.options} />
         );
