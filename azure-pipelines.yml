@@ -28,6 +28,21 @@ variables:
   - name: registryServerName
     value: '$(registryName).azurecr.io'
 
+parameters:
+  # ========================================================================
+  #                          Mandatory parameters
+  # ========================================================================
+  module: digitalops
+  component: ui
+  projectName: digitalops-ui
+  imageName: digitalops-ui
+  registryServerName: digitalinsight.azurecr.io
+  registryLogin: $(registryLogin)
+  registryPassword: $(registryPassword)
+  tenantId: $(tenantId)
+  registryName: digitalinsight
+  subPath: ''
+
 jobs:
 - job: 'angular cli'
   pool:
