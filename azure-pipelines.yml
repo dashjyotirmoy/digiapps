@@ -28,53 +28,15 @@ variables:
   - name: registryServerName
     value: '$(registryName).azurecr.io'
 
-parameters:
-  # ========================================================================
-  #                          Mandatory parameters
-  # ========================================================================
-  module: digitalops
-  component: ui
-  projectName: digitalops-ui
-  imageName: digitalops-ui
-  registryServerName: digitalinsight.azurecr.io
-  registryLogin: $(registryLogin)
-  registryPassword: $(registryPassword)
-  tenantId: $(tenantId)
-  registryName: digitalinsight
-  subPath: ''
-
 jobs:
-- job: 'angular cli'
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '8.10.0'
-      architecture: 'x64'
-    displayName: 'Install Node.js'
-
-  - task: Npm@1
-    displayName: 'Install dependencies'
-    inputs:
-        command: install    
-
-  - script: |
-      npm run build
-    displayName: 'npm build'
-  
-  - template: templates/docker-build.yml
-    parameters:
-      registryServerName: '${{ parameters.registryServerName }}'
-      imageName: '${{ parameters.imageName }}'
-      subPath: ${{ parameters.subPath }}
-
-  - template: templates/docker-push.yml
-    parameters:
-      registryLogin: '${{ parameters.registryLogin }}'
-      registryPassword: '${{ parameters.registryPassword }}'
-      tenantId: '${{ parameters.tenantId }}'
-      registryName: '${{ parameters.registryName }}'
-      imageName: '${{ parameters.imageName }}'
-      registryServerName: '${{ parameters.registryServerName }}'
-      subPath: ${{ parameters.subPath }}
+- template: react.yml@templates
+  parameters:
+    module: '$(module)'
+    component: '$(component)'
+    projectName: '$(projectName)'
+    imageName: '$(imageName)'
+    registryLogin: '$(registryLogin)'
+    registryPassword: '$(registryPassword)'
+    tenantId: '$(tenantId)'
+    registryName: '$(registryName)'
+    registryServerName: '$(registryServerName)'
