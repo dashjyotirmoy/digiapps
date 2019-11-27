@@ -1,5 +1,6 @@
 {
   "name": "devopsdashboard",
+  "homepage": "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,7 +18,12 @@
     "react-dimensions": "^1.3.1",
     "react-dom": "^16.11.0",
     "react-grid-layout": "^0.17.1",
+    "react-id-generator": "^3.0.0",
+    "react-redux": "^7.1.3",
     "react-scripts": "3.2.0",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "shortid": "^2.2.15",
     "styled-components": "^4.4.1"
   },
   "scripts": {

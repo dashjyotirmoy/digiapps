@@ -1,6 +1,6 @@
 import React from "react";
 import Dashboard from "./Components/Dashboard/DashboardController";
-
+const shortid = require("shortid");
 class App extends React.Component {
   render() {
     const componentImports = [
@@ -14,7 +14,7 @@ class App extends React.Component {
     ];
     return (
       <React.Fragment>
-        <Dashboard data={componentImports} />
+        <Dashboard data={componentImports} key={shortid.generate()} />
       </React.Fragment>
     );
   }

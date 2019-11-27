@@ -1,84 +1,73 @@
-import React, { Component } from 'react';
-import { Row, Container, Col } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import Dropdown from '../Dropdown/Dropdown';
-import LineHigh from '../Charts/LineHigh/LineHigh';
-import Donut from '../Charts/Donut/Donut';
-import axios from 'axios';
-
-
+import React, { Component } from "react";
+import { Row, Container, Col } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import Dropdown from "../Dropdown/Dropdown";
+import axios from "axios";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { prodInfo } from "../../Actions/index";
 class ProductInfoBar extends Component {
   state = {
     productData: [],
     sprintData: [],
     selectedProduct: "",
     selectedSprint: "",
-    response: {
-    },
+    response: {},
     recieved: false
-  }
+  };
 
   componentDidMount() {
-    this.getProjectData().then(this.setProject)
-    axios.get("/JsonData/sprintmock.json")
-      .then(res => {
-        this.setState({
-          response: res.data,
-          recieved: true
-        })
-      })
+    this.getProjectData().then(this.setProject);
+    this.props.prodInfo();
   }
 
-  getProjectData = (projectId) => {
-    return axios.get("/JsonData/SummaryBarData.json")
-  }
+  getProjectData = projectId => {
+    return axios.get("/JsonData/SummaryBarData.json");
+  };
 
-  setProject = (res) => {
+  setProject = res => {
     const projects = res.data.projects;
     const { list, selectedIndex } = this.markSelected(projects, projects[0].id);
     this.setState({
       productData: list,
-      selectedProduct: list[selectedIndex].name,
+      selectedProduct: list[selectedIndex].name
     });
     this.getSprintData(projects[0].id).then(this.setSprint);
-  }
+  };
 
-  updateProject = (projectId) => {
+  updateProject = projectId => {
     const projects = [...this.state.productData];
-    console.log(projectId);
     const { list, selectedIndex } = this.markSelected(projects, projectId);
     this.setState({
       productData: list,
-      selectedProduct: list[selectedIndex].name,
+      selectedProduct: list[selectedIndex].name
     });
     this.getSprintData(projectId).then(this.setSprint);
-  }
+  };
 
-  getSprintData = (sprintId) => {
-    return axios.get("/JsonData/sprint" + sprintId + ".json")
-  }
+  getSprintData = sprintId => {
+    return axios.get("/JsonData/sprint" + sprintId + ".json");
+  };
 
-  setSprint = (res) => {
-    let sprints = res.data.sprints
+  setSprint = res => {
+    let sprints = res.data.sprints;
     const sprintData = this.markSelected(sprints, sprints[0].id);
     this.setState({
       sprintData: sprintData.list,
       selectedSprint: sprintData.list[sprintData.selectedIndex].name
     });
-  }
+  };
 
-  updateSprint = (sprintId) => {
-
-  }
+  updateSprint = sprintId => {};
 
   resetSelect = prodList => {
     const defaultList = prodList.map(ele => {
       ele.selected = false;
       return ele;
-    })
+    });
     return defaultList;
-  }
+  };
 
   markSelected = (prodList, id) => {
     const resetList = this.resetSelect(prodList);
@@ -94,63 +83,113 @@ class ProductInfoBar extends Component {
     return {
       list: selectedParamList,
       selectedIndex: selectedIndex
-    }
-  }
-
-
+    };
+  };
 
   prodOnSelectHandler = (prodId, evtKey) => {
     this.updateProject(prodId);
-  }
+  };
 
   sprintOnSelectHandler = (prodId, evtKey) => {
-    const { list, selectedIndex } = this.markSelected(this.state.sprintData, prodId);
+    const { list, selectedIndex } = this.markSelected(
+      this.state.sprintData,
+      prodId
+    );
     this.setState({
       sprintData: list,
       selectedSprint: list[selectedIndex].name
-    })
-  }
-
+    });
+  };
 
   render() {
+    console.log(this.props);
+    let dimData = this.props.data;
+    const Components = this.props.func(dimData);
+    const LineHigh = Components["LineHigh"];
+    const Donut = Components["Donut"];
     return (
-
       <div className="h-10" style={{ backgroundColor: "#1c2531" }}>
         <Container fluid className="h-100 border-bottom border-dark border-top">
-          <Row className="h-100  p-0 m-0" style={{ backgroundColor: "#1d2632" }} >
+          <Row
+            className="h-100  p-0 m-0"
+            style={{ backgroundColor: "#1d2632" }}
+          >
             <Col className="h-100" sm={5} md={5} lg={5} xl={5}>
               <Row className="h-100">
-                <Col sm={4} md={4} lg={4} xl={4} className="h-100 justify-content-center d-flex align-items-center" style={{ backgroundColor: "#334154" }}>
-                  <Dropdown listData={this.state.productData} direction="down" onSelectDelegate={this.prodOnSelectHandler} >
-                    <Row className="h-100" >
+                <Col
+                  sm={4}
+                  md={4}
+                  lg={4}
+                  xl={4}
+                  className="h-100 justify-content-center d-flex align-items-center"
+                  style={{ backgroundColor: "#334154" }}
+                >
+                  <Dropdown
+                    listData={this.state.productData}
+                    direction="down"
+                    onSelectDelegate={this.prodOnSelectHandler}
+                  >
+                    <Row className="h-100">
                       <Col sm={10} md={9} lg={9} xl={9}>
                         <p className="font-aggegate-sub-text text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
                           {this.state.selectedProduct}
                         </p>
                       </Col>
-                      <Col sm={2} md={2} md={3} lg={3} xl={3} className="font-aggegate-sub-text p-0 text-white">
+                      <Col
+                        sm={2}
+                        md={2}
+                        md={3}
+                        lg={3}
+                        xl={3}
+                        className="font-aggegate-sub-text p-0 text-white"
+                      >
                         <FontAwesomeIcon icon={faChevronDown} />
                       </Col>
                     </Row>
                   </Dropdown>
                 </Col>
-                <Col sm={4} md={4} lg={4} xl={4} style={{ backgroundColor: "#25303f" }}>
-                  <Row className="h-100" >
+                <Col
+                  sm={4}
+                  md={4}
+                  lg={4}
+                  xl={4}
+                  style={{ backgroundColor: "#25303f" }}
+                >
+                  <Row className="h-100">
                     <Col md={12} className="m-auto">
-                      <p className="font-aggegate-sub-text m-auto text-center text-white-50">Product Aggregate view</p>
+                      <p className="font-aggegate-sub-text m-auto text-center text-white-50">
+                        Product Aggregate view
+                      </p>
                     </Col>
                   </Row>
                 </Col>
-                <Col sm={4} md={4} lg={4} xl={4} className="border-right border-dark p-0">
-                  <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center" >
-                    <Dropdown listData={this.state.sprintData} direction="down" onSelectDelegate={this.sprintOnSelectHandler}>
-                      <Row className="h-100 m-0 p-0" >
+                <Col
+                  sm={4}
+                  md={4}
+                  lg={4}
+                  xl={4}
+                  className="border-right border-dark p-0"
+                >
+                  <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
+                    <Dropdown
+                      listData={this.state.sprintData}
+                      direction="down"
+                      onSelectDelegate={this.sprintOnSelectHandler}
+                    >
+                      <Row className="h-100 m-0 p-0">
                         <Col sm={10} md={9} lg={9} xl={9}>
                           <p className="font-aggegate-sub-text text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
                             {this.state.selectedSprint}
                           </p>
                         </Col>
-                        <Col sm={2} md={2} md={3} lg={3} xl={3} className="font-aggegate-sub-text p-0 text-white">
+                        <Col
+                          sm={2}
+                          md={2}
+                          md={3}
+                          lg={3}
+                          xl={3}
+                          className="font-aggegate-sub-text p-0 text-white"
+                        >
                           <FontAwesomeIcon icon={faChevronDown} />
                         </Col>
                       </Row>
@@ -164,23 +203,49 @@ class ProductInfoBar extends Component {
                 <Col md={7} xl={8} lg={8} className="h-100">
                   <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
                     <Col md={12} xl={12} lg={12} className="h-100 pl-0 py-1">
-                      {this.state.recieved ? <LineHigh burndown={this.state.response}></LineHigh> : "loading"}
-                      {/* <Spline></Spline> */}
-                      {/* <LineHigh burndown={this.state.response}></LineHigh> */}
+                      {this.props.recieved ? (
+                        <LineHigh burndown={this.props.ProdInfo}></LineHigh>
+                      ) : (
+                        "loading"
+                      )}
                     </Col>
                   </Row>
                 </Col>
-                <Col lg={4} xl={4} md={5} className="d-md-block p-0 d-lg-block d-xl-block d-sm-none">
+                <Col
+                  lg={4}
+                  xl={4}
+                  md={5}
+                  className="d-md-block p-0 d-lg-block d-xl-block d-sm-none"
+                >
                   <Row className="p-0 m-0 w-100 d-flex align-items-center h-100">
-                    <Col md={5} className="align-items-center d-flex h-100 p-0 border-right border-dark">
+                    <Col
+                      md={5}
+                      className="align-items-center d-flex h-100 p-0 border-right border-dark"
+                    >
                       <Row className="p-0 m-0 w-100 ">
                         <Col md={5} className="p-0">
-                          {this.state.recieved ? <Donut percentage={this.state.response.features}></Donut> : "loading"}</Col>
-                        <Col md={7} className="p-0 d-flex align-items-center justify-content-center" >
-                          <div id="feature-info" className="d-inline-block text-white">
+                          {this.props.recieved ? (
+                            <Donut
+                              percentage={this.props.ProdInfo.features}
+                            ></Donut>
+                          ) : (
+                            "loading"
+                          )}
+                        </Col>
+                        <Col
+                          md={7}
+                          className="p-0 d-flex align-items-center justify-content-center"
+                        >
+                          <div
+                            id="feature-info"
+                            className="d-inline-block text-white"
+                          >
                             <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
                               <small>
-                                {this.state.recieved ? `${this.state.response.features.completed}/ ${this.state.response.features.total}` : "loading"}</small>
+                                {this.props.recieved
+                                  ? `${this.props.ProdInfo.features.completed}/ ${this.props.ProdInfo.features.total}`
+                                  : "loading"}
+                              </small>
                             </p>
                             <p className="font-size-xs m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
                               Features
@@ -189,19 +254,37 @@ class ProductInfoBar extends Component {
                         </Col>
                       </Row>
                     </Col>
-                    <Col md={5} className="p-0 offset-md-1 align-items-center d-flex h-100">
+                    <Col
+                      md={5}
+                      className="p-0 offset-md-1 align-items-center d-flex h-100"
+                    >
                       <Row className="p-0 m-0 w-100 ">
                         <Col md={5} className="p-0">
-                          {this.state.recieved ? <Donut percentage={this.state.response.features}></Donut> : "loading"}</Col>
-                        <Col md={7} className="p-0 d-flex align-items-center justify-content-center" >
-                          <div id="feature-info" className="d-inline-block text-white">
+                          {this.props.recieved ? (
+                            <Donut
+                              percentage={this.props.ProdInfo.features}
+                            ></Donut>
+                          ) : (
+                            "loading"
+                          )}
+                        </Col>
+                        <Col
+                          md={7}
+                          className="p-0 d-flex align-items-center justify-content-center"
+                        >
+                          <div
+                            id="feature-info"
+                            className="d-inline-block text-white"
+                          >
                             <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
                               <small>
-                                {this.state.recieved ? `${this.state.response.backlogs.completed}/ ${this.state.response.backlogs.total}` : "loading"}</small>
+                                {this.props.recieved
+                                  ? `${this.props.ProdInfo.backlogs.completed}/ ${this.props.ProdInfo.backlogs.total}`
+                                  : "loading"}
+                              </small>
                             </p>
                             <p className="font-size-xs m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
                               Backlogs
-
                             </p>
                           </div>
                         </Col>
@@ -209,13 +292,21 @@ class ProductInfoBar extends Component {
                     </Col>
                   </Row>
                 </Col>
-
               </Row>
             </Col>
           </Row>
         </Container>
-      </div >
-    )
+      </div>
+    );
   }
 }
-export default ProductInfoBar;
+const mapStateToProps = state => {
+  return {
+    ProdInfo: state.products.data,
+    recieved: state.products.recieved
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ prodInfo }, dispatch);
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ProductInfoBar);
