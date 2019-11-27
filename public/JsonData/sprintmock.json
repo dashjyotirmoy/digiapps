@@ -1,0 +1,25 @@
+{
+    "id": "",
+    "name": "",
+    "startDate": "12/11/2019",
+    "endDate": "19/11/2019",
+    "state": "",
+    "features": {
+        "completed": 10,
+        "total": 23
+    },
+    "backlogs": {
+        "completed": 10,
+        "total": 30
+    },
+    "burndown": {
+        "totalHours": "40",
+        "hoursSpent": [
+            36,
+            28,
+            19,
+            5,
+            1
+        ]
+    }
+}

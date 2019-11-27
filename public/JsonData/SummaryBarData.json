@@ -1,0 +1,26 @@
+{
+  "id": "12321",
+  "name": "Executive 1",
+  "designation": "BUSINESS LEAD",
+  "totalHrs": "1250",
+  "totalMembers": "230",
+  "averageReleaseCycle": "25D",
+  "averageDeploymentLeadTime": "35D",
+  "averageMTTD": "0",
+  "averageMTTR": "0",
+  "averageCustRating": "0",
+  "projects": [
+    {
+      "id": "2729001",
+      "name": "Product 1"
+    },
+    {
+      "id": "2729002",
+      "name": "Product 2"
+    },
+    {
+      "id": "2729003",
+      "name": "Product 3"
+    }
+  ]
+}

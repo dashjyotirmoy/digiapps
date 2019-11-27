@@ -121,8 +121,9 @@
       ],
       "dimensions": [
         {
-          "name": "Project Status",
+          "name": "ItemMetric",
           "title": "Overview",
+          "path": "SummaryView/Metrics/ItemMetric",
           "description": "Current Project Status",
           "priority": {
             "x": 1,
@@ -136,8 +137,9 @@
           }
         },
         {
-          "name": "GoLive",
-          "title": "GoLive Data",
+          "name": "MainMetrics",
+          "title": "MainMetrics Data",
+          "path": "SummaryView/Metrics/MainMetrics",
           "description": "Go Live",
           "priority": {
             "x": 1,
@@ -211,25 +213,27 @@
       ],
       "dimensions": [
         {
-          "name": "Project Status",
+          "name": "LineHigh",
           "title": "Overview",
+          "path": "Charts/LineHigh/LineHigh",
           "description": "Current Project Status",
           "priority": 1,
           "uri": "/dimensions/{name}",
           "graph": {
-            "type": "pie",
+            "type": "LineHigh",
             "expression": "value",
             "datamodel": "schema"
           }
         },
         {
-          "name": "GoLive",
+          "name": "Donut",
           "title": "GoLive Data",
+          "path": "Charts/Donut/Donut",
           "description": "Go Live",
           "priority": 2,
           "uri": "/dimensions/{Golive}",
           "graph": {
-            "type": "line",
+            "type": "Donut",
             "expression": "value",
             "datamodel": "schema"
           }

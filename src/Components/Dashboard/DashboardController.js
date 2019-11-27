@@ -1,10 +1,12 @@
+// Dashboard Controller which parses through the Config json file and render components dynamically
+//Author : Sujith Surendran
 import React, { Suspense } from "react";
 var dot = require("dot-object");
 const configData = require("../ConfigurationManager/Config.json");
 
-function LazyComponent() {
+function LazyComponent(items) {
   let components = {};
-  configData.widgets.map((widget, index) => {
+  items.map((widget, index) => {
     components[widget.name] = React.lazy(() => {
       return import("../../libs/" + widget.path);
     });
@@ -13,16 +15,17 @@ function LazyComponent() {
 }
 
 export default function Dashboard(props) {
-  const Components = new LazyComponent();
+  let items = dot.pick("widgets", configData);
+  const Components = new LazyComponent(items);
   return props.data.map((item, index) => {
     const widgetData = dot.pick(
-      "widgets[" + index + "]" + ".dimensions.uri",
+      "widgets[" + index + "]" + ".dimensions",
       configData
     );
     const Component = Components[item];
     return (
       <Suspense fallback={<div>Loading...</div>}>
-        <Component data={widgetData} />
+        <Component key={index} data={widgetData} func={LazyComponent} />
       </Suspense>
     );
   });
