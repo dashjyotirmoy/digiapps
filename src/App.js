@@ -8,9 +8,6 @@ class App extends React.Component {
       "SummaryView",
       "ProductInfoBar",
       "ProductDefBar",
-      "Customer",
-      "Quality",
-      "Velocity"
     ];
     return (
       <React.Fragment>

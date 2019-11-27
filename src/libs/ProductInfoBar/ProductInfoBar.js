@@ -164,7 +164,7 @@ class ProductInfoBar extends Component {
                 <Col md={7} xl={8} lg={8} className="h-100">
                   <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
                     <Col md={12} xl={12} lg={12} className="h-100 pl-0 py-1">
-                      {this.state.recieved ? <LineHigh burndown={this.state.response}></LineHigh> : "loading"}
+                      {this.state.recieved ? <LineHigh burndown={this.state.response} type="line"></LineHigh> : "loading"}
                       {/* <Spline></Spline> */}
                       {/* <LineHigh burndown={this.state.response}></LineHigh> */}
                     </Col>
@@ -192,7 +192,7 @@ class ProductInfoBar extends Component {
                     <Col md={5} className="p-0 offset-md-1 align-items-center d-flex h-100">
                       <Row className="p-0 m-0 w-100 ">
                         <Col md={5} className="p-0">
-                          {this.state.recieved ? <Donut percentage={this.state.response.features}></Donut> : "loading"}</Col>
+                          {this.state.recieved ? <Donut percentage={this.state.response.backlogs}></Donut> : "loading"}</Col>
                         <Col md={7} className="p-0 d-flex align-items-center justify-content-center" >
                           <div id="feature-info" className="d-inline-block text-white">
                             <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">

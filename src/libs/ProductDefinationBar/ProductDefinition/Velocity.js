@@ -99,12 +99,12 @@ class Velocity extends Component {
     })
   }
 
-  setChart = (type, title) => {
+  setChart = (type, title, index) => {
     switch (type) {
       case "ControlChartHigh":
-        return <ControlChartHigh title={title} />
+        return <ControlChartHigh title={title} type={type} index={index} />
       case "ColumnHigh":
-        return <ColumnHigh title={title} />
+        return <ColumnHigh title={title} type={type} index={index} />
     }
   }
 
