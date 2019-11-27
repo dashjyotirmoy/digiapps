@@ -11,7 +11,7 @@ class ControlChartHigh extends Component {
     }
 
     componentDidMount() {
-        temp_options = new Graph(this.props, this.props.type)
+        temp_options = new Graph(this.props, this.props.type, this.props.data)
         this.setState({
             options: temp_options.options,
             received: 1

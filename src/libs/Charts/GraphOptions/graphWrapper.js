@@ -15,6 +15,7 @@ class Options {
 
 class Graph {
     constructor(props) {
+        console.log(props)
         this.res = props
         this.options = this.generateOption(props.type)
     }
@@ -166,6 +167,100 @@ class Graph {
         return options;
     }
     generateControlChart(options) {
+        // console.log(this.res.data)
+        let issues = [], bugs = [], rawDate, average = 0, total, rolling_average, rolling_average_issues, rolling_average_bugs, min
+        this.res.data.map(series => {
+            if (series.name == "issues") {
+                issues = series.values
+                // console.log(issues)
+            }
+            else {
+                bugs = series.values
+                // console.log(bugs)
+            }
+        })
+        issues.map(issue => {
+            rawDate = issue[0].split("T")
+            issue[0] = (new Date(rawDate[0])).getTime()
+            min = issue[0]
+            average += issue[1]
+        })
+        bugs.map(bug => {
+            rawDate = bug[0].split("T")
+            bug[0] = (new Date(rawDate[0])).getTime()
+            average += bug[1]
+        })
+        // console.log(issues)
+        // console.log(bugs)
+        // for (let i = 0; i < issues.length; i++) {
+        //     rolling_average[issues[i][0]] = issues[i][1]
+        // }
+
+        rolling_average_issues = issues.map(x => {
+            return {
+                "date": x[0],
+                "days": x[1]
+            }
+        })
+
+        // console.log(rolling_average_issues)
+        rolling_average_bugs = bugs.map(x => {
+            return {
+                "date": x[0],
+                "days": x[1]
+            }
+        })
+        // console.log(rolling_average_bugs)
+        rolling_average = rolling_average_issues.concat(rolling_average_bugs)
+        // console.log(rolling_average)
+
+        var output = [];
+
+        rolling_average.forEach(function (item) {
+            var existing = output.filter(function (v, i) {
+                return v.date == item.date;
+            });
+            if (existing.length) {
+                var existingIndex = output.indexOf(existing[0]);
+                output[existingIndex].days = output[existingIndex].days.concat(item.days);
+            } else {
+                // if (typeof item.days == 'string')
+                item.days = [item.days];
+                output.push(item);
+            }
+        });
+        // console.log(rolling_average)
+        // console.log(min)
+        // console.log(output)
+        output.map(roll => {
+            if (min > roll.date)
+                min = roll.date
+            // console.log(roll.days)
+            let arr = roll.days
+            let arr_len = roll.days.length
+            let arrSum = arr.reduce((a, b) => a + b, 0)
+            // console.log(arrSum)
+            roll.days = arrSum / arr_len
+            // console.log(roll.days)
+        })
+        // console.log(min)
+        // console.log(output)
+        let rolling_average_data = [], rolling_average_final = [], startData
+        output.map(today => {
+            rolling_average_data.push(today.days)
+        })
+        // console.log(rolling_average_data)
+        for (let i = 2; i < rolling_average_data.length; i++) {
+            let temp = (rolling_average_data[i] + rolling_average_data[i - 1] + rolling_average_data[i - 2]) / 3
+            rolling_average_final.push(temp)
+        }
+        // console.log(rolling_average_final)
+        startData = rolling_average_final[0]
+        rolling_average_final.unshift(startData)
+        rolling_average_final.unshift(startData)
+        // console.log(rolling_average_final)
+        total = issues.length + bugs.length
+        average = average / total
         options.chart = {
             height: 0,
             backgroundColor: ""
@@ -178,47 +273,56 @@ class Graph {
                 fontWeight: 'bold'
             }
         }
+        options.xAxis = {
+            type: 'datetime',
+            dateTimeLabelFormats: {
+                day: '%b %e'
+            },
+            lineWidth: 1,
+            tickLength: 0,
+            style: {
+                color: '#f5f5f5'
+            }
+        }
         options.yAxis = {
             min: 0,
             title: {
-                text: 'temp title'
+                text: 'Days',
+                style: {
+                    color: '#f5f5f5'
+                }
             },
             plotLines: [{
-                value: 15,
+                value: average,
                 color: 'green',
                 width: 2
             }]
         }
+        // console.log(issues)
+        // console.log(rolling_average_final)
+        // console.log(min)
         options.series = [
             {
                 type: 'scatter',
                 color: 'grey',
-                data: [
-                    [9, 21], [9, 16], [10, 9], [10, 13], [10, 15],
-                    [11, 8], [11, 10], [11, 19], [12, 9], [12, 13], [12, 17], [12, 19],
-                    [13, 3], [13, 7], [13, 14], [13, 15], [14, 4], [14, 6],
-                    [15, 10], [16, 14], [17, 8], [17, 17], [18, 12], [18, 17], [18, 20],
-                    [19, 10], [19, 18], [19, 26], [20, 12], [20, 15], [20, 18], [20, 22],
-                    [21, 20], [21, 26], [22, 6], [22, 12], [22, 23], [23, 11]
-                ]
+                data: issues,
+                pointInterval: 86400000,
             },
             {
                 type: 'scatter',
                 color: '#A9CCE3',
-                data: [
-                    [9, 13], [10, 17], [11, 16], [13, 5], [15, 13], [15, 17], [17, 13], [17, 22],
-                    [18, 8], [19, 20], [20, 24], [22, 8], [22, 20], [23, 15]
-                ]
+                data: bugs,
+                pointInterval: 86400000,
             },
             {
-                name: 'T1',
-                data: [[9, 13], [10, 13], [11, 13], [12, 13.5], [13, 10], [14, 12], [15, 15], [16, 15.75],
-                [17, 16.25], [18, 16.75], [19, 17], [20, 18], [21, 19], [22, 12], [23, 12]],
-                zIndex: 1,
+                type: 'line',
+                data: rolling_average_final,
+                pointStart: min,
+                pointInterval: 86400000,
                 marker: {
                     enabled: false
                 }
-            },
+            }
         ]
         return options;
     }
