@@ -1,4 +1,4 @@
-import JsonApis from "../Apis/JsonApis";
+import JsonApis from "../apis/JsonApis";
 
 export const showComponents = () => async dispatch => {
   const response = await JsonApis.get("/JsonData/SummaryBarData.json");
