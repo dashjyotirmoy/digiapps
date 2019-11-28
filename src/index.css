@@ -21,6 +21,13 @@ a:hover{
   color:unset;
   text-decoration: none;
 }
+/* on hover */
+.show-cursor:{
+
+}
+.show-cursor:hover{
+  cursor: pointer;
+}
 /* custom height/width */
 .h-10{
   height: 10%;
