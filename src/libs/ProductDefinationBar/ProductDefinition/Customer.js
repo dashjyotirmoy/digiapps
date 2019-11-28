@@ -5,37 +5,37 @@ import ColumnHigh from '../../Charts/ColumnHigh/ColumnHigh';
 
 const initialData = [{
   name: "rct",
-  type: "ControlChartHigh",
+  type: "ColumnHigh",
   data: {},
-  title: "Release Cycle Time",
+  title: "Feature Usage Percentage",
   component: {}
 },
 {
   name: "dlt",
-  type: "ControlChartHigh",
+  type: "ColumnHigh",
   data: {},
-  title: "Deployment Lead Time",
+  title: "User Adoption",
   component: {}
 },
 {
   name: "tp",
   type: "ColumnHigh",
   data: {},
-  title: "Throughput",
+  title: "Net Promoter Score",
   component: {}
 },
 {
   name: "dcp",
   type: "ColumnHigh",
   data: {},
-  title: "Deployment/Change Frequency",
+  title: "User Satisfaction Surveys",
   component: {},
 },
 {
   name: "dtra",
   type: "ColumnHigh",
   data: {},
-  title: "Degree of Testing and Release Automation",
+  title: "Release Cycle Time",
   component: {}
 }]
 class Customer extends Component {
@@ -86,7 +86,6 @@ class Customer extends Component {
   }
 
   componentDidMount() {
-    debugger
     this.createCharts(initialData)
   }
 

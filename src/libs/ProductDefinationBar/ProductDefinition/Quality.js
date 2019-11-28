@@ -2,54 +2,56 @@ import React, { Component } from 'react';
 import Grid from '../../Grid-Layout/Grid';
 import ControlChartHigh from '../../Charts/ControlChartHigh/ControlChartHigh';
 import ColumnHigh from '../../Charts/ColumnHigh/ColumnHigh';
+import MTTDChart from '../../Charts/MTTDChart/MTTDChart';
+
 
 const initialData = [{
   name: "rct",
-  type: "ControlChartHigh",
+  type: "MTTDChart",
   data: {},
-  title: "Release Cycle Time",
+  title: "Mean Time To Detect(MTTD)",
   component: {}
 },
 {
   name: "dlt",
-  type: "ControlChartHigh",
+  type: "MTTDChart",
   data: {},
-  title: "Deployment Lead Time",
+  title: "Mean Time To Repair(MTTR)",
   component: {}
 },
 {
   name: "tp",
   type: "ColumnHigh",
   data: {},
-  title: "Throughput",
+  title: "No. of Errors",
   component: {}
 },
 {
   name: "dcp",
-  type: "ColumnHigh",
+  type: "MTTDChart",
   data: {},
-  title: "Deployment/Change Frequency",
+  title: "Average Incident Resolution Time",
   component: {},
 },
 {
   name: "dtra",
   type: "ColumnHigh",
   data: {},
-  title: "Degree of Testing and Release Automation",
+  title: "Uptime %",
   component: {}
 },
 {
   name: "dtra",
   type: "ColumnHigh",
   data: {},
-  title: "Degree of Testing and Release Automation",
+  title: "Defect Escape Rate",
   component: {}
 },
 {
   name: "dtra",
   type: "ColumnHigh",
   data: {},
-  title: "Degree of Testing and Release Automation",
+  title: "Automated Test Pass %",
   component: {}
 }]
 
@@ -82,7 +84,6 @@ class Quality extends Component {
 
   }
   removeChartComponent = (chartIndex) => {
-    debugger
     const charts = [...this.state.charts];
     this.createCharts(charts, chartIndex)
     //charts.splice(chartIndex, 1);
@@ -122,6 +123,8 @@ class Quality extends Component {
         return <ControlChartHigh title={title} />
       case "ColumnHigh":
         return <ColumnHigh title={title} />
+      case "MTTDChart":
+        return <MTTDChart title={title} />
     }
   }
 
