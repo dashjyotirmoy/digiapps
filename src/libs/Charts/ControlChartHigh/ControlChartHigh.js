@@ -97,7 +97,6 @@ class ControlChartHigh extends Component {
     };
 
     componentWillReceiveProps(nextprops) {
-        debugger;
         if (this.props.title !== nextprops.title) {
             const updatedOptions = Object.assign({}, this.state.options);
             updatedOptions.title.text = nextprops.title;

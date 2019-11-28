@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFunnelDollar } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-// import Grid from '../Grid/Grid';
-import Velocity from './ProductDefinition/Velocity';
-import Quality from './ProductDefinition/Quality';
-import Customer from './ProductDefinition/Customer';
-
 
 const StyleMainTab = styled.div`
   .nav-tabs { {
@@ -49,35 +45,45 @@ const StyleSideTab = styled.div`
 `;
 
 class ProductDefBar extends Component {
+
   state = {
-    renderVal: "Velocity"
+    activeLink: ""
   }
   updateView = (type) => {
+    this.props.history.push(`/${type}`)
+  }
+  componentDidMount() {
+    const currentLink = this.getActiveLink();
     this.setState({
-      renderVal: type
+      activeLink: currentLink
     })
   }
+
+  getActiveLink = () => {
+    const { location } = this.props;
+    const activeLink = location.pathname.replace(/\//g, "");
+    return activeLink;
+  }
+
   render() {
-    let view;
-    if (this.state.renderVal === "Velocity") view = <Velocity />;
-    if (this.state.renderVal === "quality") view = <Quality />;
-    if (this.state.renderVal === "contact") view = <Velocity />;
-    if (this.state.renderVal === "customer") view = <Customer />;
+    console.log("ProductDefBar");
     return (
       <Container fluid>
         <Row className="d-flex w-100 p-0 m-0 text-white-50">
           <Col md={8} lg={9} xl={9} className="p-0">
             <StyleMainTab>
-              <Tabs onSelect={(e) => this.updateView(e)} defaultActiveKey="Velocity" className="border-0">
-                <Tab eventKey="Velocity" onSelect={() => this.updateView("Velocity")} title={<span className="font-aggegate-sub-text" > Velocity and Effeciency</span>}>
-                </Tab>
-                <Tab eventKey="quality" onSelect={() => this.updateView("quality")} title={<span className="font-aggegate-sub-text" > Quality</span>}>
-                </Tab>
-                <Tab eventKey="contact" onSelect={() => this.updateView("contact")} title={<span className="font-aggegate-sub-text" > Organizational Effectiveness</span>} >
-                </Tab>
-                <Tab eventKey="customer" onSelect={() => this.updateView("customer")} title={<span className="font-aggegate-sub-text" > Customer Value</span>} >
-                </Tab>
-              </Tabs>
+              {
+                this.state.activeLink !== "" ? <Tabs onSelect={(e) => this.updateView(e)} defaultActiveKey={this.state.activeLink} className="border-0">
+                  <Tab eventKey="velocity" title={<span className="font-aggegate-sub-text" > Velocity and Efficiency</span>}>
+                  </Tab>
+                  <Tab eventKey="quality" title={<span className="font-aggegate-sub-text" > Quality</span>}>
+                  </Tab>
+                  <Tab eventKey="contact" title={<span className="font-aggegate-sub-text" > Organizational Effectiveness</span>} >
+                  </Tab>
+                  <Tab eventKey="customer" title={<span className="font-aggegate-sub-text" > Customer Value</span>} >
+                  </Tab>
+                </Tabs> : null
+              }
             </StyleMainTab>
           </Col>
           <Col md={4} lg={3} xl={3} className="d-flex justify-content-xl-end justify-content-lg-end justify-content-md-start">
@@ -91,12 +97,9 @@ class ProductDefBar extends Component {
             </Row>
           </Col>
         </Row>
-        <Row>
-          {view}
-        </Row>
       </Container >
     )
   };
 }
 
-export default ProductDefBar;
+export default withRouter(ProductDefBar);

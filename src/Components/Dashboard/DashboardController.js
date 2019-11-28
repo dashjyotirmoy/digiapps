@@ -1,6 +1,8 @@
 // Dashboard Controller which parses through the Config json file and render components dynamically
 //Author : Sujith Surendran
 import React, { Suspense } from "react";
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import DefinitionLoader from "../../libs/ProductDefinationBar/DefinitionLoader.js";
 var dot = require("dot-object");
 const configData = require("../ConfigurationManager/Config.json");
 
@@ -17,7 +19,7 @@ function LazyComponent(items) {
 export default function Dashboard(props) {
   let items = dot.pick("widgets", configData);
   const Components = new LazyComponent(items);
-  return props.data.map((item, index) => {
+  const componentArray = props.data.map((item, index) => {
     const widgetData = dot.pick(
       "widgets[" + index + "]" + ".dimensions",
       configData
@@ -29,4 +31,14 @@ export default function Dashboard(props) {
       </Suspense>
     );
   });
+
+  return (
+    <BrowserRouter basename='execDashboard'>
+      {componentArray}
+      <Switch>
+        <Route path={'/:productSelected'} component={DefinitionLoader} />
+        <Redirect exact from={'/'} to={`/velocity`} />
+      </Switch>
+    </BrowserRouter>
+  );
 }

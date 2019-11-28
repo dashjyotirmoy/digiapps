@@ -65,7 +65,6 @@ class Velocity extends Component {
   }
 
   removeChartComponent = (chartIndex) => {
-    debugger
     const charts = [...this.state.charts];
     this.createCharts(charts, chartIndex)
     //charts.splice(chartIndex, 1);
