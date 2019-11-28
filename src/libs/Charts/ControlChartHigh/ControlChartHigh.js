@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import ChartHOC from '../ChartHOC/ChartHOC';
+import Highcharts from 'highcharts';
+import HighchartsMore from 'highcharts/highcharts-more';
 import Graph from '../GraphOptions/graphWrapper';
+HighchartsMore(Highcharts)
 var temp_options;
 
 class ControlChartHigh extends Component {

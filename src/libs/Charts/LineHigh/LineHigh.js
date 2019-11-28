@@ -24,6 +24,7 @@ class LineHigh extends Component {
     }
 
     render() {
+        console.log("hey")
         return (
             <React.Fragment>
                 {this.state.received ? <ChartHOC options={this.state.options} /> : null}

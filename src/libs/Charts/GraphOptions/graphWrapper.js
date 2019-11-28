@@ -15,7 +15,7 @@ class Options {
 
 class Graph {
     constructor(props) {
-        console.log(props)
+        // console.log(props)
         this.res = props
         this.options = this.generateOption(props.type)
     }
@@ -232,6 +232,29 @@ class Graph {
         // console.log(rolling_average)
         // console.log(min)
         // console.log(output)
+        let std_dev_array = JSON.parse(JSON.stringify(output))
+        // console.log(std_dev_array)
+        let area_range = []
+        std_dev_array.map(one_day => {
+            let area_range_day = [], sum = 0, mean, variance, std_dev
+            one_day.days.map(day_data => {
+                sum += day_data
+            })
+            mean = sum / one_day.days.length
+            sum = 0
+            one_day.days.map(day_data => {
+                day_data = (day_data - mean) * (day_data - mean)
+                sum += day_data
+            })
+            variance = sum / one_day.days.length
+            std_dev = Math.sqrt(variance)
+            area_range_day[0] = one_day.date
+            area_range_day[1] = mean - (std_dev / 1)
+            area_range_day[2] = mean + (std_dev / 1)
+            // console.log(area_range_day)
+            area_range.push(area_range_day)
+        })
+        // console.log(area_range)
         output.map(roll => {
             if (min > roll.date)
                 min = roll.date
@@ -319,6 +342,15 @@ class Graph {
                 data: rolling_average_final,
                 pointStart: min,
                 pointInterval: 86400000,
+                marker: {
+                    enabled: false
+                }
+            },
+            {
+                type: 'arearange',
+                data: area_range,
+                pointInterval: 86400000,
+                fillOpacity: 0.2,
                 marker: {
                     enabled: false
                 }
