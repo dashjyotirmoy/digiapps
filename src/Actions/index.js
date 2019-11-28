@@ -1,7 +1,9 @@
 import JsonApis from "../apis/JsonApis";
 
 export const showComponents = () => async dispatch => {
-  const response = await JsonApis.get("/JsonData/SummaryBarData.json");
+  const response = await JsonApis.get(
+    process.env.PUBLIC_URL + "/JsonData/SummaryBarData.json"
+  );
   let data = response.data;
   data["totalProduct"] = response.data.projects.length;
   dispatch({
@@ -14,7 +16,9 @@ export const showComponents = () => async dispatch => {
 };
 
 export const prodInfo = () => async dispatch => {
-  const response = await JsonApis.get("/JsonData/sprintmock.json");
+  const response = await JsonApis.get(
+    process.env.PUBLIC_URL + "/JsonData/sprintmock.json"
+  );
   dispatch({
     type: "LOAD_PRODUCTS",
     payload: {
