@@ -59,7 +59,7 @@ class ProductInfoBar extends Component {
     });
   };
 
-  updateSprint = sprintId => {};
+  updateSprint = sprintId => { };
 
   resetSelect = prodList => {
     const defaultList = prodList.map(ele => {
@@ -204,10 +204,10 @@ class ProductInfoBar extends Component {
                   <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
                     <Col md={12} xl={12} lg={12} className="h-100 pl-0 py-1">
                       {this.props.recieved ? (
-                        <LineHigh burndown={this.props.ProdInfo}></LineHigh>
+                        <LineHigh burndown={this.props.ProdInfo} type="line"></LineHigh>
                       ) : (
-                        "loading"
-                      )}
+                          "loading"
+                        )}
                     </Col>
                   </Row>
                 </Col>
@@ -229,8 +229,8 @@ class ProductInfoBar extends Component {
                               percentage={this.props.ProdInfo.features}
                             ></Donut>
                           ) : (
-                            "loading"
-                          )}
+                              "loading"
+                            )}
                         </Col>
                         <Col
                           md={7}
@@ -262,11 +262,11 @@ class ProductInfoBar extends Component {
                         <Col md={5} className="p-0">
                           {this.props.recieved ? (
                             <Donut
-                              percentage={this.props.ProdInfo.features}
+                              percentage={this.props.ProdInfo.backlogs}
                             ></Donut>
                           ) : (
-                            "loading"
-                          )}
+                              "loading"
+                            )}
                         </Col>
                         <Col
                           md={7}

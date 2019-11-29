@@ -5,5 +5,8 @@ export default
     "totalHrs": "Total Hours",
     "totalMembers": "Total Members",
     "averageReleaseCycle": "Av Release Cycle",
-    "averageDeploymentLeadTime": "Av Deployment Lead Time"
+    "averageDeploymentLeadTime": "Av Deployment Lead Time",
+    "averageMTTD": "Av MTTD",
+    "averageMTTR": "Av MTTR",
+    "averageCustRating": "Av Customer Rating"
   }
