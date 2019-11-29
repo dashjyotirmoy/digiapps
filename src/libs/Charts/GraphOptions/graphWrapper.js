@@ -7,6 +7,7 @@ class Options {
         enabled: false
     }
     title = {}
+    tootltip = {}
     plotOptions = {}
     xAxis = {}
     yAxis = {}
@@ -15,7 +16,6 @@ class Options {
 
 class Graph {
     constructor(props) {
-        // console.log(props)
         this.res = props
         this.options = this.generateOption(props.type)
     }
@@ -37,18 +37,19 @@ class Graph {
         }
     }
     generateLine(options) {
-        const start = this.res.burndown.startDate;
-        const end = this.res.burndown.endDate;
+        let start = new Date(this.res.burndown.startDate).toLocaleDateString();
+        let end = new Date(this.res.burndown.endDate).toLocaleDateString();
         let startDate = start;
         let dateParts = startDate.split("/");
-        startDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        start = dateParts[1] + "/" + dateParts[0] + "/" + dateParts[2];
+        startDate = new Date(dateParts[2], dateParts[0] - 1, +dateParts[1]);
         let endDate = end;
         dateParts = endDate.split("/");
-        endDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        end = dateParts[1] + "/" + dateParts[0] + "/" + dateParts[2];
+        endDate = new Date(dateParts[2], dateParts[0] - 1, +dateParts[1]);
         let Difference_In_Time = endDate.getTime() - startDate.getTime();
         let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-        let hours = []; hours.push(parseInt(this.res.burndown.burndown.totalHours));
-        hours = hours.concat(this.res.burndown.burndown.hoursSpent);
+        let hours = this.res.burndown.burndown.remainingHours
         options.chart = {
             type: "line",
             height: 0,
@@ -167,34 +168,28 @@ class Graph {
         return options;
     }
     generateControlChart(options) {
-        // console.log(this.res.data)
         let issues = [], bugs = [], rawDate, average = 0, total, rolling_average, rolling_average_issues, rolling_average_bugs, min
         this.res.data.map(series => {
             if (series.name == "issues") {
                 issues = series.values
-                // console.log(issues)
             }
             else {
                 bugs = series.values
-                // console.log(bugs)
             }
         })
         issues.map(issue => {
             rawDate = issue[0].split("T")
+            issue[1] = parseInt(issue[1])
             issue[0] = (new Date(rawDate[0])).getTime()
             min = issue[0]
             average += issue[1]
         })
         bugs.map(bug => {
             rawDate = bug[0].split("T")
+            bug[1] = parseInt(bug[1])
             bug[0] = (new Date(rawDate[0])).getTime()
             average += bug[1]
         })
-        // console.log(issues)
-        // console.log(bugs)
-        // for (let i = 0; i < issues.length; i++) {
-        //     rolling_average[issues[i][0]] = issues[i][1]
-        // }
 
         rolling_average_issues = issues.map(x => {
             return {
@@ -202,20 +197,15 @@ class Graph {
                 "days": x[1]
             }
         })
-
-        // console.log(rolling_average_issues)
         rolling_average_bugs = bugs.map(x => {
             return {
                 "date": x[0],
-                "days": x[1]
+                "days": parseInt(x[1])
             }
         })
-        // console.log(rolling_average_bugs)
         rolling_average = rolling_average_issues.concat(rolling_average_bugs)
-        // console.log(rolling_average)
 
         var output = [];
-
         rolling_average.forEach(function (item) {
             var existing = output.filter(function (v, i) {
                 return v.date == item.date;
@@ -224,16 +214,11 @@ class Graph {
                 var existingIndex = output.indexOf(existing[0]);
                 output[existingIndex].days = output[existingIndex].days.concat(item.days);
             } else {
-                // if (typeof item.days == 'string')
                 item.days = [item.days];
                 output.push(item);
             }
         });
-        // console.log(rolling_average)
-        // console.log(min)
-        // console.log(output)
         let std_dev_array = JSON.parse(JSON.stringify(output))
-        // console.log(std_dev_array)
         let area_range = []
         std_dev_array.map(one_day => {
             let area_range_day = [], sum = 0, mean, variance, std_dev
@@ -251,37 +236,27 @@ class Graph {
             area_range_day[0] = one_day.date
             area_range_day[1] = mean - (std_dev / 1)
             area_range_day[2] = mean + (std_dev / 1)
-            // console.log(area_range_day)
             area_range.push(area_range_day)
         })
-        // console.log(area_range)
         output.map(roll => {
             if (min > roll.date)
                 min = roll.date
-            // console.log(roll.days)
             let arr = roll.days
             let arr_len = roll.days.length
             let arrSum = arr.reduce((a, b) => a + b, 0)
-            // console.log(arrSum)
             roll.days = arrSum / arr_len
-            // console.log(roll.days)
         })
-        // console.log(min)
-        // console.log(output)
         let rolling_average_data = [], rolling_average_final = [], startData
         output.map(today => {
             rolling_average_data.push(today.days)
         })
-        // console.log(rolling_average_data)
         for (let i = 2; i < rolling_average_data.length; i++) {
             let temp = (rolling_average_data[i] + rolling_average_data[i - 1] + rolling_average_data[i - 2]) / 3
             rolling_average_final.push(temp)
         }
-        // console.log(rolling_average_final)
         startData = rolling_average_final[0]
         rolling_average_final.unshift(startData)
         rolling_average_final.unshift(startData)
-        // console.log(rolling_average_final)
         total = issues.length + bugs.length
         average = average / total
         options.chart = {
@@ -321,9 +296,9 @@ class Graph {
                 width: 2
             }]
         }
-        // console.log(issues)
-        // console.log(rolling_average_final)
-        // console.log(min)
+        options.tooltip = {
+            pointFormat: '{series.name}: {point.x}'
+        }
         options.series = [
             {
                 type: 'scatter',
