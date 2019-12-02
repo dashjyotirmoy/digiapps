@@ -1,14 +1,13 @@
-import {
-  faArrowLeft,
-  faCircle,
-  faArrowUp,
-  faArrowDown,
-  faTh
-} from "@fortawesome/free-solid-svg-icons";
-const dimReducer = (state = [], action) => {
+const initialState = {
+  executiveData: {}
+};
+const dimReducer = (state = initialState, action) => {
   switch (action.type) {
     case "LOAD_MAINMETRIC":
-      return action.payload;
+      return {
+        ...state,
+        executiveData: action.payload
+      };
     default:
       return state;
   }

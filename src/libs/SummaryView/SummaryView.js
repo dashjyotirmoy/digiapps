@@ -37,16 +37,16 @@ class SummaryView extends Component {
   }
 
   render() {
-    let sample = this.props.NameVal;
-    let dimData = this.props.data;
-    const Components = this.props.func(dimData);
+    console.log(this.props)
+    let dimData = this.props.widData;
+    const Components = this.props.lazyFunc(dimData);
     const ItemMetric = Components["ItemMetric"];
     const MainMetrics = Components["MainMetrics"];
     const nameArr = ["totalProduct", "totalMembers", "totalHrs"];
-    const NameVal = nameArr.map((item, key) => {
+    const mainMetrics = nameArr.map((item, key) => {
       return {
         name: Translate[item] || item,
-        value: this.props.NameVal ? this.props.NameVal[item] : 0
+        value: this.props.metricsData ? this.props.metricsData[item] : 0
       };
     });
     const ItemArr = [
@@ -57,10 +57,10 @@ class SummaryView extends Component {
       "averageCustRating"
     ];
 
-    const ItemNameVal = ItemArr.map((item, key) => {
+    const itemMetrics = ItemArr.map((item, key) => {
       return {
         name: Translate[item] || item,
-        value: this.props.NameVal ? this.props.NameVal[item] : 0
+        value: this.props.metricsData ? this.props.metricsData[item] : 0
       };
     });
     return (
@@ -85,10 +85,16 @@ class SummaryView extends Component {
                           />
                           <div className="w-100 px-1">
                             <p className="font-size-smaller m-0 text-center text-black m-0">
-                              {this.props.execData.username}
+                              {this.props.metricsData
+                                ? this.props.metricsData.name
+                                : ""}
                             </p>
                             <p className="font-aggegate-sub-text m-0 text-center text-white-50 m-0">
-                              <small>{this.props.execData.designation}</small>
+                              <small>
+                                {this.props.metricsData
+                                  ? this.props.metricsData.designation
+                                  : ""}
+                              </small>
                             </p>
                           </div>
                           <FontAwesomeIcon icon={faTh} />
@@ -96,10 +102,10 @@ class SummaryView extends Component {
                       </Row>
                     </div>
                     <div className="h-100 px-xl-2 px-lg-2 grid-graph-comp rounded w-auto d-inline-block">
-                      <MainMetrics NameVal={NameVal} />
+                      <MainMetrics mainMetrics={mainMetrics} />
                     </div>
                     <div className="h-100 px-xl-2 px-lg-2 d-inline-block d-flex flex-grow-1 d-inline-block">
-                      <ItemMetric ItemNameVal={ItemNameVal} />
+                      <ItemMetric itemMetrics={itemMetrics} />
                     </div>
                   </Row>
                 </main>
@@ -114,11 +120,7 @@ class SummaryView extends Component {
 
 const mapStateToProps = state => {
   return {
-    NameVal: state.components.data,
-    execData: {
-      username: state.components.userName,
-      designation: state.components.designation
-    }
+    metricsData: state.dimensions.executiveData.data
   };
 };
 const mapDispatchToProps = dispatch => {

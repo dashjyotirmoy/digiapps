@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import Dimensions from 'react-dimensions';
+import React, { Component } from "react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import Dimensions from "react-dimensions";
 
 class ChartHOC extends Component {
-    render() {
-        let containerHeight = this.props.containerHeight;
-        this.props.options.chart.height = containerHeight;
-        return (
-            <HighchartsReact highcharts={Highcharts} options={this.props.options} />
-        )
-    }
+  render() {
+    
+    let optionsData = { ...this.props.options };
+    let containerHeight = this.props.containerHeight;
+    optionsData.chart = {
+      height: containerHeight,
+      backgroundColor: ""
+    };
+    return <HighchartsReact highcharts={Highcharts} options={optionsData} />;
+  }
 }
 
 export default Dimensions()(ChartHOC);

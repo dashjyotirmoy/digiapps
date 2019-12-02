@@ -1,9 +1,7 @@
 import React from "react";
 
 const MainMetrics = props => {
-  const NameValArr = Object.values(props.NameVal);
-
-  const items = props.NameVal.map((item, key) => {
+  const items = props.mainMetrics.map((item, key) => {
     return (
       <div key={key} className="p-2 d-inline-block">
         <p className="font-aggegate-main-text m-0 text-left text-white m-0">

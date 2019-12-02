@@ -1,17 +1,21 @@
 import React from "react";
 import Dashboard from "./Components/Dashboard/DashboardController";
+import Header from "./libs/Header/Header";
 const shortid = require("shortid");
 class App extends React.Component {
   render() {
     const componentImports = [
-      "Header",
       "SummaryView",
       "ProductInfoBar",
       "ProductDefBar",
+      "Customer",
+      "Quality",
+      "Velocity"
     ];
     return (
       <React.Fragment>
-        <Dashboard data={componentImports} key={shortid.generate()} />
+        <Header />
+        <Dashboard compList={componentImports} key={shortid.generate()} />
       </React.Fragment>
     );
   }
