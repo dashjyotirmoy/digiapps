@@ -1,43 +1,43 @@
 // Dashboard Controller which parses through the Config json file and render components dynamically
 //Author : Sujith Surendran
 import React, { Suspense } from "react";
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import DefinitionLoader from "../../libs/ProductDefinationBar/DefinitionLoader.js";
 var dot = require("dot-object");
 const configData = require("../ConfigurationManager/Config.json");
 
 function LazyComponent(items) {
-  let components = {};
+  let lazyComponents = {};
   items.map((widget, index) => {
-    components[widget.name] = React.lazy(() => {
+    lazyComponents[widget.name] = React.lazy(() => {
       return import("../../libs/" + widget.path);
     });
   });
-  return components;
+  return lazyComponents;
 }
 
 export default function Dashboard(props) {
   let items = dot.pick("widgets", configData);
-  const Components = new LazyComponent(items);
-  const componentArray = props.data.map((item, index) => {
+  const widgetComponents = new LazyComponent(items);
+  const componentArray = props.compList.map((item, index) => {
     const widgetData = dot.pick(
       "widgets[" + index + "]" + ".dimensions",
       configData
     );
-    const Component = Components[item];
+    const Component = widgetComponents[item];
     return (
       <Suspense fallback={<div>Loading...</div>}>
-        <Component key={index} data={widgetData} func={LazyComponent} />
+        <Component key={index} widData={widgetData} lazyFunc={LazyComponent} />
       </Suspense>
     );
   });
 
   return (
-    <BrowserRouter basename='execDashboard'>
+    <BrowserRouter basename="execDashboard">
       {componentArray}
       <Switch>
-        <Route path={'/:productSelected'} component={DefinitionLoader} />
-        <Redirect exact from={'/'} to={`/velocity`} />
+        <Route path={"/:productSelected"} component={DefinitionLoader} />
+        <Redirect exact from={"/"} to={`/velocity`} />
       </Switch>
     </BrowserRouter>
   );

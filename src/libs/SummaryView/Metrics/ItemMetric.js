@@ -15,7 +15,7 @@ const colorClass = {
 };
 
 const ItemMetric = props => {
-  const items = props.ItemNameVal.map((item, key) => {
+  const items = props.itemMetrics.map((item, key) => {
     return (
       <div
         key={key}

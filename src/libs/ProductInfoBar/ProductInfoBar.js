@@ -7,6 +7,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { prodInfo } from "../../Actions/index";
+import { showComponents } from "../../Actions";
 class ProductInfoBar extends Component {
   state = {
     productData: [],
@@ -22,17 +23,24 @@ class ProductInfoBar extends Component {
     this.props.prodInfo();
   }
 
-  getProjectData = projectId => {
-    return axios.get("/JsonData/SummaryBarData.json");
+  getProjectData = async projectId => {
+    return axios.get(
+      "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/executive/4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f/executiveInsights"
+    );
+
+    // return axios.get("/JsonData/SummaryBarData.json");
   };
 
   setProject = res => {
     const projects = res.data.projects;
+    const projLength = projects.length;
     const { list, selectedIndex } = this.markSelected(projects, projects[0].id);
+    console.log("list", list);
     this.setState({
       productData: list,
-      selectedProduct: list[selectedIndex].name
+      selectedProduct: list[selectedIndex].projectName
     });
+    console.log(this.state.productData);
     this.getSprintData(projects[0].id).then(this.setSprint);
   };
 
@@ -41,12 +49,16 @@ class ProductInfoBar extends Component {
     const { list, selectedIndex } = this.markSelected(projects, projectId);
     this.setState({
       productData: list,
-      selectedProduct: list[selectedIndex].name
+      selectedProduct: list[selectedIndex].projectName
     });
     this.getSprintData(projectId).then(this.setSprint);
   };
 
   getSprintData = sprintId => {
+    console.log("soritnid", sprintId);
+    // return axios.get(
+    //   "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/sprint/b7d0d35d-abef-40b6-aef5-3e7f038d7824/sprintInsights?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f&projectId=fa2a71e3-1469-4240-9f8b-5694a98145cf"
+    // );
     return axios.get("/JsonData/sprint" + sprintId + ".json");
   };
 
@@ -55,11 +67,11 @@ class ProductInfoBar extends Component {
     const sprintData = this.markSelected(sprints, sprints[0].id);
     this.setState({
       sprintData: sprintData.list,
-      selectedSprint: sprintData.list[sprintData.selectedIndex].name
+      selectedSprint: sprintData.list[sprintData.selectedIndex].projectName
     });
   };
 
-  updateSprint = sprintId => { };
+  updateSprint = sprintId => {};
 
   resetSelect = prodList => {
     const defaultList = prodList.map(ele => {
@@ -97,14 +109,13 @@ class ProductInfoBar extends Component {
     );
     this.setState({
       sprintData: list,
-      selectedSprint: list[selectedIndex].name
+      selectedSprint: list[selectedIndex].projectName
     });
   };
 
   render() {
-    console.log(this.props);
-    let dimData = this.props.data;
-    const Components = this.props.func(dimData);
+    let dimData = this.props.widData;
+    const Components = this.props.lazyFunc(dimData);
     const LineHigh = Components["LineHigh"];
     const Donut = Components["Donut"];
     return (
@@ -204,10 +215,13 @@ class ProductInfoBar extends Component {
                   <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
                     <Col md={12} xl={12} lg={12} className="h-100 pl-0 py-1">
                       {this.props.recieved ? (
-                        <LineHigh burndown={this.props.ProdInfo} type="line"></LineHigh>
+                        <LineHigh
+                          burndown={this.props.projects}
+                          type="line"
+                        ></LineHigh>
                       ) : (
-                          "loading"
-                        )}
+                        "loading"
+                      )}
                     </Col>
                   </Row>
                 </Col>
@@ -226,11 +240,11 @@ class ProductInfoBar extends Component {
                         <Col md={5} className="p-0">
                           {this.props.recieved ? (
                             <Donut
-                              percentage={this.props.ProdInfo.features}
+                              percentage={this.props.projects.features}
                             ></Donut>
                           ) : (
-                              "loading"
-                            )}
+                            "loading"
+                          )}
                         </Col>
                         <Col
                           md={7}
@@ -243,7 +257,7 @@ class ProductInfoBar extends Component {
                             <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
                               <small>
                                 {this.props.recieved
-                                  ? `${this.props.ProdInfo.features.completed}/ ${this.props.ProdInfo.features.total}`
+                                  ? `${this.props.projects.features.completed}/ ${this.props.projects.features.total}`
                                   : "loading"}
                               </small>
                             </p>
@@ -262,11 +276,11 @@ class ProductInfoBar extends Component {
                         <Col md={5} className="p-0">
                           {this.props.recieved ? (
                             <Donut
-                              percentage={this.props.ProdInfo.backlogs}
+                              percentage={this.props.projects.backlogs}
                             ></Donut>
                           ) : (
-                              "loading"
-                            )}
+                            "loading"
+                          )}
                         </Col>
                         <Col
                           md={7}
@@ -279,7 +293,7 @@ class ProductInfoBar extends Component {
                             <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
                               <small>
                                 {this.props.recieved
-                                  ? `${this.props.ProdInfo.backlogs.completed}/ ${this.props.ProdInfo.backlogs.total}`
+                                  ? `${this.props.projects.backlogs.completed}/ ${this.props.projects.backlogs.total}`
                                   : "loading"}
                               </small>
                             </p>
@@ -302,11 +316,11 @@ class ProductInfoBar extends Component {
 }
 const mapStateToProps = state => {
   return {
-    ProdInfo: state.products.data,
-    recieved: state.products.recieved
+    projects: state.productdetails.products.data,
+    recieved: state.productdetails.products.recieved
   };
 };
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ prodInfo }, dispatch);
+  return bindActionCreators({ prodInfo, showComponents }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProductInfoBar);
