@@ -5,6 +5,7 @@ import Customer from "./ProductDefinition/Customer";
 
 const DefinitionLoader = ({ match }) => {
   const currentProduct = match.params.productSelected;
+  if (currentProduct === "digitalops") return <Velocity />;
   if (currentProduct === "velocity") return <Velocity />;
   if (currentProduct === "quality") return <Quality />;
   // if (currentProduct === "contact") return <Velocity />;
