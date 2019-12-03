@@ -54,7 +54,7 @@ class ProductInfoBar extends Component {
 
   getSprintData = sprintId => {
     return axios.get(
-      "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/a7b03e5d-1589-49eb-9928-dc8e1eaf13e3/projectInsights?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f"
+      `https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/${sprintId}/projectInsights?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f`
     );
   };
 
