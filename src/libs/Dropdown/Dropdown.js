@@ -13,7 +13,6 @@ class CustDropdown extends Component {
         </Dropdown.Item>
       );
     });
-    console.log(dropdownItems);
     return (
       <Dropdown
         onSelect={(evt, evtKey) => this.props.onSelectDelegate(evt, evtKey)}

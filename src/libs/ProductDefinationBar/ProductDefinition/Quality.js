@@ -124,8 +124,8 @@ class Quality extends Component {
         return <ControlChartHigh title={title} />;
       case "ColumnHigh":
         return <ColumnHigh title={title} />;
-      // case "MTTDChart":
-      //   return <MTTDChart title={title} />;
+      case "MTTDChart":
+        return <MTTDChart title={title} />;
     }
   };
 

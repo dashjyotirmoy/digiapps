@@ -35,12 +35,10 @@ class ProductInfoBar extends Component {
     const projects = res.data.projects;
     const projLength = projects.length;
     const { list, selectedIndex } = this.markSelected(projects, projects[0].id);
-    console.log("list", list);
     this.setState({
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    console.log(this.state.productData);
     this.getSprintData(projects[0].id).then(this.setSprint);
   };
 
@@ -55,19 +53,24 @@ class ProductInfoBar extends Component {
   };
 
   getSprintData = sprintId => {
-    console.log("soritnid", sprintId);
-    // return axios.get(
-    //   "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/a7b03e5d-1589-49eb-9928-dc8e1eaf13e3/projectInsights?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f"
-    // );
-    return axios.get("/JsonData/sprint" + sprintId + ".json");
+    return axios.get(
+      "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/a7b03e5d-1589-49eb-9928-dc8e1eaf13e3/projectInsights?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f"
+    );
   };
 
   setSprint = res => {
-    let sprints = res.data.sprints;
+    let sprints = res.data.sprintDetails;
     const sprintData = this.markSelected(sprints, sprints[0].id);
+    const sprintDetails = sprintData.list.map(ele => {
+      return {
+        id: ele.id,
+        projectName: ele.name
+      };
+    });
+
     this.setState({
-      sprintData: sprintData.list,
-      selectedSprint: sprintData.list[sprintData.selectedIndex].projectName
+      sprintData: sprintDetails,
+      selectedSprint: sprintDetails[sprintData.selectedIndex].projectName
     });
   };
 
