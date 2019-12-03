@@ -57,9 +57,9 @@ class ProductInfoBar extends Component {
   getSprintData = sprintId => {
     console.log("soritnid", sprintId);
     // return axios.get(
-    //   "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/sprint/b7d0d35d-abef-40b6-aef5-3e7f038d7824/sprintInsights?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f&projectId=fa2a71e3-1469-4240-9f8b-5694a98145cf"
+    //   "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/a7b03e5d-1589-49eb-9928-dc8e1eaf13e3/projectInsights?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f"
     // );
-    return axios.get("JsonData/sprint" + sprintId + ".json");
+    return axios.get("/JsonData/sprint" + sprintId + ".json");
   };
 
   setSprint = res => {
