@@ -4,14 +4,7 @@ import Header from "./libs/Header/Header";
 const shortid = require("shortid");
 class App extends React.Component {
   render() {
-    const componentImports = [
-      "SummaryView",
-      "ProductInfoBar",
-      "ProductDefBar",
-      "Customer",
-      "Quality",
-      "Velocity"
-    ];
+    const componentImports = ["SummaryView", "ProductInfoBar", "ProductDefBar"];
     return (
       <React.Fragment>
         <Header />

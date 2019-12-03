@@ -151,7 +151,6 @@ class Velocity extends Component {
         "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/widget/velocityAndEfficiencyInsights/?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f&projectId=fa2a71e3-1469-4240-9f8b-5694a98145cf"
       )
       .then(res => {
-        console.log("response,", res);
         this.createCharts(this.createChartObject(res.data));
         this.setState({
           response: res.data,
