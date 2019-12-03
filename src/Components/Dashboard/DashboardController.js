@@ -33,7 +33,7 @@ export default function Dashboard(props) {
   });
 
   return (
-    <BrowserRouter basename="execDashboard">
+    <BrowserRouter basename="digitalops/execDashboard">
       {componentArray}
       <Switch>
         <Route path={"/:productSelected"} component={DefinitionLoader} />
