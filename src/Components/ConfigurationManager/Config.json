@@ -1,7 +1,7 @@
 {
   "widgets": [
     {
-      "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dfcee4",
+      "Id": "1",
       "name": "SummaryView",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -93,7 +93,7 @@
     },
 
     {
-      "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
+      "Id": "2",
       "name": "ProductInfoBar",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -178,7 +178,7 @@
       ]
     },
     {
-      "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
+      "Id": "3",
       "name": "ProductDefBar",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -261,7 +261,7 @@
       ]
     },
     {
-      "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
+      "Id": "4",
       "name": "Customer",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -344,7 +344,7 @@
       ]
     },
     {
-      "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
+      "Id": "5",
       "name": "Quality",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -427,7 +427,7 @@
       ]
     },
     {
-      "Id": "b007ef1a-d91f-11e9-9d36-2a2ae2dbcce4",
+      "Id": "6",
       "name": "Velocity",
       "title": "EY DevOps",
       "description": "EY DevOps",

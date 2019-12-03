@@ -37,7 +37,6 @@ class SummaryView extends Component {
   }
 
   render() {
-    console.log(this.props)
     let dimData = this.props.widData;
     const Components = this.props.lazyFunc(dimData);
     const ItemMetric = Components["ItemMetric"];

@@ -15,7 +15,6 @@ class LineHigh extends Component {
   }
 
   componentDidMount() {
-    console.log("props", this.props);
     temp_options = new Graph(this.props, this.props.type);
     this.setState({
       options: temp_options.options,
@@ -24,7 +23,6 @@ class LineHigh extends Component {
   }
 
   render() {
-    console.log(this.state.options);
     return (
       <React.Fragment>
         {this.state.received ? <ChartHOC options={this.state.options} /> : null}
