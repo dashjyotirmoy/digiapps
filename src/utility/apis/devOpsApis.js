@@ -1,19 +1,19 @@
 import axios from "axios";
-
+const fallback = "http://IN2366753W1:8080";
+const mainBase = "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service"
 const devovopsApi = axios.create({
-  baseURL:
-    "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service"
+  baseURL: fallback
 });
 
 
 const getExecInsightsData = (execId) => {
   return devovopsApi.get(
-    `executive/${execId}/executiveInsights`
+    `/executive/${execId}/executiveInsights`
   )
 }
 
 const getVelocityData = (execId, projectId) => {
-  return devovopsApi.get(`/widget/velocityEfficiencyInsights/?executiveId=${execId}&projectId=${projectId}`);
+  return devovopsApi.get(`/widget/velocityAndEfficiencyInsights/?executiveId=${execId}&projectId=${projectId}`);
 }
 
 const getProjectInsightsData = (projectId, execId) => {

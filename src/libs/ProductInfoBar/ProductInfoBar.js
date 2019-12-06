@@ -24,13 +24,13 @@ class ProductInfoBar extends Component {
     this.props.prodInfo();
   }
 
-  getProjectData = async projectId => {
-    return axios.get(
-      "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/executive/4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f/executiveInsights"
-    );
+  // getProjectData = async projectId => {
+  //   return axios.get(
+  //     "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/executive/4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f/executiveInsights"
+  //   );
 
-    // return axios.get("/JsonData/SummaryBarData.json");
-  };
+  // return axios.get("/JsonData/SummaryBarData.json");
+  // };
 
   setProject = res => {
     const projects = res.data.projects;
@@ -40,7 +40,7 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    api.getProjectInsightsData(projects[0].id).then(this.setSprint);
+    api.getProjectInsightsData(projects[0].id, this.props.execData.id).then(this.setSprint);
   };
 
   updateProject = projectId => {
@@ -50,14 +50,14 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    api.getProjectInsightsData(projectId).then(this.setSprint);
+    api.getProjectInsightsData(projectId, this.props.execData.id).then(this.setSprint);
   };
 
-  getSprintData = projectId => {
-    return axios.get(
-      `https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/${projectId}/projectInsights?executiveId=`
-    );
-  };
+  // getSprintData = projectId => {
+  //   return axios.get(
+  //     `https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/${projectId}/projectInsights?executiveId=`
+  //   );
+  // };
 
   setSprint = res => {
     let sprints = res.data.sprintDetails;
@@ -321,7 +321,8 @@ class ProductInfoBar extends Component {
 const mapStateToProps = state => {
   return {
     projects: state.productdetails.products.data,
-    recieved: state.productdetails.products.recieved
+    recieved: state.productdetails.products.recieved,
+    execData: state.dimensions.executiveData.data
   };
 };
 const mapDispatchToProps = dispatch => {

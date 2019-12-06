@@ -148,9 +148,9 @@ class Velocity extends Component {
   componentDidMount() {
     this.props.chartData("4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f", "fa2a71e3-1469-4240-9f8b-5694a98145cf")
       .then(res => {
-        this.createCharts(this.createChartObject(res.data));
+        this.createCharts(this.createChartObject(this.props.velocityCharts));
         this.setState({
-          response: res.data,
+          response: this.props.velocityCharts,
           received: true
         });
       });

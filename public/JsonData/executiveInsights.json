@@ -1,0 +1,21 @@
+{
+  "id": "4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f",
+  "name": "Jayasimha Bangalore Jagadeesha",
+  "designation": "stakeholder",
+  "totalHrs": "945.5",
+  "totalMembers": "23",
+  "averageReleaseCycle": "2 d",
+  "averageDeploymentLeadTime": "1 d",
+  "projects": [
+    {
+      "id": "fa2a71e3-1469-4240-9f8b-5694a98145cf",
+      "projectName": "Digital Insights Dashboard",
+      "sprintDetails": null
+    },
+    {
+      "id": "a7b03e5d-1589-49eb-9928-dc8e1eaf13e3",
+      "projectName": "Dashboard Demo Project",
+      "sprintDetails": null
+    }
+  ]
+}

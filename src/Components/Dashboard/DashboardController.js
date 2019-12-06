@@ -3,7 +3,8 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import DefinitionLoader from "../../libs/ProductDefinationBar/DefinitionLoader.js";
-import ModalLoader from '../UI/modalLoader';
+import ModalLoader from '../UI/ModalBackDrop.js/ModalBackDrop';
+
 var dot = require("dot-object");
 const configData = require("../ConfigurationManager/Config.json");
 
@@ -34,13 +35,13 @@ export default function Dashboard(props) {
   });
 
   return (
-    <ModalLoader />
-    // <BrowserRouter basename="/digitalops/execDashboard">
-    //   {componentArray}
-    //   <Switch>
-    //     <Route path={"/:productSelected"} component={DefinitionLoader} />
-    //     <Redirect exact from={"/"} to={`/velocity`} />
-    //   </Switch>
-    // </BrowserRouter>
+    // <ModalLoader show={true} />
+    <BrowserRouter basename="/digitalops/execDashboard">
+      {componentArray}
+      <Switch>
+        <Route path={"/:productSelected"} component={DefinitionLoader} />
+        <Redirect exact from={"/"} to={`/velocity`} />
+      </Switch>
+    </BrowserRouter>
   );
 }

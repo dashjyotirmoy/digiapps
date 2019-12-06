@@ -1,0 +1,39 @@
+{
+    "id": "b7d0d35d-abef-40b6-aef5-3e7f038d7824",
+    "name": "MVP1-Sprint1",
+    "startDate": "2019-11-11T00:00:00Z",
+    "endDate": "2019-11-29T00:00:00Z",
+    "state": "PAST",
+    "features": {
+        "total": "5",
+        "completed": "0"
+    },
+    "backlogs": {
+        "total": "27",
+        "completed": "0"
+    },
+    "burndown": {
+        "totalHours": "779",
+        "remainingHours": [
+            779,
+            726,
+            702,
+            671,
+            644,
+            644,
+            644,
+            607,
+            578,
+            565,
+            510,
+            508,
+            508,
+            505,
+            405,
+            346,
+            197,
+            173,
+            113
+        ]
+    }
+}
