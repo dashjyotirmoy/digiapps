@@ -7,7 +7,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 class Grid extends Component {
   render() {
     const gridItem = this.props.layouts["lg"].map((ele, index) => {
-      return (<div className="border border-dark grid-graph-comp" key={ele.i}>
+      return (<div className="border border-dark grid-graph-comp border-radius-10" key={ele.i}>
         <div className="position-absolute px-2 text-right text-white w-100" style={{ zIndex: "100" }}>
           <p className="show-cursor d-inline" onClick={() => this.props.removeDelegate(index)}>x</p>
         </div>

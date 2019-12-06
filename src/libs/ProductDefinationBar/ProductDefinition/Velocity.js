@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
-import axios from "axios";
-import { chartData } from "../../../Actions/index";
+import { chartData } from "../../../store/Actions/index";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import api from "../../../utility/apis/devOpsApis";
 var rct = {},
   dlt = {};
 
@@ -146,10 +146,7 @@ class Velocity extends Component {
     return processedData;
   };
   componentDidMount() {
-    axios
-      .get(
-        "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/widget/velocityAndEfficiencyInsights/?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f&projectId=fa2a71e3-1469-4240-9f8b-5694a98145cf"
-      )
+    this.props.chartData("4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f", "fa2a71e3-1469-4240-9f8b-5694a98145cf")
       .then(res => {
         this.createCharts(this.createChartObject(res.data));
         this.setState({

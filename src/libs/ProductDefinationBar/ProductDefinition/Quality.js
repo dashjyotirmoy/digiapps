@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Grid from "../../Grid-Layout/Grid";
-import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
-import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
-import MTTDChart from "../../Charts/MTTDChart/MTTDChart";
+import React, { Component } from 'react';
+import Grid from '../../Grid-Layout/Grid';
+import ControlChartHigh from '../../Charts/ControlChartHigh/ControlChartHigh';
+import ColumnHigh from '../../Charts/ColumnHigh/ColumnHigh';
+import MTTDChart from '../../Charts/MTTDChart/MTTDChart';
 
 const initialData = [
   {

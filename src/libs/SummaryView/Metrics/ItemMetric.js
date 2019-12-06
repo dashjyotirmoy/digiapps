@@ -19,9 +19,9 @@ const ItemMetric = props => {
     return (
       <div
         key={key}
-        className="border border-dark d-inline-block rounded mx-1 w-auto py-2 px-lg-2 px-md-1 px-xl-4 max-w-18"
+        className="border border-dark d-flex d-inline-block flex-column h-100 justify-content-center max-w-18 mx-1 px-lg-2 px-md-1 px-xl-4 py-2 rounded w-auto"
       >
-        <p className="font-aggegate-main-text m-0 text-left text-black m-0">
+        <p className="font-aggregate-main-text m-0 text-left text-black m-0">
           <FontAwesomeIcon
             className={("font-size-small", "vertical-initial")}
             style={{ color: "red" }}

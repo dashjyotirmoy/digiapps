@@ -80,7 +80,6 @@ class ProductDefBar extends Component {
                     eventKey="velocity"
                     title={
                       <span className="font-aggegate-sub-text">
-                        {" "}
                         Velocity and Efficiency
                       </span>
                     }

@@ -6,8 +6,9 @@ import Dropdown from "../Dropdown/Dropdown";
 import axios from "axios";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { prodInfo } from "../../Actions/index";
-import { showComponents } from "../../Actions";
+import { prodInfo, showComponents } from "../../store/Actions/";
+import api from "../../utility/apis/devOpsApis";
+
 class ProductInfoBar extends Component {
   state = {
     productData: [],
@@ -19,7 +20,7 @@ class ProductInfoBar extends Component {
   };
 
   componentDidMount() {
-    this.getProjectData().then(this.setProject);
+    api.getExecInsightsData("4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f").then(this.setProject);
     this.props.prodInfo();
   }
 
@@ -39,7 +40,7 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    this.getSprintData(projects[0].id).then(this.setSprint);
+    api.getProjectInsightsData(projects[0].id).then(this.setSprint);
   };
 
   updateProject = projectId => {
@@ -49,12 +50,12 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    this.getSprintData(projectId).then(this.setSprint);
+    api.getProjectInsightsData(projectId).then(this.setSprint);
   };
 
-  getSprintData = sprintId => {
+  getSprintData = projectId => {
     return axios.get(
-      `https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/${sprintId}/projectInsights?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f`
+      `https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/${projectId}/projectInsights?executiveId=`
     );
   };
 
@@ -74,7 +75,7 @@ class ProductInfoBar extends Component {
     });
   };
 
-  updateSprint = sprintId => {};
+  updateSprint = sprintId => { };
 
   resetSelect = prodList => {
     const defaultList = prodList.map(ele => {
@@ -223,8 +224,8 @@ class ProductInfoBar extends Component {
                           type="line"
                         ></LineHigh>
                       ) : (
-                        "loading"
-                      )}
+                          "loading"
+                        )}
                     </Col>
                   </Row>
                 </Col>
@@ -246,8 +247,8 @@ class ProductInfoBar extends Component {
                               percentage={this.props.projects.features}
                             ></Donut>
                           ) : (
-                            "loading"
-                          )}
+                              "loading"
+                            )}
                         </Col>
                         <Col
                           md={7}
@@ -282,8 +283,8 @@ class ProductInfoBar extends Component {
                               percentage={this.props.projects.backlogs}
                             ></Donut>
                           ) : (
-                            "loading"
-                          )}
+                              "loading"
+                            )}
                         </Col>
                         <Col
                           md={7}

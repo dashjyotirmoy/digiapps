@@ -1,4 +1,3 @@
-@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 /* reset margin and padding */
 * {
   margin: 0;
@@ -33,6 +32,10 @@ a:hover{
   height: 10%;
   min-height: 70px;
 }
+.h-12{
+  height: 12%;
+  min-height: 70px;
+}
 .h-15{
   height: 15%;
 }
@@ -47,9 +50,9 @@ a:hover{
   min-width: fit-content;
 }
 .max-w-18{
-  flex: 18% !important;
+  flex: 10% !important;
   min-width: fit-content !important;
-  max-width: 18% !important;
+  max-width: 10% !important;
 }
 .av-data-bar-header{
   width:10% !important;
@@ -69,6 +72,15 @@ a:hover{
 .grid-graph-comp{
   background-color: #232d3b;
 }
+.border-radius-10{
+  border-radius: 10px;
+}
+/* bg colors */
+
+.summary-view{
+  background-color: #141A23;
+}
+
 /* colors */
 .text-red{
   color: red;
@@ -83,8 +95,8 @@ a:hover{
   color:rgb(240, 180, 69);
 }
 /* custom font sizes */
-.font-aggegate-main-text{
-  font-size: large;
+.font-aggregate-main-text{
+  font-size: x-large;
 }
 .font-aggegate-sub-text{
   font-size: smaller;
@@ -98,23 +110,32 @@ a:hover{
 .font-size-xs{
   font-size: x-small;
 }
+.font-title{
+  font-size: larger;
+}
 @media (min-width: 576px) { 
   .font-aggegate-sub-text{
-    font-size: x-small;
+    font-size: small;
   }
  }
 
 /* // Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   .font-aggegate-sub-text{
-    font-size: x-small;
+    font-size: small;
+  }
+  .font-aggregate-main-text{
+    font-size: x-larger;
   }
   }
 
 /* // Large devices (desktops, 992px and up) */
-@media (min-width: 992px) { 
+@media (min-width: 992px) {
+  .font-aggregate-main-text{
+    font-size: x-large;
+  } 
   .font-aggegate-sub-text{
-    font-size: small;
+    font-size: medium;
   }
  }
 
@@ -123,8 +144,11 @@ a:hover{
   /* .col-xl-1{
     min-width: 125.488px;
   } */
+  .font-aggregate-main-text{
+    font-size: x-large;
+  }
   .font-aggegate-sub-text{
-    font-size: smaller;
+    font-size: medium;
   }
  }
 
@@ -143,8 +167,37 @@ a:hover{
   justify-content: space-around;
 }
 
+/* css loader */
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #1b232e;
+  border-color: #1b232e transparent #1b232e transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* bootstrap style overrides */
 
 .navbar-light .navbar-toggler-icon{
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
+.modal-content{
+  background-color: transparent !important;
 }
