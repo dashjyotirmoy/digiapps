@@ -1,12 +1,24 @@
 const initialState = {
-  chartsData: {}
+  chartType: "",
+  currentChartData: {
+    chartDetails: {},
+    chartDataReceived: false
+  }
 };
 const chartReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "LOAD_CHARTS":
+    case 'SET_CHART_TYPE':
       return {
         ...state,
-        chartsData: action.payload
+        chartType: action.payload.chartType
+      }
+    case "SET_CHARTS_DETAILS":
+      return {
+        ...state,
+        currentChartData: {
+          chartDetails: action.payload.chartDetails,
+          chartDataReceived: action.payload.chartDataReceived
+        }
       };
 
     default:

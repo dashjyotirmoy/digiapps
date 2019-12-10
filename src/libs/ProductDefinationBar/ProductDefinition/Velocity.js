@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
-import { chartData } from "../../../store/Actions/index";
+import { chartDataDispatch } from "../../../store/Actions/index";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import api from "../../../utility/apis/devOpsApis";
@@ -146,14 +146,14 @@ class Velocity extends Component {
     return processedData;
   };
   componentDidMount() {
-    this.props.chartData("4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f", "fa2a71e3-1469-4240-9f8b-5694a98145cf")
-      .then(res => {
-        this.createCharts(this.createChartObject(this.props.velocityCharts));
-        this.setState({
-          response: this.props.velocityCharts,
-          received: true
-        });
-      });
+    // this.props.chartDataDispatch(this.props.currentExecId, "a7b03e5d-1589-49eb-9928-dc8e1eaf13e3", "951f6a0d-0280-4250-9dea-12f6d6743a5c")
+    //   .then(res => {
+    //     this.createCharts(this.createChartObject(this.props.velocityCharts));
+    //     this.setState({
+    //       response: this.props.velocityCharts,
+    //       received: true
+    //     });
+    //   });
   }
 
   render() {
@@ -178,10 +178,12 @@ class Velocity extends Component {
 
 const mapStateToProps = state => {
   return {
-    velocityCharts: state.chartData.chartsData.data
+    currentExecId: state.execData.executiveId,
+    velocityCharts: state.chartData.currentChartData.chartDetails,
+    chartDataReceived: state.chartData.currentChartData.chartDataReceived
   };
 };
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ chartData }, dispatch);
+  return bindActionCreators({ chartDataDispatch }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Velocity);

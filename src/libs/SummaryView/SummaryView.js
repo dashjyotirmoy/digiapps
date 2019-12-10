@@ -12,7 +12,7 @@ import {
 import styled from "styled-components";
 import ErrorBoundaries from "../../Components/ErrorBoundaries";
 import Translate from "../Translations/Translations";
-import { showComponents } from "../../store/Actions";
+import { execInsightsDispatch } from "../../store/Actions";
 import { bindActionCreators } from "redux";
 import summaryConstants from '../../utility/constants/SummaryViewConstants';
 const Styles = styled.div`
@@ -28,11 +28,7 @@ class SummaryView extends Component {
   };
 
   componentDidMount() {
-    this.props.showComponents();
-    // axios.get("/JsonData/SummaryBarData.json").then(res => {
-    //   const data = res.data;
-    //   this.setState({ data: data, flag: true });
-    // });
+    this.props.execInsightsDispatch(this.props.currentExecId);
   }
 
   render() {
@@ -79,12 +75,12 @@ class SummaryView extends Component {
                           />
                           <div className="w-100 px-1">
                             <p className=" m-0 text-center text-black m-0 font-title">
-                              {this.props.metricsData
+                              {this.props.execDataReceived
                                 ? this.props.metricsData.name.split(" ")[0]
                                 : ""}
                             </p>
                             <p className="font-aggegate-sub-text m-0 text-center text-white-50 m-0">
-                              {this.props.metricsData
+                              {this.props.execDataReceived
                                 ? this.props.metricsData.designation
                                 : ""}
                             </p>
@@ -112,10 +108,12 @@ class SummaryView extends Component {
 
 const mapStateToProps = state => {
   return {
-    metricsData: state.dimensions.executiveData.data
+    currentExecId: state.execData.executiveId,
+    metricsData: state.execData.currentExecutiveInfo.executiveData,
+    execDataReceived: state.execData.currentExecutiveInfo.executiveDataReceived
   };
 };
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ showComponents }, dispatch);
+  return bindActionCreators({ execInsightsDispatch }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryView);

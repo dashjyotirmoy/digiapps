@@ -9,6 +9,7 @@ body {
   height: 100%;
   width: 100%;
   background: #1d2632;
+  font-family:  Helvetica, sans-serif;
 
 }
 a{
@@ -34,7 +35,7 @@ a:hover{
 }
 .h-12{
   height: 12%;
-  min-height: 70px;
+  min-height: 110px;
 }
 .h-15{
   height: 15%;
@@ -117,6 +118,9 @@ a:hover{
   .font-aggegate-sub-text{
     font-size: small;
   }
+  .font-aggregate-main-text{
+    font-size: 1.5rem;
+  }
  }
 
 /* // Medium devices (tablets, 768px and up) */
@@ -125,14 +129,14 @@ a:hover{
     font-size: small;
   }
   .font-aggregate-main-text{
-    font-size: x-larger;
+    font-size: 1.5rem;
   }
   }
 
 /* // Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .font-aggregate-main-text{
-    font-size: x-large;
+    font-size:2rem;
   } 
   .font-aggegate-sub-text{
     font-size: medium;
@@ -145,7 +149,7 @@ a:hover{
     min-width: 125.488px;
   } */
   .font-aggregate-main-text{
-    font-size: x-large;
+    font-size: 2rem;
   }
   .font-aggegate-sub-text{
     font-size: medium;

@@ -426,6 +426,16 @@ class Graph {
                 }
             }
         ]
+        options.legend = {
+            enabled: true,
+            backgroundColor: 'transparent',
+            itemStyle: {
+                color: '#ffffff'
+            },
+            itemHoverStyle: {
+                color: '#D3D3D3'
+            }
+        }
         return options;
     }
 }

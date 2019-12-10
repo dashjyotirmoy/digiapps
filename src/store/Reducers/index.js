@@ -1,9 +1,9 @@
-import dimReducer from "../Reducers/dimReducer";
+import execReducer from "../Reducers/execReducer";
 import { combineReducers } from "redux";
 import prodReducer from "../Reducers/productReducer";
 import chartReducer from "../Reducers/chartReducer";
 export default combineReducers({
-  dimensions: dimReducer,
-  productdetails: prodReducer,
+  execData: execReducer,
+  productDetails: prodReducer,
   chartData: chartReducer
 });
