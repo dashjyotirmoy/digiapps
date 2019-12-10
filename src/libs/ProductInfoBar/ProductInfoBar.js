@@ -7,9 +7,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { projInsightDispatch, sprintInsightsDispatch } from "../../store/Actions/";
 import api from "../../utility/apis/devOpsApis";
-import prodAggLogo from '../../content/img/prdAggButtonDisabled.svg'
-
-
+import prodAggLogo from '../../content/img/prodAggButton.svg'
+import Donut from "../Charts/Donut/Donut";
 class ProductInfoBar extends Component {
   state = {
     productData: [],
@@ -115,7 +114,7 @@ class ProductInfoBar extends Component {
     let dimData = this.props.widData;
     const Components = this.props.lazyFunc(dimData);
     const LineHigh = Components["LineHigh"];
-    const Donut = Components["Donut"];
+    // const Donut = Components["Donut"];
     return (
       <div className="h-10" style={{ backgroundColor: "#1c2531" }}>
         <Container fluid className="h-100 border-bottom border-dark border-top">
@@ -133,7 +132,7 @@ class ProductInfoBar extends Component {
                   style={{ backgroundColor: "#25303f" }}
                 >
                   <Row className="h-100">
-                    <Col md={12} className="m-auto">
+                    <Col md={12} className="m-auto d-flex justify-content-center">
                       <img src={prodAggLogo} />
                     </Col>
                   </Row>
@@ -297,7 +296,7 @@ class ProductInfoBar extends Component {
                               </small>
                             </p>
                             <p className="font-size-xs m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
-                              Backlogs
+                              User Stories
                             </p>
                           </div>
                         </Col>

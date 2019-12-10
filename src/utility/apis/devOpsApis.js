@@ -12,9 +12,15 @@ const getExecInsightsData = (execId) => {
   );
 }
 
+// const getVelocityData = (execId, projectId, sprintId) => {
+//   return devovOpsApi.get(
+//     `/widget/velocityAndEfficiencyInsights?executiveId=${execId}&projectId=${projectId}&sprintId=${sprintId}`
+//   );
+// }
+
 const getVelocityData = (execId, projectId, sprintId) => {
-  return devovOpsApi.get(
-    `/widget/velocityAndEfficiencyInsights?executiveId=${execId}&projectId=${projectId}&sprintId=${sprintId}`
+  return axios.get(
+    `/JsonData/velocityEfficiencyInsights.json`
   );
 }
 

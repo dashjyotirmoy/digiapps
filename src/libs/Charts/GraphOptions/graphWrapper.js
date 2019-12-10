@@ -172,83 +172,42 @@ class Graph {
         ]
         return options;
     }
+
     generateControlChart(options) {
-        // console.log(this.res.data)
-        let issues = [], bugs = [], rawDate, average = 0, total, rolling_average, rolling_average_issues, rolling_average_bugs, min1, min2, min
+        console.log(this.res.data)
+        let issues = [], bugs = [], rawDate, average = 0, total, rolling_average
         this.res.data.map(series => {
-            if (series.name == "Issues") {
+            if (series.name == "User Story") {
                 issues = series.values
             }
             else {
                 bugs = series.values
             }
         })
-        // console.log(issues)
-        // console.log(bugs)
         issues.map(issue => {
             rawDate = issue[0].split("T")
             issue[1] = parseInt(issue[1])
             issue[0] = (new Date(rawDate[0])).getTime()
-            min1 = issue[0]
             average += issue[1]
         })
-        issues.sort((a, b) => a[0] - b[0]);
-        // console.log(issues)
         bugs.map(bug => {
             rawDate = bug[0].split("T")
             bug[1] = parseInt(bug[1])
             bug[0] = (new Date(rawDate[0])).getTime()
-            min2 = bug[0]
             average += bug[1]
         })
-        bugs.sort((a, b) => a[0] - b[0]);
-        // console.log(issues)
-        // console.log(bugs)
-        rolling_average_issues = issues.map(x => {
-            return {
-                "date": x[0],
-                "days": x[1]
-            }
-        })
-        rolling_average_bugs = bugs.map(x => {
-            return {
-                "date": x[0],
-                "days": x[1]
-            }
-        })
-        rolling_average = rolling_average_issues.concat(rolling_average_bugs)
-        // console.log(rolling_average)
-        let rolling_average_array = []
-        rolling_average.map(roll => {
-            let roll_temp = []
-            roll_temp[0] = roll.date
-            roll_temp[1] = roll.days
-            rolling_average_array.push(roll_temp)
-        })
-        rolling_average_array.sort((a, b) => a[0] - b[0]);
-        let std_dev_all = JSON.parse(JSON.stringify(rolling_average_array))
-        // console.log(std_dev_all)
-        let temp_mean = 0
-        for (let i = 0; i < std_dev_all.length; i++) {
-            temp_mean += std_dev_all[i][1]
-        }
-        temp_mean = temp_mean / std_dev_all.length
-        let diff = 0
-        for (let i = 0; i < std_dev_all.length; i++) {
-            diff += (temp_mean - std_dev_all[i][1]) * (temp_mean - std_dev_all[i][1])
-        }
-        diff = diff / std_dev_all.length
-        let av_std_dev = Math.sqrt(diff)
-        // console.log(diff)
-        temp_mean = temp_mean / std_dev_all.length
-        // console.log(temp_mean)
-        rolling_average = rolling_average_array.map(roll => {
+
+        let total_point_array = JSON.parse(JSON.stringify(issues))
+        total_point_array = total_point_array.concat(bugs)
+        total_point_array.sort((a, b) => a[0] - b[0]);
+
+        rolling_average = total_point_array.map(roll => {
             return {
                 "date": roll[0],
                 "days": roll[1]
             }
         })
-        // console.log(rolling_average_array)
+        //Same date data in a single object
         var output = [];
         rolling_average.forEach(function (item) {
             var existing = output.filter(function (v, i) {
@@ -262,88 +221,73 @@ class Graph {
                 output.push(item);
             }
         });
-        // console.log(output)
-        let std_dev_array = JSON.parse(JSON.stringify(output))
-        let area_range = []
-        // console.log(std_dev_array)
-        std_dev_array.map(one_day => {
-            let area_range_day = [], sum = 0, mean, variance, std_dev
-            one_day.days.map(day_data => {
-                sum += day_data
-            })
-            mean = sum / one_day.days.length
-            sum = 0
-            one_day.days.map(day_data => {
-                day_data = (day_data - mean) * (day_data - mean)
-                sum += day_data
-            })
-            variance = sum / one_day.days.length
-            std_dev = Math.sqrt(variance)
-            // console.log(std_dev);
+        let output_temp = JSON.parse(JSON.stringify(output))
 
-            area_range_day[0] = one_day.date
-            if (std_dev === 0) {
-                area_range_day[1] = mean - av_std_dev
-                area_range_day[2] = mean + av_std_dev
-            }
-            else {
-                area_range_day[1] = mean - std_dev
-                area_range_day[2] = mean + std_dev
-            }
-            area_range.push(area_range_day)
-        })
-        area_range.sort((a, b) => a[0] - b[0]);
-        let final_min = area_range[0][0]
-        // console.log(final_min)
-        // console.log(area_range)
-        // console.log(output)
-        output.map(roll => {
-            if (min > roll.date)
-                min = roll.date
-            let arr = roll.days
-            let arr_len = roll.days.length
-            let arrSum = arr.reduce((a, b) => a + b, 0)
-            roll.days = arrSum / arr_len
-        })
-        let rolling_average_data = [], rolling_average_final = [], startData
-
-        // output.map(today => {
-
-        //     rolling_average_data.push(today.days)
-        // })
-        rolling_average_data.push(output[0].days)
-        for (let i = 1; i < output.length; i++) {
-            let temp_object, before_object
-            temp_object = output[i];
-            before_object = output[i - 1]
-            let days_difference = temp_object.date - before_object.date
-            if (days_difference > 86400000) {
-                let j = days_difference / 86400000
-                // console.log(j)
-                for (let k = 0; k < j - 1; k++) {
-                    rolling_average_data.push(before_object.days)
-                }
-            }
-            rolling_average_data.push(temp_object.days)
-            // console.log(rolling_average_data)
-        }
-        // console.log(rolling_average_data)
-
-        //rolling av calc
-        for (let i = 1; i < rolling_average_data.length; i++) {
-            let temp = (rolling_average_data[i] + rolling_average_data[i - 1]) / 2
-            rolling_average_final.push(temp)
-        }
-        startData = rolling_average_final[0]
-        rolling_average_final.unshift(startData)
-        // rolling_average_final.unshift(startData)
         total = issues.length + bugs.length
         average = average / total
         average = average * 100
         average = Math.round(average)
         average = average / 100
-        // console.log(rolling_average_final);
 
+        //Calculation of rolling av and std. dev for a window
+        let roll_average = [], std_dev_final_temp = []
+        for (let i = 1; i < output_temp.length; i++) {
+
+            let present_data = output_temp[i], past_data = output_temp[i - 1], std_dev_temp = []
+
+            let present_days_data = present_data.days;
+            let present_days_data_length = present_days_data.length
+            let present_days_arraySum = present_days_data.reduce((a, b) => a + b, 0)
+            let present_mean = present_days_arraySum / present_days_data_length
+
+            let past_days_data = past_data.days;
+            let past_days_data_length = past_days_data.length
+            let past_days_arraySum = past_days_data.reduce((a, b) => a + b, 0)
+            let past_mean = past_days_arraySum / past_days_data_length
+
+            let date_difference = present_data.date - past_data.date
+
+            //adjustment for missing date data
+            if (date_difference > 86400000) {
+                let j = date_difference / 86400000
+                for (let k = 1; k <= j; k++) {
+                    roll_average.push(0)
+                    std_dev_temp[0] = past_data.date + k * 86400000
+                    std_dev_temp[1] = 0
+                    std_dev_temp[2] = 0
+                    std_dev_final_temp.push(std_dev_temp)
+                }
+            }
+            else {
+                roll_average.push((present_mean + past_mean) / 2)
+                let sum = 0
+                let days_data = present_data.days; days_data.concat(past_data.days)
+                days_data.map(day_data => {
+                    sum += day_data
+                })
+                let mean_temp = sum / days_data.length
+                sum = 0
+                days_data.map(day_data => {
+                    day_data = (day_data - mean_temp) * (day_data - mean_temp)
+                    sum += day_data
+                })
+                let variance_temp = sum / days_data.length
+                variance_temp = Math.sqrt(variance_temp)
+                std_dev_temp[0] = present_data.date
+                std_dev_temp[1] = ((present_mean + past_mean) / 2) - variance_temp
+                std_dev_temp[2] = ((present_mean + past_mean) / 2) + variance_temp
+                std_dev_final_temp.push(std_dev_temp)
+            }
+        }
+        //For fixing date issue in area chart
+        let std_dev_final = JSON.parse(JSON.stringify(std_dev_final_temp))
+        for (let i = 1; i < std_dev_final.length; i++) {
+            let present_object = std_dev_final[i];
+            let past_object = std_dev_final[i - 1]
+            present_object[0] = past_object[0] + 86400000
+            std_dev_final[i] = present_object
+        }
+        let final_min = std_dev_final_temp[0][0]
         options.chart = {
             height: 0,
             backgroundColor: ""
@@ -361,23 +305,34 @@ class Graph {
             dateTimeLabelFormats: {
                 day: '%b %e'
             },
-            lineWidth: 1,
+            labels: {
+                style: {
+                    color: '#f5f5f5'
+                }
+            },
+            lineWidth: 0,
             tickLength: 0,
             style: {
                 color: '#f5f5f5'
             }
         }
         options.yAxis = {
-            min: 0,
+            min: -0.5,
+            gridLineColor: "",
             title: {
                 text: 'Days',
                 style: {
                     color: '#f5f5f5'
                 }
             },
+            labels: {
+                style: {
+                    color: '#f5f5f5'
+                }
+            },
             plotLines: [{
                 value: average,
-                color: 'green',
+                color: '#9057ED',
                 width: 2,
                 label: {
                     text: average,
@@ -389,27 +344,35 @@ class Graph {
             }]
         }
         options.tooltip = {
-            pointFormat: '{series.name}: {point.y}'
+            pointFormat: '{point.y}'
         }
         options.series = [
             {
-                name: 'Issues',
+                name: 'User Story',
                 type: 'scatter',
                 color: 'grey',
                 data: issues,
                 pointInterval: 86400000,
+                marker: {
+                    symbol: 'circle',
+                    fillColor: '#6DEB9C'
+                }
             },
             {
-                name: 'Bugs',
+                name: 'Bug',
                 type: 'scatter',
                 color: '#A9CCE3',
                 data: bugs,
                 pointInterval: 86400000,
+                marker: {
+                    symbol: 'circle',
+                    fillColor: '#0582EC'
+                }
             },
             {
-                name: 'Rolling Av',
+                name: 'Rolling Av.',
                 type: 'line',
-                data: rolling_average_final,
+                data: roll_average,
                 pointStart: final_min,
                 pointInterval: 86400000,
                 marker: {
@@ -417,8 +380,9 @@ class Graph {
                 }
             },
             {
+                name: 'Std. Dev.',
                 type: 'arearange',
-                data: area_range,
+                data: std_dev_final,
                 pointInterval: 86400000,
                 fillOpacity: 0.2,
                 marker: {

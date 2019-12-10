@@ -25,7 +25,7 @@ const Styles = styled.div`
 class Header extends Component {
   state = {
     userName: "John Smith",
-    designation: "CEO",
+    designation: "Executive",
     navListItem: ["Red", "Black", "Blue"]
   }
   render() {

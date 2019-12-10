@@ -5,44 +5,34 @@ import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
 import { chartDataDispatch } from "../../../store/Actions/index";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import throuput from '../../../content/img/throuput.png';
+import depChange from '../../../content/img/DepChange.png';
+import degreeTest from '../../../content/img/degreeTest.png';
+
 import api from "../../../utility/apis/devOpsApis";
 var rct = {},
   dlt = {};
 
 var initialData = [
   {
-    name: "rct",
-    type: "ControlChartHigh",
-    data: "",
-    title: "Release Cycle Time",
-    component: {}
-  },
-  {
-    name: "dlt",
-    type: "ControlChartHigh",
-    data: dlt,
-    title: "Deployment Lead Time",
-    component: {}
-  },
-  {
     name: "tp",
-    type: "ColumnHigh",
+    type: "img",
     data: {},
-    title: "Throughput",
+    title: throuput,
     component: {}
   },
   {
     name: "dcp",
-    type: "ColumnHigh",
+    type: "img",
     data: {},
-    title: "Deployment/Change Frequency",
+    title: depChange,
     component: {}
   },
   {
     name: "dtra",
-    type: "ColumnHigh",
+    type: "img",
     data: {},
-    title: "Degree of Testing and Release Automation",
+    title: degreeTest,
     component: {}
   }
 ];
@@ -53,17 +43,17 @@ class Velocity extends Component {
     layout: {
       lg: [
         { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false }
-        // { i: '2', x: 0, y: 2, w: 4, h: 2, isResizable: false },
-        // { i: '3', x: 4, y: 2, w: 4, h: 2, isResizable: false },
-        // { i: '4', x: 8, y: 2, w: 4, h: 2, isResizable: false }
+        { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false },
+        { i: '2', x: 0, y: 2, w: 4, h: 2, isResizable: false },
+        { i: '3', x: 4, y: 2, w: 4, h: 2, isResizable: false },
+        { i: '4', x: 8, y: 2, w: 4, h: 2, isResizable: false }
       ],
       md: [
         { i: "0", x: 0, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "1", x: 5, y: 0, w: 5, h: 2, isResizable: false }
-        // { i: '2', x: 0, y: 2, w: 4, h: 2, isResizable: false },
-        // { i: '3', x: 4, y: 2, w: 3, h: 2, isResizable: false },
-        // { i: '4', x: 7, y: 2, w: 3, h: 2, isResizable: false }
+        { i: "1", x: 5, y: 0, w: 5, h: 2, isResizable: false },
+        { i: '2', x: 0, y: 2, w: 4, h: 2, isResizable: false },
+        { i: '3', x: 4, y: 2, w: 3, h: 2, isResizable: false },
+        { i: '4', x: 7, y: 2, w: 3, h: 2, isResizable: false }
       ]
     },
     graphCount: 6,
@@ -97,9 +87,10 @@ class Velocity extends Component {
   };
 
   createCharts = (list, removed) => {
-    const updatedList = list.filter((ele, index) => {
+    let updatedList = list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
+    updatedList = updatedList.concat(initialData);
     updatedList.map(ele => {
       ele.component = this.setChart(ele.type, ele.title, ele.data);
     });
@@ -114,6 +105,8 @@ class Velocity extends Component {
         return <ControlChartHigh title={title} type={type} data={data} />;
       case "ColumnHigh":
         return <ColumnHigh title={title} type={type} data={data} />;
+      case "img":
+        return <img src={title} className="h-100 w-100 border-radius-10" />
     }
   };
 
@@ -146,14 +139,14 @@ class Velocity extends Component {
     return processedData;
   };
   componentDidMount() {
-    // this.props.chartDataDispatch(this.props.currentExecId, "a7b03e5d-1589-49eb-9928-dc8e1eaf13e3", "951f6a0d-0280-4250-9dea-12f6d6743a5c")
-    //   .then(res => {
-    //     this.createCharts(this.createChartObject(this.props.velocityCharts));
-    //     this.setState({
-    //       response: this.props.velocityCharts,
-    //       received: true
-    //     });
-    //   });
+    this.props.chartDataDispatch(this.props.currentExecId, "a7b03e5d-1589-49eb-9928-dc8e1eaf13e3", "951f6a0d-0280-4250-9dea-12f6d6743a5c")
+      .then(res => {
+        this.createCharts(this.createChartObject(this.props.velocityCharts));
+        this.setState({
+          response: this.props.velocityCharts,
+          received: true
+        });
+      });
   }
 
   render() {

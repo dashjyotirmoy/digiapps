@@ -15,7 +15,7 @@ class Grid extends Component {
       </div >)
     })
     return (
-      <Container fluid className="h-100">
+      <Container fluid className="">
         <ResponsiveGridLayout maxRows={2} className="layout"
           autoSize={false} layouts={this.props.layouts}
           compactType={"vertical"} breakpoints={this.props.breakpoint}

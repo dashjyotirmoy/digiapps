@@ -2,40 +2,28 @@ import React, { Component } from "react";
 import Grid from '../../Grid-Layout/Grid';
 import ControlChartHigh from '../../Charts/ControlChartHigh/ControlChartHigh';
 import ColumnHigh from '../../Charts/ColumnHigh/ColumnHigh';
-
+import netPromoter from '../../../content/img/Net_Promoter_Score.png';
+import userAdoption from '../../../content/img/User_Adoption.svg';
+import featureUsage from '../../../content/img/Feature_Usage_Percentage.svg';
 const initialData = [{
   name: "rct",
-  type: "ColumnHigh",
+  type: "img",
   data: {},
-  title: "Feature Usage Percentage",
+  title: featureUsage,
   component: {}
 },
 {
   name: "dlt",
-  type: "ColumnHigh",
+  type: "img",
   data: {},
-  title: "User Adoption",
+  title: userAdoption,
   component: {}
 },
 {
   name: "tp",
-  type: "ColumnHigh",
+  type: "img",
   data: {},
-  title: "Net Promoter Score",
-  component: {}
-},
-{
-  name: "dcp",
-  type: "ColumnHigh",
-  data: {},
-  title: "User Satisfaction Surveys",
-  component: {},
-},
-{
-  name: "dtra",
-  type: "ColumnHigh",
-  data: {},
-  title: "Release Cycle Time",
+  title: netPromoter,
   component: {}
 }]
 class Customer extends Component {
@@ -46,15 +34,15 @@ class Customer extends Component {
         { i: "0", x: 0, y: 0, w: 4, h: 2, isResizable: false },
         { i: "1", x: 4, y: 0, w: 4, h: 2, isResizable: false },
         { i: "2", x: 8, y: 0, w: 4, h: 2, isResizable: false },
-        { i: "3", x: 0, y: 2, w: 6, h: 2, isResizable: false },
-        { i: "4", x: 8, y: 2, w: 6, h: 2, isResizable: false }
+        // { i: "3", x: 0, y: 2, w: 6, h: 2, isResizable: false },
+        // { i: "4", x: 8, y: 2, w: 6, h: 2, isResizable: false }
       ],
       md: [
         { i: "0", x: 0, y: 0, w: 4, h: 2, isResizable: false },
         { i: "1", x: 4, y: 0, w: 4, h: 2, isResizable: false },
         { i: "2", x: 8, y: 0, w: 4, h: 2, isResizable: false },
-        { i: "3", x: 0, y: 2, w: 6, h: 2, isResizable: false },
-        { i: "4", x: 8, y: 2, w: 6, h: 2, isResizable: false }
+        // { i: "3", x: 0, y: 2, w: 6, h: 2, isResizable: false },
+        // { i: "4", x: 8, y: 2, w: 6, h: 2, isResizable: false }
       ]
     },
     graphCount: 6,
@@ -82,6 +70,8 @@ class Customer extends Component {
         return <ControlChartHigh title={title} />
       case "ColumnHigh":
         return <ColumnHigh title={title} />
+      case "img":
+        return <img src={title} className="h-100 w-100 border-radius-10" />
     }
   }
 

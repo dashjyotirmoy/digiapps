@@ -3,7 +3,7 @@
         "name": "Release Cycle Time",
         "metrics": [
             {
-                "name": "Issues",
+                "name": "User Story",
                 "values": [
                     [
                         "2019-11-21T18:30:00Z",
