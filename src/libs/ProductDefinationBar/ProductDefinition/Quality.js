@@ -1,57 +1,39 @@
-import React, { Component } from "react";
-import Grid from "../../Grid-Layout/Grid";
-import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
-import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
-import MTTDChart from "../../Charts/MTTDChart/MTTDChart";
-
+import React, { Component } from 'react';
+import Grid from '../../Grid-Layout/Grid';
+import ControlChartHigh from '../../Charts/ControlChartHigh/ControlChartHigh';
+import ColumnHigh from '../../Charts/ColumnHigh/ColumnHigh';
+import MTTDChart from '../../Charts/MTTDChart/MTTDChart';
+import active from '../../../content/img/activityStatus.png';
+import coverage from '../../../content/img/coverage.png';
+import outstandingDefects from '../../../content/img/outstandingDefects.png';
+import resultCount from '../../../content/img/resultCount.png';
 const initialData = [
   {
     name: "rct",
-    type: "MTTDChart",
+    type: "img",
     data: {},
-    title: "Mean Time To Detect(MTTD)",
+    title: active,
     component: {}
   },
   {
     name: "dlt",
-    type: "MTTDChart",
+    type: "img",
     data: {},
-    title: "Mean Time To Repair(MTTR)",
+    title: coverage,
     component: {}
   },
   {
     name: "tp",
-    type: "ColumnHigh",
+    type: "img",
     data: {},
-    title: "No. of Errors",
+    title: resultCount,
     component: {}
   },
   {
     name: "dcp",
-    type: "MTTDChart",
+    type: "img",
     data: {},
-    title: "Average Incident Resolution Time",
-    component: {}
-  },
-  {
-    name: "dtra",
-    type: "ColumnHigh",
-    data: {},
-    title: "Uptime %",
-    component: {}
-  },
-  {
-    name: "dtra",
-    type: "ColumnHigh",
-    data: {},
-    title: "Defect Escape Rate",
-    component: {}
-  },
-  {
-    name: "dtra",
-    type: "ColumnHigh",
-    data: {},
-    title: "Automated Test Pass %",
+    title: outstandingDefects,
     component: {}
   }
 ];
@@ -61,22 +43,16 @@ class Quality extends Component {
     charts: [],
     layout: {
       lg: [
-        { i: "0", x: 0, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "1", x: 5, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "2", x: 10, y: 0, w: 2, h: 2, isResizable: false },
-        { i: "3", x: 0, y: 2, w: 5, h: 2, isResizable: false },
-        { i: "4", x: 5, y: 2, w: 2.5, h: 2, isResizable: false },
-        { i: "5", x: 7.5, y: 2, w: 2.5, h: 2, isResizable: false },
-        { i: "6", x: 10, y: 2, w: 2, h: 2, isResizable: false }
+        { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
+        { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false },
+        { i: "2", x: 0, y: 0, w: 6, h: 2, isResizable: false },
+        { i: "3", x: 6, y: 2, w: 6, h: 2, isResizable: false },
       ],
       md: [
         { i: "0", x: 0, y: 0, w: 5, h: 2, isResizable: false },
         { i: "1", x: 6, y: 0, w: 5, h: 2, isResizable: false },
         { i: "2", x: 0, y: 2, w: 4, h: 2, isResizable: false },
-        { i: "3", x: 4, y: 2, w: 6, h: 2, isResizable: false },
-        { i: "4", x: 0, y: 4, w: 3, h: 2, isResizable: false },
-        { i: "5", x: 3, y: 4, w: 4, h: 2, isResizable: false },
-        { i: "6", x: 7, y: 4, w: 4, h: 2, isResizable: false }
+        { i: "3", x: 4, y: 2, w: 6, h: 2, isResizable: false }
       ]
     },
     graphCount: 6,
@@ -126,6 +102,8 @@ class Quality extends Component {
         return <ColumnHigh title={title} />;
       case "MTTDChart":
         return <MTTDChart title={title} />;
+      case "img":
+        return <img src={title} className="h-100 w-100 border-radius-10" />
     }
   };
 

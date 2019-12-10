@@ -80,7 +80,6 @@ class ProductDefBar extends Component {
                     eventKey="velocity"
                     title={
                       <span className="font-aggegate-sub-text">
-                        {" "}
                         Velocity and Efficiency
                       </span>
                     }
@@ -91,7 +90,7 @@ class ProductDefBar extends Component {
                       <span className="font-aggegate-sub-text"> Quality</span>
                     }
                   ></Tab>
-                  <Tab
+                  {/* <Tab
                     eventKey="contact"
                     title={
                       <span className="font-aggegate-sub-text">
@@ -99,7 +98,7 @@ class ProductDefBar extends Component {
                         Organizational Effectiveness
                       </span>
                     }
-                  ></Tab>
+                  ></Tab> */}
                   <Tab
                     eventKey="customer"
                     title={

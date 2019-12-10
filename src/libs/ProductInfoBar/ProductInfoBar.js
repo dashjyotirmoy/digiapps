@@ -3,11 +3,12 @@ import { Row, Container, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown/Dropdown";
-import axios from "axios";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { prodInfo } from "../../Actions/index";
-import { showComponents } from "../../Actions";
+import { projInsightDispatch, sprintInsightsDispatch } from "../../store/Actions/";
+import api from "../../utility/apis/devOpsApis";
+import prodAggLogo from '../../content/img/prodAggButton.svg'
+import Donut from "../Charts/Donut/Donut";
 class ProductInfoBar extends Component {
   state = {
     productData: [],
@@ -19,17 +20,10 @@ class ProductInfoBar extends Component {
   };
 
   componentDidMount() {
-    this.getProjectData().then(this.setProject);
-    this.props.prodInfo();
+    api.getExecInsightsData(this.props.executiveId).then(this.setProject);
+    //this.props.prodInfo();
+    this.props.projInsightDispatch("fa2a71e3-1469-4240-9f8b-5694a98145cf", this.props.executiveId);
   }
-
-  getProjectData = async projectId => {
-    return axios.get(
-      "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/executive/4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f/executiveInsights"
-    );
-
-    // return axios.get("/JsonData/SummaryBarData.json");
-  };
 
   setProject = res => {
     const projects = res.data.projects;
@@ -39,7 +33,7 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    this.getSprintData(projects[0].id).then(this.setSprint);
+    api.getProjectInsightsData(projects[0].id, this.props.executiveId).then(this.setSprint);
   };
 
   updateProject = projectId => {
@@ -49,13 +43,11 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    this.getSprintData(projectId).then(this.setSprint);
+    api.getProjectInsightsData(projectId, this.props.executiveId).then(this.setSprint);
   };
 
   getSprintData = sprintId => {
-    return axios.get(
-      `https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service/project/${sprintId}/projectInsights?executiveId=4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f`
-    );
+    return this.props.sprintInsightsDispatch(sprintId, 1, 1)
   };
 
   setSprint = res => {
@@ -67,14 +59,16 @@ class ProductInfoBar extends Component {
         projectName: ele.name
       };
     });
-
     this.setState({
       sprintData: sprintDetails,
       selectedSprint: sprintDetails[sprintData.selectedIndex].projectName
     });
+    this.getSprintData(sprintDetails[sprintData.selectedIndex].id, this.props.executiveId)
   };
 
-  updateSprint = sprintId => {};
+  updateSprint = sprintId => {
+    this.getSprintData(sprintId, this.props.executiveId);
+  };
 
   resetSelect = prodList => {
     const defaultList = prodList.map(ele => {
@@ -120,7 +114,7 @@ class ProductInfoBar extends Component {
     let dimData = this.props.widData;
     const Components = this.props.lazyFunc(dimData);
     const LineHigh = Components["LineHigh"];
-    const Donut = Components["Donut"];
+    // const Donut = Components["Donut"];
     return (
       <div className="h-10" style={{ backgroundColor: "#1c2531" }}>
         <Container fluid className="h-100 border-bottom border-dark border-top">
@@ -131,58 +125,59 @@ class ProductInfoBar extends Component {
             <Col className="h-100" sm={5} md={5} lg={5} xl={5}>
               <Row className="h-100">
                 <Col
-                  sm={4}
-                  md={4}
-                  lg={4}
-                  xl={4}
-                  className="h-100 justify-content-center d-flex align-items-center"
-                  style={{ backgroundColor: "#334154" }}
-                >
-                  <Dropdown
-                    listData={this.state.productData}
-                    direction="down"
-                    onSelectDelegate={this.prodOnSelectHandler}
-                  >
-                    <Row className="h-100">
-                      <Col sm={10} md={9} lg={9} xl={9}>
-                        <p className="font-aggegate-sub-text text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
-                          {this.state.selectedProduct}
-                        </p>
-                      </Col>
-                      <Col
-                        sm={2}
-                        md={2}
-                        md={3}
-                        lg={3}
-                        xl={3}
-                        className="font-aggegate-sub-text p-0 text-white"
-                      >
-                        <FontAwesomeIcon icon={faChevronDown} />
-                      </Col>
-                    </Row>
-                  </Dropdown>
-                </Col>
-                <Col
-                  sm={4}
-                  md={4}
-                  lg={4}
-                  xl={4}
+                  sm={2}
+                  md={2}
+                  lg={2}
+                  xl={2}
                   style={{ backgroundColor: "#25303f" }}
                 >
                   <Row className="h-100">
-                    <Col md={12} className="m-auto">
-                      <p className="font-aggegate-sub-text m-auto text-center text-white-50">
-                        Product Aggregate view
-                      </p>
+                    <Col md={12} className="m-auto d-flex justify-content-center">
+                      <img src={prodAggLogo} />
                     </Col>
                   </Row>
                 </Col>
                 <Col
-                  sm={4}
-                  md={4}
-                  lg={4}
-                  xl={4}
-                  className="border-right border-dark p-0"
+                  sm={5}
+                  md={5}
+                  lg={5}
+                  xl={5}
+                  className="h-100 justify-content-center d-flex align-items-center"
+                  style={{ backgroundColor: "#334154" }}
+                >
+                  {this.props.projectListReceived ?
+                    <Dropdown
+                      listData={this.state.productData}
+                      direction="down"
+                      onSelectDelegate={this.prodOnSelectHandler}
+                    >
+                      <Row className="h-100">
+                        <Col sm={10} md={9} lg={9} xl={9}>
+                          <p className="font-aggegate-sub-text text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                            {this.state.selectedProduct}
+                          </p>
+                        </Col>
+                        <Col
+                          sm={2}
+                          md={2}
+                          md={3}
+                          lg={3}
+                          xl={3}
+                          className="font-aggegate-sub-text p-0 text-white"
+                        >
+                          <FontAwesomeIcon icon={faChevronDown} />
+                        </Col>
+                      </Row>
+                    </Dropdown>
+
+                    : null}
+                </Col>
+                <Col
+                  sm={5}
+                  md={5}
+                  lg={5}
+                  xl={5}
+                  className="border-right border-dark p-0 h-100"
                 >
                   <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
                     <Dropdown
@@ -217,14 +212,14 @@ class ProductInfoBar extends Component {
                 <Col md={7} xl={8} lg={8} className="h-100">
                   <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
                     <Col md={12} xl={12} lg={12} className="h-100 pl-0 py-1">
-                      {this.props.recieved ? (
+                      {this.props.sprintDataReceived ? (
                         <LineHigh
-                          burndown={this.props.projects}
+                          burndown={this.props.sprintData}
                           type="line"
                         ></LineHigh>
                       ) : (
-                        "loading"
-                      )}
+                          "loading"
+                        )}
                     </Col>
                   </Row>
                 </Col>
@@ -241,13 +236,13 @@ class ProductInfoBar extends Component {
                     >
                       <Row className="p-0 m-0 w-100 ">
                         <Col md={5} className="p-0">
-                          {this.props.recieved ? (
+                          {this.props.projectRecieved ? (
                             <Donut
-                              percentage={this.props.projects.features}
+                              percentage={this.props.projDetails.features}
                             ></Donut>
                           ) : (
-                            "loading"
-                          )}
+                              "loading"
+                            )}
                         </Col>
                         <Col
                           md={7}
@@ -259,8 +254,8 @@ class ProductInfoBar extends Component {
                           >
                             <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
                               <small>
-                                {this.props.recieved
-                                  ? `${this.props.projects.features.completed}/ ${this.props.projects.features.total}`
+                                {this.props.projectRecieved
+                                  ? `${this.props.projDetails.features.completed}/ ${this.props.projDetails.features.total}`
                                   : "loading"}
                               </small>
                             </p>
@@ -277,13 +272,13 @@ class ProductInfoBar extends Component {
                     >
                       <Row className="p-0 m-0 w-100 ">
                         <Col md={5} className="p-0">
-                          {this.props.recieved ? (
+                          {this.props.projectRecieved ? (
                             <Donut
-                              percentage={this.props.projects.backlogs}
+                              percentage={this.props.projDetails.userStory}
                             ></Donut>
                           ) : (
-                            "loading"
-                          )}
+                              "loading"
+                            )}
                         </Col>
                         <Col
                           md={7}
@@ -295,13 +290,13 @@ class ProductInfoBar extends Component {
                           >
                             <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
                               <small>
-                                {this.props.recieved
-                                  ? `${this.props.projects.backlogs.completed}/ ${this.props.projects.backlogs.total}`
+                                {this.props.projectRecieved
+                                  ? `${this.props.projDetails.userStory.completed}/ ${this.props.projDetails.userStory.total}`
                                   : "loading"}
                               </small>
                             </p>
                             <p className="font-size-xs m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
-                              Backlogs
+                              User Stories
                             </p>
                           </div>
                         </Col>
@@ -319,11 +314,17 @@ class ProductInfoBar extends Component {
 }
 const mapStateToProps = state => {
   return {
-    projects: state.productdetails.products.data,
-    recieved: state.productdetails.products.recieved
+    executiveId: state.execData.executiveId,
+    projectList: state.execData.currentExecutiveInfo.executiveData.projects,
+    projectListReceived: state.execData.currentExecutiveInfo.executiveDataReceived,
+    projDetails: state.productDetails.currentProject.projectDetails,
+    projectRecieved: state.productDetails.currentProject.projectDataReceived,
+    sprintData: state.productDetails.currentSprint.sprintInfo,
+    sprintDataReceived: state.productDetails.currentSprint.sprintReceived
+    // execData: state.execData.executiveData.data
   };
 };
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ prodInfo, showComponents }, dispatch);
+  return bindActionCreators({ projInsightDispatch, sprintInsightsDispatch }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProductInfoBar);

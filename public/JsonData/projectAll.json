@@ -1,0 +1,54 @@
+[
+    {
+        "id": "fa2a71e3-1469-4240-9f8b-5694a98145cf",
+        "projectName": "Digital Insights Dashboard",
+        "sprintDetails": [
+            {
+                "id": "b7d0d35d-abef-40b6-aef5-3e7f038d7824",
+                "name": "MVP1-Sprint1",
+                "startDate": null,
+                "endDate": null,
+                "state": "PAST",
+                "features": null,
+                "backlogs": null,
+                "burndown": null
+            },
+            {
+                "id": "6fd62cee-9f65-4826-a5df-0874d4d0acd5",
+                "name": "MVP1-Sprint2",
+                "startDate": null,
+                "endDate": null,
+                "state": "CURRENT",
+                "features": null,
+                "backlogs": null,
+                "burndown": null
+            }
+        ]
+    },
+    {
+        "id": "a7b03e5d-1589-49eb-9928-dc8e1eaf13e3",
+        "projectName": "Dashboard Demo Project",
+        "sprintDetails": [
+            {
+                "id": "951f6a0d-0280-4250-9dea-12f6d6743a5c",
+                "name": "Sprint 1",
+                "startDate": null,
+                "endDate": null,
+                "state": "PAST",
+                "features": null,
+                "backlogs": null,
+                "burndown": null
+            },
+            {
+                "id": "91bf8b75-0fcf-4347-9367-e2af8816b2d5",
+                "name": "Sprint 2",
+                "startDate": null,
+                "endDate": null,
+                "state": "CURRENT",
+                "features": null,
+                "backlogs": null,
+                "burndown": null
+            }
+        ]
+    }
+]
