@@ -20,8 +20,6 @@ class Graph {
     this.options = this.generateOption(props.type);
   }
   generateOption = type => {
-    console.log("wrapper");
-    console.log(type);
     const baseOptions = new Options();
     let updatedOptions = {};
     switch (type) {
@@ -33,7 +31,6 @@ class Graph {
         return updatedOptions;
       case "ControlChartHigh":
         updatedOptions = this.generateControlChart(baseOptions);
-        console.log("control");
         return updatedOptions;
       default:
         return null;
@@ -70,7 +67,7 @@ class Graph {
     };
     options.yAxis = [
       {
-        max: this.res.burndown.burndown.totalHours,
+        max: parseInt(this.res.burndown.burndown.totalHours),
         labels: {
           enabled: false
         },
@@ -180,7 +177,6 @@ class Graph {
     return options;
   }
   generateControlChart(options) {
-    console.log(this.res.data);
     let issues = [],
       bugs = [],
       rawDate,
@@ -200,14 +196,12 @@ class Graph {
       issue[0] = new Date(rawDate[0]).getTime();
       average += issue[1];
     });
-    console.log(issues);
     bugs.map(bug => {
       rawDate = bug[0].split("T");
       bug[1] = parseInt(bug[1]);
       bug[0] = new Date(rawDate[0]).getTime();
       average += bug[1];
     });
-    console.log(bugs);
     let total_point_array = JSON.parse(JSON.stringify(issues));
     total_point_array = total_point_array.concat(bugs);
     total_point_array.sort((a, b) => a[0] - b[0]);
@@ -218,7 +212,6 @@ class Graph {
         days: roll[1]
       };
     });
-    console.log(rolling_average);
     //Same date data in a single object
     var output = [];
     rolling_average.forEach(function(item) {
@@ -236,7 +229,7 @@ class Graph {
       }
     });
     let output_temp = JSON.parse(JSON.stringify(output));
-
+    let start_data = output_temp[0];
     total = issues.length + bugs.length;
     average = average / total;
     average = average * 100;
@@ -296,6 +289,9 @@ class Graph {
       }
     }
     //For fixing date issue in area chart
+    if (std_dev_final_temp.length > 1) {
+      std_dev_final_temp[0][0] = start_data.date + 86400000;
+    }
     let std_dev_final = JSON.parse(JSON.stringify(std_dev_final_temp));
     for (let i = 1; i < std_dev_final.length; i++) {
       let present_object = std_dev_final[i];

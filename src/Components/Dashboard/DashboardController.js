@@ -3,24 +3,24 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import DefinitionLoader from "../../libs/ProductDefinationBar/DefinitionLoader.js";
-import ModalLoader from '../UI/ModalBackDrop.js/ModalBackDrop';
+import ModalLoader from "../UI/ModalBackDrop.js/ModalBackDrop";
 
 var dot = require("dot-object");
 const configData = require("../ConfigurationManager/Config.json");
 
-function LazyComponent(items) {
-  let lazyComponents = {};
+function lazyComponent(items) {
+  let loadWidgets = {};
   items.map((widget, index) => {
-    lazyComponents[widget.name] = React.lazy(() => {
+    loadWidgets[widget.name] = React.lazy(() => {
       return import("../../libs/" + widget.path);
     });
   });
-  return lazyComponents;
+  return loadWidgets;
 }
 
 export default function Dashboard(props) {
   let items = dot.pick("widgets", configData);
-  const widgetComponents = new LazyComponent(items);
+  const widgetComponents = new lazyComponent(items);
   const componentArray = props.compList.map((item, index) => {
     const widgetData = dot.pick(
       "widgets[" + index + "]" + ".dimensions",
@@ -29,7 +29,7 @@ export default function Dashboard(props) {
     const Component = widgetComponents[item];
     return (
       <Suspense fallback={<div>Loading...</div>}>
-        <Component key={index} widData={widgetData} lazyFunc={LazyComponent} />
+        <Component key={index} widData={widgetData} lazyFunc={lazyComponent} />
       </Suspense>
     );
   });

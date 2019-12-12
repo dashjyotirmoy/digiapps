@@ -5,9 +5,13 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown/Dropdown";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { projInsightDispatch, sprintInsightsDispatch } from "../../store/Actions/";
+import {
+  projInsightDispatch,
+  sprintInsightsDispatch,
+  chartDataDispatch
+} from "../../store/Actions/";
 import api from "../../utility/apis/devOpsApis";
-import prodAggLogo from '../../content/img/prodAggButton.svg'
+import prodAggLogo from "../../content/img/prodAggButton.svg";
 import Donut from "../Charts/Donut/Donut";
 class ProductInfoBar extends Component {
   state = {
@@ -21,8 +25,6 @@ class ProductInfoBar extends Component {
 
   componentDidMount() {
     api.getExecInsightsData(this.props.executiveId).then(this.setProject);
-    //this.props.prodInfo();
-    this.props.projInsightDispatch("fa2a71e3-1469-4240-9f8b-5694a98145cf", this.props.executiveId);
   }
 
   setProject = res => {
@@ -33,7 +35,16 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    api.getProjectInsightsData(projects[0].id, this.props.executiveId).then(this.setSprint);
+    this.props.projInsightDispatch(
+      projects[selectedIndex].id,
+      this.props.executiveId
+    );
+    api
+      .getProjectInsightsData(
+        projects[selectedIndex].id,
+        this.props.executiveId
+      )
+      .then(this.setSprint);
   };
 
   updateProject = projectId => {
@@ -43,16 +54,41 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    api.getProjectInsightsData(projectId, this.props.executiveId).then(this.setSprint);
+    this.props.projInsightDispatch(
+      projects[selectedIndex].id,
+      this.props.executiveId
+    );
+    // api.getProjectInsightsData(projectId, this.props.executiveId).then(this.setSprint);
+    api
+      .getProjectInsightsData(
+        projects[selectedIndex].id,
+        this.props.executiveId
+      )
+      .then(this.setSprint);
   };
 
-  getSprintData = sprintId => {
-    return this.props.sprintInsightsDispatch(sprintId, 1, 1)
+  getSprintData = (sprintId, selectedProjectId) => {
+    // return this.props.sprintInsightsDispatch(sprintId, this.props.executiveId, selectedProjectId)
+    this.props.sprintInsightsDispatch(
+      sprintId,
+      this.props.executiveId,
+      this.props.projectID
+    );
+    this.props.chartDataDispatch(
+      this.props.executiveId,
+      this.props.projectID,
+      sprintId
+    );
   };
 
   setSprint = res => {
     let sprints = res.data.sprintDetails;
-    const sprintData = this.markSelected(sprints, sprints[0].id);
+    const stateFromProjects = sprints.filter(item => {
+      if (item.state === "CURRENT") {
+        return item.id;
+      }
+    });
+    const sprintData = this.markSelected(sprints, stateFromProjects[0].id);
     const sprintDetails = sprintData.list.map(ele => {
       return {
         id: ele.id,
@@ -63,10 +99,21 @@ class ProductInfoBar extends Component {
       sprintData: sprintDetails,
       selectedSprint: sprintDetails[sprintData.selectedIndex].projectName
     });
-    this.getSprintData(sprintDetails[sprintData.selectedIndex].id, this.props.executiveId)
+    this.getSprintData(
+      sprintDetails[sprintData.selectedIndex].id,
+      this.props.executiveId
+    );
   };
 
   updateSprint = sprintId => {
+    const { list, selectedIndex } = this.markSelected(
+      this.state.sprintData,
+      sprintId
+    );
+    this.setState({
+      sprintData: list,
+      selectedSprint: list[selectedIndex].projectName
+    });
     this.getSprintData(sprintId, this.props.executiveId);
   };
 
@@ -99,15 +146,8 @@ class ProductInfoBar extends Component {
     this.updateProject(prodId);
   };
 
-  sprintOnSelectHandler = (prodId, evtKey) => {
-    const { list, selectedIndex } = this.markSelected(
-      this.state.sprintData,
-      prodId
-    );
-    this.setState({
-      sprintData: list,
-      selectedSprint: list[selectedIndex].projectName
-    });
+  sprintOnSelectHandler = (sprintId, evtKey) => {
+    this.updateSprint(sprintId);
   };
 
   render() {
@@ -132,7 +172,10 @@ class ProductInfoBar extends Component {
                   style={{ backgroundColor: "#25303f" }}
                 >
                   <Row className="h-100">
-                    <Col md={12} className="m-auto d-flex justify-content-center">
+                    <Col
+                      md={12}
+                      className="m-auto d-flex justify-content-center"
+                    >
                       <img src={prodAggLogo} />
                     </Col>
                   </Row>
@@ -145,7 +188,7 @@ class ProductInfoBar extends Component {
                   className="h-100 justify-content-center d-flex align-items-center"
                   style={{ backgroundColor: "#334154" }}
                 >
-                  {this.props.projectListReceived ?
+                  {this.props.projectListReceived ? (
                     <Dropdown
                       listData={this.state.productData}
                       direction="down"
@@ -169,8 +212,7 @@ class ProductInfoBar extends Component {
                         </Col>
                       </Row>
                     </Dropdown>
-
-                    : null}
+                  ) : null}
                 </Col>
                 <Col
                   sm={5}
@@ -218,8 +260,8 @@ class ProductInfoBar extends Component {
                           type="line"
                         ></LineHigh>
                       ) : (
-                          "loading"
-                        )}
+                        "loading"
+                      )}
                     </Col>
                   </Row>
                 </Col>
@@ -241,8 +283,8 @@ class ProductInfoBar extends Component {
                               percentage={this.props.projDetails.features}
                             ></Donut>
                           ) : (
-                              "loading"
-                            )}
+                            "loading"
+                          )}
                         </Col>
                         <Col
                           md={7}
@@ -277,8 +319,8 @@ class ProductInfoBar extends Component {
                               percentage={this.props.projDetails.userStory}
                             ></Donut>
                           ) : (
-                              "loading"
-                            )}
+                            "loading"
+                          )}
                         </Col>
                         <Col
                           md={7}
@@ -316,15 +358,22 @@ const mapStateToProps = state => {
   return {
     executiveId: state.execData.executiveId,
     projectList: state.execData.currentExecutiveInfo.executiveData.projects,
-    projectListReceived: state.execData.currentExecutiveInfo.executiveDataReceived,
+    projectListReceived:
+      state.execData.currentExecutiveInfo.executiveDataReceived,
     projDetails: state.productDetails.currentProject.projectDetails,
+    projectID: state.productDetails.currentProject.projectDetails.id,
     projectRecieved: state.productDetails.currentProject.projectDataReceived,
     sprintData: state.productDetails.currentSprint.sprintInfo,
-    sprintDataReceived: state.productDetails.currentSprint.sprintReceived
+    sprintDataReceived: state.productDetails.currentSprint.sprintReceived,
+    velocityCharts: state.chartData.currentChartData.chartDetails,
+    chartDataReceived: state.chartData.currentChartData.chartDataReceived
     // execData: state.execData.executiveData.data
   };
 };
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ projInsightDispatch, sprintInsightsDispatch }, dispatch);
+  return bindActionCreators(
+    { projInsightDispatch, sprintInsightsDispatch, chartDataDispatch },
+    dispatch
+  );
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProductInfoBar);
