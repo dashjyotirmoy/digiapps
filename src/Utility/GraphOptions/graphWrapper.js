@@ -184,7 +184,7 @@ class Graph {
       total,
       rolling_average;
     this.res.data.map(series => {
-      if (series.name == "User Story") {
+      if (series.name === "User Story") {
         issues = series.values;
       } else {
         bugs = series.values;
@@ -216,7 +216,7 @@ class Graph {
     var output = [];
     rolling_average.forEach(function(item) {
       var existing = output.filter(function(v, i) {
-        return v.date == item.date;
+        return v.date === item.date;
       });
       if (existing.length) {
         var existingIndex = output.indexOf(existing[0]);

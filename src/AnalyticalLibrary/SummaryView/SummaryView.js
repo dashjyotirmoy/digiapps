@@ -10,11 +10,11 @@ import {
   faTh
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import ErrorBoundaries from "../../../Components/ErrorBoundaries";
+import ErrorBoundaries from "../../Components/ErrorBoundaries";
 import Translate from "../Translations/Translations";
-import { execInsightsDispatch } from "../../../store/Actions/executiveInsights";
+import { execInsightsDispatch } from "../../store/Actions/execInsights";
 import { bindActionCreators } from "redux";
-import summaryConstants from "../../../Utility/Constants/SummaryViewConstants";
+import summaryConstants from "../../Utility/Constants/SummaryViewConstants";
 const Styles = styled.div`
   .data-header {
     height: 100%;
