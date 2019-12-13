@@ -5,13 +5,11 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown/Dropdown";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {
-  projInsightDispatch,
-  sprintInsightsDispatch,
-  chartDataDispatch
-} from "../../store/Actions/";
-import api from "../../utility/apis/devOpsApis";
-import prodAggLogo from "../../content/img/prodAggButton.svg";
+import { chartDataDispatch } from "../../../Store/Actions/chartData";
+import { projInsightDispatch } from "../../../Store/Actions/projectInsights";
+import { sprintInsightsDispatch } from "../../../Store/Actions/sprintInsights";
+import api from "../../../Utility/Http/devOpsApis";
+import prodAggLogo from "../../../Content/Img/prodAggButton.svg";
 import Donut from "../Charts/Donut/Donut";
 class ProductInfoBar extends Component {
   state = {

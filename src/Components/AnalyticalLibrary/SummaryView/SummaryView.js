@@ -10,11 +10,11 @@ import {
   faTh
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import ErrorBoundaries from "../../Components/ErrorBoundaries";
+import ErrorBoundaries from "../../../Components/ErrorBoundaries";
 import Translate from "../Translations/Translations";
-import { execInsightsDispatch } from "../../store/Actions";
+import { execInsightsDispatch } from "../../../Store/Actions/executiveInsights";
 import { bindActionCreators } from "redux";
-import summaryConstants from '../../utility/constants/SummaryViewConstants';
+import summaryConstants from "../../../Utility/Constants/SummaryViewConstants";
 const Styles = styled.div`
   .data-header {
     height: 100%;
@@ -45,7 +45,7 @@ class SummaryView extends Component {
 
     const validItemMetrics = summaryConstants.itemMetrics.filter(item => {
       if (this.props.metricsData && this.props.metricsData[item]) return item;
-    })
+    });
 
     const itemMetrics = validItemMetrics.map((item, key) => {
       return {

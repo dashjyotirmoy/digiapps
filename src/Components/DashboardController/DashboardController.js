@@ -2,8 +2,8 @@
 //Author : Sujith Surendran
 import React, { Suspense } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import DefinitionLoader from "../../libs/ProductDefinationBar/DefinitionLoader.js";
-import ModalLoader from "../UI/ModalBackDrop.js/ModalBackDrop";
+import DefinitionLoader from "../AnalyticalLibrary/ProductDefinationBar/DefinitionLoader.js";
+import ModalLoader from "../AnalyticalLibrary/ModalBackDrop/ModalBackDrop.js";
 
 var dot = require("dot-object");
 const configData = require("../ConfigurationManager/Config.json");
@@ -12,7 +12,7 @@ function lazyComponent(items) {
   let loadWidgets = {};
   items.map((widget, index) => {
     loadWidgets[widget.name] = React.lazy(() => {
-      return import("../../libs/" + widget.path);
+      return import("../AnalyticalLibrary/" + widget.path);
     });
   });
   return loadWidgets;
