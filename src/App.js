@@ -5,7 +5,6 @@ import { appComponentList } from "./utility/constants/componentLoaders";
 const shortid = require("shortid");
 class App extends React.Component {
   render() {
-    console.log(process.env.NODE_ENV);
     const componentImports = appComponentList;
     return (
       <React.Fragment>
