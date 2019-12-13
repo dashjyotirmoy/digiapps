@@ -1,7 +1,7 @@
-import execReducer from "../Reducers/execReducer";
+import execReducer from "../reducers/execReducer";
 import { combineReducers } from "redux";
-import prodReducer from "../Reducers/productReducer";
-import chartReducer from "../Reducers/chartReducer";
+import prodReducer from "../reducers/productReducer";
+import chartReducer from "../reducers/chartReducer";
 export default combineReducers({
   execData: execReducer,
   productDetails: prodReducer,

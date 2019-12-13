@@ -1,4 +1,4 @@
-import api from "../../Utility/Http/devOpsApis";
+import api from "../../utility/http/devOpsApis";
 import * as actionTypes from "./actionTypes";
 
 export const execInsightsDispatch = execId => async dispatch => {

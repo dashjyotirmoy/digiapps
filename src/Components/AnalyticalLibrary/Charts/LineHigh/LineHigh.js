@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
-import Graph from "../../../../Utility/GraphOptions/graphWrapper";
+import Graph from "../../../../utility/graphOptions/graphWrapper";
 var temp_options;
 class LineHigh extends Component {
   state = {

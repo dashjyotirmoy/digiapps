@@ -3,10 +3,10 @@ import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
 import MTTDChart from "../../Charts/MTTDChart/MTTDChart";
-import active from "../../../../Content/Img/activityStatus.png";
-import coverage from "../../../../Content/Img/coverage.png";
-import outstandingDefects from "../../../../Content/Img/outstandingDefects.png";
-import resultCount from "../../../../Content/Img/resultCount.png";
+import active from "../../../../content/img/activityStatus.png";
+import coverage from "../../../../content/img/coverage.png";
+import outstandingDefects from "../../../../content/img/outstandingDefects.png";
+import resultCount from "../../../../content/img/resultCount.png";
 const initialData = [
   {
     name: "rct",

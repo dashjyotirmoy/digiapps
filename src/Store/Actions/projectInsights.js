@@ -1,5 +1,5 @@
 import * as actionTypes from "./actionTypes";
-import api from "../../Utility/Http/devOpsApis";
+import api from "../../utility/http/devOpsApis";
 
 export const projInsightDispatch = (projectId, execId) => async dispatch => {
   const response = await api.getProjectInsightsData(projectId, execId);

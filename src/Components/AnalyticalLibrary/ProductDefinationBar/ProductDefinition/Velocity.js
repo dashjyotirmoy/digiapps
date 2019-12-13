@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
-import { chartDataDispatch } from "../../../../store/Actions/chartData";
+import { chartDataDispatch } from "../../../../store/actions/chartData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import throuput from "../../../../Content/Img/throuput.png";
-import depChange from "../../../../Content/Img/DepChange.png";
-import degreeTest from "../../../../Content/Img/degreeTest.png";
+import throuput from "../../../../content/img/throuput.png";
+import depChange from "../../../../content/img/DepChange.png";
+import degreeTest from "../../../../content/img/degreeTest.png";
 
 var initialData = [
   {

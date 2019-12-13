@@ -1,7 +1,7 @@
 import React from "react";
-import Dashboard from "./Components/DashboardController/DashboardController";
-import Header from "./Components/AnalyticalLibrary/Header/Header";
-import { appComponentList } from "./Utility/Constants/componentLoaders";
+import Dashboard from "./components/dashboardController/dashboardController";
+import Header from "./components/analyticalLibrary/Header/Header";
+import { appComponentList } from "./utility/constants/componentLoaders";
 const shortid = require("shortid");
 class App extends React.Component {
   render() {

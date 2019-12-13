@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
-import netPromoter from "../../../../Content/Img/Net_Promoter_Score.png";
-import userAdoption from "../../../../Content/Img/User_Adoption.svg";
-import featureUsage from "../../../../Content/Img/Feature_Usage_Percentage.svg";
+import netPromoter from "../../../../content/img/Net_Promoter_Score.png";
+import userAdoption from "../../../../content/img/User_Adoption.svg";
+import featureUsage from "../../../../content/img/Feature_Usage_Percentage.svg";
 const initialData = [
   {
     name: "rct",
