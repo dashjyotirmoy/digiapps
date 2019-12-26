@@ -10,26 +10,27 @@ import { bindActionCreators } from "redux";
 import throuput from "../../../../content/img/throuput.png";
 import depChange from "../../../../content/img/DepChange.png";
 import degreeTest from "../../../../content/img/degreeTest.png";
-
+import Throughput from "../../Charts/Bar/Throughput";
+import TestingReleaseAutomation from "../../Charts/Bar/TestingReleaseAutomation"
 var initialData = [
   {
     name: "tp",
-    type: "img",
-    data: {},
+    type: "ColumnHigh",
+    data: "Throughput",
     title: throuput,
     component: {}
   },
   {
     name: "dcp",
-    type: "img",
-    data: {},
+    type: "Column",
+    data: "Degree of Tesing and Release Automation",
     title: depChange,
     component: {}
   },
   {
     name: "dtra",
     type: "img",
-    data: {},
+    data: "Deployment/Change Frequency",
     title: degreeTest,
     component: {}
   }
@@ -103,12 +104,15 @@ class Velocity extends Component {
     switch (type) {
       case "ControlChartHigh":
         return <ControlChartHigh title={title} type={type} data={data} />;
-      // case "ColumnHigh":
-      //   return <ColumnHigh title={title} type={type} data={data} />;
+      case "ColumnHigh":
+        return <Throughput title={title} type={type} data={data} />;
+      case "Column":
+        return <TestingReleaseAutomation title={title} data={data} />
       case "img":
-        return (
-          <img src={title} className="h-100 w-100 border-radius-10" alt="img" />
-        );
+        return <div className="chart-title w-100 h-100">
+          <div className="chart-title ml-3 mt-1 position-absolute" style={{ zIndex: "1" }}>{data}</div>
+          <img src={title} className="h-100 w-100 border-radius-10" />
+        </div>
       default:
         return "";
     }

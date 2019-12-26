@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import { Container, Row, Col, Tabs, Tab } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFunnelDollar } from "@fortawesome/free-solid-svg-icons";
+import { currentTabDispatch } from '../../../store/actions/chartData';
 import styled from "styled-components";
 
 const StyleMainTab = styled.div`
@@ -49,10 +52,12 @@ class ProductDefBar extends Component {
     activeLink: ""
   };
   updateView = type => {
+    this.props.currentTabDispatch(type.toLowerCase());
     this.props.history.push(`/${type}`);
   };
   componentDidMount() {
-    const currentLink = this.getActiveLink();
+    const currentLink = this.getActiveLink().toLowerCase();
+    this.props.currentTabDispatch(currentLink);
     this.setState({
       activeLink: currentLink
     });
@@ -127,6 +132,16 @@ class ProductDefBar extends Component {
   }
 }
 
-//withRouter Higher order component which gives the component access to history props
+const mapStateToProps = state => {
+  return {
 
-export default withRouter(ProductDefBar);
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { currentTabDispatch },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductDefBar));

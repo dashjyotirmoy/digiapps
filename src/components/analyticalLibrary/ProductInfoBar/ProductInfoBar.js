@@ -5,19 +5,27 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown/Dropdown";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import classnames from "classnames";
 import { projInsightDispatch } from "../../../store/actions/projectInsights";
 import { sprintInsightsDispatch } from "../../../store/actions/sprintInsights";
 import api from "../../../utility/http/devOpsApis";
-import prodAggLogo from "../../../content/img/prodAggButton.svg";
+import prodAggEnabled from "../../../content/img/prodAggButton.svg";
+import prodAggDisabled from "../../../content/img/prodAggButtonDisabbled.svg";
+import Donut from "../Charts/Donut/Donut";
+import { translations } from "../Translations/";
+import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
+import { isQuality } from "../../../utility/classUtility/classUtil";
 import Widgets from "../../dashboardController/widgetParser";
-import Spinner from "../../analyticalLibrary/Spinner/Spinner";
 
 class ProductInfoBar extends Component {
   state = {
     productData: [],
     sprintData: [],
     selectedProduct: "",
-    selectedSprint: ""
+    selectedSprint: "",
+    response: {},
+    recieved: false,
+    prodAggView: false
   };
 
   //axios call to fetch executive data
@@ -157,12 +165,24 @@ class ProductInfoBar extends Component {
     this.updateSprint(sprintId);
   };
 
+  onProdAggViewClickHandler = () => {
+    this.setState(prevState => {
+      return {
+        prodAggView: !prevState.prodAggView
+      };
+    });
+  };
+
   render() {
     let dimensionData = this.props.widgetProps;
 
     const projectDimensions = new Widgets();
     const Components = projectDimensions.loadDimensions(dimensionData);
     const LineHigh = Components["LineHigh"];
+    const prodAggViewIcon = this.state.prodAggView
+      ? prodAggEnabled
+      : prodAggDisabled;
+    const qualityView = isQuality(this.props.selectedTab);
     const Donut = Components["Donut"];
 
     return (
@@ -172,31 +192,37 @@ class ProductInfoBar extends Component {
             className="h-100  p-0 m-0"
             style={{ backgroundColor: "#1d2632" }}
           >
-            <Col className="h-100" sm={5} md={5} lg={5} xl={5}>
+            <Col className="h-100 pl-0" sm={5} md={6} lg={6} xl={6}>
               <Row className="h-100">
                 <Col
                   sm={2}
                   md={2}
-                  lg={2}
-                  xl={2}
-                  style={{ backgroundColor: "#25303f" }}
+                  className="prodAgg p-0 col-lg-1_5 col-xl-1_5"
                 >
                   <Row className="h-100">
-                    <Col
-                      md={12}
-                      className="m-auto d-flex justify-content-center"
+                    <TooltipHoc
+                      info={
+                        this.state.prodAggView
+                          ? translations.prodAggViewEnable
+                          : translations.prodAggViewDisable
+                      }
                     >
-                      <img src={prodAggLogo} />
-                    </Col>
+                      <Col
+                        onClick={this.onProdAggViewClickHandler}
+                        md={12}
+                        className="m-auto d-flex justify-content-center show-cursor"
+                      >
+                        <img src={prodAggViewIcon} />
+                      </Col>
+                    </TooltipHoc>
                   </Row>
                 </Col>
                 <Col
-                  sm={5}
-                  md={5}
-                  lg={5}
-                  xl={5}
-                  className="h-100 justify-content-center d-flex align-items-center"
-                  style={{ backgroundColor: "#334154" }}
+                  sm={6}
+                  md={qualityView ? 4 : 5}
+                  lg={qualityView ? 5 : 6}
+                  xl={qualityView ? 5 : 6}
+                  className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
                 >
                   {this.props.projectListReceived ? (
                     <Dropdown
@@ -205,18 +231,18 @@ class ProductInfoBar extends Component {
                       onSelectDelegate={this.prodOnSelectHandler}
                     >
                       <Row className="h-100">
-                        <Col sm={10} md={9} lg={9} xl={9}>
-                          <p className="font-aggegate-sub-text text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                        <Col sm={10} md={10} lg={10} xl={10}>
+                          <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
                             {this.state.selectedProduct}
                           </p>
                         </Col>
                         <Col
                           sm={2}
                           md={2}
-                          md={3}
-                          lg={3}
-                          xl={3}
-                          className="font-aggegate-sub-text p-0 text-white"
+                          md={2}
+                          lg={2}
+                          xl={2}
+                          className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
                         >
                           <FontAwesomeIcon icon={faChevronDown} />
                         </Col>
@@ -225,11 +251,15 @@ class ProductInfoBar extends Component {
                   ) : null}
                 </Col>
                 <Col
-                  sm={5}
-                  md={5}
-                  lg={5}
-                  xl={5}
-                  className="border-right border-dark p-0 h-100"
+                  sm={3}
+                  className={classnames(
+                    "border-right",
+                    "border-dark",
+                    "p-0",
+                    "h-100",
+                    { "col-xl-4 col-lg-4 col-md-4": !qualityView },
+                    { "col-xl-2_5 col-lg-2_5 col-md-2_5": qualityView }
+                  )}
                 >
                   <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
                     <Dropdown
@@ -238,18 +268,55 @@ class ProductInfoBar extends Component {
                       onSelectDelegate={this.sprintOnSelectHandler}
                     >
                       <Row className="h-100 m-0 p-0">
-                        <Col sm={10} md={9} lg={9} xl={9}>
-                          <p className="font-aggegate-sub-text text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                        <Col sm={10} md={10} lg={10} xl={10}>
+                          <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
                             {this.state.selectedSprint}
                           </p>
                         </Col>
                         <Col
                           sm={2}
                           md={2}
-                          md={3}
-                          lg={3}
-                          xl={3}
-                          className="font-aggegate-sub-text p-0 text-white"
+                          md={2}
+                          lg={2}
+                          xl={2}
+                          className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                        >
+                          <FontAwesomeIcon icon={faChevronDown} />
+                        </Col>
+                      </Row>
+                    </Dropdown>
+                  </Row>
+                </Col>
+                <Col
+                  sm={3}
+                  className={classnames(
+                    "border-right",
+                    "border-dark",
+                    "p-0",
+                    "h-100",
+                    { "d-none": !qualityView },
+                    { "col-xl-2_5 col-lg-2_5 col-md-2_5": qualityView }
+                  )}
+                >
+                  <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
+                    <Dropdown
+                      listData={this.state.sprintData}
+                      direction="down"
+                      onSelectDelegate={this.sprintOnSelectHandler}
+                    >
+                      <Row className="h-100 m-0 p-0">
+                        <Col sm={10} md={10} lg={10} xl={10}>
+                          <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                            Repository
+                          </p>
+                        </Col>
+                        <Col
+                          sm={2}
+                          md={2}
+                          md={2}
+                          lg={2}
+                          xl={2}
+                          className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
                         >
                           <FontAwesomeIcon icon={faChevronDown} />
                         </Col>
@@ -259,7 +326,7 @@ class ProductInfoBar extends Component {
                 </Col>
               </Row>
             </Col>
-            <Col sm={7} md={7} lg={7} xl={7} className="h-100">
+            <Col sm={7} md={6} lg={6} xl={6} className="h-100">
               <Row className="h-100">
                 <Col md={7} xl={8} lg={8} className="h-100">
                   <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
@@ -305,13 +372,11 @@ class ProductInfoBar extends Component {
                             className="d-inline-block text-white"
                           >
                             <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
-                              <small>
-                                {this.props.projectRecieved
-                                  ? `${this.props.projDetails.features.completed}/ ${this.props.projDetails.features.total}`
-                                  : "loading"}
-                              </small>
+                              {this.props.projectRecieved
+                                ? `${this.props.projDetails.features.completed}/ ${this.props.projDetails.features.total}`
+                                : "loading"}
                             </p>
-                            <p className="font-size-xs m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
+                            <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
                               Features
                             </p>
                           </div>
@@ -341,13 +406,11 @@ class ProductInfoBar extends Component {
                             className="d-inline-block text-white"
                           >
                             <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
-                              <small>
-                                {this.props.projectRecieved
-                                  ? `${this.props.projDetails.userStory.completed}/ ${this.props.projDetails.userStory.total}`
-                                  : "loading"}
-                              </small>
+                              {this.props.projectRecieved
+                                ? `${this.props.projDetails.userStory.completed}/ ${this.props.projDetails.userStory.total}`
+                                : "loading"}
                             </p>
-                            <p className="font-size-xs m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
+                            <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
                               User Stories
                             </p>
                           </div>
@@ -379,7 +442,8 @@ const mapStateToProps = state => {
     sprintData: state.productDetails.currentSprint.sprintInfo,
     sprintDataReceived: state.productDetails.currentSprint.sprintReceived,
     velocityCharts: state.chartData.currentChartData.chartDetails,
-    chartDataReceived: state.chartData.currentChartData.chartDataReceived
+    chartDataReceived: state.chartData.currentChartData.chartDataReceived,
+    selectedTab: state.chartData.currentTab
   };
 };
 

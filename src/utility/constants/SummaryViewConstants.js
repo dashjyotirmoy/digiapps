@@ -1,14 +1,8 @@
-export default {
-    itemMetrics: [
-        "averageReleaseCycle",
-        "averageDeploymentLeadTime",
-        "averageMTTD",
-        "averageMTTR",
-        "averageCustRating"
-    ],
-    mainMetrics: [
-        "totalProduct",
-        "totalMembers",
-        "totalHrs"
-    ]
-}
+export const itemMetrics = [
+  "averageReleaseCycle",
+  "averageDeploymentLeadTime",
+  "averageMTTD",
+  "averageMTTR",
+  "averageCustRating"
+];
+export const mainMetrics = ["totalProduct", "totalMembers", "totalHrs"];

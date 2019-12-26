@@ -11,21 +11,21 @@ const initialData = [
   {
     name: "rct",
     type: "img",
-    data: {},
+    data: "Feature Usage Percentage",
     title: featureUsage,
     component: {}
   },
   {
     name: "dlt",
     type: "img",
-    data: {},
+    data: "User Adoption",
     title: userAdoption,
     component: {}
   },
   {
     name: "tp",
     type: "img",
-    data: {},
+    data: "Net Promoter Score",
     title: netPromoter,
     component: {}
   }
@@ -60,7 +60,7 @@ class Customer extends Component {
       if (index !== removed) return Object.assign({}, ele);
     });
     updatedList.map(ele => {
-      ele.component = this.setChart(ele.type, ele.title);
+      ele.component = this.setChart(ele.type, ele.title, ele.data);
     });
     this.setState({
       charts: updatedList
@@ -69,14 +69,24 @@ class Customer extends Component {
 
   //function to load charts based on type
 
-  setChart = (type, title) => {
+  setChart = (type, title, data) => {
     switch (type) {
       case "ControlChartHigh":
         return <ControlChartHigh title={title} />;
       case "ColumnHigh":
         return <ColumnHigh title={title} />;
       case "img":
-        return <img src={title} className="h-100 w-100 border-radius-10" />;
+        return (
+          <div className="chart-title w-100 h-100">
+            <div
+              className="chart-title ml-3 mt-1 position-absolute"
+              style={{ zIndex: "1" }}
+            >
+              {data}
+            </div>
+            <img src={title} className="h-100 w-100 border-radius-10" />
+          </div>
+        );
     }
   };
 

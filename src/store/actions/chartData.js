@@ -19,3 +19,12 @@ export const chartDataDispatch = (
     console.error(error);
   }
 };
+
+export const currentTabDispatch = type => dispatch => {
+  dispatch({
+    type: actionTypes.SET_CURRENT_TAB,
+    payload: {
+      currentTab: type
+    }
+  });
+};

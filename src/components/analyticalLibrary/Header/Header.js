@@ -6,22 +6,22 @@ import Dropdown from "../Dropdown/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-
+import john from "../../../content/img/johnSmith.png"
 const Styles = styled.div`
   .navbar {
     background-color: #1a222d !important;
     // max-height:45px;
   }
-  .navbar-brand {
-    color: #fff !important;
+  .navbar-brand{
+    color:#fff !important;
   }
-  .nav-item {
-    color: #fff !important;
-    padding: 0.1rem;
+  .nav-item{
+    color:#fff !important;
+    padding:.1rem;
   }
-  .circle-placeholder {
-    height: 25px;
-    width: 25px;
+  .circle-placeholder{
+      height:25px;
+      width:25px;
   }
 `;
 class Header extends Component {
@@ -29,18 +29,16 @@ class Header extends Component {
     userName: "John Smith",
     designation: "Executive",
     navListItem: ["Red", "Black", "Blue"]
-  };
+  }
   render() {
-    const listItem = this.state.navListItem.map((val, index) => {
-      return (
-        <Nav.Item
-          className="d-xl-none d-lg-none d-md-none d-sm-block d-sx-none"
-          key={index}
-        >
-          {val}
-        </Nav.Item>
-      );
-    });
+    const listItem = this.state.navListItem.map(
+      (val, index) => {
+        return (
+          <Nav.Item className="d-xl-none d-lg-none d-md-none d-sm-block d-sx-none" key={index}>
+            {val}</Nav.Item>
+        )
+      }
+    )
     return (
       <Styles>
         <Navbar bg="light" expand="md">
@@ -59,24 +57,25 @@ class Header extends Component {
                 </div>
                 <div id="user-info-image" className="d-inline-block mr-2">
                   <div className="circle-placeholder overflow-hidden rounded-circle">
-                    <div className="h-100 bg-light"></div>
+                    <img src={john} className="h-100 w-100" />
                   </div>
                 </div>
-                <div
-                  id="user-info-icon"
-                  className="vertical-super d-md-inline-block d-lg-inline-block d-xl-inline-block d-none "
-                >
+                <div id="user-info-icon" className="vertical-super d-md-inline-block d-lg-inline-block d-xl-inline-block d-none ">
                   <Dropdown listData={this.state.navListItem}>
-                    <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+                    <FontAwesomeIcon icon={faChevronDown}>
+
+                    </FontAwesomeIcon>
                   </Dropdown>
+
                 </div>
               </Nav.Item>
 
               <Nav.Item> {listItem}</Nav.Item>
+
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-      </Styles>
+      </Styles >
     );
   }
 }
