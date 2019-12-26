@@ -10,7 +10,7 @@ class CustDropdown extends Component {
     const arr = this.props.listData;
     const dropdownItems = arr.map((ele, index) => {
       return (
-        <Dropdown.Item key={index} eventKey={ele.id}>
+        <Dropdown.Item key={index} eventKey={ele.id} className="text-white">
           {ele.projectName}
         </Dropdown.Item>
       );
@@ -30,7 +30,7 @@ class CustDropdown extends Component {
 
         <Dropdown.Menu
           as={DropdownMenu}
-          className="dropdown-menu width-fit-content dropdown-menu-right font-aggegate-sub-text mr-0"
+          className="dropdown-menu width-fit-content dropdown-menu-right font-aggegate-sub-text mr-0 bg-secondary"
         >
           {dropdownItems}
         </Dropdown.Menu>

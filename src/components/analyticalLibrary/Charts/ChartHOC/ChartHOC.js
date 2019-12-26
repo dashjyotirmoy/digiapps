@@ -11,7 +11,8 @@ class ChartHOC extends Component {
     let containerHeight = this.props.containerHeight;
     optionsData.chart = {
       height: containerHeight,
-      backgroundColor: ""
+      backgroundColor: "",
+      type: this.props.type
     };
     return <HighchartsReact highcharts={Highcharts} options={optionsData} />;
   }

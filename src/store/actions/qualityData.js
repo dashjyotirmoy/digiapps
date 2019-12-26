@@ -1,5 +1,5 @@
 import * as actionTypes from "./actionTypes";
-import api from "../../utility/http/devOpsApis";
+import api from "../../utility/Http/devOpsApis";
 
 export const qualityDataDispatch = () =>
   //   execId,

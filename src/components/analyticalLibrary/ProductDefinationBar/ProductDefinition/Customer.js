@@ -5,31 +5,29 @@ import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
 import netPromoter from "../../../../content/img/Net_Promoter_Score.png";
-import userAdoption from "../../../../content/img/User_Adoption.svg";
-import featureUsage from "../../../../content/img/Feature_Usage_Percentage.svg";
-const initialData = [
-  {
-    name: "rct",
-    type: "img",
-    data: "Feature Usage Percentage",
-    title: featureUsage,
-    component: {}
-  },
-  {
-    name: "dlt",
-    type: "img",
-    data: "User Adoption",
-    title: userAdoption,
-    component: {}
-  },
-  {
-    name: "tp",
-    type: "img",
-    data: "Net Promoter Score",
-    title: netPromoter,
-    component: {}
-  }
-];
+import userAdoption from "../../../../content/img/User_Adoption.png";
+import featureUsage from "../../../../content/img/Feature_Usage_Percentage.png";
+const initialData = [{
+  name: "rct",
+  type: "img",
+  data: "Feature Usage Percentage",
+  title: featureUsage,
+  component: {}
+},
+{
+  name: "dlt",
+  type: "img",
+  data: "User Adoption",
+  title: userAdoption,
+  component: {}
+},
+{
+  name: "tp",
+  type: "img",
+  data: "Net Promoter Score",
+  title: netPromoter,
+  component: {}
+}]
 class Customer extends Component {
   state = {
     charts: [],

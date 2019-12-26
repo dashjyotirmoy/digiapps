@@ -1,24 +1,25 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class CustomToggle extends Component {
-  constructor(props, context) {
-    super(props, context);
+    constructor(props, context) {
+        super(props, context);
 
-    this.handleClick = this.handleClick.bind(this);
-  }
+        this.handleClick = this.handleClick.bind(this);
+    }
 
-  handleClick(e) {
-    e.preventDefault();
-    this.props.onClick(e);
-  }
+    handleClick(e) {
+        e.preventDefault();
 
-  render() {
-    return (
-      <a href="" onClick={this.handleClick}>
-        {this.props.children}
-      </a>
-    );
-  }
+        this.props.onClick(e);
+    }
+
+    render() {
+        return (
+            <a href="" onClick={this.handleClick}>
+                {this.props.children}
+            </a>
+        );
+    }
 }
 
-export default CustomToggle;
+export default CustomToggle

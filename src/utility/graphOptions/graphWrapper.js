@@ -15,6 +15,7 @@ class Options {
   yAxis = {};
   series = {};
 }
+var sd = 'Start date'
 
 class Graph {
   constructor(props) {

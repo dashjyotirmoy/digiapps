@@ -8,7 +8,7 @@ var percentage, color, completed, total;
 
 class Donut extends Component {
   render() {
-    color = this.props.color;
+    color = this.props.color || "#0582EC";
     completed = parseInt(this.props.percentage.completed);
     total = parseInt(this.props.percentage.total);
     percentage = completed / total;
@@ -26,7 +26,9 @@ class Donut extends Component {
           text={`${percentage}%`}
           styles={buildStyles({
             textColor: color,
-            pathColor: color
+            pathColor: color,
+            trailColor: "#828282",
+            textSize: "1.5rem"
           })}
         />
       </div>

@@ -1,13 +1,24 @@
 import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
-import Graph from "../../../../utility/graphOptions/graphWrapper";
+import Highcharts from "highcharts";
+import HighchartsMore from "highcharts/highcharts-more";
+import Graph from "../../../../utility/GraphOptions/graphWrapper";
+HighchartsMore(Highcharts);
 var temp_options;
 
-class ColumnHigh extends Component {
+class ControlChartHigh extends Component {
   state = {
     options: {},
     received: 0
   };
+
+  componentDidMount() {
+    temp_options = new Graph(this.props, this.props.type, this.props.data);
+    this.setState({
+      options: temp_options.options,
+      received: 1
+    });
+  }
 
   componentWillReceiveProps(nextprops) {
     if (this.props.title !== nextprops.title) {
@@ -19,15 +30,6 @@ class ColumnHigh extends Component {
       });
     }
   }
-
-  componentDidMount() {
-    temp_options = new Graph(this.props, this.props.type);
-    this.setState({
-      options: temp_options.options,
-      received: 1
-    });
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -37,4 +39,4 @@ class ColumnHigh extends Component {
   }
 }
 
-export default ColumnHigh;
+export default ControlChartHigh;

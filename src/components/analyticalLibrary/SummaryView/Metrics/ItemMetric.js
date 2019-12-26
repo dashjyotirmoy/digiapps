@@ -21,18 +21,22 @@ const ItemMetric = props => {
     return (
       <div
         key={key}
-        className="border border-dark d-flex d-inline-block flex-column h-100 justify-content-center max-w-18 mx-1 px-lg-2 px-md-1 px-xl-4 py-2 rounded w-auto"
+        className="border border-dark d-flex d-inline-block 
+        flex-column h-100 justify-content-center max-w-18 mx-1 
+        px-lg-2 px-md-4 px-xl-4  px-sm-4 py-2 rounded w-auto"
       >
-        <p className="font-aggregate-main-text m-0 text-left text-black m-0">
+        <p className="font-metric-main-text m-0 text-left text-black m-0">
           <FontAwesomeIcon
             className={("font-size-small", "vertical-initial")}
             style={{ color: "red" }}
             icon={faArrowUp}
           />
-          {item.value}
+          <span className="ml-2">
+            {item.value}
+          </span>
         </p>
-        <p className="font-aggegate-sub-text m-0 text-left text-white-50 m-0">
-          <small>{item.name}</small>
+        <p className="font-metric-sub-text m-0 text-left text-white-50 m-0">
+          {item.name}
         </p>
       </div>
     );

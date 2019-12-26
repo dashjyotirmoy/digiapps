@@ -8,7 +8,7 @@ import { bindActionCreators } from "redux";
 import classnames from "classnames";
 import { projInsightDispatch } from "../../../store/actions/projectInsights";
 import { sprintInsightsDispatch } from "../../../store/actions/sprintInsights";
-import api from "../../../utility/http/devOpsApis";
+import api from "../../../utility/Http/devOpsApis";
 import prodAggEnabled from "../../../content/img/prodAggButton.svg";
 import prodAggDisabled from "../../../content/img/prodAggButtonDisabbled.svg";
 import Donut from "../Charts/Donut/Donut";

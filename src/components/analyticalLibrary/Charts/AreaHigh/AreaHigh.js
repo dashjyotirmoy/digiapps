@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
-import Graph from "../../../../utility/graphOptions/graphWrapper";
+import Graph from "../../../../utility/GraphOptions/graphWrapper";
 
 var temp_options;
 class AreaHigh extends Component {

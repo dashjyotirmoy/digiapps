@@ -176,9 +176,10 @@ class Velocity extends Component {
       )
       .then(res => {
         this.createCharts(this.createChartObject(this.props.velocityCharts));
-      })
-      .catch(error => {
-        console.error(error);
+        this.setState({
+          response: this.props.velocityCharts,
+          received: true
+        });
       });
   };
 

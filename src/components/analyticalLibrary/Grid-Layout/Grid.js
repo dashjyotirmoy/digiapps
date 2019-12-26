@@ -1,8 +1,6 @@
-//Component which is the container for all the graphs
-
-import React, { Component } from "react";
-import { Container } from "react-bootstrap";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import React, { Component } from 'react';
+import { Container } from 'react-bootstrap';
+import { Responsive, WidthProvider } from 'react-grid-layout';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { TooltipHoc } from '../TooltiHOC/TooltipHoc';

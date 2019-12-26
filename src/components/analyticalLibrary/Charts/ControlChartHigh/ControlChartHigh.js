@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import Highcharts from "highcharts";
 import HighchartsMore from "highcharts/highcharts-more";
-import Graph from "../../../../utility/graphOptions/graphWrapper";
+import Graph from "../../../../utility/GraphOptions/graphWrapper";
 HighchartsMore(Highcharts);
 var temp_options;
 

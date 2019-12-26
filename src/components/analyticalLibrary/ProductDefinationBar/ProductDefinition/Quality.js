@@ -5,11 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquare, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import active from "../../../../content/img/activityStatus.png";
 import coverage from "../../../../content/img/coverage.png";
-import outstandingDefects from "../../../../content/img/outstandingDefects.png";
-import resultCount from "../../../../content/img/resultCount.png";
-import BVCLineHigh from "../../Charts/BVCLineHigh/BVCLineHigh";
-import CoverageAreaHigh from "../../Charts/CoverageAreaHigh/CoverageAreaHigh";
-
+import outstandingDefects from '../../../../content/img/outstandingDefects.png';
+import resultCount from '../../../../content/img/resultCount.png';
+import BVCLineHigh from '../../Charts/BVCLineHigh/BVCLineHigh';
+import CoverageAreaHigh from '../../Charts/CoverageAreaHigh/CoverageAreaHigh';
 const initialData = [
   {
     name: "rct",
