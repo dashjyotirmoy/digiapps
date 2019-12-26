@@ -5,25 +5,33 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown/Dropdown";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { chartDataDispatch } from "../../../store/actions/chartData";
 import { projInsightDispatch } from "../../../store/actions/projectInsights";
 import { sprintInsightsDispatch } from "../../../store/actions/sprintInsights";
 import api from "../../../utility/http/devOpsApis";
 import prodAggLogo from "../../../content/img/prodAggButton.svg";
-import Donut from "../Charts/Donut/Donut";
+import Widgets from "../../dashboardController/widgetParser";
+import Spinner from "../../analyticalLibrary/Spinner/Spinner";
+
 class ProductInfoBar extends Component {
   state = {
     productData: [],
     sprintData: [],
     selectedProduct: "",
-    selectedSprint: "",
-    response: {},
-    recieved: false
+    selectedSprint: ""
   };
 
+  //axios call to fetch executive data
+
   componentDidMount() {
-    api.getExecInsightsData(this.props.executiveId).then(this.setProject);
+    api
+      .getExecInsightsData(this.props.executiveId)
+      .then(this.setProject)
+      .catch(error => {
+        console.error(error);
+      });
   }
+
+  //function to set project details
 
   setProject = res => {
     const projects = res.data.projects;
@@ -33,17 +41,11 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    this.props.projInsightDispatch(
-      projects[selectedIndex].id,
-      this.props.executiveId
-    );
-    api
-      .getProjectInsightsData(
-        projects[selectedIndex].id,
-        this.props.executiveId
-      )
-      .then(this.setSprint);
+
+    this.getProjectDetails(projects[selectedIndex].id, this.props.executiveId);
   };
+
+  //function to update project details when project dropdown values are changed
 
   updateProject = projectId => {
     const projects = [...this.state.productData];
@@ -52,32 +54,32 @@ class ProductInfoBar extends Component {
       productData: list,
       selectedProduct: list[selectedIndex].projectName
     });
-    this.props.projInsightDispatch(
-      projects[selectedIndex].id,
-      this.props.executiveId
-    );
-    // api.getProjectInsightsData(projectId, this.props.executiveId).then(this.setSprint);
-    api
-      .getProjectInsightsData(
-        projects[selectedIndex].id,
-        this.props.executiveId
-      )
-      .then(this.setSprint);
+    this.getProjectDetails(projects[selectedIndex].id, this.props.executiveId);
   };
 
+  //axios call to fetch project details
+
+  getProjectDetails = (projectID, executiveId) => {
+    this.props.projInsightDispatch(projectID, executiveId);
+    api
+      .getProjectInsightsData(projectID, executiveId)
+      .then(this.setSprint)
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  // axios call to fetch sprint details
+
   getSprintData = (sprintId, selectedProjectId) => {
-    // return this.props.sprintInsightsDispatch(sprintId, this.props.executiveId, selectedProjectId)
     this.props.sprintInsightsDispatch(
       sprintId,
       this.props.executiveId,
       this.props.projectID
     );
-    this.props.chartDataDispatch(
-      this.props.executiveId,
-      this.props.projectID,
-      sprintId
-    );
   };
+
+  //method to set current sprint value and set sprint details
 
   setSprint = res => {
     let sprints = res.data.sprintDetails;
@@ -103,6 +105,8 @@ class ProductInfoBar extends Component {
     );
   };
 
+  //method to update sprint details
+
   updateSprint = sprintId => {
     const { list, selectedIndex } = this.markSelected(
       this.state.sprintData,
@@ -115,6 +119,7 @@ class ProductInfoBar extends Component {
     this.getSprintData(sprintId, this.props.executiveId);
   };
 
+  //function to reset selected values
   resetSelect = prodList => {
     const defaultList = prodList.map(ele => {
       ele.selected = false;
@@ -140,19 +145,26 @@ class ProductInfoBar extends Component {
     };
   };
 
+  //handler function when project dropdown is changed
+
   prodOnSelectHandler = (prodId, evtKey) => {
     this.updateProject(prodId);
   };
+
+  //handler function when sprint dropdown is changed
 
   sprintOnSelectHandler = (sprintId, evtKey) => {
     this.updateSprint(sprintId);
   };
 
   render() {
-    let dimData = this.props.widData;
-    const Components = this.props.lazyFunc(dimData);
+    let dimensionData = this.props.widgetProps;
+
+    const projectDimensions = new Widgets();
+    const Components = projectDimensions.loadDimensions(dimensionData);
     const LineHigh = Components["LineHigh"];
-    // const Donut = Components["Donut"];
+    const Donut = Components["Donut"];
+
     return (
       <div className="h-10" style={{ backgroundColor: "#1c2531" }}>
         <Container fluid className="h-100 border-bottom border-dark border-top">
@@ -352,6 +364,9 @@ class ProductInfoBar extends Component {
     );
   }
 }
+
+////function to map the state received from reducer
+
 const mapStateToProps = state => {
   return {
     executiveId: state.execData.executiveId,
@@ -365,12 +380,14 @@ const mapStateToProps = state => {
     sprintDataReceived: state.productDetails.currentSprint.sprintReceived,
     velocityCharts: state.chartData.currentChartData.chartDetails,
     chartDataReceived: state.chartData.currentChartData.chartDataReceived
-    // execData: state.execData.executiveData.data
   };
 };
+
+//Connect react component to redux
+
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { projInsightDispatch, sprintInsightsDispatch, chartDataDispatch },
+    { projInsightDispatch, sprintInsightsDispatch },
     dispatch
   );
 };

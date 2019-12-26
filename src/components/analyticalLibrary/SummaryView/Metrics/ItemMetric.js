@@ -14,8 +14,10 @@ const colorClass = {
   green: "text-green"
 };
 
+//component that displays the metrics data such as Av Release cycle and Av Deployment Lead time
+
 const ItemMetric = props => {
-  const items = props.itemMetrics.map((item, key) => {
+  const items = props.itemMetric.map((item, key) => {
     return (
       <div
         key={key}

@@ -6,13 +6,16 @@ export const chartDataDispatch = (
   projectId,
   sprintId
 ) => async dispatch => {
-  const response = await api.getVelocityData(execId, projectId, sprintId);
-  // const response = await JsonApis.get("/JsonData/velocity.json");
-  dispatch({
-    type: actionTypes.SET_CHARTS_DETAILS,
-    payload: {
-      chartDetails: response.data,
-      chartDataReceived: true
-    }
-  });
+  try {
+    const response = await api.getVelocityData(execId, projectId, sprintId);
+    dispatch({
+      type: actionTypes.SET_CHARTS_DETAILS,
+      payload: {
+        chartDetails: response.data,
+        chartDataReceived: true
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };

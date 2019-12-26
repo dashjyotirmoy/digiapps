@@ -1,47 +1,64 @@
-// Dashboard Controller which parses through the Config json file and render components dynamically
+// Dashboard Controller which dynamically renders the components
 //Author : Sujith Surendran
 import React, { Suspense } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import DefinitionLoader from "../analyticalLibrary/ProductDefinationBar/DefinitionLoader.js";
-import ModalLoader from "../analyticalLibrary/ModalBackDrop/ModalBackDrop.js";
+import Widgets from "../dashboardController/widgetParser";
+import dashConstants from "../../utility/constants/dashboardConstants";
 
-var dot = require("dot-object");
-const configData = require("../configurationManager/Config.json");
+const dotObject = require("dot-object"); // requiring the dotObject dependency
+const configurationData = require("../../Config.json"); // requiring config.json to get configurationd ata
 
-function lazyComponent(items) {
-  let loadWidgets = {};
-  items.map((widget, index) => {
-    loadWidgets[widget.name] = React.lazy(() => {
-      return import("../analyticalLibrary/" + widget.path);
-    });
-  });
-  return loadWidgets;
-}
+//function which use dotObject to retrieve metrics, dimensions and attributes data
 
-export default function Dashboard(props) {
-  let items = dot.pick("widgets", configData);
-  const widgetComponents = new lazyComponent(items);
-  const componentArray = props.compList.map((item, index) => {
-    const widgetData = dot.pick(
-      "widgets[" + index + "]" + ".dimensions",
-      configData
+const dataFromDot = index => {
+  let dimensionItems = [];
+  dashConstants.dotProps.map(item => {
+    dimensionItems.push(
+      dotObject.pick(
+        "widgets[" + index + "]" + item.dimension,
+        configurationData
+      )
     );
+  });
+
+  return dimensionItems;
+};
+
+//Functional component which dynamically imports the widgets and renders
+
+const DashboardController = props => {
+  let widgetsMain = dotObject.pick("widgets", configurationData);
+  let widget_item = new Widgets();
+
+  const widgetComponents = widget_item.loadWidgets(widgetsMain);
+
+  const componentArray = props.compList.map((item, index) => {
+    const widgetProperties = dataFromDot(index);
     const Component = widgetComponents[item];
+
     return (
-      <Suspense fallback={<div>Loading...</div>}>
-        <Component key={index} widData={widgetData} lazyFunc={lazyComponent} />
+      <Suspense fallback={<div>Loading...</div>} key={index}>
+        <Component
+          key={index}
+          widgetProps={widgetProperties[0]}
+          metrics={widgetProperties[1]}
+          attributes={widgetProperties[2]}
+        />
       </Suspense>
     );
   });
 
   return (
-    // <ModalLoader show={true} />
-    <BrowserRouter basename="/digitalops/execDashboard">
+    //Router configuration which sets the basename and base component
+
+    <BrowserRouter basename={dashConstants.baseName.name}>
       {componentArray}
       <Switch>
-        <Route path={"/:productSelected"} component={DefinitionLoader} />
+        <Route path={"/:productSelected"} component={DefinitionLoader} /> sd
         <Redirect exact from={"/"} to={`/velocity`} />
       </Switch>
     </BrowserRouter>
   );
-}
+};
+export default DashboardController;

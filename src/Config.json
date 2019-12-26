@@ -5,7 +5,8 @@
       "name": "SummaryView",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "SummaryView/SummaryView",
+      "basePath": "../analyticalLibrary/",
+      "compPath": "SummaryView/SummaryView",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
@@ -39,7 +40,7 @@
         {
           "name": "ItemMetric",
           "title": "Overview",
-          "path": "SummaryView/Metrics/ItemMetric",
+          "compPath": "SummaryView/Metrics/ItemMetric",
           "description": "Current Project Status",
           "priority": {
             "x": 1,
@@ -55,7 +56,7 @@
         {
           "name": "MainMetrics",
           "title": "MainMetrics Data",
-          "path": "SummaryView/Metrics/MainMetrics",
+          "compPath": "SummaryView/Metrics/MainMetrics",
           "description": "Go Live",
           "priority": {
             "x": 1,
@@ -83,6 +84,7 @@
           "data": ""
         }
       ],
+      "route": {},
       "dragPosition": [
         {
           "currPos": 1,
@@ -97,7 +99,8 @@
       "name": "ProductInfoBar",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "ProductInfoBar/ProductInfoBar",
+      "basePath": "../analyticalLibrary/",
+      "compPath": "ProductInfoBar/ProductInfoBar",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
@@ -131,7 +134,7 @@
         {
           "name": "LineHigh",
           "title": "Overview",
-          "path": "Charts/LineHigh/LineHigh",
+          "compPath": "Charts/LineHigh/LineHigh",
           "description": "Current Project Status",
           "priority": 1,
           "uri": "/dimensions/{name}",
@@ -144,7 +147,7 @@
         {
           "name": "Donut",
           "title": "GoLive Data",
-          "path": "Charts/Donut/Donut",
+          "compPath": "Charts/Donut/Donut",
           "description": "Go Live",
           "priority": 2,
           "uri": "/dimensions/{Golive}",
@@ -169,6 +172,7 @@
           "data": ""
         }
       ],
+      "route": {},
       "dragPosition": [
         {
           "currPos": 1,
@@ -182,7 +186,8 @@
       "name": "ProductDefBar",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "ProductDefinationBar/ProductDefBar",
+      "basePath": "../analyticalLibrary/",
+      "compPath": "ProductDefinationBar/ProductDefBar",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
@@ -216,6 +221,7 @@
         {
           "name": "Project Status",
           "title": "Overview",
+          "compPath": "",
           "description": "Current Project Status",
           "priority": 1,
           "uri": "/dimensions/{name}",
@@ -228,6 +234,7 @@
         {
           "name": "GoLive",
           "title": "GoLive Data",
+          "compPath": "",
           "description": "Go Live",
           "priority": 2,
           "uri": "/dimensions/{Golive}",
@@ -265,7 +272,8 @@
       "name": "Customer",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "ProductDefinationBar/ProductDefinition/Customer",
+      "basePath": "../analyticalLibrary/",
+      "compPath": "ProductDefinationBar/ProductDefinition/Customer",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
@@ -348,7 +356,8 @@
       "name": "Quality",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "ProductDefinationBar/ProductDefinition/Quality",
+      "basePath": "../analyticalLibrary/",
+      "compPath": "ProductDefinationBar/ProductDefinition/Quality",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",
@@ -431,7 +440,8 @@
       "name": "Velocity",
       "title": "EY DevOps",
       "description": "EY DevOps",
-      "path": "ProductDefinationBar/ProductDefinition/Velocity",
+      "basePath": "../analyticalLibrary/",
+      "compPath": "ProductDefinationBar/ProductDefinition/Velocity",
       "position": 1,
       "render": {
         "licenseKey": "lic-ex-sprint-summaryv01-22453135",

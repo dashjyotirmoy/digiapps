@@ -1,3 +1,5 @@
+//Wrapper class which contains logic for providing data to the analytical graph components
+
 class Options {
   chart = {};
   credits = {
@@ -19,6 +21,7 @@ class Graph {
     this.res = props;
     this.options = this.generateOption(props.type);
   }
+
   generateOption = type => {
     const baseOptions = new Options();
     let updatedOptions = {};
@@ -32,10 +35,19 @@ class Graph {
       case "ControlChartHigh":
         updatedOptions = this.generateControlChart(baseOptions);
         return updatedOptions;
+      case "MultipleLineHigh":
+        updatedOptions = this.generateMultipleLine(baseOptions);
+        return updatedOptions;
+      case "AreaHigh":
+        updatedOptions = this.generateArea(baseOptions);
+        return updatedOptions;
       default:
         return null;
     }
   };
+
+  //function that Creates data for Line chart
+
   generateLine(options) {
     let start = new Date(this.res.burndown.startDate).toLocaleDateString();
     let end = new Date(this.res.burndown.endDate).toLocaleDateString();
@@ -98,6 +110,176 @@ class Graph {
     };
     return options;
   }
+
+  generateMultipleLine(options) {
+    let bugs_array,
+      vulnerabilities_array,
+      code_smells_array,
+      bugs_metrics_data,
+      vul_metrics_data,
+      codeSmell_metrics_data;
+
+    bugs_metrics_data = this.res.data[0].metrics;
+    vul_metrics_data = this.res.data[1].metrics;
+    codeSmell_metrics_data = this.res.data[2].metrics;
+
+    bugs_array = this.generateData(bugs_metrics_data);
+    vulnerabilities_array = this.generateData(vul_metrics_data);
+    code_smells_array = this.generateData(codeSmell_metrics_data);
+
+    options.chart = {
+      height: 0,
+      backgroundColor: ""
+    };
+    options.title = {
+      text: this.res.title,
+      align: "left",
+      style: {
+        color: "#f5f5f5",
+        fontWeight: "bold"
+      }
+    };
+    options.xAxis = {
+      type: "datetime",
+      dateTimeLabelFormats: {
+        day: "%b %e"
+      },
+      lineWidth: 1,
+      tickLength: 0,
+      style: {
+        color: "#f5f5f5"
+      }
+    };
+    options.yAxis = {
+      title: {
+        text: ``
+      },
+      gridLineColor: ""
+    };
+    options.series = [
+      {
+        data: bugs_array,
+        name: "Bugs",
+        type: "line",
+        marker: {
+          enabled: false
+        },
+        pointInterval: 86400000
+      },
+      {
+        data: vulnerabilities_array,
+        type: "line",
+        name: "Vulnerabilities",
+        marker: {
+          enabled: false
+        },
+        pointInterval: 86400000
+      },
+      {
+        data: code_smells_array,
+        type: "line",
+        name: "Code Smells",
+        marker: {
+          enabled: false
+        },
+        pointInterval: 86400000
+      }
+    ];
+    return options;
+  }
+
+  generateData = rawData => {
+    let points_array = [];
+    rawData.map(bvc => {
+      let point_data = [];
+      let rawDate = bvc.date.split("T");
+      point_data[0] = new Date(rawDate[0]).getTime() + 19800000;
+      point_data[1] = parseInt(bvc.value);
+      points_array.push(point_data);
+    });
+    return points_array;
+  };
+
+  generateArea(options) {
+    let lines_to_cover = [],
+      covered_lines = [];
+    this.res.data[0].coverageMetrics.map(day_data => {
+      let to_cover_point = [],
+        covered_point = [];
+      let rawDate = day_data.date.split("T");
+      to_cover_point[0] = new Date(rawDate[0]).getTime() + 19800000;
+      to_cover_point[1] = parseInt(day_data.linesToCover);
+      covered_point[0] = new Date(rawDate[0]).getTime() + 19800000;
+      covered_point[1] = parseInt(day_data.coveredLines);
+      lines_to_cover.push(to_cover_point);
+      covered_lines.push(covered_point);
+    });
+    options.chart = {
+      type: "area",
+      height: 0,
+      backgroundColor: ""
+    };
+    options.xAxis = {
+      type: "datetime",
+      dateTimeLabelFormats: {
+        day: "%b %e"
+      },
+      lineWidth: 1,
+      tickLength: 0,
+      style: {
+        color: "#f5f5f5"
+      }
+    };
+    options.yAxis = {
+      labels: {
+        enabled: false
+      },
+      title: {
+        text: ``,
+        rotation: 0
+      }
+    };
+    options.title = {
+      text: this.res.title,
+      align: "left",
+      style: {
+        color: "#f5f5f5",
+        fontWeight: "bold"
+      }
+    };
+    options.plotOpions = {
+      area: {
+        stacking: "normal",
+        lineColor: "#666666",
+        lineWidth: 1,
+        marker: {
+          lineWidth: 1,
+          lineColor: "#666666"
+        }
+      }
+    };
+    options.series = [
+      {
+        name: "Lines to cover",
+        data: lines_to_cover,
+        marker: {
+          enabled: false
+        },
+        pointInterval: 86400000
+      },
+      {
+        name: "Covered lines",
+        data: covered_lines,
+        marker: {
+          enabled: false
+        },
+        pointInterval: 86400000
+      }
+    ];
+    return options;
+  }
+  //function that Creates data for Column chart
+
   generateColumn(options) {
     options.chart = {
       type: "column",
@@ -176,6 +358,9 @@ class Graph {
     ];
     return options;
   }
+
+  //function that Creates data for Control charts
+
   generateControlChart(options) {
     let issues = [],
       bugs = [],

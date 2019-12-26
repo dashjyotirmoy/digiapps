@@ -1,3 +1,5 @@
+//Component to render customer value reports
+
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
@@ -47,12 +49,11 @@ class Customer extends Component {
         // { i: "4", x: 8, y: 2, w: 6, h: 2, isResizable: false }
       ]
     },
-    graphCount: 6,
-    currentBreakpoint: "lg",
-    currentColCount: 0,
     gridCol: { lg: 12, md: 12, sm: 6, xs: 4, xxs: 2 },
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }
   };
+
+  //function to create charts for customer reports
 
   createCharts = (list, removed) => {
     const updatedList = list.filter((ele, index) => {
@@ -65,6 +66,8 @@ class Customer extends Component {
       charts: updatedList
     });
   };
+
+  //function to load charts based on type
 
   setChart = (type, title) => {
     switch (type) {

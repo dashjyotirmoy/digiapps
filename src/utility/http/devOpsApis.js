@@ -22,22 +22,21 @@ const getProjectInsightsData = (projectId, execId) => {
   );
 };
 
-// const getProductInfoData = (execId, projectId) => {
-//   return devovOpsApi.get(
-//     `/sprint/b7d0d35d-abef-40b6-aef5-3e7f038d7824/sprintInsights?executiveId=${execId}&projectId=${projectId}`
-//   );
-// };
-
 const getSprintInsightsData = (sprintId, execId, projectId) => {
   return devovOpsApi.get(
     `sprint/${sprintId}/sprintInsights?executiveId=${execId}&projectId=${projectId}`
   );
 };
 
+const getQualityMetricsData = (projectId, repositoryId) => {
+  return devovOpsApi.get(
+    `/widget/qualityInsights?projectId=${projectId}&repositoryId=${repositoryId}`
+  );
+};
+
 export default {
   getVelocityData,
   getExecInsightsData,
-  // getProductInfoData,
   getProjectInsightsData,
   getSprintInsightsData
 };

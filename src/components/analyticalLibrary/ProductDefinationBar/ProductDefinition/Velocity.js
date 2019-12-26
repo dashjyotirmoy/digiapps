@@ -1,3 +1,5 @@
+//Component to render velocity and efficienty reports
+
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
@@ -52,20 +54,17 @@ class Velocity extends Component {
         { i: "4", x: 7, y: 2, w: 3, h: 2, isResizable: false }
       ]
     },
-    graphCount: 6,
-    currentBreakpoint: "lg",
-    currentColCount: 0,
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    gridBreakpoints: { lg: 1200, md: 768, sm: 576, xs: 480, xxs: 0 },
-    response: {},
-    received: false
+    gridBreakpoints: { lg: 1200, md: 768, sm: 576, xs: 480, xxs: 0 }
   };
+
+  //function to remove a chart component from the grid layout
 
   removeChartComponent = chartIndex => {
     const charts = [...this.state.charts];
     this.createCharts(charts, chartIndex);
-    //charts.splice(chartIndex, 1);
     const layouts = {};
+
     Object.keys(this.state.layout).map(key => {
       const copy = [...this.state.layout[key]];
       copy.splice(chartIndex, 1);
@@ -77,10 +76,13 @@ class Velocity extends Component {
       });
       layouts[key] = indexUpdate;
     });
+
     this.setState({
       layout: layouts
     });
   };
+
+  //function that create charts based on the data from services
 
   createCharts = (list, removed) => {
     let updatedList = list.filter((ele, index) => {
@@ -95,12 +97,14 @@ class Velocity extends Component {
     });
   };
 
+  //function that identifies the chart to render based on type during createCharts() execution
+
   setChart = (type, title, data) => {
     switch (type) {
       case "ControlChartHigh":
         return <ControlChartHigh title={title} type={type} data={data} />;
-      case "ColumnHigh":
-        return <ColumnHigh title={title} type={type} data={data} />;
+      // case "ColumnHigh":
+      //   return <ColumnHigh title={title} type={type} data={data} />;
       case "img":
         return (
           <img src={title} className="h-100 w-100 border-radius-10" alt="img" />
@@ -109,6 +113,8 @@ class Velocity extends Component {
         return "";
     }
   };
+
+  // function that create the chart object to paint the chart
 
   createChartObject = rawData => {
     const processedData = rawData.map(ele => {
@@ -122,6 +128,8 @@ class Velocity extends Component {
     });
     return processedData;
   };
+
+  //compare the current props and incoming props
 
   componentWillReceiveProps(nextProps) {
     if (
@@ -143,6 +151,14 @@ class Velocity extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if (this.state.all_data) {
+      this.fetchChartsData();
+    }
+  }
+
+  //function to fetch charts data
+
   fetchChartsData = () => {
     this.setState({
       all_data: false,
@@ -156,18 +172,13 @@ class Velocity extends Component {
       )
       .then(res => {
         this.createCharts(this.createChartObject(this.props.velocityCharts));
-        this.setState({
-          response: this.props.velocityCharts,
-          received: true
-        });
+      })
+      .catch(error => {
+        console.error(error);
       });
   };
 
   render() {
-    if (this.state.all_data) {
-      this.fetchChartsData();
-    }
-
     return (
       <React.Fragment>
         {this.state.charts.length > 0 ? (
@@ -184,18 +195,23 @@ class Velocity extends Component {
   }
 }
 
+//function to map the state received from reducer
+
 const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
     velocityCharts: state.chartData.currentChartData.chartDetails,
-    chartDataReceived: state.chartData.currentChartData.chartDataReceived,
     projId: state.productDetails.currentProject.projectDetails.id,
-    projectRecieved: state.productDetails.currentProject.projectDataReceived,
-    sprintId: state.productDetails.currentSprint.sprintInfo.id,
-    sprintDataReceived: state.productDetails.currentSprint.sprintReceived
+    sprintId: state.productDetails.currentSprint.sprintInfo.id
   };
 };
+
+//function to dispatch action to the reducer
+
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ chartDataDispatch }, dispatch);
 };
+
+//Connect react component to redux
+
 export default connect(mapStateToProps, mapDispatchToProps)(Velocity);

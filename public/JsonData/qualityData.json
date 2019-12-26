@@ -1,0 +1,115 @@
+{
+  "id": "mongoId",
+  "type": "SonarQube",
+  "createdDate": "2019-12-6T00:00:00Z",
+  "repository": [
+    {
+      "id": "repo1",
+      "name": "Repository A",
+      "bugs": {
+        "count": "4",
+        "rating": "3.0",
+        "metrics": [
+          {
+            "date": "2019-12-6T00:00:00Z",
+            "value": "2",
+            "blocked": "0",
+            "critical": "0",
+            "major": "1",
+            "minor": "1",
+            "info": "0"
+          },
+          {
+            "date": "2019-12-8T00:00:00Z",
+            "value": "4",
+            "blocked": "0",
+            "critical": "0",
+            "major": "1",
+            "minor": "1",
+            "info": "0"
+          }
+        ]
+      },
+      "vulnerabilities": {
+        "count": "0",
+        "rating": "1.0",
+        "metrics": [
+          {
+            "date": "2019-12-6T00:00:00Z",
+            "value": "0",
+            "blocked": "0",
+            "critical": "0",
+            "major": "0",
+            "minor": "0",
+            "info": "0"
+          },
+          {
+            "date": "2019-12-8T00:00:00Z",
+            "value": "3",
+            "blocked": "0",
+            "critical": "0",
+            "major": "0",
+            "minor": "0",
+            "info": "0"
+          }
+        ]
+      },
+      "codeSmells": {
+        "count": "24",
+        "rating": "1.0",
+        "metrics": [
+          {
+            "date": "2019-12-6T00:00:00Z",
+            "value": "16",
+            "blocked": "0",
+            "critical": "0",
+            "major": "0",
+            "minor": "14",
+            "info": "2"
+          },
+          {
+            "date": "2019-12-9T00:00:00Z",
+            "value": "12",
+            "blocked": "0",
+            "critical": "0",
+            "major": "0",
+            "minor": "14",
+            "info": "2"
+          }
+        ]
+      },
+      "coverage": {
+        "value": "38.0",
+        "coverageMetrics": [
+          {
+            "date": "2019-12-6T00:00:00Z",
+            "linesToCover": "1417",
+            "coveredLines": "537"
+          },
+          {
+            "date": "2019-12-7T00:00:00Z",
+            "linesToCover": "1025",
+            "coveredLines": "542"
+          },
+          {
+            "date": "2019-12-8T00:00:00Z",
+            "linesToCover": "1600",
+            "coveredLines": "922"
+          },
+          {
+            "date": "2019-12-9T00:00:00Z",
+            "linesToCover": "1050",
+            "coveredLines": "200"
+          }
+        ]
+      },
+      "duplication": "0.0"
+    }
+  ],
+  "outstandingBugs": {
+    "critical": "",
+    "high": "",
+    "medium": "",
+    "low": ""
+  }
+}

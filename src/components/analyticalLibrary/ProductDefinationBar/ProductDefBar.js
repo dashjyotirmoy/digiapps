@@ -90,15 +90,7 @@ class ProductDefBar extends Component {
                       <span className="font-aggegate-sub-text"> Quality</span>
                     }
                   ></Tab>
-                  {/* <Tab
-                    eventKey="contact"
-                    title={
-                      <span className="font-aggegate-sub-text">
-                        {" "}
-                        Organizational Effectiveness
-                      </span>
-                    }
-                  ></Tab> */}
+
                   <Tab
                     eventKey="customer"
                     title={
@@ -134,5 +126,7 @@ class ProductDefBar extends Component {
     );
   }
 }
+
+//withRouter Higher order component which gives the component access to history props
 
 export default withRouter(ProductDefBar);
