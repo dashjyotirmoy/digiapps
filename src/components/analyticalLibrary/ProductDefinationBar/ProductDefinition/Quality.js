@@ -3,42 +3,9 @@ import Grid from "../../Grid-Layout/Grid";
 import { Row, Container, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquare, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
-import active from "../../../../content/img/activityStatus.png";
-import coverage from "../../../../content/img/coverage.png";
-import outstandingDefects from '../../../../content/img/outstandingDefects.png';
-import resultCount from '../../../../content/img/resultCount.png';
-import BVCLineHigh from '../../Charts/BVCLineHigh/BVCLineHigh';
-import CoverageAreaHigh from '../../Charts/CoverageAreaHigh/CoverageAreaHigh';
-const initialData = [
-  {
-    name: "rct",
-    type: "BVCLineHigh",
-    data: "Activity Status",
-    title: active,
-    component: {}
-  },
-  {
-    name: "dlt",
-    type: "CoverageAreaHigh",
-    data: "Coverage",
-    title: coverage,
-    component: {}
-  },
-  {
-    name: "tp",
-    type: "img",
-    data: "Result Count and Pass Rate",
-    title: resultCount,
-    component: {}
-  },
-  {
-    name: "dcp",
-    type: "img",
-    data: "Outstanding Defects",
-    title: outstandingDefects,
-    component: {}
-  }
-];
+import mockApi from "../../../../utility/Http/devOpsApisMock";
+import LineHigh from "../../Charts/LineHigh/LineHigh";
+import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 
 const qualityMetrics = [
   {
@@ -68,33 +35,44 @@ const qualityMetrics = [
   }
 ];
 
+const chartComp = [
+  {
+    name: "Bugs, Vulnerabilities & Code Smells",
+    type: "MultipleLineHigh",
+    component: LineHigh
+  },
+  {
+    name: "Coverage & Duplications",
+    type: "AreaHigh",
+    component: AreaHigh
+  }
+];
+
 class Quality extends Component {
   state = {
     charts: [],
     layout: {
       lg: [
         { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "2", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "3", x: 6, y: 2, w: 6, h: 2, isResizable: false }
+        { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false }
+        // { i: "2", x: 0, y: 0, w: 6, h: 2, isResizable: false },
+        // { i: "3", x: 6, y: 2, w: 6, h: 2, isResizable: false }
       ],
       md: [
         { i: "0", x: 0, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "1", x: 6, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "2", x: 0, y: 2, w: 4, h: 2, isResizable: false },
-        { i: "3", x: 4, y: 2, w: 6, h: 2, isResizable: false }
+        { i: "1", x: 6, y: 0, w: 5, h: 2, isResizable: false }
+        // { i: "2", x: 0, y: 2, w: 4, h: 2, isResizable: false },
+        // { i: "3", x: 4, y: 2, w: 6, h: 2, isResizable: false }
       ]
     },
-    graphCount: 6,
-    currentBreakpoint: "lg",
-    currentColCount: 0,
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }
+    gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
+    countData: []
   };
+
   removeChartComponent = chartIndex => {
     const charts = [...this.state.charts];
     this.createCharts(charts, chartIndex);
-    //charts.splice(chartIndex, 1);
     const layouts = {};
     Object.keys(this.state.layout).map(key => {
       const copy = [...this.state.layout[key]];
@@ -112,41 +90,105 @@ class Quality extends Component {
     });
   };
 
+  createChartObject = typeObj => {
+    const processedData = typeObj[0].map(ele => {
+      return {
+        name: ele[0].name,
+        data: ele,
+        title: ele[1].title
+      };
+    });
+    return processedData;
+  };
+
   createCharts = (list, removed) => {
     const updatedList = list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
+
     updatedList.map(ele => {
-      ele.component = this.setChart(ele.type, ele.title, ele.data);
+      ele.data = ele.data.splice(2);
+      ele.component = this.setChart(ele.title, ele.data);
     });
     this.setState({
       charts: updatedList
     });
   };
 
-  setChart = (type, title, data) => {
-    switch (type) {
-      case "BVCLineHigh":
-        return <BVCLineHigh />;
-      case "CoverageAreaHigh":
-        return <CoverageAreaHigh />;
-      case "img":
-        return (
-          <div className="chart-title w-100 h-100">
-            <div
-              className="chart-title ml-3 mt-1 position-absolute"
-              style={{ zIndex: "1" }}
-            >
-              {data}
-            </div>
-            <img src={title} className="h-100 w-100 border-radius-10" />
-          </div>
-        );
-    }
+  setChart = (title, data) => {
+    const chartArry = chartComp.map(item => {
+      if (item.name === title) {
+        return <item.component type={item.type} title={title} data={data} />;
+      }
+    });
+    return chartArry;
   };
+
+  // type: "Bugs",
+  // position: "critical",
+  // value: "32"
+
   componentDidMount() {
-    this.createCharts(initialData);
+    const qualityData = mockApi.getQualityMetricsData();
+    qualityData.then(item => {
+      this.state.countData = this.createMetrics(item.data.repository);
+      const type = this.setType(
+        item.data.repository,
+        item.data.outstandingBugs
+      );
+
+      const splitArr = this.splitType(type);
+
+      this.createCharts(this.createChartObject(splitArr));
+    });
   }
+
+  createMetrics = arr => {
+    let metricsData = arr.map(obj => Object.entries(obj));
+    metricsData = metricsData[0].slice(2);
+    return this.createMetricObject(metricsData);
+  };
+
+  createMetricObject = mergObj => {
+    return mergObj.map(item => {
+      return {
+        type: item[0],
+        position: "critical",
+        value:
+          item[0] === "coverage"
+            ? item[1].value
+            : item[0] === "duplication"
+            ? item[1]
+            : item[1].count
+      };
+    });
+  };
+
+  splitType = type => {
+    const splitArr = type.map(obj => Object.values(obj));
+    return splitArr;
+  };
+
+  setType = (rawData, outStandingBugs) => {
+    const item = rawData.map((item, index) => {
+      return {
+        bugs_vulnerability_codeSmell: [
+          { name: item.name },
+          { title: "Bugs, Vulnerabilities & Code Smells" },
+          { bugs: item.bugs },
+          { vulberablities: item.vulnerabilities },
+          { codesmells: item.codeSmells }
+        ],
+        coverage: [
+          { name: item.name },
+          { title: "Coverage & Duplications" },
+          item.coverage
+        ]
+      };
+    });
+    return item;
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -174,7 +216,7 @@ class Quality extends Component {
           </Row>
           <Container fluid className=" w-100 h-90 d-flex align-item-center">
             <div className="h-100 w-100 d-flex overflow-auto">
-              {qualityMetrics.map(ele => {
+              {this.state.countData.map(ele => {
                 return (
                   <div
                     key={ele.type}

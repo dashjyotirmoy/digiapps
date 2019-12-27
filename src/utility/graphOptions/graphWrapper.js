@@ -15,7 +15,7 @@ class Options {
   yAxis = {};
   series = {};
 }
-var sd = 'Start date'
+var sd = "Start date";
 
 class Graph {
   constructor(props) {
@@ -120,9 +120,9 @@ class Graph {
       vul_metrics_data,
       codeSmell_metrics_data;
 
-    bugs_metrics_data = this.res.data[0].metrics;
-    vul_metrics_data = this.res.data[1].metrics;
-    codeSmell_metrics_data = this.res.data[2].metrics;
+    bugs_metrics_data = this.res.data[0].bugs.metrics;
+    vul_metrics_data = this.res.data[1].vulberablities.metrics;
+    codeSmell_metrics_data = this.res.data[2].codesmells.metrics;
 
     bugs_array = this.generateData(bugs_metrics_data);
     vulnerabilities_array = this.generateData(vul_metrics_data);
@@ -216,24 +216,32 @@ class Graph {
       covered_lines.push(covered_point);
     });
     options.chart = {
-      type: "area",
-      height: 0,
-      backgroundColor: ""
+      type: "area"
     };
     options.xAxis = {
       type: "datetime",
+      labels: {
+        style: {
+          color: "#f5f5f5"
+        }
+      },
       dateTimeLabelFormats: {
         day: "%b %e"
       },
-      lineWidth: 1,
+      lineWidth: 0,
       tickLength: 0,
       style: {
         color: "#f5f5f5"
       }
     };
     options.yAxis = {
+      gridLineColor: "",
       labels: {
-        enabled: false
+        enabled: true,
+        format: "{value}K",
+        style: {
+          color: "#f5f5f5"
+        }
       },
       title: {
         text: ``,
@@ -262,18 +270,22 @@ class Graph {
     options.series = [
       {
         name: "Lines to cover",
-        data: lines_to_cover,
+        data: [10, 8, 11, 13, 16, 10, 14],
         marker: {
           enabled: false
         },
+        color: "#5173CE",
+        pointStart: Date.UTC(2019, 10, 10),
         pointInterval: 86400000
       },
       {
         name: "Covered lines",
-        data: covered_lines,
+        data: [8, 5, 9, 10, 14, 7, 12],
         marker: {
           enabled: false
         },
+        color: "#657DBD",
+        pointStart: Date.UTC(2019, 10, 10),
         pointInterval: 86400000
       }
     ];

@@ -218,7 +218,7 @@ class ProductInfoBar extends Component {
                   </Row>
                 </Col>
                 <Col
-                  sm={6}
+                  sm={5}
                   md={qualityView ? 4 : 5}
                   lg={qualityView ? 5 : 6}
                   xl={qualityView ? 5 : 6}
@@ -288,7 +288,7 @@ class ProductInfoBar extends Component {
                   </Row>
                 </Col>
                 <Col
-                  sm={3}
+                  sm={2}
                   className={classnames(
                     "border-right",
                     "border-dark",
