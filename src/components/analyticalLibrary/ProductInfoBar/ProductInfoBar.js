@@ -11,11 +11,11 @@ import { sprintInsightsDispatch } from "../../../store/actions/sprintInsights";
 import api from "../../../utility/Http/devOpsApis";
 import prodAggEnabled from "../../../content/img/prodAggButton.svg";
 import prodAggDisabled from "../../../content/img/prodAggButtonDisabbled.svg";
-import Donut from "../Charts/Donut/Donut";
 import { translations } from "../Translations/";
 import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 import { isQuality } from "../../../utility/classUtility/classUtil";
 import Widgets from "../../dashboardController/widgetParser";
+import mockApi from "../../../utility/Http/devOpsApisMock";
 
 class ProductInfoBar extends Component {
   state = {
@@ -25,7 +25,9 @@ class ProductInfoBar extends Component {
     selectedSprint: "",
     response: {},
     recieved: false,
-    prodAggView: false
+    prodAggView: false,
+    repoData: [],
+    selectedRepo: ""
   };
 
   //axios call to fetch executive data
@@ -37,8 +39,10 @@ class ProductInfoBar extends Component {
       .catch(error => {
         console.error(error);
       });
+    this.getQualityData();
   }
 
+  //Handling project Data starts
   //function to set project details
 
   setProject = res => {
@@ -77,6 +81,9 @@ class ProductInfoBar extends Component {
       });
   };
 
+  // Handling project Data ends
+
+  //Handling Sprint Data starts
   // axios call to fetch sprint details
 
   getSprintData = (sprintId, selectedProjectId) => {
@@ -127,6 +134,48 @@ class ProductInfoBar extends Component {
     this.getSprintData(sprintId, this.props.executiveId);
   };
 
+  // Handling sprint Data ends
+
+  //Handling repository Data starts
+  // Axios call to fetch repository  data from quality metrics
+
+  getQualityData = () => {
+    const qualityData = mockApi.getQualityMetricsData();
+    qualityData.then(this.setRepository).catch(error => {
+      console.error(error);
+    });
+  };
+
+  //set the repository dropdown
+
+  setRepository = res => {
+    const repositoryData = res.data.repository;
+    const { list, selectedIndex } = this.markSelected(
+      repositoryData,
+      repositoryData[0].id
+    );
+    this.setState({
+      repoData: list,
+      selectedRepo: list[selectedIndex].name
+    });
+  };
+
+  //method to update repo data when dropdown is changed
+
+  updateRepository = repoId => {
+    const { list, selectedIndex } = this.markSelected(
+      this.state.repoData,
+      repoId
+    );
+    this.setState({
+      repoData: list,
+      selectedRepo: list[selectedIndex].name
+    });
+  };
+
+  //Handling repository data ends
+
+  //Handlers for reset and selecting starts
   //function to reset selected values
   resetSelect = prodList => {
     const defaultList = prodList.map(ele => {
@@ -153,6 +202,8 @@ class ProductInfoBar extends Component {
     };
   };
 
+  // handler for reset and selecting ends
+
   //handler function when project dropdown is changed
 
   prodOnSelectHandler = (prodId, evtKey) => {
@@ -163,6 +214,12 @@ class ProductInfoBar extends Component {
 
   sprintOnSelectHandler = (sprintId, evtKey) => {
     this.updateSprint(sprintId);
+  };
+
+  //handler function when the repository is changed
+
+  handleRepoChange = repoID => {
+    this.updateRepository(repoID);
   };
 
   onProdAggViewClickHandler = () => {
@@ -221,7 +278,7 @@ class ProductInfoBar extends Component {
                   sm={5}
                   md={qualityView ? 4 : 5}
                   lg={qualityView ? 5 : 6}
-                  xl={qualityView ? 5 : 6}
+                  xl={qualityView ? 5 : 4}
                   className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
                 >
                   {this.props.projectListReceived ? (
@@ -300,14 +357,14 @@ class ProductInfoBar extends Component {
                 >
                   <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
                     <Dropdown
-                      listData={this.state.sprintData}
+                      listData={this.state.repoData}
                       direction="down"
-                      onSelectDelegate={this.sprintOnSelectHandler}
+                      onSelectDelegate={this.handleRepoChange}
                     >
                       <Row className="h-100 m-0 p-0">
                         <Col sm={10} md={10} lg={10} xl={10}>
                           <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
-                            Repository
+                            {this.state.selectedRepo}
                           </p>
                         </Col>
                         <Col

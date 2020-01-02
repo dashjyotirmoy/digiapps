@@ -7,35 +7,7 @@ import mockApi from "../../../../utility/Http/devOpsApisMock";
 import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 
-const qualityMetrics = [
-  {
-    type: "Bugs",
-    position: "critical",
-    value: "32"
-  },
-  {
-    type: "Vulnerabilities",
-    position: "medium",
-    value: "53"
-  },
-  {
-    type: "Code Smells",
-    position: "critical",
-    value: "1.4K"
-  },
-  {
-    type: "Coverage",
-    position: "low",
-    value: "22%"
-  },
-  {
-    type: "Duplications",
-    position: "medium",
-    value: "4.4%"
-  }
-];
-
-const chartComp = [
+const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
     type: "MultipleLineHigh",
@@ -67,27 +39,84 @@ class Quality extends Component {
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
-    countData: []
+    qualityMetrics: []
   };
 
-  removeChartComponent = chartIndex => {
-    const charts = [...this.state.charts];
-    this.createCharts(charts, chartIndex);
-    const layouts = {};
-    Object.keys(this.state.layout).map(key => {
-      const copy = [...this.state.layout[key]];
-      copy.splice(chartIndex, 1);
-      const indexUpdate = copy.map((ele, index) => {
-        return {
-          ...ele,
-          i: index.toString()
-        };
+  componentDidMount() {
+    const qualityData = mockApi.getQualityMetricsData();
+    qualityData
+      .then(item => {
+        const qualityMetrics = this.createMetrics(item.data.repository);
+        this.setState({
+          qualityMetrics
+        });
+        const type = this.setRawRepoObjects(item.data.repository);
+
+        const splitArr = this.splitRawObj(type);
+
+        this.createCharts(this.createChartObject(splitArr));
+      })
+      .catch(error => {
+        console.error(error);
       });
-      layouts[key] = indexUpdate;
+  }
+
+  createMetrics = arr => {
+    let metricsData = arr.map(obj => Object.entries(obj));
+    metricsData = metricsData[0].slice(2);
+    return this.createMetricObject(metricsData);
+  };
+
+  createMetricObject = mergObj => {
+    return mergObj.map(item => {
+      return {
+        type: item[0],
+        position: this.setMetricPos(item),
+        value:
+          item[0] === "coverage"
+            ? item[1].value
+            : item[0] === "duplication"
+            ? item[1]
+            : item[1].count
+      };
     });
-    this.setState({
-      layout: layouts
+  };
+
+  setMetricPos = item => {
+    let metricValue =
+      item[0] === "coverage"
+        ? "low"
+        : item[0] === "duplication" || item[0] === "vulnerabilities"
+        ? "medium"
+        : item[0] === "bugs" || item[0] === "codeSmells"
+        ? "critical"
+        : null;
+    return metricValue;
+  };
+
+  setRawRepoObjects = rawData => {
+    const item = rawData.map((item, index) => {
+      return {
+        bugs_vulnerability_codeSmell: [
+          { name: item.name },
+          { title: "Bugs, Vulnerabilities & Code Smells" },
+          { bugs: item.bugs },
+          { vulberablities: item.vulnerabilities },
+          { codesmells: item.codeSmells }
+        ],
+        coverage: [
+          { name: item.name },
+          { title: "Coverage & Duplications" },
+          item.coverage
+        ]
+      };
     });
+    return item;
+  };
+
+  splitRawObj = type => {
+    const splitArr = type.map(obj => Object.values(obj));
+    return splitArr;
   };
 
   createChartObject = typeObj => {
@@ -116,77 +145,39 @@ class Quality extends Component {
   };
 
   setChart = (title, data) => {
-    const chartArry = chartComp.map(item => {
+    const chartArry = chartCompList.map(item => {
       if (item.name === title) {
-        return <item.component type={item.type} title={title} data={data} />;
+        return (
+          <item.component
+            key={item.type}
+            type={item.type}
+            title={title}
+            data={data}
+          />
+        );
       }
     });
     return chartArry;
   };
 
-  // type: "Bugs",
-  // position: "critical",
-  // value: "32"
-
-  componentDidMount() {
-    const qualityData = mockApi.getQualityMetricsData();
-    qualityData.then(item => {
-      this.state.countData = this.createMetrics(item.data.repository);
-      const type = this.setType(
-        item.data.repository,
-        item.data.outstandingBugs
-      );
-
-      const splitArr = this.splitType(type);
-
-      this.createCharts(this.createChartObject(splitArr));
+  removeChartComponent = chartIndex => {
+    const charts = [...this.state.charts];
+    this.createCharts(charts, chartIndex);
+    const layouts = {};
+    Object.keys(this.state.layout).map(key => {
+      const copy = [...this.state.layout[key]];
+      copy.splice(chartIndex, 1);
+      const indexUpdate = copy.map((ele, index) => {
+        return {
+          ...ele,
+          i: index.toString()
+        };
+      });
+      layouts[key] = indexUpdate;
     });
-  }
-
-  createMetrics = arr => {
-    let metricsData = arr.map(obj => Object.entries(obj));
-    metricsData = metricsData[0].slice(2);
-    return this.createMetricObject(metricsData);
-  };
-
-  createMetricObject = mergObj => {
-    return mergObj.map(item => {
-      return {
-        type: item[0],
-        position: "critical",
-        value:
-          item[0] === "coverage"
-            ? item[1].value
-            : item[0] === "duplication"
-            ? item[1]
-            : item[1].count
-      };
+    this.setState({
+      layout: layouts
     });
-  };
-
-  splitType = type => {
-    const splitArr = type.map(obj => Object.values(obj));
-    return splitArr;
-  };
-
-  setType = (rawData, outStandingBugs) => {
-    const item = rawData.map((item, index) => {
-      return {
-        bugs_vulnerability_codeSmell: [
-          { name: item.name },
-          { title: "Bugs, Vulnerabilities & Code Smells" },
-          { bugs: item.bugs },
-          { vulberablities: item.vulnerabilities },
-          { codesmells: item.codeSmells }
-        ],
-        coverage: [
-          { name: item.name },
-          { title: "Coverage & Duplications" },
-          item.coverage
-        ]
-      };
-    });
-    return item;
   };
 
   render() {
@@ -216,7 +207,7 @@ class Quality extends Component {
           </Row>
           <Container fluid className=" w-100 h-90 d-flex align-item-center">
             <div className="h-100 w-100 d-flex overflow-auto">
-              {this.state.countData.map(ele => {
+              {this.state.qualityMetrics.map(ele => {
                 return (
                   <div
                     key={ele.type}
