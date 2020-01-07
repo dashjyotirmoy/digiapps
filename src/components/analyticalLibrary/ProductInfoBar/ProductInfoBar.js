@@ -15,7 +15,8 @@ import { translations } from "../Translations/";
 import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 import { isQuality } from "../../../utility/classUtility/classUtil";
 import Widgets from "../../dashboardController/widgetParser";
-import mockApi from "../../../utility/Http/devOpsApisMock";
+import { repoDropValDispatch } from "../../../store/actions/qualityData";
+import { qualityDataDispatch } from "../../../store/actions/qualityData";
 
 class ProductInfoBar extends Component {
   state = {
@@ -39,7 +40,6 @@ class ProductInfoBar extends Component {
       .catch(error => {
         console.error(error);
       });
-    this.getQualityData();
   }
 
   //Handling project Data starts
@@ -110,6 +110,10 @@ class ProductInfoBar extends Component {
         projectName: ele.name
       };
     });
+    this.getQualityData(
+      this.props.executiveId,
+      sprintDetails[sprintData.selectedIndex].id
+    );
     this.setState({
       sprintData: sprintDetails,
       selectedSprint: sprintDetails[sprintData.selectedIndex].projectName
@@ -140,7 +144,10 @@ class ProductInfoBar extends Component {
   // Axios call to fetch repository  data from quality metrics
 
   getQualityData = () => {
-    const qualityData = mockApi.getQualityMetricsData();
+    const qualityData = api.getQualityMetricsData(
+      this.props.executiveId,
+      this.props.projectID
+    );
     qualityData.then(this.setRepository).catch(error => {
       console.error(error);
     });
@@ -149,15 +156,23 @@ class ProductInfoBar extends Component {
   //set the repository dropdown
 
   setRepository = res => {
-    const repositoryData = res.data.repository;
+    const repositoryData = res.data.repositories;
     const { list, selectedIndex } = this.markSelected(
       repositoryData,
-      repositoryData[0].id
+      repositoryData[0].repoKey
     );
-    this.setState({
-      repoData: list,
-      selectedRepo: list[selectedIndex].name
+    const repoDetails = list.map(ele => {
+      return {
+        id: ele.repoKey,
+        projectName: ele.repoName
+      };
     });
+    this.setState({
+      repoData: repoDetails,
+      selectedRepo: repoDetails[selectedIndex].projectName
+    });
+
+    this.props.repoDropValDispatch(this.state.selectedRepo);
   };
 
   //method to update repo data when dropdown is changed
@@ -169,8 +184,9 @@ class ProductInfoBar extends Component {
     );
     this.setState({
       repoData: list,
-      selectedRepo: list[selectedIndex].name
+      selectedRepo: list[selectedIndex].projectName
     });
+    this.props.repoDropValDispatch(list[selectedIndex].projectName);
   };
 
   //Handling repository data ends
@@ -249,7 +265,7 @@ class ProductInfoBar extends Component {
             className="h-100  p-0 m-0"
             style={{ backgroundColor: "#1d2632" }}
           >
-            <Col className="h-100 pl-0" sm={5} md={6} lg={6} xl={6}>
+            <Col className="h-100 pl-0" sm={12} md={6} lg={6} xl={6}>
               <Row className="h-100">
                 <Col
                   sm={2}
@@ -383,7 +399,7 @@ class ProductInfoBar extends Component {
                 </Col>
               </Row>
             </Col>
-            <Col sm={7} md={6} lg={6} xl={6} className="h-100">
+            <Col sm={12} md={6} lg={6} xl={6} className="h-100">
               <Row className="h-100">
                 <Col md={7} xl={8} lg={8} className="h-100">
                   <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
@@ -508,7 +524,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { projInsightDispatch, sprintInsightsDispatch },
+    {
+      projInsightDispatch,
+      sprintInsightsDispatch,
+      repoDropValDispatch,
+      qualityDataDispatch
+    },
     dispatch
   );
 };

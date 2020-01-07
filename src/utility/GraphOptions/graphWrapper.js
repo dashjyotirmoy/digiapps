@@ -20,6 +20,7 @@ var sd = "Start date";
 class Graph {
   constructor(props) {
     this.res = props;
+    console.log(this.res);
     this.options = this.generateOption(props.type);
   }
 
@@ -41,6 +42,12 @@ class Graph {
         return updatedOptions;
       case "AreaHigh":
         updatedOptions = this.generateArea(baseOptions);
+        return updatedOptions;
+      case "BarHigh":
+        updatedOptions = this.generateBar(baseOptions);
+        return updatedOptions;
+      case "DefectHigh":
+        updatedOptions = this.generateDefectColumn(baseOptions);
         return updatedOptions;
       default:
         return null;
@@ -120,9 +127,10 @@ class Graph {
       vul_metrics_data,
       codeSmell_metrics_data;
 
-    bugs_metrics_data = this.res.data[0].bugs.metrics;
-    vul_metrics_data = this.res.data[1].vulberablities.metrics;
-    codeSmell_metrics_data = this.res.data[2].codesmells.metrics;
+    bugs_metrics_data = this.res.data[0].bugs.bugsMetricsList;
+    vul_metrics_data = this.res.data[1].vulberablities
+      .vulnerabilitiesMetricsList;
+    codeSmell_metrics_data = this.res.data[2].codesmells.codeSmellsMetricsList;
 
     bugs_array = this.generateData(bugs_metrics_data);
     vulnerabilities_array = this.generateData(vul_metrics_data);
@@ -186,6 +194,7 @@ class Graph {
         pointInterval: 86400000
       }
     ];
+    console.log(options);
     return options;
   }
 
@@ -204,7 +213,7 @@ class Graph {
   generateArea(options) {
     let lines_to_cover = [],
       covered_lines = [];
-    this.res.data[0].coverageMetrics.map(day_data => {
+    this.res.data[0].coverageMetricsList.map(day_data => {
       let to_cover_point = [],
         covered_point = [];
       let rawDate = day_data.date.split("T");
@@ -270,22 +279,20 @@ class Graph {
     options.series = [
       {
         name: "Lines to cover",
-        data: [10, 8, 11, 13, 16, 10, 14],
+        data: lines_to_cover,
         marker: {
           enabled: false
         },
         color: "#5173CE",
-        pointStart: Date.UTC(2019, 10, 10),
         pointInterval: 86400000
       },
       {
         name: "Covered lines",
-        data: [8, 5, 9, 10, 14, 7, 12],
+        data: covered_lines,
         marker: {
           enabled: false
         },
         color: "#657DBD",
-        pointStart: Date.UTC(2019, 10, 10),
         pointInterval: 86400000
       }
     ];
@@ -607,6 +614,155 @@ class Graph {
         }
       }
     ];
+    return options;
+  }
+
+  //function that creates data for Bar chart
+  generateBar(options) {
+    let critical_value = [],
+      high_value = [],
+      medium_value = [],
+      low_value = [];
+    critical_value.push(parseInt(this.res.data[0].critical));
+    high_value.push(parseInt(this.res.data[0].high));
+    medium_value.push(parseInt(this.res.data[0].medium));
+    low_value.push(parseInt(this.res.data[0].low));
+    options.chart = {
+      type: "bar",
+      height: 0,
+      backgroundColor: ""
+    };
+    options.title = {
+      text: "Outstanding defects",
+      style: {
+        color: "#f5f5f5"
+      },
+      align: "left"
+    };
+    options.yAxis = {
+      min: -1,
+      labels: {
+        enabled: false
+      },
+      title: {
+        text: ``,
+        rotation: 0
+      },
+      gridLineWidth: 0
+    };
+    options.xAxis = {
+      visible: false,
+      tickWidth: 0
+    };
+
+    options.legend = {
+      enabled: false,
+      reversed: true,
+      itemStyle: {
+        color: "#f5f5f5",
+        fontWeight: "normal"
+      }
+    };
+    options.plotOptions = {
+      series: {
+        stacking: "normal",
+        pointWidth: 40,
+        dataLabels: {
+          enabled: true,
+          y: -50,
+          style: {
+            fontWeight: "normal",
+            // fontSize: '1rem'
+            fontFamily:
+              "Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif"
+          }
+        }
+      },
+      bar: {
+        pointStart: 10,
+        borderColor: ""
+      }
+    };
+    options.series = [
+      {
+        name: "Low",
+        data: low_value,
+        color: "#2BA67E"
+      },
+      {
+        name: "Medium",
+        data: medium_value,
+        color: "#c0792a"
+      },
+      {
+        name: "High",
+        data: high_value,
+        color: "#B65354"
+      }
+    ];
+    console.log(options);
+    return options;
+  }
+
+  generateDefectColumn(options) {
+    let final_data = [];
+    this.res.data[0].map(data => {
+      let temp_data = [],
+        rawDate;
+      rawDate = data[0].split("T");
+      temp_data[0] = new Date(rawDate[0]).getTime();
+      temp_data[1] = parseInt(data[1]);
+      final_data.push(temp_data);
+    });
+    final_data.sort((a, b) => a[0] - b[0]);
+
+    options.chart = {
+      type: "column",
+      height: 0,
+      backgroundColor: ""
+    };
+    options.title = {
+      text: this.res.title,
+      align: "left",
+      style: {
+        color: "#f5f5f5",
+        fontWeight: "bold"
+      }
+    };
+    options.xAxis = {
+      type: "datetime",
+      dateTimeLabelFormats: {
+        day: "%b %e"
+      },
+      lineWidth: 1,
+      tickLength: 0,
+      style: {
+        color: "#f5f5f5"
+      }
+    };
+    options.yAxis = {
+      min: 0,
+      gridLineColor: "transparent",
+      title: {
+        text: "y title",
+        style: {
+          color: "#f5f5f5"
+        }
+      },
+      lineColor: "blue",
+      stackLabels: {
+        enabled: true
+      }
+    };
+    options.plotOptions = {
+      column: {
+        stacking: "normal",
+        dataLabels: {
+          enabled: true
+        }
+      }
+    };
+    options.series.data = final_data;
     return options;
   }
 }

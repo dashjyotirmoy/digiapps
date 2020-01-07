@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import ChartHOC from '../ChartHOC/ChartHOC';
-
+import React, { Component } from "react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import ChartHOC from "../ChartHOC/ChartHOC";
 
 class Throughput extends Component {
-
   state = {
     options: {
       chart: {
-        type: 'column',
+        type: "column",
         height: 0,
         backgroundColor: ""
       },
@@ -18,16 +16,16 @@ class Throughput extends Component {
       },
       title: {
         text: "Throughput",
-        align: 'left',
+        align: "left",
         style: {
-          color: '#f5f5f5',
-          fontWeight: 'bold'
+          color: "#f5f5f5",
+          fontWeight: "bold"
         }
       },
       xAxis: {
-        type: 'datetime',
+        type: "datetime",
         dateTimeLabelFormats: {
-          day: '%b %e'
+          day: "%b %e"
         },
         lineWidth: 0,
         tickLength: 1,
@@ -41,9 +39,9 @@ class Throughput extends Component {
         min: 0,
         gridLineColor: "transparent",
         title: {
-          text: 'y title',
+          text: "y title",
           style: {
-            color: '#f5f5f5'
+            color: "#f5f5f5"
           }
         },
         labels: {
@@ -51,59 +49,58 @@ class Throughput extends Component {
             color: "#f5f5f5"
           }
         },
-        lineColor: 'blue',
+        lineColor: "blue",
         stackLabels: {
-          enabled: true,
+          enabled: true
         }
       },
       legend: {
         enabled: true,
-        backgroundColor: 'transparent',
+        backgroundColor: "transparent",
         itemStyle: {
-          color: '#ffffff',
-          fontWeight: 'normal'
+          color: "#ffffff",
+          fontWeight: "normal"
         },
         itemHoverStyle: {
-          color: '#d3d3d3'
+          color: "#d3d3d3"
         }
       },
       tooltip: {
-        headerFormat: '<b>{point.x}</b><br/>',
-        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        headerFormat: "<b>{point.x}</b><br/>",
+        pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}"
       },
       plotOptions: {
         series: {
           borderRadius: 6
         },
-        column: {
-        }
+        column: {}
       },
       series: [
         {
-          "name": "A",
-          "data": [5, 3, 4, 7, 8, 5],
-          "color": "#B09FF9",
-          "borderWidth": 0,
+          name: "A",
+          data: [5, 3, 4, 7, 8, 5],
+          color: "#B09FF9",
+          borderWidth: 0,
           pointStart: Date.UTC(2019, 10, 15),
           pointInterval: 86400000,
           pointWidth: 10,
           pointPadding: 0
         },
         {
-          "name": "B",
-          "data": [2, 2, 3, 2, 6, 8],
-          "color": "#4670FE",
-          "borderWidth": 0,
+          name: "B",
+          data: [2, 2, 3, 2, 6, 8],
+          color: "#4670FE",
+          borderWidth: 0,
           pointStart: Date.UTC(2019, 10, 15),
           pointInterval: 86400000,
           pointWidth: 10,
           pointPadding: 0.1
         },
         {
-          "name": "C",
-          "data": [3, 4, 4, 2, 5, 7],
-          "color": "#84CBDD",
-          "borderWidth": 0,
+          name: "C",
+          data: [3, 4, 4, 2, 5, 7],
+          color: "#84CBDD",
+          borderWidth: 0,
           pointStart: Date.UTC(2019, 10, 15),
           pointInterval: 86400000,
           pointWidth: 10,
@@ -114,16 +111,11 @@ class Throughput extends Component {
   };
   render() {
     return (
-      < React.Fragment >
-        <ChartHOC options={this.state.options} type={'column'} />
-      </React.Fragment >
+      <React.Fragment>
+        <ChartHOC options={this.state.options} type={"column"} />
+      </React.Fragment>
     );
   }
-
-
-
 }
 
 export default Throughput;
-
-

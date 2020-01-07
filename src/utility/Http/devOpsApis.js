@@ -28,9 +28,9 @@ const getSprintInsightsData = (sprintId, execId, projectId) => {
   );
 };
 
-const getQualityMetricsData = (projectId, repositoryId) => {
+const getQualityMetricsData = (execId, projectId) => {
   return devovOpsApi.get(
-    `/widget/qualityInsights?projectId=${projectId}&repositoryId=${repositoryId}`
+    `/widget/qualityInsights?executiveId=${execId}&projectId=${projectId}`
   );
 };
 
@@ -38,5 +38,6 @@ export default {
   getVelocityData,
   getExecInsightsData,
   getProjectInsightsData,
-  getSprintInsightsData
+  getSprintInsightsData,
+  getQualityMetricsData
 };

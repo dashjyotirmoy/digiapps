@@ -23,7 +23,6 @@ a:hover{
 }
 /* on hover */
 .show-cursor:{
-
 }
 .show-cursor:hover{
   cursor: pointer;
@@ -31,24 +30,32 @@ a:hover{
 /* custom height/width */
 .h-10{
   height: 10%;
-  min-height: 70px;
+  min-height: 94px;
 }
 .h-12{
   height: 12%;
   min-height: 110px;
 }
 .h-15{
-  height: 15%;
+  height: 15% !important;
 }
 .h-20{
-  height: 20%;
+  height: 20% !important;
 }
 .h-80{
-  height: 75%;
+  height: 80% !important;
+}
+.h-90{
+  height: 90% !important;
+}
+.w-20{
+  width: 20% !important;
+  min-width: 20% !important;
 }
 
 .width-fit-content{
   min-width: fit-content;
+  white-space: nowrap;
 }
 .max-w-18{
   flex: 10% !important;
@@ -82,6 +89,15 @@ a:hover{
   background-color: #141A23;
 }
 
+.bg-prodAgg-btn{
+  background-color: #25303f;
+}
+
+.bg-prodInfo-prod{
+  background-color: #334154
+}
+
+
 /* colors */
 .text-red{
   color: red;
@@ -96,12 +112,12 @@ a:hover{
   color:rgb(240, 180, 69);
 }
 /* custom font sizes */
-.font-aggregate-main-text{
-  font-size: x-large;
+.text-ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.font-aggegate-sub-text{
-  font-size: smaller;
-}
+
 .font-size-smaller{
   font-size: smaller;
 }
@@ -114,11 +130,22 @@ a:hover{
 .font-title{
   font-size: larger;
 }
+.font-metric-main-text{
+  font-size: 1.5rem;
+  line-height: 2rem;
+  min-height: 2rem;
+}
+.font-metric-sub-text{
+  font-size: small;
+  line-height: 1.5rem;
+  min-height: 1.5rem;
+}
+/* small devices */
 @media (min-width: 576px) { 
   .font-aggegate-sub-text{
     font-size: small;
   }
-  .font-aggregate-main-text{
+  .font-metric-main-text{
     font-size: 1.5rem;
   }
  }
@@ -128,15 +155,15 @@ a:hover{
   .font-aggegate-sub-text{
     font-size: small;
   }
-  .font-aggregate-main-text{
+  .font-metric-main-text{
     font-size: 1.5rem;
   }
   }
 
 /* // Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-  .font-aggregate-main-text{
-    font-size:2rem;
+  .font-metric-main-text{
+    font-size:1.5rem;
   } 
   .font-aggegate-sub-text{
     font-size: medium;
@@ -145,17 +172,17 @@ a:hover{
 
 /* // Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) { 
-  /* .col-xl-1{
-    min-width: 125.488px;
-  } */
-  .font-aggregate-main-text{
-    font-size: 2rem;
+  .font-metric-main-text{
+    font-size: 1.5rem;
   }
   .font-aggegate-sub-text{
     font-size: medium;
   }
  }
 
+ .chart-title{
+  color:#f5f5f5;font-size:18px;font-weight:bold;
+ }
 
 /* alignment classes */
 .vertical-super{
@@ -196,8 +223,82 @@ a:hover{
     transform: rotate(360deg);
   }
 }
+/* Quality Metrics */
+.quality-metric-area{
+  height: 25% !important;
+  min-height: 260px !important;
+}
+.Quality .critical{
+  color: #E75555;
+}
+.Quality .medium{
+  color: #F59449;
+}
+.Quality .low{
+  color: #3CC790;
+}
+.Quality .metric-legend{
+  height: fit-content;
+  box-sizing: border-box;
+}
+.Quality .metric-card{
+  flex-grow: 1;
+  min-height: 200px;
+  min-width: 200px;
+}
+.Quality .metric-card .metric-value{
+  font-size: 2.1rem;
+  font-weight: bold;
+}
+
+
+
 
 /* bootstrap style overrides */
+@media (min-width: 576px) { 
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .col-md-1_5{
+    flex: 0 0 12.49996%;
+    max-width: 12.49996%;
+  }
+  .col-md-2_5{
+    flex: 0 0 20.83333%;
+    max-width: 20.83333%;
+  }
+}
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .col-lg-1_5{
+    flex: 0 0 12.49996%;
+    max-width: 12.49996%;
+ }
+ .col-lg-2_5{
+  flex: 0 0 20.83333%;
+  max-width: 20.83333%;
+}
+}
+
+/* // Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+.col-xl-1_5{
+  flex: 0 0 12.49996%;
+  max-width: 12.49996%;
+  }
+  .col-xl-2_5{
+    flex: 0 0 20.83333%;
+    max-width: 20.83333%;
+  }
+ }
+
+
+
+.dropdown-item:focus, .dropdown-item:hover{
+  background-color: #232d3b !important;
+}
 
 .navbar-light .navbar-toggler-icon{
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;

@@ -1,4 +1,7 @@
+import * as actionType from "../actions/actionTypes";
+
 const initialState = {
+  currentTab: "",
   chartType: "",
   currentChartData: {
     chartDetails: {},
@@ -7,12 +10,17 @@ const initialState = {
 };
 const chartReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_CHART_TYPE':
+    case actionType.SET_CURRENT_TAB:
+      return {
+        ...state,
+        currentTab: action.payload.currentTab
+      };
+    case actionType.SET_CHART_TYPE:
       return {
         ...state,
         chartType: action.payload.chartType
-      }
-    case "SET_CHARTS_DETAILS":
+      };
+    case actionType.SET_CHARTS_DETAILS:
       return {
         ...state,
         currentChartData: {
