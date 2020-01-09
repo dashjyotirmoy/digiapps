@@ -95,7 +95,13 @@ class Graph {
     let Difference_In_Time = endDate.getTime() - startDate.getTime();
     let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     let hours = this.res.burndown.burndown.remainingHours;
-
+    let final_data = [];
+    for (let i = 0; i < hours.length; i++) {
+      let temp_data = [];
+      temp_data[0] = startDate.getTime() + i * 86400000 + 19800000;
+      temp_data[1] = hours[i];
+      final_data.push(temp_data);
+    }
     // setting Start date and End date to format DD MMM YYYY
 
     start = formatDateToDDMMMYYYY(start);
@@ -111,10 +117,14 @@ class Graph {
       pointFormat: "{series.name}: {point.y}"
     };
     options.xAxis = {
+      type: "datetime",
+      dateTimeLabelFormats: {
+        day: "%b %e"
+      },
       gridLineWidth: 0.5,
       gridLineColor: "#3B4350",
       tickInterval: 10,
-      max: Difference_In_Days,
+      // max: Difference_In_Days,
       labels: {
         enabled: false
       },
@@ -186,7 +196,7 @@ class Graph {
     options.series = [
       {
         name: "Remaining hours",
-        data: hours,
+        data: final_data,
         color: "",
         lineColor: "#C0C063",
         fillOpacity: 0.1,
@@ -604,7 +614,7 @@ class Graph {
       }
     };
     options.tooltip = {
-      pointFormat: "{point.y}"
+      pointFormat: `No of Days: {point.y}`
     };
     options.plotOptions = {
       column: {
@@ -866,6 +876,9 @@ class Graph {
         marker: {
           symbol: "circle",
           fillColor: "#6DEB9C"
+        },
+        tooltip: {
+          pointFormat: "{point.x:%d/%m/%Y}<br>{point.y} days"
         }
       },
       {
@@ -877,6 +890,9 @@ class Graph {
         marker: {
           symbol: "circle",
           fillColor: "#0582EC"
+        },
+        tooltip: {
+          pointFormat: "{point.x:%d/%m/%Y}<br>{point.y} days"
         }
       },
       {
@@ -992,7 +1008,7 @@ class Graph {
       },
       {
         name: "Critical",
-        data: critical_value,
+        data: [10],
         color: "#A42829"
       }
     ];

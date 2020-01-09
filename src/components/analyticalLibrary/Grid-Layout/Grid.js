@@ -21,7 +21,6 @@ class Grid extends Component {
               className="d-inline px-1"
               data-toggle="tooltip"
               data-placement="top"
-              title="Hooray!"
             >
               <TooltipHoc
                 info={
