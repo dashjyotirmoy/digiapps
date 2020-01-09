@@ -539,14 +539,15 @@ class Graph {
   generateDefect(options) {
     let final_data = [];
     this.res.data[0].map(data => {
-      let temp_data = [],
+      let temp_data = {},
         rawDate;
       rawDate = data[0].split("T");
-      temp_data[0] = new Date(rawDate[0]).getTime();
-      temp_data[1] = parseInt(data[1]);
+      temp_data.x = new Date(rawDate[0]).getTime();
+      temp_data.y = parseInt(data[1]);
+      temp_data.count = parseInt(data[2]);
       final_data.push(temp_data);
     });
-    final_data.sort((a, b) => a[0] - b[0]);
+    final_data.sort((a, b) => a.x - b.x);
 
     options.chart = {
       type: "column",
@@ -614,7 +615,7 @@ class Graph {
       }
     };
     options.tooltip = {
-      pointFormat: `{point.y} days`
+      pointFormat: `{point.y} days <br>Defect count: {point.count}`
     };
     options.plotOptions = {
       column: {
