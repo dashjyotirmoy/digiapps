@@ -614,7 +614,7 @@ class Graph {
       }
     };
     options.tooltip = {
-      pointFormat: `No of Days: {point.y}`
+      pointFormat: `{point.y} days`
     };
     options.plotOptions = {
       column: {
@@ -971,6 +971,14 @@ class Graph {
       verticalAlign: "top",
       y: -30
     };
+    // options.tooltip = {
+    //   pointFormat: "{series.name}: {point.y}"
+    // };
+    options.tooltip = {
+      formatter: function() {
+        return this.series.name + " " + this.y;
+      }
+    };
     options.plotOptions = {
       series: {
         stacking: "normal",
@@ -985,7 +993,7 @@ class Graph {
         }
       },
       bar: {
-        pointStart: 10,
+        // pointStart: "",
         borderColor: "",
         borderRadiusTopLeft: 4
       }
@@ -1008,7 +1016,7 @@ class Graph {
       },
       {
         name: "Critical",
-        data: [10],
+        data: critical_value,
         color: "#A42829"
       }
     ];

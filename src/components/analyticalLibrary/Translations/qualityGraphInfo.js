@@ -5,7 +5,6 @@ export const qualityGraphInfo = {
   Coverage:
     "Represents the portion of source code being covered by unit tests which tracks and improves the quality of the source code.",
   "Outstanding Bugs":
-    "Represents the difference of total number of bugs found with total defects fixed.",
-  "Average Defect Resolution Time":
-    "Time taken from when an issue is logged till it is fully resolved."
+    "Represents the difference of total number of bugs found and total defects fixed.",
+  "Average Defect Resolution Time": "Average time taken to resolve issues"
 };
