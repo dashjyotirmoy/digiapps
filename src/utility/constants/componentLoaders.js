@@ -1,1 +1,5 @@
-export const appComponentList = ["SummaryView", "ProductInfoBar", "ProductDefBar"];
+export const appComponentList = [
+  "SummaryView",
+  "ProductInfoBar",
+  "ProductDefBar"
+];

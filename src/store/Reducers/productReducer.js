@@ -1,4 +1,7 @@
+import * as actionType from "../actions/actionTypes";
+
 const initialState = {
+  resetRepo: "",
   currentProject: {
     projectDetails: {},
     projectDataReceived: false
@@ -10,7 +13,12 @@ const initialState = {
 };
 const prodReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "LOAD_PRODUCTS":
+    case actionType.SET_CURRENT_REPO:
+      return {
+        ...state,
+        resetRepo: action.payload.resetRepo
+      };
+    case actionType.LOAD_PRODUCTS:
       return {
         ...state,
         currentProject: {
@@ -18,7 +26,7 @@ const prodReducer = (state = initialState, action) => {
           projectDataReceived: action.payload.projectDataReceived
         }
       };
-    case "LOAD_CURRENT_SPRINT":
+    case actionType.LOAD_CURRENT_SPRINT:
       return {
         ...state,
         currentSprint: {

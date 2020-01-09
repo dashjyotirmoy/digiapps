@@ -1,7 +1,9 @@
 import React from "react";
-import Dashboard from "./Components/Dashboard/DashboardController";
-import Header from "./libs/Header/Header";
+import DashboardController from "./components/dashboardController/dashboardController";
+import Header from "./components/analyticalLibrary/Header/Header";
 import { appComponentList } from "./utility/constants/componentLoaders";
+import ErrorBoundaries from "./components/errorBoundaries";
+
 const shortid = require("shortid");
 class App extends React.Component {
   render() {
@@ -9,7 +11,12 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Header />
-        <Dashboard compList={componentImports} key={shortid.generate()} />
+        <ErrorBoundaries>
+          <DashboardController
+            compList={componentImports}
+            key={shortid.generate()}
+          />
+        </ErrorBoundaries>
       </React.Fragment>
     );
   }
