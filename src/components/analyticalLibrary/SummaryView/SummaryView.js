@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { execInsightsDispatch } from "../../../store/actions/executiveInsights";
 import { bindActionCreators } from "redux";
 import { translations as Translate } from "../Translations";
-import { itemMetrics, mainMetrics } from '../../../utility/constants/';
+import { itemMetrics, mainMetrics } from "../../../utility/constants/";
 import Widgets from "../../dashboardController/widgetParser";
 
 const Styles = styled.div`
@@ -63,7 +63,7 @@ class SummaryView extends Component {
           <Container fluid className="data-header summary-view">
             <main className="align-items-center d-flex h-100 w-100">
               <Row className="h-75 m-0 p-0 row w-100 d-flex flex-nowrap">
-                    <div className="h-100 d-none p-lg-0 d-md-block d-lg-block d-xl-block px-4">
+                <div className="h-100 d-none p-lg-0 d-md-block d-lg-block d-xl-block px-4">
                   <Row className="d-flex p-0 m-0 w-100 h-100">
                     <Col
                       md={12}
@@ -72,16 +72,16 @@ class SummaryView extends Component {
                       className="h-100 px-2 d-flex align-items-center justify-item-center"
                     >
                       <FontAwesomeIcon
-                            className="font-metric-main-text"
+                        className="font-metric-main-text"
                         icon={faArrowLeft}
                       />
-                          <div className="w-100 px-4">
+                      <div className="w-100 px-4">
                         <p className=" m-0 text-center text-black m-0 font-title">
                           {this.props.execDataReceived
                             ? this.props.metricsData.name.split(" ")[0]
                             : ""}
                         </p>
-                            <p className="font-aggegate-sub-text m-0 text-center text-white-50 m-0 width-fit-content">
+                        <p className="font-aggegate-sub-text m-0 text-center text-white-50 m-0 width-fit-content">
                           {this.props.execDataReceived
                             ? this.props.metricsData.designation
                             : ""}
@@ -98,13 +98,13 @@ class SummaryView extends Component {
                     "loading"
                   )}
                 </div>
-                    <div className="mx-3 h-100 px-xl-2 px-lg-2 d-inline-block d-flex flex-grow-1 d-inline-block overflow-auto">
+                {/* <div className="mx-3 h-100 px-xl-2 px-lg-2 d-inline-block d-flex flex-grow-1 d-inline-block overflow-auto">
                   {this.props.execDataReceived ? (
                     <ItemMetric itemMetric={itemMetricsData} />
                   ) : (
                     "loading"
                   )}
-                </div>
+                </div> */}
               </Row>
             </main>
           </Container>

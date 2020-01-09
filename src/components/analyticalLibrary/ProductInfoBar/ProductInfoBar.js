@@ -49,9 +49,17 @@ class ProductInfoBar extends Component {
     const projects = res.data.projects;
     const projLength = projects.length;
     const { list, selectedIndex } = this.markSelected(projects, projects[0].id);
+    const prrojDetail = list.filter(ele => {
+      if (ele.id === "fa2a71e3-1469-4240-9f8b-5694a98145cf") {
+        return {
+          id: ele.id,
+          projectName: ele.projectName
+        };
+      }
+    });
     this.setState({
-      productData: list,
-      selectedProduct: list[selectedIndex].projectName
+      productData: prrojDetail,
+      selectedProduct: prrojDetail[selectedIndex].projectName
     });
 
     this.getProjectDetails(projects[selectedIndex].id, this.props.executiveId);
@@ -62,9 +70,17 @@ class ProductInfoBar extends Component {
   updateProject = projectId => {
     const projects = [...this.state.productData];
     const { list, selectedIndex } = this.markSelected(projects, projectId);
+    const prrojDetail = list.filter(ele => {
+      if (ele.id === "fa2a71e3-1469-4240-9f8b-5694a98145cf") {
+        return {
+          id: ele.id,
+          projectName: ele.projectName
+        };
+      }
+    });
     this.setState({
-      productData: list,
-      selectedProduct: list[selectedIndex].projectName
+      productData: prrojDetail,
+      selectedProduct: prrojDetail[selectedIndex].projectName
     });
     this.getProjectDetails(projects[selectedIndex].id, this.props.executiveId);
   };

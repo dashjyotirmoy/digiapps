@@ -21,11 +21,6 @@ import ModalBackDrop from "../../ModalBackDrop/ModalBackDrop";
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
 const chartCompList = [
   {
-    name: "Average Defect Resolution Time",
-    type: "DefectHigh",
-    component: ColumnHigh
-  },
-  {
     name: "Bugs, Vulnerabilities & Code Smells",
     type: "MultipleLineHigh",
     component: LineHigh
@@ -40,6 +35,11 @@ const chartCompList = [
     name: "Outstanding Bugs",
     type: "BarHigh",
     component: StackedBar
+  },
+  {
+    name: "Average Defect Resolution Time",
+    type: "DefectHigh",
+    component: ColumnHigh
   }
 ];
 
@@ -160,11 +160,6 @@ class Quality extends Component {
   setRawRepoObjects = (rawData, outstandingBugs, averageResolution) => {
     const item = rawData.map((item, index) => {
       return {
-        AvResolutionTime: [
-          { name: item.repoName },
-          { title: "Average Defect Resolution Time" },
-          averageResolution
-        ],
         bugs_vulnerability_codeSmell: [
           { name: item.repoName },
           { title: "Bugs, Vulnerabilities & Code Smells" },
@@ -181,6 +176,11 @@ class Quality extends Component {
           { name: item.repoName },
           { title: "Outstanding Bugs" },
           outstandingBugs
+        ],
+        AvResolutionTime: [
+          { name: item.repoName },
+          { title: "Average Defect Resolution Time" },
+          averageResolution
         ]
       };
     });
@@ -385,7 +385,6 @@ class Quality extends Component {
                 className="d-inline px-1"
                 data-toggle="tooltip"
                 data-placement="top"
-                title="Hooray!"
               >
                 <TooltipHoc info={`${this.state.metricType} Data`}>
                   <span className="d-inline-block">
