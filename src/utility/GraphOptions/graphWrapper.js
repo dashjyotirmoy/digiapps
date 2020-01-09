@@ -628,36 +628,6 @@ class Graph {
         pointInterval: 86400000
       }
     ];
-    console.log(final_data);
-    // options.series = [
-    //   {
-    //     name: "A",
-    //     data: [5, 3, 4, 7, 8],
-    //     color: "#7d12ff",
-    //     borderWidth: 0,
-    //     pointStart: Date.UTC(2019, 10, 15),
-    //     pointInterval: 86400000,
-    //     pointWidth: 10
-    //   }
-    // {
-    //   name: "B",
-    //   data: [2, 2, 3, 2, 6],
-    //   color: "#ab20fd",
-    //   borderWidth: 0,
-    //   pointStart: Date.UTC(2019, 10, 15),
-    //   pointInterval: 86400000,
-    //   pointWidth: 10
-    // },
-    // {
-    //   name: "C",
-    //   data: [3, 4, 4, 2, 5],
-    //   color: "#200589",
-    //   borderWidth: 0,
-    //   pointStart: Date.UTC(2019, 10, 15),
-    //   pointInterval: 86400000,
-    //   pointWidth: 10
-    // }
-    // ];
     return options;
   }
   //function that Creates data for Control charts
@@ -879,9 +849,7 @@ class Graph {
         color: "#D3D3D3"
       },
       labelFormatter: function() {
-        console.log(this.name);
         if (this.name === "Bug" || this.name === "User Story") {
-          console.log(this.userOptions.data);
           return this.userOptions.data.length + " " + this.name;
         } else {
           return this.name;

@@ -302,19 +302,7 @@ class Quality extends Component {
     }
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.currentRepo != prevProps.currentRepo) {
-  //     this.fetchQualityData();
-  //   }
-  // }
-
-  // componentDidMount() {
-  //   if (this.props.currentRepo) {
-  //     this.fetchQualityData();
-  //   }
-  // }
   render() {
-    console.log(this.state.charts);
     return (
       <React.Fragment>
         <Row className="Quality quality-metric-area w-100 p-0 m-0 ">

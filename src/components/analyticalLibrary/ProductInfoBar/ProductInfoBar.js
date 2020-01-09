@@ -191,16 +191,6 @@ class ProductInfoBar extends Component {
       return rawData[1];
     });
     return repoDetailsSplit;
-    //     let split1 = repoDetailsSplit.splice(0, 3);
-    //     let split2 = [...repoDetailsSplit];
-
-    //     splitItems1 = split1.map(item => {
-    //       return item[1];
-    //     });
-    // splitItems2 =
-
-    //     const repoValues = finalSplit + split2;
-    //     return repoValues.split();
   };
 
   //method to update repo data when dropdown is changed
@@ -275,7 +265,6 @@ class ProductInfoBar extends Component {
   };
 
   render() {
-    console.log(this.props.resetTab);
     let dimensionData = this.props.widgetProps;
 
     const projectDimensions = new Widgets();
