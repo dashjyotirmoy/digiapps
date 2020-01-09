@@ -20,7 +20,6 @@ var sd = "Start date";
 class Graph {
   constructor(props) {
     this.res = props;
-    console.log(this.res);
     this.options = this.generateOption(props.type);
   }
 
@@ -47,7 +46,7 @@ class Graph {
         updatedOptions = this.generateBar(baseOptions);
         return updatedOptions;
       case "DefectHigh":
-        updatedOptions = this.generateDefectColumn(baseOptions);
+        updatedOptions = this.generateDefect(baseOptions);
         return updatedOptions;
       default:
         return null;
@@ -60,6 +59,32 @@ class Graph {
     let start = new Date(this.res.burndown.startDate).toLocaleDateString();
     let end = new Date(this.res.burndown.endDate).toLocaleDateString();
     let startDate = start;
+
+    let splitDate, preFormatDate, postFormatDate;
+    let monthsArray = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "April",
+      "May",
+      "June",
+      "July",
+      "Aug",
+      "Sept",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+
+    // preformatDate is in format DD/MM/YYYY postFormatDate will be in format DD MMM YYYY
+
+    function formatDateToDDMMMYYYY(preFormatDate) {
+      splitDate = preFormatDate.split("/");
+      postFormatDate =
+        splitDate[0] + " " + monthsArray[splitDate[1] - 1] + " " + splitDate[2];
+      return postFormatDate;
+    }
+
     let dateParts = startDate.split("/");
     start = dateParts[1] + "/" + dateParts[0] + "/" + dateParts[2];
     startDate = new Date(dateParts[2], dateParts[0] - 1, +dateParts[1]);
@@ -70,19 +95,31 @@ class Graph {
     let Difference_In_Time = endDate.getTime() - startDate.getTime();
     let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     let hours = this.res.burndown.burndown.remainingHours;
+
+    // setting Start date and End date to format DD MMM YYYY
+
+    start = formatDateToDDMMMYYYY(start);
+    end = formatDateToDDMMMYYYY(end);
+
     options.chart = {
       type: "line",
       height: 0,
       backgroundColor: ""
     };
     options.tootltip = {
+      enabled: true,
       pointFormat: "{series.name}: {point.y}"
     };
     options.xAxis = {
+      gridLineWidth: 0.5,
+      gridLineColor: "#3B4350",
+      tickInterval: 10,
       max: Difference_In_Days,
       labels: {
         enabled: false
       },
+      tickLength: 0,
+      lineWidth: 0,
       tickLength: 0
     };
     options.yAxis = [
@@ -92,14 +129,56 @@ class Graph {
           enabled: false
         },
         title: {
-          text: `Start date: ${start}`,
-          rotation: 0
-        }
+          text: `Start date`,
+          rotation: 0,
+          x: -25,
+          y: -10,
+          style: {
+            color: "#f5f5f5",
+            width: "500px"
+          }
+        },
+        gridLineColor: "null"
       },
       {
         title: {
-          text: `End date: ${end}`,
-          rotation: 0
+          text: `${start}`,
+          rotation: 0,
+          alaign: "right",
+          x: 40,
+          y: 20,
+          style: {
+            color: "#a6a6a6",
+            width: `500px`,
+            fontSize: "0.75em"
+          }
+        }
+      },
+
+      {
+        title: {
+          text: `End date`,
+          rotation: 0,
+          x: 35,
+          y: -10,
+          style: {
+            color: "#f5f5f5",
+            width: `500px`
+          }
+        },
+        opposite: true
+      },
+      {
+        title: {
+          text: `${end}`,
+          rotation: 0,
+          x: -20,
+          y: 20,
+          style: {
+            color: "#a6a6a6",
+            width: `500px`,
+            fontSize: "0.75em"
+          }
         },
         opposite: true
       }
@@ -108,6 +187,9 @@ class Graph {
       {
         name: "Remaining hours",
         data: hours,
+        color: "",
+        lineColor: "#C0C063",
+        fillOpacity: 0.1,
         marker: {
           enabled: false
         }
@@ -135,7 +217,14 @@ class Graph {
     bugs_array = this.generateData(bugs_metrics_data);
     vulnerabilities_array = this.generateData(vul_metrics_data);
     code_smells_array = this.generateData(codeSmell_metrics_data);
+    bugs_array.sort((a, b) => a.x - b.x);
+    vulnerabilities_array.sort((a, b) => a.x - b.x);
+    code_smells_array.sort((a, b) => a.x - b.x);
 
+    options.tooltip = {
+      pointFormat:
+        "{series.name}: {point.y}<br>blocked: {point.blocked}<br>critical: {point.critical}<br>major: {point.major}<br>minor: {point.minor}"
+    };
     options.chart = {
       height: 0,
       backgroundColor: ""
@@ -153,6 +242,11 @@ class Graph {
       dateTimeLabelFormats: {
         day: "%b %e"
       },
+      labels: {
+        style: {
+          color: "#f5f5f5"
+        }
+      },
       lineWidth: 1,
       tickLength: 0,
       style: {
@@ -163,7 +257,26 @@ class Graph {
       title: {
         text: ``
       },
+      labels: {
+        style: {
+          color: "#f5f5f5"
+        }
+      },
       gridLineColor: ""
+    };
+    options.legend = {
+      enabled: true,
+      itemStyle: {
+        color: "#f5f5f5",
+        fontWeight: "normal"
+      },
+      itemHoverStyle: {
+        color: "#D3D3D3",
+        fontWeight: ""
+      },
+      align: "right",
+      verticalAlign: "top",
+      y: -30
     };
     options.series = [
       {
@@ -194,17 +307,20 @@ class Graph {
         pointInterval: 86400000
       }
     ];
-    console.log(options);
     return options;
   }
 
   generateData = rawData => {
     let points_array = [];
     rawData.map(bvc => {
-      let point_data = [];
+      let point_data = {};
       let rawDate = bvc.date.split("T");
-      point_data[0] = new Date(rawDate[0]).getTime() + 19800000;
-      point_data[1] = parseInt(bvc.value);
+      point_data.x = new Date(rawDate[0]).getTime();
+      point_data.y = parseInt(bvc.value);
+      point_data.blocked = bvc.blocked;
+      point_data.critical = bvc.critical;
+      point_data.major = bvc.major;
+      point_data.minor = bvc.minor;
       points_array.push(point_data);
     });
     return points_array;
@@ -217,13 +333,17 @@ class Graph {
       let to_cover_point = [],
         covered_point = [];
       let rawDate = day_data.date.split("T");
-      to_cover_point[0] = new Date(rawDate[0]).getTime() + 19800000;
+      // to_cover_point[0] = new Date(rawDate[0]).getTime() + 19800000;
+      to_cover_point[0] = new Date(rawDate[0]).getTime();
       to_cover_point[1] = parseInt(day_data.linesToCover);
-      covered_point[0] = new Date(rawDate[0]).getTime() + 19800000;
+      // covered_point[0] = new Date(rawDate[0]).getTime() + 19800000;
+      covered_point[0] = new Date(rawDate[0]).getTime();
       covered_point[1] = parseInt(day_data.coveredLines);
       lines_to_cover.push(to_cover_point);
       covered_lines.push(covered_point);
     });
+    lines_to_cover.sort((a, b) => a[0] - b[0]);
+    covered_lines.sort((a, b) => a[0] - b[0]);
     options.chart = {
       type: "area"
     };
@@ -276,12 +396,26 @@ class Graph {
         }
       }
     };
+    options.legend = {
+      enabled: true,
+      itemStyle: {
+        color: "#f5f5f5",
+        fontWeight: "normal"
+      },
+      itemHoverStyle: {
+        color: "#D3D3D3",
+        fontWeight: ""
+      },
+      align: "right",
+      verticalAlign: "top",
+      y: -30
+    };
     options.series = [
       {
         name: "Lines to cover",
         data: lines_to_cover,
         marker: {
-          enabled: false
+          enabled: true
         },
         color: "#5173CE",
         pointInterval: 86400000
@@ -290,7 +424,7 @@ class Graph {
         name: "Covered lines",
         data: covered_lines,
         marker: {
-          enabled: false
+          enabled: true
         },
         color: "#657DBD",
         pointInterval: 86400000
@@ -347,6 +481,20 @@ class Graph {
         }
       }
     };
+    options.legend = {
+      enabled: true,
+      itemStyle: {
+        color: "#f5f5f5",
+        fontWeight: "normal"
+      },
+      itemHoverStyle: {
+        color: "#D3D3D3",
+        fontWeight: ""
+      },
+      align: "right",
+      verticalAlign: "top",
+      y: -30
+    };
     options.series = [
       {
         name: "A",
@@ -378,7 +526,140 @@ class Graph {
     ];
     return options;
   }
+  generateDefect(options) {
+    let final_data = [];
+    this.res.data[0].map(data => {
+      let temp_data = [],
+        rawDate;
+      rawDate = data[0].split("T");
+      temp_data[0] = new Date(rawDate[0]).getTime();
+      temp_data[1] = parseInt(data[1]);
+      final_data.push(temp_data);
+    });
+    final_data.sort((a, b) => a[0] - b[0]);
 
+    options.chart = {
+      type: "column",
+      height: 0,
+      backgroundColor: ""
+    };
+    options.title = {
+      text: this.res.title,
+      align: "left",
+      style: {
+        color: "#f5f5f5",
+        fontWeight: "bold"
+      }
+    };
+    options.xAxis = {
+      type: "datetime",
+      dateTimeLabelFormats: {
+        day: "%b %e"
+      },
+      lineWidth: 0,
+      tickLength: 0,
+      style: {
+        color: "#f5f5f5"
+      },
+      labels: {
+        style: {
+          color: "#f5f5f5"
+        }
+      }
+    };
+    options.legend = {
+      enabled: true,
+      itemStyle: {
+        color: "#f5f5f5",
+        fontWeight: "normal"
+      },
+      itemHoverStyle: {
+        color: "#D3D3D3",
+        fontWeight: ""
+      },
+      align: "right",
+      verticalAlign: "top",
+      y: -30
+    };
+    options.yAxis = {
+      min: 0,
+      max: 15,
+      tickInterval: 2,
+      gridLineColor: "transparent",
+      title: {
+        text: "Days",
+        style: {
+          color: "#f5f5f5"
+        }
+      },
+      labels: {
+        format: "{value}",
+        style: {
+          color: "#f5f5f5"
+        }
+      },
+      lineColor: "blue",
+      stackLabels: {
+        enabled: false
+      }
+    };
+    options.tooltip = {
+      pointFormat: "{point.y}"
+    };
+    options.plotOptions = {
+      column: {
+        stacking: "normal",
+        dataLabels: {
+          enabled: false
+        }
+      },
+      series: {
+        borderRadius: 6
+      }
+    };
+
+    options.series = [
+      {
+        name: "Average Defect Resolution Time",
+        data: final_data,
+        color: "#7d12ff",
+        borderWidth: 0,
+        pointWidth: 10,
+        pointInterval: 86400000
+      }
+    ];
+    console.log(final_data);
+    // options.series = [
+    //   {
+    //     name: "A",
+    //     data: [5, 3, 4, 7, 8],
+    //     color: "#7d12ff",
+    //     borderWidth: 0,
+    //     pointStart: Date.UTC(2019, 10, 15),
+    //     pointInterval: 86400000,
+    //     pointWidth: 10
+    //   }
+    // {
+    //   name: "B",
+    //   data: [2, 2, 3, 2, 6],
+    //   color: "#ab20fd",
+    //   borderWidth: 0,
+    //   pointStart: Date.UTC(2019, 10, 15),
+    //   pointInterval: 86400000,
+    //   pointWidth: 10
+    // },
+    // {
+    //   name: "C",
+    //   data: [3, 4, 4, 2, 5],
+    //   color: "#200589",
+    //   borderWidth: 0,
+    //   pointStart: Date.UTC(2019, 10, 15),
+    //   pointInterval: 86400000,
+    //   pointWidth: 10
+    // }
+    // ];
+    return options;
+  }
   //function that Creates data for Control charts
 
   generateControlChart(options) {
@@ -458,7 +739,7 @@ class Graph {
       let past_days_data_length = past_days_data.length;
       let past_days_arraySum = past_days_data.reduce((a, b) => a + b, 0);
       let past_mean = past_days_arraySum / past_days_data_length;
-
+      let roll_average_window_data = [...present_days_data, ...past_days_data];
       let date_difference = present_data.date - past_data.date;
 
       //adjustment for missing date data
@@ -472,24 +753,25 @@ class Graph {
           std_dev_final_temp.push(std_dev_temp);
         }
       } else {
-        roll_average.push((present_mean + past_mean) / 2);
+        // roll_average.push((present_mean + past_mean) / 2);
         let sum = 0;
         let days_data = present_data.days;
         days_data.concat(past_data.days);
-        days_data.map(day_data => {
+        roll_average_window_data.map(day_data => {
           sum += day_data;
         });
-        let mean_temp = sum / days_data.length;
+        let mean_temp = sum / roll_average_window_data.length;
+        roll_average.push(mean_temp);
         sum = 0;
-        days_data.map(day_data => {
+        roll_average_window_data.map(day_data => {
           day_data = (day_data - mean_temp) * (day_data - mean_temp);
           sum += day_data;
         });
         let variance_temp = sum / days_data.length;
         variance_temp = Math.sqrt(variance_temp);
         std_dev_temp[0] = present_data.date;
-        std_dev_temp[1] = (present_mean + past_mean) / 2 - variance_temp;
-        std_dev_temp[2] = (present_mean + past_mean) / 2 + variance_temp;
+        std_dev_temp[1] = mean_temp - variance_temp;
+        std_dev_temp[2] = mean_temp + variance_temp;
         std_dev_final_temp.push(std_dev_temp);
       }
     }
@@ -520,6 +802,18 @@ class Graph {
       style: {
         color: "#f5f5f5",
         fontWeight: "bold"
+      }
+    };
+    options.subtitle = {
+      text: `${average || 0} <br>Days on average`,
+      align: "left",
+      floating: true,
+      x: 70,
+      y: 50,
+      style: {
+        color: "#f5f5f5",
+        fontWeight: "",
+        fontSize: "18px"
       }
     };
     options.xAxis = {
@@ -569,6 +863,30 @@ class Graph {
     };
     options.tooltip = {
       pointFormat: "{point.y}"
+    };
+    options.legend = {
+      enabled: true,
+      backgroundColor: "transparent",
+      align: "right",
+      verticalAlign: "top",
+      y: -30,
+      x: -30,
+      itemStyle: {
+        color: "#ffffff",
+        fontWeight: "normal"
+      },
+      itemHoverStyle: {
+        color: "#D3D3D3"
+      },
+      labelFormatter: function() {
+        console.log(this.name);
+        if (this.name === "Bug" || this.name === "User Story") {
+          console.log(this.userOptions.data);
+          return this.userOptions.data.length + " " + this.name;
+        } else {
+          return this.name;
+        }
+      }
     };
     options.series = [
       {
@@ -656,12 +974,18 @@ class Graph {
     };
 
     options.legend = {
-      enabled: false,
-      reversed: true,
+      enabled: true,
       itemStyle: {
         color: "#f5f5f5",
         fontWeight: "normal"
-      }
+      },
+      itemHoverStyle: {
+        color: "#D3D3D3",
+        fontWeight: ""
+      },
+      align: "right",
+      verticalAlign: "top",
+      y: -30
     };
     options.plotOptions = {
       series: {
@@ -672,15 +996,14 @@ class Graph {
           y: -50,
           style: {
             fontWeight: "normal",
-            // fontSize: '1rem'
-            fontFamily:
-              "Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif"
+            fontSize: "1rem"
           }
         }
       },
       bar: {
         pointStart: 10,
-        borderColor: ""
+        borderColor: "",
+        borderRadiusTopLeft: 4
       }
     };
     options.series = [
@@ -698,9 +1021,13 @@ class Graph {
         name: "High",
         data: high_value,
         color: "#B65354"
+      },
+      {
+        name: "Critical",
+        data: critical_value,
+        color: "#A42829"
       }
     ];
-    console.log(options);
     return options;
   }
 

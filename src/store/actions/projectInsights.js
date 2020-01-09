@@ -17,3 +17,12 @@ export const projInsightDispatch = (projectId, execId) => async dispatch => {
       console.log(error.message);
     });
 };
+
+export const resetProjectRepoDispatch = repoData => dispatch => {
+  dispatch({
+    type: actionTypes.RESET_PROJECT_REPO,
+    payload: {
+      resetRepo: repoData
+    }
+  });
+};

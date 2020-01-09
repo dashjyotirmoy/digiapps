@@ -16,11 +16,13 @@ class ColumnHigh extends Component {
   }
 
   componentDidMount() {
-    temp_options = new Graph(this.props, this.props.type);
-    this.setState({
-      options: temp_options.options,
-      received: 1
-    });
+    setTimeout(() => {
+      temp_options = new Graph(this.props, this.props.type);
+      this.setState({
+        options: temp_options.options,
+        received: 1
+      });
+    }, 1000);
   }
 
   render() {

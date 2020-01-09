@@ -20,17 +20,19 @@ class Donut extends Component {
     }
 
     return (
-      <div style={{ width: this.props.containerWidth }}>
-        <CircularProgressbar
-          value={percentage}
-          text={`${percentage}%`}
-          styles={buildStyles({
-            textColor: color,
-            pathColor: color,
-            trailColor: "#828282",
-            textSize: "1.5rem"
-          })}
-        />
+      <div className="h-100 w-100 d-flex align-items-center justify-content-center">
+        <div style={{ width: this.props.containerWidth }}>
+          <CircularProgressbar
+            value={percentage}
+            text={`${percentage}%`}
+            styles={buildStyles({
+              textColor: "#f5f5f5",
+              pathColor: color,
+              trailColor: "#828282",
+              textSize: "1.5rem"
+            })}
+          />
+        </div>
       </div>
     );
   }

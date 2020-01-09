@@ -157,22 +157,50 @@ class ProductInfoBar extends Component {
 
   setRepository = res => {
     const repositoryData = res.data.repositories;
-    const { list, selectedIndex } = this.markSelected(
-      repositoryData,
-      repositoryData[0].repoKey
-    );
-    const repoDetails = list.map(ele => {
-      return {
-        id: ele.repoKey,
-        projectName: ele.repoName
-      };
-    });
-    this.setState({
-      repoData: repoDetails,
-      selectedRepo: repoDetails[selectedIndex].projectName
-    });
+    if (repositoryData.length > 0) {
+      const { list, selectedIndex } = this.markSelected(
+        repositoryData,
+        repositoryData[0].repoKey
+      );
+      const repoDetails = list.map(ele => {
+        return {
+          id: ele.repoKey,
+          projectName: ele.repoName
+        };
+      });
 
-    this.props.repoDropValDispatch(this.state.selectedRepo);
+      // const metricValues = this.splitMetricValues(repoDetails);
+      this.setState({
+        repoData: repoDetails,
+        selectedRepo: repoDetails[selectedIndex].projectName
+      });
+
+      this.props.repoDropValDispatch(this.state.selectedRepo);
+    } else {
+      this.setState({
+        repoData: [],
+        selectedRepo: ""
+      });
+    }
+  };
+
+  splitMetricValues = repoDetails => {
+    let finalSplit = [];
+    const repoDetailsSplit = repoDetails.map(item => {
+      let rawData = item.projectName.split(":");
+      return rawData[1];
+    });
+    return repoDetailsSplit;
+    //     let split1 = repoDetailsSplit.splice(0, 3);
+    //     let split2 = [...repoDetailsSplit];
+
+    //     splitItems1 = split1.map(item => {
+    //       return item[1];
+    //     });
+    // splitItems2 =
+
+    //     const repoValues = finalSplit + split2;
+    //     return repoValues.split();
   };
 
   //method to update repo data when dropdown is changed
@@ -247,6 +275,7 @@ class ProductInfoBar extends Component {
   };
 
   render() {
+    console.log(this.props.resetTab);
     let dimensionData = this.props.widgetProps;
 
     const projectDimensions = new Widgets();
@@ -426,10 +455,11 @@ class ProductInfoBar extends Component {
                       md={5}
                       className="align-items-center d-flex h-100 p-0 border-right border-dark"
                     >
-                      <Row className="p-0 m-0 w-100 ">
+                      <Row className="p-0 m-0 w-100 h-100 ">
                         <Col md={5} className="p-0">
                           {this.props.projectRecieved ? (
                             <Donut
+                              color={"#7a61ff"}
                               percentage={this.props.projDetails.features}
                             ></Donut>
                           ) : (
@@ -460,10 +490,11 @@ class ProductInfoBar extends Component {
                       md={5}
                       className="p-0 offset-md-1 align-items-center d-flex h-100"
                     >
-                      <Row className="p-0 m-0 w-100 ">
+                      <Row className="p-0 m-0 w-100 h-100 ">
                         <Col md={5} className="p-0">
                           {this.props.projectRecieved ? (
                             <Donut
+                              color={"#2ece95"}
                               percentage={this.props.projDetails.userStory}
                             ></Donut>
                           ) : (
@@ -516,7 +547,8 @@ const mapStateToProps = state => {
     sprintDataReceived: state.productDetails.currentSprint.sprintReceived,
     velocityCharts: state.chartData.currentChartData.chartDetails,
     chartDataReceived: state.chartData.currentChartData.chartDataReceived,
-    selectedTab: state.chartData.currentTab
+    selectedTab: state.chartData.currentTab,
+    resetTab: state.qualityData.resetTab
   };
 };
 

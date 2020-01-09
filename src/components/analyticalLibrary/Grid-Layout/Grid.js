@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 import { qualityGraphInfo } from "../Translations/qualityGraphInfo";
+import { velocityGraphInfo } from "../Translations/velocityGraphInfo";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 class Grid extends Component {
@@ -23,7 +24,10 @@ class Grid extends Component {
               title="Hooray!"
             >
               <TooltipHoc
-                info={qualityGraphInfo[this.props.chartData[ele.i].name]}
+                info={
+                  velocityGraphInfo[this.props.chartData[ele.i].name] ||
+                  qualityGraphInfo[this.props.chartData[ele.i].name]
+                }
               >
                 <span className="d-inline-block">
                   <FontAwesomeIcon icon={faInfoCircle} />

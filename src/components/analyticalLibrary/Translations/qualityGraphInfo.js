@@ -1,10 +1,11 @@
 export const qualityGraphInfo = {
   "Bugs, Vulnerabilities & Code Smells":
-    "The time between when an operation begins to the point of time when the operation ends.",
-  "Coverage & Duplications":
-    "The time from when a request is initiated to delivery.",
+    "Bug - An issue that represents something wrong in the code , Vulnerability - A security-related issue which represents a backdoor for attackers. , Code Smell - A maintainability-related issue in the code. they indicate weaknesses in design that may be slowing down development or increasing the risk of bugs or failures in the future",
+
+  Coverage:
+    "Represents the portion of source code being covered by unit tests which tracks and improves the quality of the source code.",
   "Outstanding Bugs":
-    "The development flow rate or the number of user stories delivered in a given period of time.",
+    "Represents the difference of total number of bugs found with total defects fixed.",
   "Average Defect Resolution Time":
-    "The frequency of releasing new versions of applications, measured by the number of deployments over a given period of time."
+    "Time taken from when an issue is logged till it is fully resolved."
 };

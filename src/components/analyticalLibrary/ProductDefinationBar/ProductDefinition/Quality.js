@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import { Row, Container, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquare, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSquare,
+  faEllipsisV,
+  faInfoCircle
+} from "@fortawesome/free-solid-svg-icons";
 import mockApi from "../../../../utility/Http/devOpsApisMock";
 import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
@@ -10,23 +14,26 @@ import StackedBar from "../../Charts/StackedBar/StackedBar";
 import { qualityDataDispatch } from "../../../../store/actions/qualityData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ColumnHigh from "../../Charts/DefectColumn/DefectHigh";
-
+import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
+import BubbleHigh from "../../Charts/BubbleChart/BubbleChart";
+import { TooltipHoc } from "../../TooltiHOC/TooltipHoc";
+import ModalBackDrop from "../../ModalBackDrop/ModalBackDrop";
+import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
 const chartCompList = [
+  {
+    name: "Average Defect Resolution Time",
+    type: "DefectHigh",
+    component: ColumnHigh
+  },
   {
     name: "Bugs, Vulnerabilities & Code Smells",
     type: "MultipleLineHigh",
     component: LineHigh
   },
   {
-    name: "Coverage & Duplications",
+    name: "Coverage",
     type: "AreaHigh",
     component: AreaHigh
-  },
-  {
-    name: "Average Defect Resolution Time",
-    type: "DefectHigh",
-    component: ColumnHigh
   },
 
   {
@@ -39,6 +46,8 @@ const chartCompList = [
 class Quality extends Component {
   state = {
     charts: [],
+    displayMetric: false,
+    metricType: "",
     layout: {
       lg: [
         { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
@@ -58,23 +67,46 @@ class Quality extends Component {
     qualityMetrics: []
   };
 
+  onDisplayMetricsClickHandler = metricType => {
+    this.setState({
+      displayMetric: true,
+      metricType: metricType
+    });
+  };
+  onDisplayMetricExitClick = () => {
+    this.setState({
+      displayMetric: false,
+      metricType: ""
+    });
+  };
+
   fetchQualityData = () => {
+    this.setState({
+      all_data: false,
+      charts: []
+    });
     this.props
       .qualityDataDispatch(this.props.currentExecId, this.props.projId)
       .then(item => {
-        const qualityMetrics = this.createMetrics(
-          this.props.qualityData.repositories
-        );
-        this.setState({
-          qualityMetrics
-        });
-        const type = this.setRawRepoObjects(
-          this.props.qualityData.repositories,
-          this.props.qualityData.outstandingBugs,
-          this.props.qualityData.averageDefectResolutionTime
-        );
+        if (this.props.qualityData.repositories.length > 0) {
+          const qualityMetrics = this.createMetrics(
+            this.props.qualityData.repositories
+          );
+          this.setState({
+            qualityMetrics
+          });
+          const type = this.setRawRepoObjects(
+            this.props.qualityData.repositories,
+            this.props.qualityData.outstandingBugs,
+            this.props.qualityData.averageDefectResolutionTime
+          );
 
-        this.createCharts(this.createChartObject(type));
+          this.createCharts(this.createChartObject(type));
+        } else {
+          this.props.resetProjectRepoDispatch(
+            this.props.qualityData.repositories
+          );
+        }
       })
       .catch(error => {
         console.error(error);
@@ -102,11 +134,11 @@ class Quality extends Component {
           item[0] === "coverage"
             ? item[1].value != null
               ? `${item[1].value}%`
-              : ""
+              : "0.0%"
             : item[0] === "duplication"
             ? item[1] != null
-              ? `${item[1]}%`
-              : ""
+              ? `${item[1].value}%`
+              : "0.0%"
             : item[1].count
       };
     });
@@ -127,6 +159,11 @@ class Quality extends Component {
   setRawRepoObjects = (rawData, outstandingBugs, averageResolution) => {
     const item = rawData.map((item, index) => {
       return {
+        AvResolutionTime: [
+          { name: item.repoName },
+          { title: "Average Defect Resolution Time" },
+          averageResolution
+        ],
         bugs_vulnerability_codeSmell: [
           { name: item.repoName },
           { title: "Bugs, Vulnerabilities & Code Smells" },
@@ -136,14 +173,8 @@ class Quality extends Component {
         ],
         coverage: [
           { name: item.repoName },
-          { title: "Coverage & Duplications" },
+          { title: "Coverage" },
           item.coverage
-        ],
-
-        AvResolutionTime: [
-          { name: item.repoName },
-          { title: "Average Defect Resolution Time" },
-          averageResolution
         ],
         outstandingbugs: [
           { name: item.repoName },
@@ -166,7 +197,7 @@ class Quality extends Component {
       return item.map(ele => {
         if (ele[0].name === this.props.currentRepo) {
           return {
-            name: ele[0].name,
+            name: ele[1].title,
             data: ele,
             title: ele[1].title
           };
@@ -174,15 +205,6 @@ class Quality extends Component {
       });
     });
     return processedData;
-    // => {
-    //   ele => {
-    //     return {
-    //       name: item[0].name,
-    //       data: ite,
-    //       title: item[1].title
-    //     }
-    //   };
-    // });
   };
 
   createCharts = (list, removed) => {
@@ -201,12 +223,24 @@ class Quality extends Component {
       });
     });
     const chartList = updatedList.splice(selectedIndex, 1);
-    console.log("Final", chartList);
     this.setState({
       charts: chartList
     });
   };
-
+  // setChart = (title, data, type) => {
+  //   switch (type) {
+  //     case "MultipleLineHigh":
+  //       return <LineHigh title={title} type="MultipleLineHigh" data={data} />;
+  //     case "AreaHigh":
+  //       return <AreaHigh title={title} type={"AreaHigh"} data={data} />;
+  //     case "DefectHigh":
+  //       return <ColumnHigh title={title} data={data} type={"DefectHigh"} />;
+  //     case "BarHigh":
+  //       return <StackedBar title={title} data={data} type={"BarHigh"} />;
+  //     default:
+  //       return "";
+  //   }
+  // };
   setChart = (title, data) => {
     const chartArry = chartCompList.map(item => {
       if (item.name === title) {
@@ -243,19 +277,44 @@ class Quality extends Component {
     });
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.currentRepo != prevProps.currentRepo) {
-      this.fetchQualityData();
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.currentRepo !== nextProps.currentRepo ||
+      this.props.projId !== nextProps.projId
+    ) {
+      this.setState({
+        all_data: true
+      });
     }
   }
 
   componentDidMount() {
     if (this.props.currentRepo) {
+      this.setState({
+        all_data: true
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.all_data) {
       this.fetchQualityData();
     }
   }
+
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.currentRepo != prevProps.currentRepo) {
+  //     this.fetchQualityData();
+  //   }
+  // }
+
+  // componentDidMount() {
+  //   if (this.props.currentRepo) {
+  //     this.fetchQualityData();
+  //   }
+  // }
   render() {
-    console.log(this.state.chartList);
+    console.log(this.state.charts);
     return (
       <React.Fragment>
         <Row className="Quality quality-metric-area w-100 p-0 m-0 ">
@@ -301,7 +360,15 @@ class Quality extends Component {
                       {ele.value}
                     </Row>
                     <Row className="d-flex justify-content-end px-3 text-white-50">
-                      <FontAwesomeIcon icon={faEllipsisV} />
+                      <TooltipHoc info="">
+                        <FontAwesomeIcon
+                          className="show-cursor"
+                          onClick={() =>
+                            this.onDisplayMetricsClickHandler(ele.type)
+                          }
+                          icon={faEllipsisV}
+                        />
+                      </TooltipHoc>
                     </Row>
                   </div>
                 );
@@ -319,6 +386,36 @@ class Quality extends Component {
             columnSize={this.state.gridCol}
           />
         ) : null}
+        <ModalBackDrop show={this.state.displayMetric}>
+          <div className="chart-title w-50 h-50 grid-graph-comp">
+            <div
+              className="position-absolute px-2 text-right text-white w-50"
+              style={{ zIndex: "100" }}
+            >
+              <p
+                className="d-inline px-1"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Hooray!"
+              >
+                <TooltipHoc info={`${this.state.metricType} Data`}>
+                  <span className="d-inline-block">
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                  </span>
+                </TooltipHoc>
+              </p>
+              <p
+                className="show-cursor d-inline"
+                onClick={this.onDisplayMetricExitClick}
+              >
+                <TooltipHoc info="Remove">
+                  <span className="d-inline-block">X</span>
+                </TooltipHoc>
+              </p>
+            </div>
+            <BubbleHigh title={this.state.metricType} />
+          </div>
+        </ModalBackDrop>
       </React.Fragment>
     );
   }
@@ -337,7 +434,10 @@ const mapStateToProps = state => {
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ qualityDataDispatch }, dispatch);
+  return bindActionCreators(
+    { qualityDataDispatch, resetProjectRepoDispatch },
+    dispatch
+  );
 };
 
 //Connect react component to redux
