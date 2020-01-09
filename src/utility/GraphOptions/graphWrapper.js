@@ -604,7 +604,7 @@ class Graph {
       }
     };
     options.tooltip = {
-      pointFormat: "{point.y}"
+      pointFormat: `No of Days: {point.y}`
     };
     options.plotOptions = {
       column: {
@@ -992,7 +992,7 @@ class Graph {
       },
       {
         name: "Critical",
-        data: critical_value,
+        data: [10],
         color: "#A42829"
       }
     ];
