@@ -83,7 +83,8 @@ class Quality extends Component {
   fetchQualityData = () => {
     this.setState({
       all_data: false,
-      charts: []
+      charts: [],
+      qualityMetrics: []
     });
     this.props
       .qualityDataDispatch(this.props.currentExecId, this.props.projId)
