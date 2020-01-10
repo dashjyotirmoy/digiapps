@@ -17,6 +17,7 @@ import { isQuality } from "../../../utility/classUtility/classUtil";
 import Widgets from "../../dashboardController/widgetParser";
 import { repoDropValDispatch } from "../../../store/actions/qualityData";
 import { qualityDataDispatch } from "../../../store/actions/qualityData";
+import Spinner from "../../analyticalLibrary/Spinner/Spinner";
 
 class ProductInfoBar extends Component {
   state = {
@@ -28,7 +29,8 @@ class ProductInfoBar extends Component {
     recieved: false,
     prodAggView: false,
     repoData: [],
-    selectedRepo: ""
+    selectedRepo: "",
+    show: true
   };
 
   //axios call to fetch executive data
@@ -61,7 +63,7 @@ class ProductInfoBar extends Component {
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-
+    console.log("1");
     this.getProjectDetails(projects[selectedIndex].id, this.props.executiveId);
   };
 
@@ -134,6 +136,7 @@ class ProductInfoBar extends Component {
       sprintData: sprintDetails,
       selectedSprint: sprintDetails[sprintData.selectedIndex].projectName
     });
+    console.log("2");
     this.getSprintData(
       sprintDetails[sprintData.selectedIndex].id,
       this.props.executiveId
@@ -188,7 +191,8 @@ class ProductInfoBar extends Component {
       // const metricValues = this.splitMetricValues(repoDetails);
       this.setState({
         repoData: repoDetails,
-        selectedRepo: repoDetails[selectedIndex].projectName
+        selectedRepo: repoDetails[selectedIndex].projectName,
+        show: false
       });
 
       this.props.repoDropValDispatch(this.state.selectedRepo);
@@ -291,249 +295,255 @@ class ProductInfoBar extends Component {
       : prodAggDisabled;
     const qualityView = isQuality(this.props.selectedTab);
     const Donut = Components["Donut"];
-
-    return (
-      <div className="h-10" style={{ backgroundColor: "#1c2531" }}>
-        <Container fluid className="h-100 border-bottom border-dark border-top">
-          <Row
-            className="h-100  p-0 m-0"
-            style={{ backgroundColor: "#1d2632" }}
+    if (this.state.show) {
+      return <Spinner show={this.state.show} />;
+    } else {
+      return (
+        <div className="h-10" style={{ backgroundColor: "#1c2531" }}>
+          <Container
+            fluid
+            className="h-100 border-bottom border-dark border-top"
           >
-            <Col className="h-100 pl-0" sm={12} md={6} lg={6} xl={6}>
-              <Row className="h-100">
-                <Col
-                  sm={2}
-                  md={2}
-                  className="prodAgg p-0 col-lg-1_5 col-xl-1_5"
-                >
-                  <Row className="h-100">
-                    <TooltipHoc
-                      info={
-                        this.state.prodAggView
-                          ? translations.prodAggViewEnable
-                          : translations.prodAggViewDisable
-                      }
-                    >
-                      <Col
-                        onClick={this.onProdAggViewClickHandler}
-                        md={12}
-                        className="m-auto d-flex justify-content-center show-cursor"
+            <Row
+              className="h-100  p-0 m-0"
+              style={{ backgroundColor: "#1d2632" }}
+            >
+              <Col className="h-100 pl-0" sm={12} md={6} lg={6} xl={6}>
+                <Row className="h-100">
+                  <Col
+                    sm={2}
+                    md={2}
+                    className="prodAgg p-0 col-lg-1_5 col-xl-1_5"
+                  >
+                    <Row className="h-100">
+                      <TooltipHoc
+                        info={
+                          this.state.prodAggView
+                            ? translations.prodAggViewEnable
+                            : translations.prodAggViewDisable
+                        }
                       >
-                        <img src={prodAggViewIcon} />
+                        <Col
+                          onClick={this.onProdAggViewClickHandler}
+                          md={12}
+                          className="m-auto d-flex justify-content-center show-cursor"
+                        >
+                          <img src={prodAggViewIcon} />
+                        </Col>
+                      </TooltipHoc>
+                    </Row>
+                  </Col>
+                  <Col
+                    sm={5}
+                    md={qualityView ? 4 : 5}
+                    lg={qualityView ? 5 : 6}
+                    xl={qualityView ? 5 : 4}
+                    className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
+                  >
+                    {this.props.projectListReceived ? (
+                      <Dropdown
+                        listData={this.state.productData}
+                        direction="down"
+                        onSelectDelegate={this.prodOnSelectHandler}
+                      >
+                        <Row className="h-100">
+                          <Col sm={10} md={10} lg={10} xl={10}>
+                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                              {this.state.selectedProduct}
+                            </p>
+                          </Col>
+                          <Col
+                            sm={2}
+                            md={2}
+                            md={2}
+                            lg={2}
+                            xl={2}
+                            className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                          >
+                            <FontAwesomeIcon icon={faChevronDown} />
+                          </Col>
+                        </Row>
+                      </Dropdown>
+                    ) : null}
+                  </Col>
+                  <Col
+                    sm={3}
+                    className={classnames(
+                      "border-right",
+                      "border-dark",
+                      "p-0",
+                      "h-100",
+                      { "col-xl-4 col-lg-4 col-md-4": !qualityView },
+                      { "col-xl-2_5 col-lg-2_5 col-md-2_5": qualityView }
+                    )}
+                  >
+                    <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
+                      <Dropdown
+                        listData={this.state.sprintData}
+                        direction="down"
+                        onSelectDelegate={this.sprintOnSelectHandler}
+                      >
+                        <Row className="h-100 m-0 p-0">
+                          <Col sm={10} md={10} lg={10} xl={10}>
+                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                              {this.state.selectedSprint}
+                            </p>
+                          </Col>
+                          <Col
+                            sm={2}
+                            md={2}
+                            md={2}
+                            lg={2}
+                            xl={2}
+                            className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                          >
+                            <FontAwesomeIcon icon={faChevronDown} />
+                          </Col>
+                        </Row>
+                      </Dropdown>
+                    </Row>
+                  </Col>
+                  <Col
+                    sm={2}
+                    className={classnames(
+                      "border-right",
+                      "border-dark",
+                      "p-0",
+                      "h-100",
+                      { "d-none": !qualityView },
+                      { "col-xl-2_5 col-lg-2_5 col-md-2_5": qualityView }
+                    )}
+                  >
+                    <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
+                      <Dropdown
+                        listData={this.state.repoData}
+                        direction="down"
+                        onSelectDelegate={this.handleRepoChange}
+                      >
+                        <Row className="h-100 m-0 p-0">
+                          <Col sm={10} md={10} lg={10} xl={10}>
+                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                              {this.state.selectedRepo}
+                            </p>
+                          </Col>
+                          <Col
+                            sm={2}
+                            md={2}
+                            md={2}
+                            lg={2}
+                            xl={2}
+                            className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                          >
+                            <FontAwesomeIcon icon={faChevronDown} />
+                          </Col>
+                        </Row>
+                      </Dropdown>
+                    </Row>
+                  </Col>
+                </Row>
+              </Col>
+              <Col sm={12} md={6} lg={6} xl={6} className="h-100">
+                <Row className="h-100">
+                  <Col md={7} xl={8} lg={8} className="h-100">
+                    <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
+                      <Col md={12} xl={12} lg={12} className="h-100 pl-0 py-1">
+                        {this.props.sprintDataReceived ? (
+                          <LineHigh
+                            burndown={this.props.sprintData}
+                            type="line"
+                          ></LineHigh>
+                        ) : (
+                          "loading"
+                        )}
                       </Col>
-                    </TooltipHoc>
-                  </Row>
-                </Col>
-                <Col
-                  sm={5}
-                  md={qualityView ? 4 : 5}
-                  lg={qualityView ? 5 : 6}
-                  xl={qualityView ? 5 : 4}
-                  className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
-                >
-                  {this.props.projectListReceived ? (
-                    <Dropdown
-                      listData={this.state.productData}
-                      direction="down"
-                      onSelectDelegate={this.prodOnSelectHandler}
-                    >
-                      <Row className="h-100">
-                        <Col sm={10} md={10} lg={10} xl={10}>
-                          <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
-                            {this.state.selectedProduct}
-                          </p>
-                        </Col>
-                        <Col
-                          sm={2}
-                          md={2}
-                          md={2}
-                          lg={2}
-                          xl={2}
-                          className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
-                        >
-                          <FontAwesomeIcon icon={faChevronDown} />
-                        </Col>
-                      </Row>
-                    </Dropdown>
-                  ) : null}
-                </Col>
-                <Col
-                  sm={3}
-                  className={classnames(
-                    "border-right",
-                    "border-dark",
-                    "p-0",
-                    "h-100",
-                    { "col-xl-4 col-lg-4 col-md-4": !qualityView },
-                    { "col-xl-2_5 col-lg-2_5 col-md-2_5": qualityView }
-                  )}
-                >
-                  <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
-                    <Dropdown
-                      listData={this.state.sprintData}
-                      direction="down"
-                      onSelectDelegate={this.sprintOnSelectHandler}
-                    >
-                      <Row className="h-100 m-0 p-0">
-                        <Col sm={10} md={10} lg={10} xl={10}>
-                          <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
-                            {this.state.selectedSprint}
-                          </p>
-                        </Col>
-                        <Col
-                          sm={2}
-                          md={2}
-                          md={2}
-                          lg={2}
-                          xl={2}
-                          className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
-                        >
-                          <FontAwesomeIcon icon={faChevronDown} />
-                        </Col>
-                      </Row>
-                    </Dropdown>
-                  </Row>
-                </Col>
-                <Col
-                  sm={2}
-                  className={classnames(
-                    "border-right",
-                    "border-dark",
-                    "p-0",
-                    "h-100",
-                    { "d-none": !qualityView },
-                    { "col-xl-2_5 col-lg-2_5 col-md-2_5": qualityView }
-                  )}
-                >
-                  <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
-                    <Dropdown
-                      listData={this.state.repoData}
-                      direction="down"
-                      onSelectDelegate={this.handleRepoChange}
-                    >
-                      <Row className="h-100 m-0 p-0">
-                        <Col sm={10} md={10} lg={10} xl={10}>
-                          <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
-                            {this.state.selectedRepo}
-                          </p>
-                        </Col>
-                        <Col
-                          sm={2}
-                          md={2}
-                          md={2}
-                          lg={2}
-                          xl={2}
-                          className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
-                        >
-                          <FontAwesomeIcon icon={faChevronDown} />
-                        </Col>
-                      </Row>
-                    </Dropdown>
-                  </Row>
-                </Col>
-              </Row>
-            </Col>
-            <Col sm={12} md={6} lg={6} xl={6} className="h-100">
-              <Row className="h-100">
-                <Col md={7} xl={8} lg={8} className="h-100">
-                  <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
-                    <Col md={12} xl={12} lg={12} className="h-100 pl-0 py-1">
-                      {this.props.sprintDataReceived ? (
-                        <LineHigh
-                          burndown={this.props.sprintData}
-                          type="line"
-                        ></LineHigh>
-                      ) : (
-                        "loading"
-                      )}
-                    </Col>
-                  </Row>
-                </Col>
-                <Col
-                  lg={4}
-                  xl={4}
-                  md={5}
-                  className="d-md-block p-0 d-lg-block d-xl-block d-sm-none"
-                >
-                  <Row className="p-0 m-0 w-100 d-flex align-items-center h-100">
-                    <Col
-                      md={5}
-                      className="align-items-center d-flex h-100 p-0 border-right border-dark"
-                    >
-                      <Row className="p-0 m-0 w-100 h-100 ">
-                        <Col md={5} className="p-0">
-                          {this.props.projectRecieved ? (
-                            <Donut
-                              color={"#7a61ff"}
-                              percentage={this.props.projDetails.features}
-                            ></Donut>
-                          ) : (
-                            "loading"
-                          )}
-                        </Col>
-                        <Col
-                          md={7}
-                          className="p-0 d-flex align-items-center justify-content-center"
-                        >
-                          <div
-                            id="feature-info"
-                            className="d-inline-block text-white"
+                    </Row>
+                  </Col>
+                  <Col
+                    lg={4}
+                    xl={4}
+                    md={5}
+                    className="d-md-block p-0 d-lg-block d-xl-block d-sm-none"
+                  >
+                    <Row className="p-0 m-0 w-100 d-flex align-items-center h-100">
+                      <Col
+                        md={5}
+                        className="align-items-center d-flex h-100 p-0 border-right border-dark"
+                      >
+                        <Row className="p-0 m-0 w-100 h-100 ">
+                          <Col md={5} className="p-0">
+                            {this.props.projectRecieved ? (
+                              <Donut
+                                color={"#7a61ff"}
+                                percentage={this.props.projDetails.features}
+                              ></Donut>
+                            ) : (
+                              "loading"
+                            )}
+                          </Col>
+                          <Col
+                            md={7}
+                            className="p-0 d-flex align-items-center justify-content-center"
                           >
-                            <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
-                              {this.props.projectRecieved
-                                ? `${this.props.projDetails.features.completed}/ ${this.props.projDetails.features.total}`
-                                : "loading"}
-                            </p>
-                            <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
-                              Features
-                            </p>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col
-                      md={5}
-                      className="p-0 offset-md-1 align-items-center d-flex h-100"
-                    >
-                      <Row className="p-0 m-0 w-100 h-100 ">
-                        <Col md={5} className="p-0">
-                          {this.props.projectRecieved ? (
-                            <Donut
-                              color={"#2ece95"}
-                              percentage={this.props.projDetails.userStory}
-                            ></Donut>
-                          ) : (
-                            "loading"
-                          )}
-                        </Col>
-                        <Col
-                          md={7}
-                          className="p-0 d-flex align-items-center justify-content-center"
-                        >
-                          <div
-                            id="feature-info"
-                            className="d-inline-block text-white"
+                            <div
+                              id="feature-info"
+                              className="d-inline-block text-white"
+                            >
+                              <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
+                                {this.props.projectRecieved
+                                  ? `${this.props.projDetails.features.completed}/ ${this.props.projDetails.features.total}`
+                                  : "loading"}
+                              </p>
+                              <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
+                                Features
+                              </p>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col
+                        md={5}
+                        className="p-0 offset-md-1 align-items-center d-flex h-100"
+                      >
+                        <Row className="p-0 m-0 w-100 h-100 ">
+                          <Col md={5} className="p-0">
+                            {this.props.projectRecieved ? (
+                              <Donut
+                                color={"#2ece95"}
+                                percentage={this.props.projDetails.userStory}
+                              ></Donut>
+                            ) : (
+                              "loading"
+                            )}
+                          </Col>
+                          <Col
+                            md={7}
+                            className="p-0 d-flex align-items-center justify-content-center"
                           >
-                            <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
-                              {this.props.projectRecieved
-                                ? `${this.props.projDetails.userStory.completed}/ ${this.props.projDetails.userStory.total}`
-                                : "loading"}
-                            </p>
-                            <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
-                              User Stories
-                            </p>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    );
+                            <div
+                              id="feature-info"
+                              className="d-inline-block text-white"
+                            >
+                              <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
+                                {this.props.projectRecieved
+                                  ? `${this.props.projDetails.userStory.completed}/ ${this.props.projDetails.userStory.total}`
+                                  : "loading"}
+                              </p>
+                              <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
+                                User Stories
+                              </p>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      );
+    }
   }
 }
 

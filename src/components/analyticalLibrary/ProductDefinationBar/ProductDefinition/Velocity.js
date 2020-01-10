@@ -11,7 +11,9 @@ import throuput from "../../../../content/img/throuput.png";
 import depChange from "../../../../content/img/DepChange.png";
 import degreeTest from "../../../../content/img/degreeTest.png";
 import Throughput from "../../Charts/Bar/Throughput";
-import TestingReleaseAutomation from "../../Charts/Bar/TestingReleaseAutomation"
+import TestingReleaseAutomation from "../../Charts/Bar/TestingReleaseAutomation";
+import Spinner from "../../Spinner/Spinner";
+
 var initialData = [
   {
     name: "tp",
@@ -56,7 +58,8 @@ class Velocity extends Component {
       ]
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    gridBreakpoints: { lg: 1200, md: 768, sm: 576, xs: 480, xxs: 0 }
+    gridBreakpoints: { lg: 1200, md: 768, sm: 576, xs: 480, xxs: 0 },
+    show: true
   };
 
   //function to remove a chart component from the grid layout
@@ -107,12 +110,19 @@ class Velocity extends Component {
       case "ColumnHigh":
         return <Throughput title={title} type={type} data={data} />;
       case "Column":
-        return <TestingReleaseAutomation title={title} data={data} />
+        return <TestingReleaseAutomation title={title} data={data} />;
       case "img":
-        return <div className="chart-title w-100 h-100">
-          <div className="chart-title ml-3 mt-1 position-absolute" style={{ zIndex: "1" }}>{data}</div>
-          <img src={title} className="h-100 w-100 border-radius-10" />
-        </div>
+        return (
+          <div className="chart-title w-100 h-100">
+            <div
+              className="chart-title ml-3 mt-1 position-absolute"
+              style={{ zIndex: "1" }}
+            >
+              {data}
+            </div>
+            <img src={title} className="h-100 w-100 border-radius-10" />
+          </div>
+        );
       default:
         return "";
     }
@@ -178,25 +188,30 @@ class Velocity extends Component {
         this.createCharts(this.createChartObject(this.props.velocityCharts));
         this.setState({
           response: this.props.velocityCharts,
-          received: true
+          received: true,
+          show: false
         });
       });
   };
 
   render() {
-    return (
-      <React.Fragment>
-        {this.state.charts.length > 0 ? (
-          <Grid
-            chartData={this.state.charts}
-            layouts={this.state.layout}
-            removeDelegate={this.removeChartComponent}
-            breakpoint={this.state.gridBreakpoints}
-            columnSize={this.state.gridCol}
-          />
-        ) : null}
-      </React.Fragment>
-    );
+    if (this.state.show) {
+      return <Spinner show="true" />;
+    } else {
+      return (
+        <React.Fragment>
+          {this.state.charts.length > 0 ? (
+            <Grid
+              chartData={this.state.charts}
+              layouts={this.state.layout}
+              removeDelegate={this.removeChartComponent}
+              breakpoint={this.state.gridBreakpoints}
+              columnSize={this.state.gridCol}
+            />
+          ) : null}
+        </React.Fragment>
+      );
+    }
   }
 }
 

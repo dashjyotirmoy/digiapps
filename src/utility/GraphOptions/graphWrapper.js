@@ -129,8 +129,7 @@ class Graph {
         enabled: false
       },
       tickLength: 0,
-      lineWidth: 0,
-      tickLength: 0
+      lineWidth: 0
     };
     options.yAxis = [
       {
