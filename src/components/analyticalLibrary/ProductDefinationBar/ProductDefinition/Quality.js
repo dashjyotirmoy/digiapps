@@ -7,7 +7,6 @@ import {
   faEllipsisV,
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
-import mockApi from "../../../../utility/Http/devOpsApisMock";
 import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 import StackedBar from "../../Charts/StackedBar/StackedBar";
@@ -19,6 +18,8 @@ import BubbleHigh from "../../Charts/BubbleChart/BubbleChart";
 import { TooltipHoc } from "../../TooltiHOC/TooltipHoc";
 import ModalBackDrop from "../../ModalBackDrop/ModalBackDrop";
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
+import Spinner from "../../Spinner/Spinner";
+
 const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
@@ -64,7 +65,8 @@ class Quality extends Component {
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
-    qualityMetrics: []
+    qualityMetrics: [],
+    show: true
   };
 
   onDisplayMetricsClickHandler = metricType => {
@@ -94,7 +96,8 @@ class Quality extends Component {
             this.props.qualityData.repositories
           );
           this.setState({
-            qualityMetrics
+            qualityMetrics,
+            show: false
           });
           const type = this.setRawRepoObjects(
             this.props.qualityData.repositories,
@@ -304,108 +307,113 @@ class Quality extends Component {
   }
 
   render() {
-    return (
-      <React.Fragment>
-        <Row className="Quality quality-metric-area w-100 p-0 m-0 ">
-          <Row className="metric-legend w-100 text-white">
-            <Col
-              xl={2}
-              lg={2}
-              md={3}
-              className="offset-xl-10 offset-lg-10 offset-md-9"
-            >
-              <Row>
-                <Col className="font-size-xs pr-0">
-                  <FontAwesomeIcon className="critical" icon={faSquare} />{" "}
-                  Critical{" "}
-                </Col>
-                <Col className="font-size-xs pr-0">
-                  <FontAwesomeIcon className="medium" icon={faSquare} /> Medium{" "}
-                </Col>
-                <Col className="font-size-xs pr-0">
-                  <FontAwesomeIcon className="low" icon={faSquare} /> Low
-                </Col>
-              </Row>
-            </Col>
+    if (this.state.show) {
+      return <Spinner show="true" />;
+    } else {
+      return (
+        <React.Fragment>
+          <Row className="Quality quality-metric-area w-100 p-0 m-0 ">
+            <Row className="metric-legend w-100 text-white">
+              <Col
+                xl={2}
+                lg={2}
+                md={3}
+                className="offset-xl-10 offset-lg-10 offset-md-9"
+              >
+                <Row>
+                  <Col className="font-size-xs pr-0">
+                    <FontAwesomeIcon className="critical" icon={faSquare} />{" "}
+                    Critical{" "}
+                  </Col>
+                  <Col className="font-size-xs pr-0">
+                    <FontAwesomeIcon className="medium" icon={faSquare} />{" "}
+                    Medium{" "}
+                  </Col>
+                  <Col className="font-size-xs pr-0">
+                    <FontAwesomeIcon className="low" icon={faSquare} /> Low
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Container fluid className=" w-100 h-90 d-flex align-item-center">
+              <div className="h-100 w-100 d-flex overflow-auto">
+                {this.state.qualityMetrics.map(ele => {
+                  return (
+                    <div
+                      key={ele.type}
+                      className="border-radius-10 border border-dark flex-grow-1 metric-card mx-3 mb-3 p-3"
+                    >
+                      <Row className="h-15 m-0 text-white d-flex justify-content-between">
+                        <span>{ele.type}</span>
+                        <span>
+                          <FontAwesomeIcon
+                            className={ele.position}
+                            icon={faSquare}
+                          />
+                        </span>
+                      </Row>
+                      <Row className="align-items-center d-flex h-75 justify-content-center row text-white metric-value">
+                        {ele.value}
+                      </Row>
+                      <Row className="d-flex justify-content-end px-3 text-white-50">
+                        <TooltipHoc info="">
+                          <FontAwesomeIcon
+                            className="show-cursor"
+                            onClick={() =>
+                              this.onDisplayMetricsClickHandler(ele.type)
+                            }
+                            icon={faEllipsisV}
+                          />
+                        </TooltipHoc>
+                      </Row>
+                    </div>
+                  );
+                })}
+              </div>
+            </Container>
           </Row>
-          <Container fluid className=" w-100 h-90 d-flex align-item-center">
-            <div className="h-100 w-100 d-flex overflow-auto">
-              {this.state.qualityMetrics.map(ele => {
-                return (
-                  <div
-                    key={ele.type}
-                    className="border-radius-10 border border-dark flex-grow-1 metric-card mx-3 mb-3 p-3"
-                  >
-                    <Row className="h-15 m-0 text-white d-flex justify-content-between">
-                      <span>{ele.type}</span>
-                      <span>
-                        <FontAwesomeIcon
-                          className={ele.position}
-                          icon={faSquare}
-                        />
-                      </span>
-                    </Row>
-                    <Row className="align-items-center d-flex h-75 justify-content-center row text-white metric-value">
-                      {ele.value}
-                    </Row>
-                    <Row className="d-flex justify-content-end px-3 text-white-50">
-                      <TooltipHoc info="">
-                        <FontAwesomeIcon
-                          className="show-cursor"
-                          onClick={() =>
-                            this.onDisplayMetricsClickHandler(ele.type)
-                          }
-                          icon={faEllipsisV}
-                        />
-                      </TooltipHoc>
-                    </Row>
-                  </div>
-                );
-              })}
-            </div>
-          </Container>
-        </Row>
 
-        {this.state.charts.length ? (
-          <Grid
-            chartData={this.state.charts[0]}
-            layouts={this.state.layout}
-            removeDelegate={this.removeChartComponent}
-            breakpoint={this.state.gridBreakpoints}
-            columnSize={this.state.gridCol}
-          />
-        ) : null}
-        <ModalBackDrop show={this.state.displayMetric}>
-          <div className="chart-title w-50 h-50 grid-graph-comp">
-            <div
-              className="position-absolute px-2 text-right text-white w-50"
-              style={{ zIndex: "100" }}
-            >
-              <p
-                className="d-inline px-1"
-                data-toggle="tooltip"
-                data-placement="top"
+          {this.state.charts.length ? (
+            <Grid
+              chartData={this.state.charts[0]}
+              layouts={this.state.layout}
+              removeDelegate={this.removeChartComponent}
+              breakpoint={this.state.gridBreakpoints}
+              columnSize={this.state.gridCol}
+            />
+          ) : null}
+          <ModalBackDrop show={this.state.displayMetric}>
+            <div className="chart-title w-50 h-50 grid-graph-comp">
+              <div
+                className="position-absolute px-2 text-right text-white w-50"
+                style={{ zIndex: "100" }}
               >
-                <TooltipHoc info={`${this.state.metricType} Data`}>
-                  <span className="d-inline-block">
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                  </span>
-                </TooltipHoc>
-              </p>
-              <p
-                className="show-cursor d-inline"
-                onClick={this.onDisplayMetricExitClick}
-              >
-                <TooltipHoc info="Remove">
-                  <span className="d-inline-block">X</span>
-                </TooltipHoc>
-              </p>
+                <p
+                  className="d-inline px-1"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                >
+                  <TooltipHoc info={`${this.state.metricType} Data`}>
+                    <span className="d-inline-block">
+                      <FontAwesomeIcon icon={faInfoCircle} />
+                    </span>
+                  </TooltipHoc>
+                </p>
+                <p
+                  className="show-cursor d-inline"
+                  onClick={this.onDisplayMetricExitClick}
+                >
+                  <TooltipHoc info="Remove">
+                    <span className="d-inline-block">X</span>
+                  </TooltipHoc>
+                </p>
+              </div>
+              <BubbleHigh title={this.state.metricType} />
             </div>
-            <BubbleHigh title={this.state.metricType} />
-          </div>
-        </ModalBackDrop>
-      </React.Fragment>
-    );
+          </ModalBackDrop>
+        </React.Fragment>
+      );
+    }
   }
 }
 //function to map the state received from reducer

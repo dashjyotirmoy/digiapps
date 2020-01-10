@@ -1,12 +1,12 @@
-import React from 'react';
-import { Modal } from 'react-bootstrap'
-
-const spinner = (props) => {
-    return (
-        <div className="d-flex justify-content-center">
-            <div className="lds-dual-ring"></div>
-        </div>
-    );
-}
-
-export default spinner;
+import React from "react";
+import ModalBackDrop from "../ModalBackDrop/ModalBackDrop";
+const Spinner = props => {
+  return (
+    <ModalBackDrop show={props.show}>
+      <div className="d-flex justify-content-center">
+        <div className="lds-dual-ring"></div>
+      </div>
+    </ModalBackDrop>
+  );
+};
+export default Spinner;
