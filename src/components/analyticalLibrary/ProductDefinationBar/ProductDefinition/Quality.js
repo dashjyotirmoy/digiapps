@@ -7,7 +7,6 @@ import {
   faEllipsisV,
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
-import mockApi from "../../../../utility/Http/devOpsApisMock";
 import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 import StackedBar from "../../Charts/StackedBar/StackedBar";
