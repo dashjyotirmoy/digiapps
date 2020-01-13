@@ -337,7 +337,7 @@ class ProductInfoBar extends Component {
                     sm={5}
                     md={qualityView ? 4 : 5}
                     lg={qualityView ? 5 : 6}
-                    xl={qualityView ? 5 : 4}
+                    xl={qualityView ? 5 : 6}
                     className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
                   >
                     {this.props.projectListReceived ? (
