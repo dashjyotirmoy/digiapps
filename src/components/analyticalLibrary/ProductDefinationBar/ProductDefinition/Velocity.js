@@ -3,30 +3,22 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
-import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
 import { chartDataDispatch } from "../../../../store/actions/chartData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import throuput from "../../../../content/img/throuput.png";
 import depChange from "../../../../content/img/DepChange.png";
 import degreeTest from "../../../../content/img/degreeTest.png";
-import Throughput from "../../Charts/Bar/Throughput";
-import TestingReleaseAutomation from "../../Charts/Bar/TestingReleaseAutomation";
+import VelocityTrend from "../../Charts/VelocityTrends/VelocityTrend";
 import Spinner from "../../Spinner/Spinner";
+import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
 
 var initialData = [
   {
-    name: "tp",
-    type: "ColumnHigh",
-    data: "Throughput",
-    title: throuput,
-    component: {}
-  },
-  {
     name: "dcp",
-    type: "Column",
-    data: "Degree of Tesing and Release Automation",
-    title: depChange,
+    type: "BreakDownHigh",
+    data: "BreakDownHigh",
+    title: BreakDownHigh,
     component: {}
   },
   {
@@ -43,11 +35,11 @@ class Velocity extends Component {
     charts: [],
     layout: {
       lg: [
-        { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "2", x: 0, y: 2, w: 4, h: 2, isResizable: false },
-        { i: "3", x: 4, y: 2, w: 4, h: 2, isResizable: false },
-        { i: "4", x: 8, y: 2, w: 4, h: 2, isResizable: false }
+        { i: "0", x: 0, y: 0, w: 4, h: 2, isResizable: false },
+        { i: "1", x: 4, y: 0, w: 4, h: 2, isResizable: false },
+        { i: "2", x: 8, y: 0, w: 4, h: 2, isResizable: false },
+        { i: "3", x: 0, y: 2, w: 6, h: 2, isResizable: false },
+        { i: "4", x: 6, y: 2, w: 6, h: 2, isResizable: false }
       ],
       md: [
         { i: "0", x: 0, y: 0, w: 5, h: 2, isResizable: false },
@@ -92,7 +84,7 @@ class Velocity extends Component {
     let updatedList = list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
-    updatedList = updatedList.concat(initialData);
+    updatedList = initialData.concat(updatedList);
     updatedList.map(ele => {
       ele.component = this.setChart(ele.type, ele.title, ele.data);
     });
@@ -105,24 +97,13 @@ class Velocity extends Component {
 
   setChart = (type, title, data) => {
     switch (type) {
+      case "VelocityTrends":
+        return <VelocityTrend title={title} type={type} data={data} />;
       case "ControlChartHigh":
         return <ControlChartHigh title={title} type={type} data={data} />;
-      case "ColumnHigh":
-        return <Throughput title={title} type={type} data={data} />;
-      case "Column":
-        return <TestingReleaseAutomation title={title} data={data} />;
-      case "img":
-        return (
-          <div className="chart-title w-100 h-100">
-            <div
-              className="chart-title ml-3 mt-1 position-absolute"
-              style={{ zIndex: "1" }}
-            >
-              {data}
-            </div>
-            <img src={title} className="h-100 w-100 border-radius-10" />
-          </div>
-        );
+      case "BreakDownHigh":
+        return <BreakDownHigh title={title} type={type} data={data} />;
+
       default:
         return "";
     }
@@ -134,8 +115,14 @@ class Velocity extends Component {
     const processedData = rawData.map(ele => {
       return {
         name: ele.name,
-        type: "ControlChartHigh",
-        data: ele.metrics,
+        type:
+          ele.name === "Velocity Trends"
+            ? "VelocityTrends"
+            : "ControlChartHigh",
+        data:
+          ele.name === "Velocity Trends"
+            ? ele.velocityTrends.metrics
+            : ele.metrics,
         title: ele.name,
         component: {}
       };

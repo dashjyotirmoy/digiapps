@@ -48,6 +48,9 @@ class Graph {
       case "DefectHigh":
         updatedOptions = this.generateDefect(baseOptions);
         return updatedOptions;
+      case "VelocityTrends":
+        updatedOptions = this.generateVelocityTrends(baseOptions);
+        return updatedOptions;
       default:
         return null;
     }
@@ -640,6 +643,213 @@ class Graph {
     ];
     return options;
   }
+
+  generateVelocityTrends(options) {
+    console.log(this.res.data);
+    options.chart = {
+      height: 0,
+      backgroundColor: ""
+    };
+
+    options.credits = {
+      enabled: false
+    };
+    // rangeSelector: {
+    //   selected: 1
+    // },
+
+    options.title = {
+      text: "Velocity Trend",
+      align: "left",
+      style: {
+        color: "#f5f5f5",
+        fontWeight: "bold"
+      }
+    };
+
+    options.xAxis = {
+      lineWidth: 0,
+      tickLength: 0,
+      labels: {
+        style: {
+          color: "#f5f5f5"
+        },
+        format: "Sprint {value}"
+      },
+      crosshair: true
+    };
+
+    options.yAxis = {
+      min: 0,
+      max: 160,
+      gridLineColor: "transparent",
+      tickInterval: 20,
+      title: {
+        text: " ",
+        style: {
+          color: "#f5f5f5"
+        }
+      },
+      labels: {
+        style: {
+          color: "#f5f5f5"
+        },
+        format: "{value} %"
+      },
+      lineColor: "blue",
+      stackLabels: {
+        enabled: false
+      }
+    };
+    options.legend = {
+      enabled: true,
+      backgroundColor: "transparent",
+      itemStyle: {
+        color: "#ffffff",
+        fontWeight: "normal"
+      },
+      itemHoverStyle: {
+        color: "#d3d3d3"
+      },
+      align: "right",
+      verticalAlign: "top",
+      y: -30
+    };
+
+    options.tooltip = {
+      enabled: false
+      // headerFormat: "<b>{point.x}</b><br/>",
+      // pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}"
+    };
+    options.plotOptions = {
+      series: {
+        borderRadius: 6
+      },
+
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    };
+    options.series = [
+      {
+        name: "Planned Velocity",
+        type: "column",
+        data: [
+          [1, 83.6],
+          [2, 78.8],
+          [3, 98.5],
+          [4, 93.4],
+          [5, 106.0],
+          [6, 84.5],
+          [7, 105.0]
+        ],
+        color: "#3185ab",
+        borderWidth: 0,
+
+        pointWidth: 15,
+        pointPadding: 0.1,
+        dataLabels: {
+          enabled: false
+        }
+      },
+      {
+        type: "column",
+        name: "Actual Velocity",
+        data: [
+          [1, 48.9],
+          [2, 38.8],
+          [3, 39.3],
+          [4, 41.4],
+          [5, 47.0],
+          [6, 48.3],
+          [7, 59.0]
+        ],
+        color: "#ad5a5d",
+        borderWidth: 0,
+
+        pointWidth: 15,
+        pointPadding: 0.1,
+        dataLabels: {
+          enabled: true,
+          inside: false,
+          overflow: "none",
+          crop: true,
+          shape: "callout",
+          backgroundColor: "#5cbef2",
+          borderColor: "#ECEDEE",
+          color: "#f5f5f5",
+          borderWidth: 0.5,
+          borderRadius: 5,
+          y: -10,
+          style: {
+            fontFamily: "Helvetica, sans-serif",
+            fontSize: "10px",
+            fontWeight: "normal",
+            textShadow: "none"
+          },
+          formatter: function(e) {
+            console.log(e);
+            return "+ <strong>" + this.x + "</strong>";
+          }
+        }
+      },
+      {
+        type: "line",
+        name: "Upper Limit",
+        color: "#9EF988",
+        zones: [
+          {
+            color: "#9EF988",
+            dashStyle: "dash"
+          }
+        ],
+        data: [
+          [1, 140],
+          [2, 140],
+          [3, 140],
+          [4, 140],
+          [5, 140],
+          [6, 140],
+          [7, 140]
+        ],
+        marker: {
+          enabled: false
+        },
+        dataLabels: {
+          enabled: false
+        }
+      },
+      {
+        type: "line",
+        name: "Lower Limit",
+        color: "#DAC131",
+        zones: [
+          {
+            color: "#DAC131",
+            dashStyle: "dash"
+          }
+        ],
+        data: [
+          [1, 82],
+          [2, 82],
+          [3, 82],
+          [4, 82],
+          [5, 82],
+          [6, 82],
+          [7, 82]
+        ],
+        marker: {
+          enabled: false
+        },
+        dataLabels: {
+          enabled: false
+        }
+      }
+    ];
+    return options;
+  }
+
   //function that Creates data for Control charts
 
   generateControlChart(options) {

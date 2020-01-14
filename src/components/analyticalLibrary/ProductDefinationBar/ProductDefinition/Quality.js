@@ -231,20 +231,7 @@ class Quality extends Component {
       charts: chartList
     });
   };
-  // setChart = (title, data, type) => {
-  //   switch (type) {
-  //     case "MultipleLineHigh":
-  //       return <LineHigh title={title} type="MultipleLineHigh" data={data} />;
-  //     case "AreaHigh":
-  //       return <AreaHigh title={title} type={"AreaHigh"} data={data} />;
-  //     case "DefectHigh":
-  //       return <ColumnHigh title={title} data={data} type={"DefectHigh"} />;
-  //     case "BarHigh":
-  //       return <StackedBar title={title} data={data} type={"BarHigh"} />;
-  //     default:
-  //       return "";
-  //   }
-  // };
+
   setChart = (title, data) => {
     const chartArry = chartCompList.map(item => {
       if (item.name === title) {

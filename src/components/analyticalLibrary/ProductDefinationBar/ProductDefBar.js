@@ -5,8 +5,9 @@ import { withRouter } from "react-router-dom";
 import { Container, Row, Col, Tabs, Tab } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFunnelDollar } from "@fortawesome/free-solid-svg-icons";
-import { currentTabDispatch } from '../../../store/actions/chartData';
+import { currentTabDispatch } from "../../../store/actions/chartData";
 import styled from "styled-components";
+import ErrorBoundaries from "../../../components/errorBoundaries";
 
 const StyleMainTab = styled.div`
   .nav-tabs { {
@@ -71,77 +72,77 @@ class ProductDefBar extends Component {
 
   render() {
     return (
-      <Container fluid>
-        <Row className="d-flex w-100 p-0 m-0 text-white-50">
-          <Col md={8} lg={9} xl={9} className="p-0">
-            <StyleMainTab>
-              {this.state.activeLink !== "" ? (
-                <Tabs
-                  onSelect={e => this.updateView(e)}
-                  defaultActiveKey={this.state.activeLink}
-                  className="border-0"
-                >
-                  <Tab
-                    eventKey="velocity"
-                    title={
-                      <span className="font-aggegate-sub-text">
-                        Velocity and Efficiency
-                      </span>
-                    }
-                  ></Tab>
-                  <Tab
-                    eventKey="quality"
-                    title={
-                      <span className="font-aggegate-sub-text"> Quality</span>
-                    }
-                  ></Tab>
+      <ErrorBoundaries>
+        <Container fluid>
+          <Row className="d-flex w-100 p-0 m-0 text-white-50">
+            <Col md={8} lg={9} xl={9} className="p-0">
+              <StyleMainTab>
+                {this.state.activeLink !== "" ? (
+                  <Tabs
+                    onSelect={e => this.updateView(e)}
+                    defaultActiveKey={this.state.activeLink}
+                    className="border-0"
+                  >
+                    <Tab
+                      eventKey="velocity"
+                      title={
+                        <span className="font-aggegate-sub-text">
+                          Velocity and Efficiency
+                        </span>
+                      }
+                    ></Tab>
+                    <Tab
+                      eventKey="quality"
+                      title={
+                        <span className="font-aggegate-sub-text"> Quality</span>
+                      }
+                    ></Tab>
 
-                  <Tab
-                    eventKey="customer"
-                    title={
-                      <span className="font-aggegate-sub-text">
-                        {" "}
-                        Customer Value
-                      </span>
-                    }
-                  ></Tab>
-                </Tabs>
-              ) : null}
-            </StyleMainTab>
-          </Col>
-          <Col
-            md={4}
-            lg={3}
-            xl={3}
-            className="d-flex justify-content-xl-end justify-content-lg-end justify-content-md-start"
-          >
-            <Row className="w-100 p-0 m-0 align-content-center d-flex justify-content-around">
-              <Col className="p-0 font-aggegate-sub-text nav-link">1m</Col>
-              <Col className="p-0 font-aggegate-sub-text">3m</Col>
-              <Col className="p-0 font-aggegate-sub-text">6m</Col>
-              <Col className="p-0 font-aggegate-sub-text">1y</Col>
-              <Col className="p-0 font-aggegate-sub-text">custom</Col>
-              <Col className="p-0 font-aggegate-sub-text">
-                <FontAwesomeIcon icon={faFunnelDollar} />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
+                    <Tab
+                      eventKey="customer"
+                      title={
+                        <span className="font-aggegate-sub-text">
+                          {" "}
+                          Customer Value
+                        </span>
+                      }
+                    ></Tab>
+                  </Tabs>
+                ) : null}
+              </StyleMainTab>
+            </Col>
+            <Col
+              md={4}
+              lg={3}
+              xl={3}
+              className="d-flex justify-content-xl-end justify-content-lg-end justify-content-md-start"
+            >
+              <Row className="w-100 p-0 m-0 align-content-center d-flex justify-content-around">
+                <Col className="p-0 font-aggegate-sub-text nav-link">1m</Col>
+                <Col className="p-0 font-aggegate-sub-text">3m</Col>
+                <Col className="p-0 font-aggegate-sub-text">6m</Col>
+                <Col className="p-0 font-aggegate-sub-text">1y</Col>
+                <Col className="p-0 font-aggegate-sub-text">custom</Col>
+                <Col className="p-0 font-aggegate-sub-text">
+                  <FontAwesomeIcon icon={faFunnelDollar} />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </ErrorBoundaries>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return {
-
-  };
+  return {};
 };
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { currentTabDispatch },
-    dispatch
-  );
+  return bindActionCreators({ currentTabDispatch }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductDefBar));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ProductDefBar));
