@@ -119,10 +119,7 @@ class Velocity extends Component {
           ele.name === "Velocity Trends"
             ? "VelocityTrends"
             : "ControlChartHigh",
-        data:
-          ele.name === "Velocity Trends"
-            ? ele.velocityTrends.metrics
-            : ele.metrics,
+        data: ele.name === "Velocity Trends" ? ele : ele.metrics,
         title: ele.name,
         component: {}
       };
@@ -172,7 +169,9 @@ class Velocity extends Component {
         this.props.sprintId
       )
       .then(res => {
-        this.createCharts(this.createChartObject(this.props.velocityCharts));
+        this.createCharts(
+          this.createChartObject(this.props.velocityCharts.widgetDTO)
+        );
         this.setState({
           response: this.props.velocityCharts,
           received: true,

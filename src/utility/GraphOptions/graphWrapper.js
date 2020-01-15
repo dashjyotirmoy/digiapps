@@ -422,6 +422,7 @@ class Graph {
       verticalAlign: "top",
       y: -30
     };
+
     options.series = [
       {
         name: "Lines to cover",
@@ -645,7 +646,36 @@ class Graph {
   }
 
   generateVelocityTrends(options) {
+    let planned_Velocity_Percentage = [],
+      actual_Velocity_Percentage = [],
+      velocity_Diff = [];
     console.log(this.res.data);
+    let av_Velocity = this.res.data.averageVelocity;
+
+    this.res.data.metrics.values.map((data, index) => {
+      let planned_Velocity = {},
+        actual_velocity = {};
+
+      planned_Velocity.x = index + 1;
+      planned_Velocity.y = (data.storyPointsPlanned / av_Velocity) * 100;
+
+      actual_velocity.x = index + 1;
+      actual_velocity.y = (data.storyPointsDelivered / av_Velocity) * 100;
+
+      actual_velocity.diff =
+        data.storyPointsDelivered - data.storyPointsPlanned;
+
+      // planned_Velocity[0] = index + 1;
+      // planned_Velocity[1] = (data.storyPointsPlanned / av_Velocity) * 100;
+
+      // actual_velocity[0] = index + 1;
+      // actual_velocity[1] = (data.storyPointsDelivered / av_Velocity) * 100;
+
+      // velocity_Diff.push(vel_Diff);
+      planned_Velocity_Percentage.push(planned_Velocity);
+      actual_Velocity_Percentage.push(actual_velocity);
+    });
+
     options.chart = {
       height: 0,
       backgroundColor: ""
@@ -675,8 +705,7 @@ class Graph {
           color: "#f5f5f5"
         },
         format: "Sprint {value}"
-      },
-      crosshair: true
+      }
     };
 
     options.yAxis = {
@@ -735,15 +764,7 @@ class Graph {
       {
         name: "Planned Velocity",
         type: "column",
-        data: [
-          [1, 83.6],
-          [2, 78.8],
-          [3, 98.5],
-          [4, 93.4],
-          [5, 106.0],
-          [6, 84.5],
-          [7, 105.0]
-        ],
+        data: planned_Velocity_Percentage,
         color: "#3185ab",
         borderWidth: 0,
 
@@ -756,15 +777,7 @@ class Graph {
       {
         type: "column",
         name: "Actual Velocity",
-        data: [
-          [1, 48.9],
-          [2, 38.8],
-          [3, 39.3],
-          [4, 41.4],
-          [5, 47.0],
-          [6, 48.3],
-          [7, 59.0]
-        ],
+        data: actual_Velocity_Percentage,
         color: "#ad5a5d",
         borderWidth: 0,
 
@@ -773,13 +786,13 @@ class Graph {
         dataLabels: {
           enabled: true,
           inside: false,
-          overflow: "none",
+
           crop: true,
           shape: "callout",
           backgroundColor: "#5cbef2",
           borderColor: "#ECEDEE",
           color: "#f5f5f5",
-          borderWidth: 0.5,
+          borderWidth: 0,
           borderRadius: 5,
           y: -10,
           style: {
@@ -789,8 +802,7 @@ class Graph {
             textShadow: "none"
           },
           formatter: function(e) {
-            console.log(e);
-            return "+ <strong>" + this.x + "</strong>";
+            return "<strong>" + this.point.diff + "</strong>";
           }
         }
       },
@@ -858,7 +870,9 @@ class Graph {
       rawDate,
       average = 0,
       total,
-      rolling_average;
+      rolling_average,
+      issue = [],
+      bug = [];
     this.res.data.map(series => {
       if (series.name === "User Story") {
         issues = series.values;
@@ -866,18 +880,25 @@ class Graph {
         bugs = series.values;
       }
     });
-    issues.map(issue => {
-      rawDate = issue[0].split("T");
-      issue[1] = parseInt(issue[1]);
-      issue[0] = new Date(rawDate[0]).getTime();
-      average += issue[1];
-    });
-    bugs.map(bug => {
-      rawDate = bug[0].split("T");
-      bug[1] = parseInt(bug[1]);
-      bug[0] = new Date(rawDate[0]).getTime();
-      average += bug[1];
-    });
+    if (issues.length > 0) {
+      issues = issues.map(item => {
+        rawDate = item.endDate.split("T");
+        issue[1] = parseInt(item.difference);
+        issue[0] = new Date(rawDate[0]).getTime();
+        average += issue[1];
+        return issue;
+      });
+    }
+    if (bugs.length > 0) {
+      bugs = bugs.map(item => {
+        rawDate = item.endDate.split("T");
+        bug[1] = parseInt(item.difference);
+        bug[0] = new Date(rawDate[0]).getTime();
+        average += bug[1];
+        return bug;
+      });
+    }
+
     let total_point_array = JSON.parse(JSON.stringify(issues));
     total_point_array = total_point_array.concat(bugs);
     total_point_array.sort((a, b) => a[0] - b[0]);

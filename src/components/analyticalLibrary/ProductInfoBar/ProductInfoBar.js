@@ -18,7 +18,12 @@ import Widgets from "../../dashboardController/widgetParser";
 import { repoDropValDispatch } from "../../../store/actions/qualityData";
 import { qualityDataDispatch } from "../../../store/actions/qualityData";
 import Spinner from "../../analyticalLibrary/Spinner/Spinner";
-
+const metrics = [
+  { name: "Head Count", value: "18" },
+  { name: "SPI", value: "1.01" },
+  { name: "CPI", value: "0.9" },
+  { name: "Sprint Count", value: "6/18" }
+];
 class ProductInfoBar extends Component {
   state = {
     productData: [],
@@ -63,7 +68,7 @@ class ProductInfoBar extends Component {
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-    console.log("1");
+
     this.getProjectDetails(projects[selectedIndex].id, this.props.executiveId);
   };
 
@@ -116,6 +121,9 @@ class ProductInfoBar extends Component {
 
   setSprint = res => {
     let sprints = res.data.sprintDetails;
+
+    console.log(this.props);
+
     const stateFromProjects = sprints.filter(item => {
       if (item.state === "CURRENT") {
         return item.id;
@@ -136,7 +144,7 @@ class ProductInfoBar extends Component {
       sprintData: sprintDetails,
       selectedSprint: sprintDetails[sprintData.selectedIndex].projectName
     });
-    console.log("2");
+
     this.getSprintData(
       sprintDetails[sprintData.selectedIndex].id,
       this.props.executiveId
@@ -176,7 +184,7 @@ class ProductInfoBar extends Component {
 
   setRepository = res => {
     const repositoryData = res.data.repositories;
-    if (repositoryData.length > 0) {
+    if (repositoryData !== null) {
       const { list, selectedIndex } = this.markSelected(
         repositoryData,
         repositoryData[0].repoKey
@@ -199,7 +207,8 @@ class ProductInfoBar extends Component {
     } else {
       this.setState({
         repoData: [],
-        selectedRepo: ""
+        selectedRepo: "",
+        show: false
       });
     }
   };
@@ -299,15 +308,12 @@ class ProductInfoBar extends Component {
       return <Spinner show={this.state.show} />;
     } else {
       return (
-        <div className="h-10" style={{ backgroundColor: "#1c2531" }}>
+        <div className="h-10 summary-view">
           <Container
             fluid
             className="h-100 border-bottom border-dark border-top"
           >
-            <Row
-              className="h-100  p-0 m-0"
-              style={{ backgroundColor: "#1d2632" }}
-            >
+            <Row className="h-100  p-0 m-0">
               <Col className="h-100 pl-0" sm={12} md={6} lg={6} xl={6}>
                 <Row className="h-100">
                   <Col
@@ -446,16 +452,26 @@ class ProductInfoBar extends Component {
                 <Row className="h-100">
                   <Col md={7} xl={8} lg={8} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
-                      <Col md={12} xl={12} lg={12} className="h-100 pl-0 py-1">
-                        {this.props.sprintDataReceived ? (
-                          <LineHigh
-                            burndown={this.props.sprintData}
-                            type="line"
-                          ></LineHigh>
-                        ) : (
-                          "loading"
-                        )}
-                      </Col>
+                      <Row className="px-4 h-100 w-100 border-right border-dark d-flex align-items-center justify-content-between ">
+                        {metrics.map(item => {
+                          return (
+                            <div
+                              className="d-flex d-inline-block 
+                        flex-column h-100 justify-content-center max-w-18 px-1 
+                        py-0  w-auto "
+                            >
+                              <p className="font-metric-main-text m-0 text-left text-black m-0">
+                                <span className="text-white">
+                                  {item.value}{" "}
+                                </span>
+                              </p>
+                              <p className="font-metric-sub-text m-0 text-left text-white-50 m-0">
+                                {item.name}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </Row>
                     </Row>
                   </Col>
                   <Col
