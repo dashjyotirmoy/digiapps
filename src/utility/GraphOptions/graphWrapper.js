@@ -544,10 +544,10 @@ class Graph {
     this.res.data[0].map(data => {
       let temp_data = {},
         rawDate;
-      rawDate = data[0].split("T");
+      rawDate = data.date.split("T");
       temp_data.x = new Date(rawDate[0]).getTime();
-      temp_data.y = parseInt(data[1]);
-      temp_data.count = parseInt(data[2]);
+      temp_data.y = parseInt(data.difference);
+      temp_data.count = parseInt(data.bugs);
       final_data.push(temp_data);
     });
     final_data.sort((a, b) => a.x - b.x);
@@ -649,10 +649,10 @@ class Graph {
     let planned_Velocity_Percentage = [],
       actual_Velocity_Percentage = [],
       velocity_Diff = [];
-    console.log(this.res.data);
+
     let av_Velocity = this.res.data.averageVelocity;
 
-    this.res.data.metrics.values.map((data, index) => {
+    this.res.data.metrics.map((data, index) => {
       let planned_Velocity = {},
         actual_velocity = {};
 
@@ -873,26 +873,36 @@ class Graph {
       rolling_average,
       issue = [],
       bug = [];
+
     this.res.data.map(series => {
-      if (series.name === "User Story") {
-        issues = series.values;
+      if (series.name === "userStory") {
+        if (series.values.length > 0) {
+          series.values.map(data => {
+            issues.push([data.endDate, data.difference]);
+          });
+        }
       } else {
-        bugs = series.values;
+        if (series.values.length > 0) {
+          series.values.map(data => {
+            bugs.push([data.endDate, data.difference]);
+          });
+        }
       }
     });
     if (issues.length > 0) {
-      issues = issues.map(item => {
-        rawDate = item.endDate.split("T");
-        issue[1] = parseInt(item.difference);
+      issues = issues.map(issue => {
+        rawDate = issue[0].split("T");
+        issue[1] = parseInt(issue[1]);
         issue[0] = new Date(rawDate[0]).getTime();
         average += issue[1];
         return issue;
       });
     }
+
     if (bugs.length > 0) {
-      bugs = bugs.map(item => {
-        rawDate = item.endDate.split("T");
-        bug[1] = parseInt(item.difference);
+      bugs = bugs.map(bug => {
+        rawDate = bug[0].split("T");
+        bug[1] = parseInt(bug[1]);
         bug[0] = new Date(rawDate[0]).getTime();
         average += bug[1];
         return bug;
@@ -903,105 +913,213 @@ class Graph {
     total_point_array = total_point_array.concat(bugs);
     total_point_array.sort((a, b) => a[0] - b[0]);
 
-    rolling_average = total_point_array.map(roll => {
+    let total_point_array_temp = JSON.parse(JSON.stringify(total_point_array));
+    let rolling_average_temp = total_point_array_temp.map(roll => {
       return {
         date: roll[0],
         days: roll[1]
       };
     });
-    //Same date data in a single object
-    var output = [];
-    rolling_average.forEach(function(item) {
-      var existing = output.filter(function(v, i) {
+    var output_dynamic = [];
+    rolling_average_temp.forEach(function(item) {
+      var existing = output_dynamic.filter(function(v, i) {
         return v.date === item.date;
       });
       if (existing.length) {
-        var existingIndex = output.indexOf(existing[0]);
-        output[existingIndex].days = output[existingIndex].days.concat(
-          item.days
-        );
+        var existingIndex = output_dynamic.indexOf(existing[0]);
+        output_dynamic[existingIndex].days = output_dynamic[
+          existingIndex
+        ].days.concat(item.days);
       } else {
         item.days = [item.days];
-        output.push(item);
+        output_dynamic.push(item);
       }
     });
-    let output_temp = JSON.parse(JSON.stringify(output));
-    let start_data = output_temp[0];
+
+    let my_data = [];
+    output_dynamic.map(data => {
+      let local_data = [];
+      local_data[0] = data.date;
+      local_data = [...local_data, ...data.days];
+      my_data.push(local_data);
+    });
+
+    for (let i = 1; i < my_data.length; i++) {
+      let present_date = my_data[i],
+        past_date = my_data[i - 1];
+      let date_difference_temp = (present_date[0] - past_date[0]) / 86400000;
+      if (date_difference_temp > 1) {
+        let missing_date_index = i;
+        for (let j = 1; j < date_difference_temp; j++) {
+          my_data.splice(missing_date_index, 0, [
+            past_date[0] + 86400000 * j,
+            0
+          ]);
+          missing_date_index++;
+        }
+      }
+    }
+
+    let my_data_length = my_data.length;
+    let rolling_period;
+
+    if (my_data_length >= 1) {
+      let first_day = my_data[0];
+      let last_day = my_data[my_data_length - 1];
+
+      rolling_period = Math.round(my_data_length / 5);
+    }
+    // rolling_period = 14
+    let my_data_copy = JSON.parse(JSON.stringify(my_data));
+    //temp roll average and std. dev. Calculation
+    let roll_average_temp = [],
+      std_temp = [];
+    // for (let i = rolling_period - 1; i < my_data_copy.length; i++)
+    for (let i = 0; i < my_data_copy.length; i++) {
+      let my_sum = 0,
+        local_index = i,
+        total_points = 0,
+        roll_mean;
+      // roll. average calculation
+      for (let j = 0; j < rolling_period && local_index - j >= 0; j++) {
+        let one_day_data = JSON.parse(
+          JSON.stringify(my_data_copy[local_index - j])
+        );
+        for (let k = 1; k < one_day_data.length; k++) {
+          my_sum = my_sum + one_day_data[k];
+          total_points++;
+        }
+      }
+      roll_average_temp.push([my_data_copy[i][0], my_sum / total_points]);
+      roll_mean = my_sum / total_points;
+      my_sum = 0;
+      total_points = 0;
+      let variance;
+      // std. dev. calculation for the same rolling period
+      for (let l = 0; l < rolling_period && local_index - l >= 0; l++) {
+        let one_day_data_2 = JSON.parse(
+          JSON.stringify(my_data_copy[local_index - l])
+        );
+        for (let m = 1; m < one_day_data_2.length; m++) {
+          my_sum =
+            my_sum +
+            (one_day_data_2[m] - roll_mean) * (one_day_data_2[m] - roll_mean);
+          total_points++;
+        }
+        variance = my_sum / total_points;
+        variance = Math.sqrt(variance);
+      }
+      if (roll_mean - variance < 0) {
+        std_temp.push([my_data_copy[i][0], 0, roll_mean + variance]);
+      } else {
+        std_temp.push([
+          my_data_copy[i][0],
+          roll_mean - variance,
+          roll_mean + variance
+        ]);
+      }
+      // std_temp.push([my_data_copy[i][0], roll_mean - variance, roll_mean + variance])
+    }
+
+    // rolling_average = total_point_array.map(roll => {
+    //   return {
+    //     date: roll[0],
+    //     days: roll[1]
+    //   };
+    // });
+    // //Same date data in a single object
+    // var output = [];
+    // rolling_average.forEach(function (item) {
+    //   var existing = output.filter(function (v, i) {
+    //     return v.date === item.date;
+    //   });
+    //   if (existing.length) {
+    //     var existingIndex = output.indexOf(existing[0]);
+    //     output[existingIndex].days = output[existingIndex].days.concat(
+    //       item.days
+    //     );
+    //   } else {
+    //     item.days = [item.days];
+    //     output.push(item);
+    //   }
+    // });
+    // let output_temp = JSON.parse(JSON.stringify(output));
+    // let start_data = output_temp[0];
     total = issues.length + bugs.length;
     average = average / total;
     average = average * 100;
     average = Math.round(average);
     average = average / 100;
 
-    //Calculation of rolling av and std. dev for a window
-    let roll_average = [],
-      std_dev_final_temp = [];
-    for (let i = 1; i < output_temp.length; i++) {
-      let present_data = output_temp[i],
-        past_data = output_temp[i - 1],
-        std_dev_temp = [];
+    // //Calculation of rolling av and std. dev for a window
+    // let roll_average = [],
+    //   std_dev_final_temp = [];
+    // for (let i = 1; i < output_temp.length; i++) {
+    //   let present_data = output_temp[i],
+    //     past_data = output_temp[i - 1],
+    //     std_dev_temp = [];
 
-      let present_days_data = present_data.days;
-      let present_days_data_length = present_days_data.length;
-      let present_days_arraySum = present_days_data.reduce((a, b) => a + b, 0);
-      let present_mean = present_days_arraySum / present_days_data_length;
+    //   let present_days_data = present_data.days;
+    //   let present_days_data_length = present_days_data.length;
+    //   let present_days_arraySum = present_days_data.reduce((a, b) => a + b, 0);
+    //   let present_mean = present_days_arraySum / present_days_data_length;
 
-      let past_days_data = past_data.days;
-      let past_days_data_length = past_days_data.length;
-      let past_days_arraySum = past_days_data.reduce((a, b) => a + b, 0);
-      let past_mean = past_days_arraySum / past_days_data_length;
-      let roll_average_window_data = [...present_days_data, ...past_days_data];
-      let date_difference = present_data.date - past_data.date;
+    //   let past_days_data = past_data.days;
+    //   let past_days_data_length = past_days_data.length;
+    //   let past_days_arraySum = past_days_data.reduce((a, b) => a + b, 0);
+    //   let past_mean = past_days_arraySum / past_days_data_length;
+    //   let roll_average_window_data = [...present_days_data, ...past_days_data];
+    //   let date_difference = present_data.date - past_data.date;
 
-      //adjustment for missing date data
-      if (date_difference > 86400000) {
-        let j = date_difference / 86400000;
-        for (let k = 1; k <= j; k++) {
-          roll_average.push(0);
-          std_dev_temp[0] = past_data.date + k * 86400000;
-          std_dev_temp[1] = 0;
-          std_dev_temp[2] = 0;
-          std_dev_final_temp.push(std_dev_temp);
-        }
-      } else {
-        // roll_average.push((present_mean + past_mean) / 2);
-        let sum = 0;
-        let days_data = present_data.days;
-        days_data.concat(past_data.days);
-        roll_average_window_data.map(day_data => {
-          sum += day_data;
-        });
-        let mean_temp = sum / roll_average_window_data.length;
-        roll_average.push(mean_temp);
-        sum = 0;
-        roll_average_window_data.map(day_data => {
-          day_data = (day_data - mean_temp) * (day_data - mean_temp);
-          sum += day_data;
-        });
-        let variance_temp = sum / days_data.length;
-        variance_temp = Math.sqrt(variance_temp);
-        std_dev_temp[0] = present_data.date;
-        std_dev_temp[1] = mean_temp - variance_temp;
-        std_dev_temp[2] = mean_temp + variance_temp;
-        std_dev_final_temp.push(std_dev_temp);
-      }
-    }
-    //For fixing date issue in area chart
-    if (std_dev_final_temp.length > 1) {
-      std_dev_final_temp[0][0] = start_data.date + 86400000;
-    }
-    let std_dev_final = JSON.parse(JSON.stringify(std_dev_final_temp));
-    for (let i = 1; i < std_dev_final.length; i++) {
-      let present_object = std_dev_final[i];
-      let past_object = std_dev_final[i - 1];
-      present_object[0] = past_object[0] + 86400000;
-      std_dev_final[i] = present_object;
-    }
+    //   //adjustment for missing date data
+    //   if (date_difference > 86400000) {
+    //     let j = date_difference / 86400000;
+    //     for (let k = 1; k <= j; k++) {
+    //       roll_average.push(0);
+    //       std_dev_temp[0] = past_data.date + k * 86400000;
+    //       std_dev_temp[1] = 0;
+    //       std_dev_temp[2] = 0;
+    //       std_dev_final_temp.push(std_dev_temp);
+    //     }
+    //   } else {
+    //     // roll_average.push((present_mean + past_mean) / 2);
+    //     let sum = 0;
+    //     let days_data = present_data.days;
+    //     days_data.concat(past_data.days);
+    //     roll_average_window_data.map(day_data => {
+    //       sum += day_data;
+    //     });
+    //     let mean_temp = sum / roll_average_window_data.length;
+    //     roll_average.push(mean_temp);
+    //     sum = 0;
+    //     roll_average_window_data.map(day_data => {
+    //       day_data = (day_data - mean_temp) * (day_data - mean_temp);
+    //       sum += day_data;
+    //     });
+    //     let variance_temp = sum / days_data.length;
+    //     variance_temp = Math.sqrt(variance_temp);
+    //     std_dev_temp[0] = present_data.date;
+    //     std_dev_temp[1] = mean_temp - variance_temp;
+    //     std_dev_temp[2] = mean_temp + variance_temp;
+    //     std_dev_final_temp.push(std_dev_temp);
+    //   }
+    // }
+    // //For fixing date issue in area chart
+    // if (std_dev_final_temp.length > 1) {
+    //   std_dev_final_temp[0][0] = start_data.date + 86400000;
+    // }
+    // let std_dev_final = JSON.parse(JSON.stringify(std_dev_final_temp));
+    // for (let i = 1; i < std_dev_final.length; i++) {
+    //   let present_object = std_dev_final[i];
+    //   let past_object = std_dev_final[i - 1];
+    //   present_object[0] = past_object[0] + 86400000;
+    //   std_dev_final[i] = present_object;
+    // }
 
-    let final_min;
-    if (std_dev_final.length > 1) {
-      final_min = std_dev_final[0][0];
-    }
+    // let final_min;
+    // if (std_dev_final.length > 1) {
+    //   final_min = std_dev_final[0][0];
+    // }
 
     options.chart = {
       height: 0,
@@ -1129,8 +1247,8 @@ class Graph {
       {
         name: "Rolling Av.",
         type: "line",
-        data: roll_average,
-        pointStart: final_min,
+        data: roll_average_temp,
+        // pointStart: final_min,
         pointInterval: 86400000,
         marker: {
           enabled: false
@@ -1139,9 +1257,9 @@ class Graph {
       {
         name: "Std. Dev.",
         type: "arearange",
-        data: std_dev_final,
+        data: std_temp,
         pointInterval: 86400000,
-        fillOpacity: 0.2,
+        fillOpacity: 0.3,
         marker: {
           enabled: false
         }

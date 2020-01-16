@@ -10,6 +10,7 @@ import throuput from "../../../../content/img/throuput.png";
 import depChange from "../../../../content/img/DepChange.png";
 import degreeTest from "../../../../content/img/degreeTest.png";
 import VelocityTrend from "../../Charts/VelocityTrends/VelocityTrend";
+import SprintBurndown from "../../Charts/SprintBurnDown/SprintBurnDown";
 import Spinner from "../../Spinner/Spinner";
 import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
 
@@ -23,9 +24,9 @@ var initialData = [
   },
   {
     name: "dtra",
-    type: "img",
+    type: "SprintBurndown",
     data: "Deployment/Change Frequency",
-    title: degreeTest,
+    title: SprintBurndown,
     component: {}
   }
 ];
@@ -103,7 +104,8 @@ class Velocity extends Component {
         return <ControlChartHigh title={title} type={type} data={data} />;
       case "BreakDownHigh":
         return <BreakDownHigh title={title} type={type} data={data} />;
-
+      case "SprintBurndown":
+        return <SprintBurndown title={title} type={type} data={data} />;
       default:
         return "";
     }
@@ -116,15 +118,13 @@ class Velocity extends Component {
       return {
         name: ele.name,
         type:
-          ele.name === "Velocity Trends"
-            ? "VelocityTrends"
-            : "ControlChartHigh",
-        data: ele.name === "Velocity Trends" ? ele : ele.metrics,
+          ele.name === "velocityTrends" ? "VelocityTrends" : "ControlChartHigh",
+        data: ele.name === "velocityTrends" ? ele : ele.metrics,
         title: ele.name,
         component: {}
       };
     });
-    return processedData;
+    return processedData.reverse();
   };
 
   //compare the current props and incoming props
@@ -170,7 +170,7 @@ class Velocity extends Component {
       )
       .then(res => {
         this.createCharts(
-          this.createChartObject(this.props.velocityCharts.widgetDTO)
+          this.createChartObject(this.props.velocityCharts.details)
         );
         this.setState({
           response: this.props.velocityCharts,

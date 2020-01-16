@@ -18,12 +18,8 @@ import Widgets from "../../dashboardController/widgetParser";
 import { repoDropValDispatch } from "../../../store/actions/qualityData";
 import { qualityDataDispatch } from "../../../store/actions/qualityData";
 import Spinner from "../../analyticalLibrary/Spinner/Spinner";
-const metrics = [
-  { name: "Head Count", value: "18" },
-  { name: "SPI", value: "1.01" },
-  { name: "CPI", value: "0.9" },
-  { name: "Sprint Count", value: "6/18" }
-];
+
+let productMetrics;
 class ProductInfoBar extends Component {
   state = {
     productData: [],
@@ -122,8 +118,6 @@ class ProductInfoBar extends Component {
   setSprint = res => {
     let sprints = res.data.sprintDetails;
 
-    console.log(this.props);
-
     const stateFromProjects = sprints.filter(item => {
       if (item.state === "CURRENT") {
         return item.id;
@@ -144,13 +138,26 @@ class ProductInfoBar extends Component {
       sprintData: sprintDetails,
       selectedSprint: sprintDetails[sprintData.selectedIndex].projectName
     });
-
+    productMetrics = this.setProductMetrics(
+      res.data.sprintCount,
+      res.data.cpi,
+      res.data.spi
+    );
     this.getSprintData(
       sprintDetails[sprintData.selectedIndex].id,
       this.props.executiveId
     );
   };
 
+  setProductMetrics(data, cpi, spi) {
+    const metrics = [
+      { name: "Head Count", value: "18" },
+      { name: "SPI", value: parseFloat(spi).toFixed(2) },
+      { name: "CPI", value: parseFloat(cpi).toFixed(2) },
+      { name: "Sprint Count", value: `${data.completed} / ${data.total}` }
+    ];
+    return metrics;
+  }
   //method to update sprint details
 
   updateSprint = sprintId => {
@@ -208,7 +215,7 @@ class ProductInfoBar extends Component {
       this.setState({
         repoData: [],
         selectedRepo: "",
-        show: false
+        show: false // to be changed
       });
     }
   };
@@ -453,9 +460,10 @@ class ProductInfoBar extends Component {
                   <Col md={7} xl={8} lg={8} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
                       <Row className="px-4 h-100 w-100 border-right border-dark d-flex align-items-center justify-content-between ">
-                        {metrics.map(item => {
+                        {productMetrics.map(item => {
                           return (
                             <div
+                              key={item.value}
                               className="d-flex d-inline-block 
                         flex-column h-100 justify-content-center max-w-18 px-1 
                         py-0  w-auto "
