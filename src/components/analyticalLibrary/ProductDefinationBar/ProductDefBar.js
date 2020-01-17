@@ -97,13 +97,21 @@ class ProductDefBar extends Component {
                         <span className="font-aggegate-sub-text"> Quality</span>
                       }
                     ></Tab>
-
                     <Tab
                       eventKey="customer"
                       title={
                         <span className="font-aggegate-sub-text">
                           {" "}
                           Customer Value
+                        </span>
+                      }
+                    ></Tab>
+                    <Tab
+                      eventKey="insights"
+                      title={
+                        <span className="font-aggegate-sub-text">
+                          {" "}
+                          Insights
                         </span>
                       }
                     ></Tab>

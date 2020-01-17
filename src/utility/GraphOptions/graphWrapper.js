@@ -51,6 +51,9 @@ class Graph {
       case "VelocityTrends":
         updatedOptions = this.generateVelocityTrends(baseOptions);
         return updatedOptions;
+      case "SprintBurndown":
+        updatedOptions = this.generateSprintBurnDown(baseOptions);
+        return updatedOptions;
       default:
         return null;
     }
@@ -648,30 +651,34 @@ class Graph {
   generateVelocityTrends(options) {
     let planned_Velocity_Percentage = [],
       actual_Velocity_Percentage = [],
-      velocity_Diff = [];
+      limit_Percentage,
+      upper_Limit,
+      lower_limit;
 
     let av_Velocity = this.res.data.averageVelocity;
+
+    limit_Percentage = (av_Velocity * 10) / 100;
+
+    upper_Limit =
+      ((parseFloat(av_Velocity) + limit_Percentage) / av_Velocity) * 100;
+    lower_limit =
+      ((parseFloat(av_Velocity) - limit_Percentage) / av_Velocity) * 100;
 
     this.res.data.metrics.map((data, index) => {
       let planned_Velocity = {},
         actual_velocity = {};
 
-      planned_Velocity.x = index + 1;
+      let charLength = data.name.length;
+
+      planned_Velocity.x = parseInt(data.name.charAt(charLength - 1));
       planned_Velocity.y = (data.storyPointsPlanned / av_Velocity) * 100;
 
-      actual_velocity.x = index + 1;
+      actual_velocity.x = parseInt(data.name.charAt(charLength - 1));
       actual_velocity.y = (data.storyPointsDelivered / av_Velocity) * 100;
 
       actual_velocity.diff =
         data.storyPointsDelivered - data.storyPointsPlanned;
 
-      // planned_Velocity[0] = index + 1;
-      // planned_Velocity[1] = (data.storyPointsPlanned / av_Velocity) * 100;
-
-      // actual_velocity[0] = index + 1;
-      // actual_velocity[1] = (data.storyPointsDelivered / av_Velocity) * 100;
-
-      // velocity_Diff.push(vel_Diff);
       planned_Velocity_Percentage.push(planned_Velocity);
       actual_Velocity_Percentage.push(actual_velocity);
     });
@@ -684,9 +691,6 @@ class Graph {
     options.credits = {
       enabled: false
     };
-    // rangeSelector: {
-    //   selected: 1
-    // },
 
     options.title = {
       text: "Velocity Trend",
@@ -728,8 +732,23 @@ class Graph {
       lineColor: "blue",
       stackLabels: {
         enabled: false
-      }
+      },
+      plotLines: [
+        {
+          value: upper_Limit,
+          color: "#9EF988",
+          dashStyle: "shortdash",
+          width: 2
+        },
+        {
+          value: lower_limit,
+          color: "#DAC131",
+          dashStyle: "shortdash",
+          width: 2
+        }
+      ]
     };
+
     options.legend = {
       enabled: true,
       backgroundColor: "transparent",
@@ -747,8 +766,6 @@ class Graph {
 
     options.tooltip = {
       enabled: false
-      // headerFormat: "<b>{point.x}</b><br/>",
-      // pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}"
     };
     options.plotOptions = {
       series: {
@@ -760,6 +777,7 @@ class Graph {
         borderWidth: 0
       }
     };
+
     options.series = [
       {
         name: "Planned Velocity",
@@ -805,59 +823,107 @@ class Graph {
             return "<strong>" + this.point.diff + "</strong>";
           }
         }
+      }
+    ];
+
+    return options;
+  }
+
+  generateSprintBurnDown(options) {
+    let burndown = [];
+    let startData = this.res.startDate;
+
+    this.res.data.map(data => {
+      let burndown_object = {};
+      let rawDate = data.date.split("T");
+      burndown_object.x = new Date(rawDate[0]).getTime();
+      burndown_object.y = parseInt(data.remainingHours);
+      burndown.push(burndown_object);
+    });
+    options.title = {
+      text: "Sprint Burndown",
+      align: "left",
+      style: {
+        color: "#f5f5f5"
+      }
+    };
+    options.subtitle = {
+      text: "7 Oct 2019 - 25 Oct 2019",
+      align: "left",
+      style: {
+        color: "#C0C0C0"
+      }
+    };
+    options.xAxis = {
+      type: "datetime",
+      dateTimeLabelFormats: {
+        day: "%b %e"
       },
-      {
-        type: "line",
-        name: "Upper Limit",
-        color: "#9EF988",
-        zones: [
-          {
-            color: "#9EF988",
-            dashStyle: "dash"
-          }
-        ],
-        data: [
-          [1, 140],
-          [2, 140],
-          [3, 140],
-          [4, 140],
-          [5, 140],
-          [6, 140],
-          [7, 140]
-        ],
-        marker: {
-          enabled: false
-        },
-        dataLabels: {
-          enabled: false
+      gridLineWidth: 0,
+      lineColor: "transparent",
+      tickLength: 0,
+      labels: {
+        style: {
+          color: "#f5f5f5"
+        }
+      }
+    };
+    options.yAxis = {
+      min: 0,
+      max: 100,
+      tickInterval: 20,
+      lineColor: "transparent",
+      gridLineWidth: 0,
+      labels: {
+        style: {
+          color: "#f5f5f5"
         }
       },
-      {
-        type: "line",
-        name: "Lower Limit",
-        color: "#DAC131",
-        zones: [
-          {
-            color: "#DAC131",
-            dashStyle: "dash"
-          }
-        ],
-        data: [
-          [1, 82],
-          [2, 82],
-          [3, 82],
-          [4, 82],
-          [5, 82],
-          [6, 82],
-          [7, 82]
-        ],
+      title: {
+        enabled: false
+      }
+    };
+
+    options.credits = {
+      enabled: false
+    };
+
+    options.legend = {
+      enabled: true,
+      itemStyle: {
+        color: "#f5f5f5",
+        fontWeight: "normal"
+      }
+    };
+    options.plotOptions = {
+      series: {
+        // pointStart: Date.UTC(2019, 9, 10),
+        pointInterval: 86400000,
         marker: {
-          enabled: false
-        },
-        dataLabels: {
           enabled: false
         }
       }
+    };
+
+    options.series = [
+      {
+        name: "Remaining",
+        data: burndown,
+        type: "area",
+        color: "#4370FE"
+      }
+      // {
+      //   name: "Burndown",
+      //   data: [80, 70, 60, 50, 40, 30, 20, 10, 0],
+      //   type: "line",
+      //   color: "#A35FC0"
+      // },
+      // {
+      //   name: "Total Scape",
+      //   data: [90, 90, 90, 90, 90, 90, 90, 90, 90],
+      //   type: "line",
+      //   color: "#BA8054"
+      // }
     ];
     return options;
   }

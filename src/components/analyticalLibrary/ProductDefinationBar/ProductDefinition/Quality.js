@@ -99,6 +99,7 @@ class Quality extends Component {
             qualityMetrics,
             show: false
           });
+          console.log(this.state.qualityMetrics);
           const type = this.setRawRepoObjects(
             this.props.qualityData.repositories,
             this.props.qualityData.outstandingBugs,
@@ -149,14 +150,55 @@ class Quality extends Component {
   };
 
   setMetricPos = item => {
-    let metricValue =
-      item[0] === "coverage"
-        ? "low"
-        : item[0] === "duplication" || item[0] === "vulnerabilities"
-        ? "medium"
-        : item[0] === "bugs" || item[0] === "codeSmells"
-        ? "critical"
-        : null;
+    console.log(item);
+    let metricValue;
+    if (
+      item[0] === "bugs" ||
+      item[0] === "vulnerabilities" ||
+      item[0] === "codeSmells"
+    ) {
+      metricValue =
+        item[1].rating === "1.0"
+          ? "low"
+          : item[1].rating === "2.0"
+          ? "lowest"
+          : item[1].rating === "3.0"
+          ? "medium"
+          : item[1].rating === "4.0"
+          ? "high"
+          : item[1].rating === "5.0"
+          ? "critical"
+          : null;
+    }
+    if (item[0] === "coverage") {
+      console.log(item[1].value);
+      metricValue =
+        item[1].value >= "80"
+          ? "low"
+          : item[1].value >= "70" && item[1].value <= "80"
+          ? "lowest"
+          : item[1].value >= "50" && item[1].value <= "70"
+          ? "medium"
+          : item[1].value >= "30" && item[1].value <= "50"
+          ? "high"
+          : item[1].value < "30"
+          ? "critical"
+          : null;
+    }
+    if (item[0] === "duplication") {
+      metricValue =
+        item[1].value < 3
+          ? "low"
+          : item[1].value >= 3 && item[1].value <= 5
+          ? "lowest"
+          : item[1].value >= 5 && item[1].value <= 10
+          ? "medium"
+          : item[1].value >= 10 && item[1].value <= 20
+          ? "high"
+          : item[1].value > 20
+          ? "critical"
+          : null;
+    }
     return metricValue;
   };
 
@@ -333,10 +375,14 @@ class Quality extends Component {
                       <Row className="h-15 m-0 text-white d-flex justify-content-between">
                         <span>{ele.type}</span>
                         <span>
-                          <FontAwesomeIcon
-                            className={ele.position}
-                            icon={faSquare}
-                          />
+                          {ele.position ? (
+                            <FontAwesomeIcon
+                              className={ele.position}
+                              icon={faSquare}
+                            />
+                          ) : (
+                            ""
+                          )}
                         </span>
                       </Row>
                       <Row className="align-items-center d-flex h-75 justify-content-center row text-white metric-value">

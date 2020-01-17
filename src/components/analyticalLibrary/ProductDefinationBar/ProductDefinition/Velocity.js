@@ -14,22 +14,22 @@ import SprintBurndown from "../../Charts/SprintBurnDown/SprintBurnDown";
 import Spinner from "../../Spinner/Spinner";
 import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
 
-var initialData = [
-  {
-    name: "dcp",
-    type: "BreakDownHigh",
-    data: "BreakDownHigh",
-    title: BreakDownHigh,
-    component: {}
-  },
-  {
-    name: "dtra",
-    type: "SprintBurndown",
-    data: "Deployment/Change Frequency",
-    title: SprintBurndown,
-    component: {}
-  }
-];
+// var initialData = [
+//   {
+//     name: "dcp",
+//     type: "BreakDownHigh",
+//     data: "BreakDownHigh",
+//     title: BreakDownHigh,
+//     component: {}
+//   },
+//   {
+//     name: "dtra",
+//     type: "SprintBurndown",
+//     data: "Deployment/Change Frequency",
+//     title: SprintBurndown,
+//     component: {}
+//   }
+// ];
 
 class Velocity extends Component {
   state = {
@@ -85,7 +85,7 @@ class Velocity extends Component {
     let updatedList = list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
-    updatedList = initialData.concat(updatedList);
+    // updatedList = initialData.concat(updatedList);
     updatedList.map(ele => {
       ele.component = this.setChart(ele.type, ele.title, ele.data);
     });
@@ -118,13 +118,24 @@ class Velocity extends Component {
       return {
         name: ele.name,
         type:
-          ele.name === "velocityTrends" ? "VelocityTrends" : "ControlChartHigh",
-        data: ele.name === "velocityTrends" ? ele : ele.metrics,
+          ele.name === "velocityTrends"
+            ? "VelocityTrends"
+            : ele.name === "projectBurndown"
+            ? "BreakDownHigh"
+            : ele.name === "Sprint Burndown"
+            ? "SprintBurndown"
+            : "ControlChartHigh",
+        data:
+          ele.name === "velocityTrends"
+            ? ele
+            : ele.name === "Sprint Burndown"
+            ? ele.burndown
+            : ele.metrics,
         title: ele.name,
         component: {}
       };
     });
-    return processedData.reverse();
+    return processedData;
   };
 
   //compare the current props and incoming props

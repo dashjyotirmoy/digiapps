@@ -11,7 +11,7 @@ class BreakdownHigh extends Component {
       },
 
       title: {
-        text: "Project Breakdown",
+        text: "Project Burndown",
         align: "left",
         style: {
           color: "#f5f5f5"

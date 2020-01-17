@@ -18,6 +18,7 @@ import Widgets from "../../dashboardController/widgetParser";
 import { repoDropValDispatch } from "../../../store/actions/qualityData";
 import { qualityDataDispatch } from "../../../store/actions/qualityData";
 import Spinner from "../../analyticalLibrary/Spinner/Spinner";
+import { execInsightsDispatch } from "../../../store/actions/executiveInsights";
 
 let productMetrics;
 class ProductInfoBar extends Component {
@@ -37,6 +38,7 @@ class ProductInfoBar extends Component {
   //axios call to fetch executive data
 
   componentDidMount() {
+    this.props.execInsightsDispatch(this.props.executiveId);
     api
       .getExecInsightsData(this.props.executiveId)
       .then(this.setProject)
@@ -151,7 +153,7 @@ class ProductInfoBar extends Component {
 
   setProductMetrics(data, cpi, spi) {
     const metrics = [
-      { name: "Head Count", value: "18" },
+      { name: "Head Count", value: this.props.metricsData.totalMembers },
       { name: "SPI", value: parseFloat(spi).toFixed(2) },
       { name: "CPI", value: parseFloat(cpi).toFixed(2) },
       { name: "Sprint Count", value: `${data.completed} / ${data.total}` }
@@ -321,7 +323,26 @@ class ProductInfoBar extends Component {
             className="h-100 border-bottom border-dark border-top"
           >
             <Row className="h-100  p-0 m-0">
-              <Col className="h-100 pl-0" sm={12} md={6} lg={6} xl={6}>
+              <Col
+                xl={1}
+                lg={1}
+                md={2}
+                className="d-flex justify-content-center align-items-center p-0"
+              >
+                <div className="w-100">
+                  <p className=" m-0 text-center text-white m-0 font-title">
+                    {this.props.execDataReceived
+                      ? this.props.projectList.name.split(" ")[0]
+                      : ""}
+                  </p>
+                  <p className="font-aggegate-sub-text m-0 text-center text-white-50 m-0 width-fit-content">
+                    {this.props.execDataReceived
+                      ? this.props.projectList.designation
+                      : ""}
+                  </p>
+                </div>
+              </Col>
+              <Col className="h-100 pl-0" sm={12} md={5} lg={4} xl={5}>
                 <Row className="h-100">
                   <Col
                     sm={2}
@@ -347,10 +368,10 @@ class ProductInfoBar extends Component {
                     </Row>
                   </Col>
                   <Col
-                    sm={5}
-                    md={qualityView ? 4 : 5}
-                    lg={qualityView ? 5 : 6}
-                    xl={qualityView ? 5 : 6}
+                    sm={6}
+                    md={6}
+                    lg={6}
+                    xl={6}
                     className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
                   >
                     {this.props.projectListReceived ? (
@@ -380,15 +401,11 @@ class ProductInfoBar extends Component {
                     ) : null}
                   </Col>
                   <Col
-                    sm={3}
-                    className={classnames(
-                      "border-right",
-                      "border-dark",
-                      "p-0",
-                      "h-100",
-                      { "col-xl-4 col-lg-4 col-md-4": !qualityView },
-                      { "col-xl-2_5 col-lg-2_5 col-md-2_5": qualityView }
-                    )}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                    className="border-right border-dark p-0 h-100"
                   >
                     <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
                       <Dropdown
@@ -405,7 +422,6 @@ class ProductInfoBar extends Component {
                           <Col
                             sm={2}
                             md={2}
-                            md={2}
                             lg={2}
                             xl={2}
                             className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
@@ -416,9 +432,7 @@ class ProductInfoBar extends Component {
                       </Dropdown>
                     </Row>
                   </Col>
-                  <Col
-                    sm={2}
-                    className={classnames(
+                  {/* <Col sm={2} className={classnames(
                       "border-right",
                       "border-dark",
                       "p-0",
@@ -452,10 +466,10 @@ class ProductInfoBar extends Component {
                         </Row>
                       </Dropdown>
                     </Row>
-                  </Col>
+                  </Col> */}
                 </Row>
               </Col>
-              <Col sm={12} md={6} lg={6} xl={6} className="h-100">
+              <Col sm={12} md={5} lg={7} xl={6} className="h-100">
                 <Row className="h-100">
                   <Col md={7} xl={8} lg={8} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
@@ -576,7 +590,8 @@ class ProductInfoBar extends Component {
 const mapStateToProps = state => {
   return {
     executiveId: state.execData.executiveId,
-    projectList: state.execData.currentExecutiveInfo.executiveData.projects,
+
+    projectList: state.execData.currentExecutiveInfo.executiveData,
     projectListReceived:
       state.execData.currentExecutiveInfo.executiveDataReceived,
     projDetails: state.productDetails.currentProject.projectDetails,
@@ -587,7 +602,9 @@ const mapStateToProps = state => {
     velocityCharts: state.chartData.currentChartData.chartDetails,
     chartDataReceived: state.chartData.currentChartData.chartDataReceived,
     selectedTab: state.chartData.currentTab,
-    resetTab: state.qualityData.resetTab
+    resetTab: state.qualityData.resetTab,
+    execDataReceived: state.execData.currentExecutiveInfo.executiveDataReceived,
+    metricsData: state.execData.currentExecutiveInfo.executiveData
   };
 };
 
@@ -599,7 +616,8 @@ const mapDispatchToProps = dispatch => {
       projInsightDispatch,
       sprintInsightsDispatch,
       repoDropValDispatch,
-      qualityDataDispatch
+      qualityDataDispatch,
+      execInsightsDispatch
     },
     dispatch
   );
