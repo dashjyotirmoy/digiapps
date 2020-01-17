@@ -54,6 +54,9 @@ class Graph {
       case "SprintBurndown":
         updatedOptions = this.generateSprintBurnDown(baseOptions);
         return updatedOptions;
+      case "ProjectBurnDown":
+        updatedOptions = this.generateProjectBurnDown(baseOptions);
+        return updatedOptions;
       default:
         return null;
     }
@@ -828,17 +831,62 @@ class Graph {
 
     return options;
   }
+  formatDate(preFormatDate) {
+    let splitDate, postFormatDate;
+    let monthsArray = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "April",
+      "May",
+      "June",
+      "July",
+      "Aug",
+      "Sept",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    splitDate = preFormatDate.split("-");
+    postFormatDate =
+      splitDate[2] + " " + monthsArray[splitDate[1] - 1] + " " + splitDate[0];
+    console.log(postFormatDate);
+    return postFormatDate;
+  }
 
   generateSprintBurnDown(options) {
-    let burndown = [];
-    let startData = this.res.startDate;
+    let remainingHours = [];
+    let totalScope = [];
+    let sprintBurndown = [];
+    let start_burnDownObj = {};
+    let end_burnDownObj = {};
+    let start_scopeObj = {};
+    let end_scopeObj = {};
+    let sprintStartDate = this.res.data.startDate.split("T");
+    let sprintEndDate = this.res.data.endDate.split("T");
 
-    this.res.data.map(data => {
-      let burndown_object = {};
+    start_scopeObj.x = new Date(sprintStartDate[0]).getTime();
+    start_scopeObj.y = parseInt(this.res.data.originalScope);
+
+    end_scopeObj.x = new Date(sprintEndDate[0]).getTime();
+    end_scopeObj.y =
+      parseInt(this.res.data.originalScope) +
+      parseInt(this.res.data.totalScopeIncrease);
+    totalScope.push(start_scopeObj, end_scopeObj);
+
+    start_burnDownObj.x = new Date(sprintStartDate[0]).getTime();
+    start_burnDownObj.y = parseInt(this.res.data.burndown[0].remainingHours);
+
+    end_burnDownObj.x = new Date(sprintEndDate[0]).getTime();
+    end_burnDownObj.y = 0;
+    sprintBurndown.push(start_burnDownObj, end_burnDownObj);
+
+    this.res.data.burndown.map(data => {
+      let remaining_hours_object = {};
       let rawDate = data.date.split("T");
-      burndown_object.x = new Date(rawDate[0]).getTime();
-      burndown_object.y = parseInt(data.remainingHours);
-      burndown.push(burndown_object);
+      remaining_hours_object.x = new Date(rawDate[0]).getTime();
+      remaining_hours_object.y = parseInt(data.remainingHours);
+      remainingHours.push(remaining_hours_object);
     });
     options.title = {
       text: "Sprint Burndown",
@@ -848,7 +896,9 @@ class Graph {
       }
     };
     options.subtitle = {
-      text: "7 Oct 2019 - 25 Oct 2019",
+      text: `${this.formatDate(sprintStartDate[0])} - ${this.formatDate(
+        sprintEndDate[0]
+      )}`,
       align: "left",
       style: {
         color: "#C0C0C0"
@@ -870,8 +920,8 @@ class Graph {
     };
     options.yAxis = {
       min: 0,
-      max: 100,
-      tickInterval: 20,
+      // max: 100,
+      tickInterval: 100,
       lineColor: "transparent",
       gridLineWidth: 0,
       labels: {
@@ -908,26 +958,172 @@ class Graph {
     options.series = [
       {
         name: "Remaining",
-        data: burndown,
+        data: remainingHours,
         type: "area",
         color: "#4370FE"
+      },
+      {
+        name: "Total Scope",
+        data: totalScope,
+        type: "line",
+        color: "#A35FC0"
+      },
+      {
+        name: "Burndown",
+        data: sprintBurndown,
+        type: "line",
+        color: "#BA8054"
       }
-      // {
-      //   name: "Burndown",
-      //   data: [80, 70, 60, 50, 40, 30, 20, 10, 0],
-      //   type: "line",
-      //   color: "#A35FC0"
-      // },
-      // {
-      //   name: "Total Scape",
-      //   data: [90, 90, 90, 90, 90, 90, 90, 90, 90],
-      //   type: "line",
-      //   color: "#BA8054"
-      // }
     ];
+    console.log(options.series);
     return options;
   }
 
+  generateProjectBurnDown(options) {
+    console.log(this.res.data);
+    let remaining = [],
+      completed = [],
+      burndown = [],
+      totalScope = [],
+      xAxis_data = [],
+      startDate = [],
+      endDate = [];
+    let rawDate = [],
+      av_burndown;
+    av_burndown = parseInt(this.res.data.averageBurndown);
+    av_burndown = Math.round(av_burndown * 100) / 100;
+    startDate = this.res.data.startDate.split("T");
+    startDate = startDate[0];
+    endDate = this.res.data.endDate.split("T");
+    endDate = startDate[0];
+    rawDate = this.res.data.startDate.split("T");
+    xAxis_data.push(rawDate);
+    remaining.push(parseInt(this.res.data.originalScope));
+    completed.push(0);
+    burndown.push(parseInt(this.res.data.originalScope));
+    totalScope.push(parseInt(this.res.data.originalScope));
+    this.res.data.metrics.map(data => {
+      let remaining_object = {},
+        completed_object = {},
+        sprint_name,
+        remaining_temp,
+        burndown_object = {},
+        totalScope_object = {};
+      sprint_name = data.name;
+      xAxis_data.push(data.name);
+      // completed_object.x = parseInt(sprint_name[sprint_name.length - 1]);
+      completed_object.y = parseInt(data.completedStoryPoints);
+      remaining_temp =
+        parseInt(data.totalstoryPoints) - parseInt(data.completedStoryPoints);
+      // remaining_object.x = parseInt(sprint_name[sprint_name.length - 1]);
+      remaining_object.y = remaining_temp;
+      // burndown_object.x = parseInt(sprint_name[sprint_name.length - 1]);
+      burndown_object.y = remaining_temp;
+      // totalScope_object.x = parseInt(sprint_name[sprint_name.length - 1]);
+      totalScope_object.y = parseInt(data.totalstoryPoints);
+      burndown.push(burndown_object);
+      totalScope.push(totalScope_object);
+      remaining.push(remaining_object);
+      completed.push(completed_object);
+    });
+    options.chart = {
+      height: 0,
+      backgroundColor: " "
+    };
+    // options.title = {
+    //     text: this.res.title,
+    //     align: "left",
+    //     style: {
+    //         color: "#f5f5f5"
+    //     }
+    // }
+    options.title = {
+      text: `${this.res.title}<br><span style='font-size: 11px; color:#C0C0C0;'>${startDate} - ${endDate}`,
+      align: "left",
+      style: {
+        color: "#f5f5f5"
+      }
+    };
+    options.subtitle = {
+      // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
+      text: `<div><span style='font-size: 20px'>${av_burndown}</span> Average Burndown <span style='font-size: 20px'>${this.res.data.itemsNotEstimated}</span> Items not estiomated <br /><span style='font-size: 20px'>${this.res.data.totalScopeIncrease}</span> Total Scope increase<span style='font-size: 20px'>${this.res.data.remainingStoryPoints}</span> Story points remaining</div>`,
+      floating: true,
+      align: "right",
+      x: 0,
+      y: 40,
+      style: {
+        color: "#C0C0C0"
+      }
+    };
+    options.yAxis = {
+      gridLineWidth: 0,
+      labels: {
+        enabled: true,
+        style: {
+          color: "#f5f5f5"
+        }
+      },
+      title: {
+        text: ``,
+        rotation: 0
+      }
+    };
+    options.xAxis = {
+      gridLineWidth: 0,
+      tickWidth: 0,
+      categories: xAxis_data,
+      labels: {
+        style: {
+          color: "#f5f5f5"
+        }
+      },
+      lineColor: "transparent"
+    };
+    options.plotOptions = {
+      column: {
+        stacking: "normal",
+        dataLabels: {
+          enabled: false
+        }
+      },
+      series: {
+        borderRadius: 6
+      }
+    };
+    options.tooltip = {
+      shared: true
+    };
+    options.series = [
+      {
+        name: "Completed",
+        type: "column",
+        data: completed
+      },
+      {
+        name: "Remaining",
+        type: "column",
+        data: remaining
+      },
+      {
+        name: "Burndown",
+        type: "line",
+        marker: {
+          enabled: false
+        },
+        data: burndown
+      },
+      {
+        name: "Total Scope",
+        type: "line",
+        marker: {
+          enabled: false
+        },
+        data: totalScope
+      }
+    ];
+
+    return options;
+  }
   //function that Creates data for Control charts
 
   generateControlChart(options) {

@@ -102,7 +102,7 @@ class Velocity extends Component {
         return <VelocityTrend title={title} type={type} data={data} />;
       case "ControlChartHigh":
         return <ControlChartHigh title={title} type={type} data={data} />;
-      case "BreakDownHigh":
+      case "ProjectBurnDown":
         return <BreakDownHigh title={title} type={type} data={data} />;
       case "SprintBurndown":
         return <SprintBurndown title={title} type={type} data={data} />;
@@ -121,15 +121,15 @@ class Velocity extends Component {
           ele.name === "velocityTrends"
             ? "VelocityTrends"
             : ele.name === "projectBurndown"
-            ? "BreakDownHigh"
+            ? "ProjectBurnDown"
             : ele.name === "Sprint Burndown"
             ? "SprintBurndown"
             : "ControlChartHigh",
         data:
-          ele.name === "velocityTrends"
+          ele.name === "velocityTrends" ||
+          ele.name === "Sprint Burndown" ||
+          ele.name === "projectBurndown"
             ? ele
-            : ele.name === "Sprint Burndown"
-            ? ele.burndown
             : ele.metrics,
         title: ele.name,
         component: {}
