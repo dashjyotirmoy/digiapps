@@ -13,7 +13,7 @@ import VelocityTrend from "../../Charts/VelocityTrends/VelocityTrend";
 import SprintBurndown from "../../Charts/SprintBurnDown/SprintBurnDown";
 import Spinner from "../../Spinner/Spinner";
 import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
-import { translations } from '../../Translations/Translations';
+import { translations } from "../../Translations/Translations";
 
 // var initialData = [
 //   {
@@ -86,10 +86,13 @@ class Velocity extends Component {
     let updatedList = list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
-    
-    
+
     updatedList.map(ele => {
-      ele.component = this.setChart(ele.type, translations[ele.title.toLowerCase()] || ele.title, ele.data);
+      ele.component = this.setChart(
+        ele.type,
+        translations[ele.title.toLowerCase()] || ele.title,
+        ele.data
+      );
     });
     this.setState({
       charts: updatedList
@@ -120,17 +123,17 @@ class Velocity extends Component {
       return {
         name: ele.name,
         type:
-          ele.name === "velocityTrends"
+          ele.name === "Velocity Trend"
             ? "VelocityTrends"
-            : ele.name === "projectBurndown"
+            : ele.name === "Project Burndown"
             ? "ProjectBurnDown"
             : ele.name === "Sprint Burndown"
             ? "SprintBurndown"
             : "ControlChartHigh",
         data:
-          ele.name === "velocityTrends" ||
+          ele.name === "Velocity Trend" ||
           ele.name === "Sprint Burndown" ||
-          ele.name === "projectBurndown"
+          ele.name === "Project Burndown"
             ? ele
             : ele.metrics,
         title: ele.name,
