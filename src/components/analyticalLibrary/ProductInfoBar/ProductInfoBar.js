@@ -155,7 +155,7 @@ class ProductInfoBar extends Component {
 
   setProductMetrics(data, cpi, spi) {
     const metrics = [
-      { name: "Head Count", value: this.props.metricsData.totalMembers },
+      { name: "Head Count", value: this.props.projDetails.totalMembers },
       { name: "SPI", value: parseFloat(spi).toFixed(2) },
       { name: "CPI", value: parseFloat(cpi).toFixed(2) },
       { name: "Sprint Count", value: `${data.completed} / ${data.total}` }
