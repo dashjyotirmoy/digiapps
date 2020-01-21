@@ -892,17 +892,15 @@ class Graph {
         this.res.title
       }</span><br><span style='color:#C0C0C0; font-size:0.95rem;'>${this.formatDate(
         sprintStartDate[0]
-      )} - ${this.formatDate(
-        sprintEndDate[0]
-      )}</span><br><br><span style='color : #0582EC'>${parseFloat(
-        percentageCompleted
-      ).toFixed(1)} % Completed</span>`,
+      )} - ${this.formatDate(sprintEndDate[0])}</span>`,
       align: "left",
       style: {
         color: "#f5f5f5"
       }
     };
-
+    // <br><br><span style='color : #0582EC'>${parseFloat(
+    //   percentageCompleted
+    // ).toFixed(1)} % Completed</span>
     options.subtitle = {
       // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
       text: `
@@ -1078,14 +1076,16 @@ class Graph {
         startDate
       )} - ${this.formatDate(
         endDate
-      )}</span><br><span style='color : #0582EC'>${parseFloat(
-        percentageCompleted
-      ).toFixed(1)} % Completed</span>`,
+      )}</span>`,
       align: "left",
       style: {
         color: "#f5f5f5"
       }
     };
+
+    // <br><span style='color : #0582EC'>${parseFloat(
+    //   percentageCompleted
+    // ).toFixed(1)} % Completed</span>
     options.subtitle = {
       // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
       text: `
