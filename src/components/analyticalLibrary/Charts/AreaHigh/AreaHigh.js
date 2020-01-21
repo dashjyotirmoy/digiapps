@@ -23,7 +23,6 @@ class AreaHigh extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    debugger;
     if (true) {
       this.setState({
         received: 0
