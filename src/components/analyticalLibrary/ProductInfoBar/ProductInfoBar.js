@@ -448,7 +448,7 @@ class ProductInfoBar extends Component {
                 <Row className="h-100">
                   <Col md={7} xl={8} lg={8} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
-                    <Row className="px-4 h-100 w-100 d-flex align-items-center justify-content-between ">
+                      <Row className="px-4 h-100 w-100 d-flex align-items-center justify-content-between ">
                         {productMetrics.map(item => {
                           return (
                             <div
