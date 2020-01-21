@@ -922,7 +922,7 @@ class Graph {
       // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
       text: `
       <span  style="font-size:18px;">${averegeBurnDown}</span><span style="color:#c0c0c0"> Average Burndown</span>
-      <span  style="font-size:18px;">${totalScopeIncrease}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
+      <span  style="font-size:18px;">${totalScopeIncrease}</span><span style="color:#c0c0c0"> Total scope increase</span></span><br/>
       <span  style="font-size:18px;">${hoursRemaining}</span><span style="color:#c0c0c0"> Hours remaining</span></span>
         
       `,
