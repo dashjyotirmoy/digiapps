@@ -51,7 +51,9 @@ a:hover {
   width: 20% !important;
   min-width: 20% !important;
 }
-
+.w-inherit {
+  width: inherit !important;
+}
 .width-fit-content {
   min-width: fit-content;
   white-space: nowrap;
@@ -227,6 +229,9 @@ a:hover {
 .quality-metric-area {
   height: 25% !important;
   min-height: 260px !important;
+}
+.repo-height {
+  min-height: 40px !important;
 }
 .Quality .critical {
   color: #ff0000;

@@ -15,7 +15,7 @@ import { translations } from "../Translations/";
 import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 import { isQuality } from "../../../utility/classUtility/classUtil";
 import Widgets from "../../dashboardController/widgetParser";
-import { repoDropValDispatch } from "../../../store/actions/qualityData";
+
 import { qualityDataDispatch } from "../../../store/actions/qualityData";
 import Spinner from "../../analyticalLibrary/Spinner/Spinner";
 import { execInsightsDispatch } from "../../../store/actions/executiveInsights";
@@ -132,14 +132,11 @@ class ProductInfoBar extends Component {
         projectName: ele.name
       };
     });
-    this.getQualityData(
-      this.props.executiveId,
-      sprintDetails[sprintData.selectedIndex].id
-    );
-    this.setState({
-      sprintData: sprintDetails,
-      selectedSprint: sprintDetails[sprintData.selectedIndex].projectName
-    });
+    // this.getQualityData(
+    //   this.props.executiveId,
+    //   sprintDetails[sprintData.selectedIndex].id
+    // );
+
     productMetrics = this.setProductMetrics(
       res.data.sprintCount,
       res.data.cpi,
@@ -149,6 +146,11 @@ class ProductInfoBar extends Component {
       sprintDetails[sprintData.selectedIndex].id,
       this.props.executiveId
     );
+    this.setState({
+      sprintData: sprintDetails,
+      selectedSprint: sprintDetails[sprintData.selectedIndex].projectName,
+      show: false
+    });
   };
 
   setProductMetrics(data, cpi, spi) {
@@ -208,41 +210,14 @@ class ProductInfoBar extends Component {
       // const metricValues = this.splitMetricValues(repoDetails);
       this.setState({
         repoData: repoDetails,
-        selectedRepo: repoDetails[selectedIndex].projectName,
-        show: false
+        selectedRepo: repoDetails[selectedIndex].projectName
       });
-
-      this.props.repoDropValDispatch(this.state.selectedRepo);
     } else {
       this.setState({
         repoData: [],
-        selectedRepo: "",
-        show: false // to be changed
+        selectedRepo: ""
       });
     }
-  };
-
-  splitMetricValues = repoDetails => {
-    let finalSplit = [];
-    const repoDetailsSplit = repoDetails.map(item => {
-      let rawData = item.projectName.split(":");
-      return rawData[1];
-    });
-    return repoDetailsSplit;
-  };
-
-  //method to update repo data when dropdown is changed
-
-  updateRepository = repoId => {
-    const { list, selectedIndex } = this.markSelected(
-      this.state.repoData,
-      repoId
-    );
-    this.setState({
-      repoData: list,
-      selectedRepo: list[selectedIndex].projectName
-    });
-    this.props.repoDropValDispatch(list[selectedIndex].projectName);
   };
 
   //Handling repository data ends
@@ -473,7 +448,7 @@ class ProductInfoBar extends Component {
                 <Row className="h-100">
                   <Col md={7} xl={8} lg={8} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
-                      <Row className="px-4 h-100 w-100 border-right border-dark d-flex align-items-center justify-content-between ">
+                    <Row className="px-4 h-100 w-100 d-flex align-items-center justify-content-between ">
                         {productMetrics.map(item => {
                           return (
                             <div
@@ -615,7 +590,7 @@ const mapDispatchToProps = dispatch => {
     {
       projInsightDispatch,
       sprintInsightsDispatch,
-      repoDropValDispatch,
+
       qualityDataDispatch,
       execInsightsDispatch
     },

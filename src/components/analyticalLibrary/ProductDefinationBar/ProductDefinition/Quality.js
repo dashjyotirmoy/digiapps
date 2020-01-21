@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
-import { Row, Container, Col } from "react-bootstrap";
+import classnames from "classnames";
+import { Row, Container, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSquare,
   faEllipsisV,
-  faInfoCircle
+  faInfoCircle,
+  faChevronDown
 } from "@fortawesome/free-solid-svg-icons";
 import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 import StackedBar from "../../Charts/StackedBar/StackedBar";
+import { repoDropValDispatch } from "../../../../store/actions/qualityData";
 import { qualityDataDispatch } from "../../../../store/actions/qualityData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -18,31 +21,38 @@ import BubbleHigh from "../../Charts/BubbleChart/BubbleChart";
 import { TooltipHoc } from "../../TooltiHOC/TooltipHoc";
 import ModalBackDrop from "../../ModalBackDrop/ModalBackDrop";
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
+
 import Spinner from "../../Spinner/Spinner";
+import Dropdown from "../../Dropdown/Dropdown";
 
 const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
     type: "MultipleLineHigh",
-    component: LineHigh
+    component: LineHigh,
+    repoDependent: true
   },
   {
     name: "Coverage",
     type: "AreaHigh",
-    component: AreaHigh
+    component: AreaHigh,
+    repoDependent: true
   },
-
   {
     name: "Outstanding Bugs",
     type: "BarHigh",
-    component: StackedBar
+    component: StackedBar,
+    repoDependent: false
   },
   {
     name: "Average Defect Resolution Time",
     type: "DefectHigh",
-    component: ColumnHigh
+    component: ColumnHigh,
+    repoDependent: false
   }
 ];
+
+let test = [];
 
 class Quality extends Component {
   state = {
@@ -52,21 +62,23 @@ class Quality extends Component {
     layout: {
       lg: [
         { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "2", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "3", x: 6, y: 2, w: 6, h: 2, isResizable: false }
+        { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false }
+        // { i: "2", x: 0, y: 0, w: 6, h: 2, isResizable: false },
+        // { i: "3", x: 6, y: 2, w: 6, h: 2, isResizable: false }
       ],
       md: [
         { i: "0", x: 0, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "1", x: 6, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "2", x: 0, y: 2, w: 4, h: 2, isResizable: false },
-        { i: "3", x: 4, y: 2, w: 6, h: 2, isResizable: false }
+        { i: "1", x: 6, y: 0, w: 5, h: 2, isResizable: false }
+        // { i: "2", x: 0, y: 2, w: 4, h: 2, isResizable: false },
+        // { i: "3", x: 4, y: 2, w: 6, h: 2, isResizable: false }
       ]
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
     qualityMetrics: [],
-    show: true
+    show: true,
+    selectedRepo: "",
+    repoData: []
   };
 
   onDisplayMetricsClickHandler = metricType => {
@@ -83,6 +95,7 @@ class Quality extends Component {
   };
 
   fetchQualityData = () => {
+    let type;
     this.setState({
       all_data: false,
       charts: [],
@@ -92,19 +105,17 @@ class Quality extends Component {
       .qualityDataDispatch(this.props.currentExecId, this.props.projId)
       .then(item => {
         if (this.props.qualityData.repositories.length > 0) {
-          const qualityMetrics = this.createMetrics(
-            this.props.qualityData.repositories
-          );
+          this.setRepository(this.props.qualityData);
           this.setState({
-            qualityMetrics,
             show: false
           });
-          console.log(this.state.qualityMetrics);
-          const type = this.setRawRepoObjects(
-            this.props.qualityData.repositories,
-            this.props.qualityData.outstandingBugs,
-            this.props.qualityData.averageDefectResolutionTime
-          );
+          if (this.state.selectedRepo === "") {
+            type = this.setRawDefaultRepo(
+              this.props.qualityData.repositories,
+              this.props.qualityData.outstandingBugs,
+              this.props.qualityData.averageDefectResolutionTime
+            );
+          }
 
           this.createCharts(this.createChartObject(type));
         } else {
@@ -118,10 +129,29 @@ class Quality extends Component {
       });
   };
 
-  createMetrics = arr => {
+  setRawDefaultRepo(rawData, outstandingBugs, averageResolution) {
+    const item = rawData.map((item, index) => {
+      return {
+        outstandingbugs: [
+          { name: item.repoName },
+          { title: "Outstanding Bugs" },
+          outstandingBugs
+        ],
+        AvResolutionTime: [
+          { name: item.repoName },
+          { title: "Average Defect Resolution Time" },
+          averageResolution
+        ]
+      };
+    });
+    const splitArr = this.splitRawObj(item);
+    return splitArr;
+  }
+
+  createMetrics = (repoId, arr) => {
     let selectedIndex;
     let metricsData = arr.map((obj, index) => {
-      if (this.props.currentRepo === obj.repoName) {
+      if (repoId === obj.repoKey) {
         selectedIndex = index;
         return Object.entries(obj);
       }
@@ -150,7 +180,6 @@ class Quality extends Component {
   };
 
   setMetricPos = item => {
-    console.log(item);
     let metricValue;
     if (
       item[0] === "bugs" ||
@@ -171,7 +200,6 @@ class Quality extends Component {
           : null;
     }
     if (item[0] === "coverage") {
-      console.log(item[1].value);
       metricValue =
         item[1].value >= "80"
           ? "low"
@@ -202,35 +230,35 @@ class Quality extends Component {
     return metricValue;
   };
 
-  setRawRepoObjects = (rawData, outstandingBugs, averageResolution) => {
-    const item = rawData.map((item, index) => {
-      return {
-        bugs_vulnerability_codeSmell: [
-          { name: item.repoName },
-          { title: "Bugs, Vulnerabilities & Code Smells" },
-          { bugs: item.bugs },
-          { vulberablities: item.vulnerabilities },
-          { codesmells: item.codeSmells }
-        ],
-        coverage: [
-          { name: item.repoName },
-          { title: "Coverage" },
-          item.coverage
-        ],
-        outstandingbugs: [
-          { name: item.repoName },
-          { title: "Outstanding Bugs" },
-          outstandingBugs
-        ],
-        AvResolutionTime: [
-          { name: item.repoName },
-          { title: "Average Defect Resolution Time" },
-          averageResolution
-        ]
-      };
-    });
-    const splitArr = this.splitRawObj(item);
-    return splitArr;
+  setRawRepoObjects = (rawData, outstandingBugs, averageResolution, repoID) => {
+    const item = {
+      bugs_vulnerability_codeSmell: [
+        { name: rawData.repoName },
+        { title: "Bugs, Vulnerabilities & Code Smells" },
+        { bugs: rawData.bugs },
+        { vulberablities: rawData.vulnerabilities },
+        { codesmells: rawData.codeSmells }
+      ],
+      coverage: [
+        { name: rawData.repoName },
+        { title: "Coverage" },
+        rawData.coverage
+      ],
+      outstandingbugs: [
+        { name: rawData.repoName },
+        { title: "Outstanding Bugs" },
+        outstandingBugs
+      ],
+      AvResolutionTime: [
+        { name: rawData.repoName },
+        { title: "Average Defect Resolution Time" },
+        averageResolution
+      ]
+    };
+
+    const splitArr = Object.values(item);
+
+    return [splitArr];
   };
 
   splitRawObj = type => {
@@ -241,13 +269,11 @@ class Quality extends Component {
   createChartObject = typeObj => {
     const processedData = typeObj.map((item, index) => {
       return item.map(ele => {
-        if (ele[0].name === this.props.currentRepo) {
-          return {
-            name: ele[1].title,
-            data: ele,
-            title: ele[1].title
-          };
-        }
+        return {
+          name: ele[1].title,
+          data: ele,
+          title: ele[1].title
+        };
       });
     });
     return processedData;
@@ -261,7 +287,7 @@ class Quality extends Component {
 
     updatedList.map((item, ind) => {
       return item.map((ele, index) => {
-        if (ele != undefined) {
+        if (ele !== undefined) {
           selectedIndex = ind;
           ele.data = ele.data.splice(2);
           ele.component = this.setChart(ele.title, ele.data);
@@ -270,6 +296,7 @@ class Quality extends Component {
     });
     const chartList = updatedList.splice(selectedIndex, 1);
     this.setState({
+      qualityMetrics: test,
       charts: chartList
     });
   };
@@ -310,24 +337,118 @@ class Quality extends Component {
     });
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.currentRepo !== nextProps.currentRepo ||
-      this.props.projId !== nextProps.projId
-    ) {
+  // componentWillReceiveProps(nextProps) {
+  //   if (this.props.projId !== nextProps.projId) {
+  //     this.setState({
+  //       all_data: true
+  //     });
+  //   }
+  // }
+
+  componentDidMount() {
+    if (this.state.selectedRepo === "") {
       this.setState({
         all_data: true
       });
     }
   }
 
-  componentDidMount() {
-    if (this.props.currentRepo) {
-      this.setState({
-        all_data: true
+  markSelected = (prodList, id) => {
+    const resetList = this.resetSelect(prodList);
+    let selectedIndex = 0;
+    const selectedParamList = resetList.map((ele, index) => {
+      if (ele.repoKey === id) {
+        selectedIndex = index;
+        return ele;
+      }
+      return ele;
+    });
+    return {
+      list: selectedParamList,
+      selectedIndex: selectedIndex
+    };
+  };
+  setRepository = res => {
+    const repositoryData = res.repositories;
+    if (repositoryData !== null) {
+      const { list } = this.markSelected(
+        repositoryData,
+        repositoryData[0].repoKey
+      );
+      const repoDetails = list.map(ele => {
+        return {
+          id: ele.repoKey,
+          projectName: ele.repoName
+        };
       });
+
+      // const metricValues = this.splitMetricValues(repoDetails);
+      this.setState({
+        repoData: repoDetails
+      });
+
+      this.props.repoDropValDispatch(this.state.selectedRepo);
     }
-  }
+  };
+
+  updateRepository = repoId => {
+    const { list, selectedIndex } = this.markSelected(
+      this.props.qualityData.repositories,
+      repoId
+    );
+    const repoDetails = list.map(ele => {
+      return {
+        id: ele.repoKey,
+        projectName: ele.repoName
+      };
+    });
+
+    // this.fetchQualityData();
+
+    this.setState({
+      selectedRepo: repoDetails[selectedIndex].projectName
+    });
+
+    this.props.repoDropValDispatch(repoDetails[selectedIndex].projectName);
+    this.updateQualityData(repoId, selectedIndex);
+  };
+
+  updateQualityData = (repoId, selectedIndex) => {
+    const qualityMetrics = this.createMetrics(
+      repoId,
+      this.props.qualityData.repositories
+    );
+    test = qualityMetrics;
+    this.setState({
+      layout: {
+        lg: [
+          { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
+          { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false },
+          { i: "2", x: 0, y: 0, w: 6, h: 2, isResizable: false },
+          { i: "3", x: 6, y: 2, w: 6, h: 2, isResizable: false }
+        ]
+      }
+    });
+
+    const type = this.setRawRepoObjects(
+      this.props.qualityData.repositories[selectedIndex],
+      this.props.qualityData.outstandingBugs,
+      this.props.qualityData.averageDefectResolutionTime,
+      repoId
+    );
+
+    this.createCharts(this.createChartObject(type));
+  };
+
+  resetSelect = prodList => {
+    const defaultList = prodList.map(ele => {
+      return ele;
+    });
+    return defaultList;
+  };
+  handleRepoChange = repoID => {
+    this.updateRepository(repoID);
+  };
 
   componentDidUpdate() {
     if (this.state.all_data) {
@@ -341,7 +462,46 @@ class Quality extends Component {
     } else {
       return (
         <React.Fragment>
-          <Row className="Quality quality-metric-area w-100 p-0 m-0 ">
+          <Row className="p-0 px-3 m-0 mt-4">
+            <Col xl={2} lg={3} md={3}>
+              <Dropdown
+                listData={this.state.repoData}
+                direction="down"
+                onSelectDelegate={this.handleRepoChange}
+              >
+                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                  <Col
+                    sm={10}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    className="d-flex align-item-center justify-content-center"
+                  >
+                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                      {this.state.selectedRepo
+                        ? this.state.selectedRepo
+                        : "Select Repository"}
+                    </p>
+                  </Col>
+                  <Col
+                    sm={2}
+                    md={2}
+                    g={2}
+                    xl={2}
+                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </Col>
+                </Row>
+              </Dropdown>
+            </Col>
+          </Row>
+          <Row
+            className={classnames(
+              " Quality quality-metric-area w-100 p-0 m-0",
+              { "d-none": !this.state.selectedRepo }
+            )}
+          >
             <Row className="metric-legend w-100 text-white">
               <Col
                 xl={2}
@@ -464,7 +624,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { qualityDataDispatch, resetProjectRepoDispatch },
+    { qualityDataDispatch, resetProjectRepoDispatch, repoDropValDispatch },
     dispatch
   );
 };

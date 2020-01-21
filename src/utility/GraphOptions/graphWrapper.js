@@ -1,20 +1,6 @@
 //Wrapper class which contains logic for providing data to the analytical graph components
 
-class Options {
-  chart = {};
-  credits = {
-    enabled: false
-  };
-  legend = {
-    enabled: false
-  };
-  title = {};
-  tootltip = {};
-  plotOptions = {};
-  xAxis = {};
-  yAxis = {};
-  series = {};
-}
+import Options from "./optionsModel";
 var sd = "Start date";
 
 class Graph {
@@ -351,10 +337,10 @@ class Graph {
       let to_cover_point = [],
         covered_point = [];
       let rawDate = day_data.date.split("T");
-      // to_cover_point[0] = new Date(rawDate[0]).getTime() + 19800000;
+
       to_cover_point[0] = new Date(rawDate[0]).getTime();
       to_cover_point[1] = parseInt(day_data.linesToCover);
-      // covered_point[0] = new Date(rawDate[0]).getTime() + 19800000;
+
       covered_point[0] = new Date(rawDate[0]).getTime();
       covered_point[1] = parseInt(day_data.coveredLines);
       lines_to_cover.push(to_cover_point);
@@ -679,6 +665,9 @@ class Graph {
       actual_velocity.x = parseInt(data.name.charAt(charLength - 1));
       actual_velocity.y = (data.storyPointsDelivered / av_Velocity) * 100;
 
+      planned_Velocity.actual_value = parseInt(data.storyPointsPlanned);
+      actual_velocity.actual_value = parseInt(data.storyPointsDelivered);
+
       actual_velocity.diff =
         data.storyPointsDelivered - data.storyPointsPlanned;
 
@@ -768,7 +757,9 @@ class Graph {
     };
 
     options.tooltip = {
-      enabled: false
+      formatter: function() {
+        return this.series.name + ": " + this.point.actual_value;
+      }
     };
     options.plotOptions = {
       series: {
@@ -850,7 +841,6 @@ class Graph {
     splitDate = preFormatDate.split("-");
     postFormatDate =
       splitDate[2] + " " + monthsArray[splitDate[1] - 1] + " " + splitDate[0];
-    console.log(postFormatDate);
     return postFormatDate;
   }
 
@@ -862,6 +852,10 @@ class Graph {
     let end_burnDownObj = {};
     let start_scopeObj = {};
     let end_scopeObj = {};
+    let averegeBurnDown;
+    let totalScopeIncrease;
+    let taskRemaining;
+    let percentageCompleted;
     let sprintStartDate = this.res.data.startDate.split("T");
     let sprintEndDate = this.res.data.endDate.split("T");
 
@@ -881,6 +875,10 @@ class Graph {
     end_burnDownObj.y = 0;
     sprintBurndown.push(start_burnDownObj, end_burnDownObj);
 
+    averegeBurnDown = parseFloat(this.res.data.averageBurndown).toFixed(2);
+    totalScopeIncrease = this.res.data.totalScopeIncrease;
+    taskRemaining = this.res.data.hoursRemaining;
+    percentageCompleted = this.res.data.percentageCompleted;
     this.res.data.burndown.map(data => {
       let remaining_hours_object = {};
       let rawDate = data.date.split("T");
@@ -888,22 +886,40 @@ class Graph {
       remaining_hours_object.y = parseInt(data.remainingHours);
       remainingHours.push(remaining_hours_object);
     });
+
     options.title = {
-      text: "Sprint Burndown",
+      text: `<span style='color:#f5f5f5'>${
+        this.res.title
+      }</span><br><span style='color:#C0C0C0; font-size:0.95rem;'>${this.formatDate(
+        sprintStartDate[0]
+      )} - ${this.formatDate(
+        sprintEndDate[0]
+      )}</span><br><br><span style='color : #0582EC'>${parseFloat(
+        percentageCompleted
+      ).toFixed(1)} % Completed</span>`,
       align: "left",
       style: {
         color: "#f5f5f5"
       }
     };
+
     options.subtitle = {
-      text: `${this.formatDate(sprintStartDate[0])} - ${this.formatDate(
-        sprintEndDate[0]
-      )}`,
-      align: "left",
+      // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
+      text: `
+        <span  style="font-size:1.50rem;">${averegeBurnDown}</span><span style="color:#c0c0c0"> Average Burndown</span>
+        <span style="font-size:1.25rem;">${totalScopeIncrease}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
+        <span style="font-size:1.25rem;">${taskRemaining}</span><span style="color:#c0c0c0"> Total Scope increase</span></span>
+        
+      `,
+      floating: true,
+      align: "right",
+      x: -20,
+      y: 40,
       style: {
-        color: "#C0C0C0"
+        color: "#f5f5f5"
       }
     };
+
     options.xAxis = {
       type: "datetime",
       dateTimeLabelFormats: {
@@ -943,6 +959,15 @@ class Graph {
       itemStyle: {
         color: "#f5f5f5",
         fontWeight: "normal"
+      },
+      labelFormatter: function() {
+        if (this.name === "Completed") {
+          return (
+            parseFloat(percentageCompleted).toFixed(1) + " % " + "Completed"
+          );
+        } else {
+          return this.name;
+        }
       }
     };
     options.plotOptions = {
@@ -956,6 +981,12 @@ class Graph {
     };
 
     options.series = [
+      {
+        name: "Completed",
+
+        color: "#0582EC",
+        borderColor: "#3185ab"
+      },
       {
         name: "Remaining",
         data: remainingHours,
@@ -975,7 +1006,6 @@ class Graph {
         color: "#BA8054"
       }
     ];
-    console.log(options.series);
     return options;
   }
 
@@ -989,19 +1019,23 @@ class Graph {
       startDate = [],
       endDate = [];
     let rawDate = [],
-      av_burndown;
+      av_burndown,
+      percentageCompleted;
     av_burndown = parseInt(this.res.data.averageBurndown);
     av_burndown = Math.round(av_burndown * 100) / 100;
     startDate = this.res.data.startDate.split("T");
     startDate = startDate[0];
     endDate = this.res.data.endDate.split("T");
-    endDate = startDate[0];
+    endDate = endDate[0];
     rawDate = this.res.data.startDate.split("T");
-    xAxis_data.push(rawDate);
+    console.log(rawDate[0]);
+    xAxis_data.push(this.formatDate(rawDate[0]));
     remaining.push(parseInt(this.res.data.originalScope));
     completed.push(0);
     burndown.push(parseInt(this.res.data.originalScope));
     totalScope.push(parseInt(this.res.data.originalScope));
+    percentageCompleted = this.res.data.percentageCompleted;
+
     this.res.data.metrics.map(data => {
       let remaining_object = {},
         completed_object = {},
@@ -1038,7 +1072,15 @@ class Graph {
     //     }
     // }
     options.title = {
-      text: `${this.res.title}<br><span style='font-size: 11px; color:#C0C0C0;'>${startDate} - ${endDate}`,
+      text: `<span style='color:#f5f5f5'>${
+        this.res.title
+      }</span><br><span style='color:#C0C0C0; font-size:0.95rem;'>${this.formatDate(
+        startDate
+      )} - ${this.formatDate(
+        endDate
+      )}</span><br><span style='color : #0582EC'>${parseFloat(
+        percentageCompleted
+      ).toFixed(1)} % Completed</span>`,
       align: "left",
       style: {
         color: "#f5f5f5"
@@ -1046,13 +1088,18 @@ class Graph {
     };
     options.subtitle = {
       // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
-      text: `<div><span style='font-size: 20px'>${av_burndown}</span> Average Burndown <span style='font-size: 20px'>${this.res.data.itemsNotEstimated}</span> Items not estiomated <br /><span style='font-size: 20px'>${this.res.data.totalScopeIncrease}</span> Total Scope increase<span style='font-size: 20px'>${this.res.data.remainingStoryPoints}</span> Story points remaining</div>`,
+      text: `
+        <span  style="font-size:1.50rem;">${av_burndown}</span><span style="color:#c0c0c0"> Average Burndown</span>
+        <span style="font-size:1.25rem;">${this.res.data.itemsNotEstimated}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
+        <span style="font-size:1.25rem;">${this.res.data.totalScopeIncrease}</span><span style="color:#c0c0c0"> Total Scope increase</span></span>
+        <span style="font-size:1.25rem;">${this.res.data.remainingStoryPoints}</span><span style="color:#c0c0c0"> Story points remaining </span></span>
+      `,
       floating: true,
       align: "right",
-      x: 0,
+      x: -20,
       y: 40,
       style: {
-        color: "#C0C0C0"
+        color: "#f5f5f5"
       }
     };
     options.yAxis = {
@@ -1066,6 +1113,26 @@ class Graph {
       title: {
         text: ``,
         rotation: 0
+      }
+    };
+    options.legend = {
+      enabled: true,
+      backgroundColor: "transparent",
+      itemStyle: {
+        color: "#ffffff",
+        fontWeight: "normal"
+      },
+      itemHoverStyle: {
+        color: "#d3d3d3"
+      },
+      labelFormatter: function() {
+        if (this.name === "Completed") {
+          return (
+            parseFloat(percentageCompleted).toFixed(1) + " % " + "Completed"
+          );
+        } else {
+          return this.name;
+        }
       }
     };
     options.xAxis = {
@@ -1087,7 +1154,7 @@ class Graph {
         }
       },
       series: {
-        borderRadius: 6
+        borderRadius: 1
       }
     };
     options.tooltip = {
@@ -1097,12 +1164,16 @@ class Graph {
       {
         name: "Completed",
         type: "column",
-        data: completed
+        data: completed,
+        color: "#0582EC",
+        borderColor: "#3185ab"
       },
       {
         name: "Remaining",
         type: "column",
-        data: remaining
+        data: remaining,
+        color: "#7d12ff",
+        borderColor: "#7d12ff"
       },
       {
         name: "Burndown",
@@ -1110,6 +1181,7 @@ class Graph {
         marker: {
           enabled: false
         },
+        color: "#9EF988",
         data: burndown
       },
       {
@@ -1118,6 +1190,7 @@ class Graph {
         marker: {
           enabled: false
         },
+        color: "#DAC131",
         data: totalScope
       }
     ];

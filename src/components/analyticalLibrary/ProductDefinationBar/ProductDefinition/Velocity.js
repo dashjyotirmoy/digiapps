@@ -13,6 +13,7 @@ import VelocityTrend from "../../Charts/VelocityTrends/VelocityTrend";
 import SprintBurndown from "../../Charts/SprintBurnDown/SprintBurnDown";
 import Spinner from "../../Spinner/Spinner";
 import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
+import { translations } from '../../Translations/Translations';
 
 // var initialData = [
 //   {
@@ -85,9 +86,10 @@ class Velocity extends Component {
     let updatedList = list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
-    // updatedList = initialData.concat(updatedList);
+    
+    
     updatedList.map(ele => {
-      ele.component = this.setChart(ele.type, ele.title, ele.data);
+      ele.component = this.setChart(ele.type, translations[ele.title.toLowerCase()] || ele.title, ele.data);
     });
     this.setState({
       charts: updatedList

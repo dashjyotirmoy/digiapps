@@ -3,16 +3,11 @@ import DropdownMenu from "react-bootstrap/DropdownMenu";
 import { FormControl } from "react-bootstrap";
 
 const CustomMenu = React.forwardRef(
-  ({ children, style, className, "aria-labelledby": labeledBy }, ref) => {
+  ({ children, className, "aria-labelledby": labeledBy }, ref) => {
     const [value, setValue] = useState("");
 
     return (
-      <div
-        ref={ref}
-        style={style}
-        className={className}
-        aria-labelledby={labeledBy}
-      >
+      <div ref={ref} className={className} aria-labelledby={labeledBy}>
         <ul className="list-unstyled m-0 text-white-50">
           {React.Children.toArray(children).filter(
             child =>
