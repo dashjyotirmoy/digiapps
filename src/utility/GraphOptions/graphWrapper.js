@@ -725,6 +725,7 @@ class Graph {
       stackLabels: {
         enabled: false
       },
+
       plotLines: [
         {
           value: upper_Limit,
@@ -817,6 +818,20 @@ class Graph {
             return "<strong>" + this.point.diff + "</strong>";
           }
         }
+      },
+      {
+        // Series that mimics the plot line
+        type: "line",
+        color: "#9EF988",
+        name: "Upper Limit",
+        dashStyle: "shortdash"
+      },
+      {
+        // Series that mimics the plot line
+        type: "line",
+        color: "#DAC131",
+        name: "Lower Limit",
+        dashStyle: "shortdash"
       }
     ];
 
@@ -906,9 +921,9 @@ class Graph {
     options.subtitle = {
       // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
       text: `
-        <span  style="font-size:1.50rem;">${averegeBurnDown}</span><span style="color:#c0c0c0"> Average Burndown</span>
-        <span style="font-size:1.25rem;">${totalScopeIncrease}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
-        <span style="font-size:1.25rem;">${hoursRemaining}</span><span style="color:#c0c0c0"> Hours remaining</span></span>
+      <span  style="font-size:18px;">${averegeBurnDown}</span><span style="color:#c0c0c0"> Average Burndown</span>
+      <span  style="font-size:18px;">${totalScopeIncrease}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
+      <span  style="font-size:18px;">${hoursRemaining}</span><span style="color:#c0c0c0"> Hours remaining</span></span>
         
       `,
       floating: true,
@@ -995,7 +1010,6 @@ class Graph {
   }
 
   generateProjectBurnDown(options) {
-    console.log(this.res.data);
     let remaining = [],
       completed = [],
       burndown = [],
@@ -1013,7 +1027,7 @@ class Graph {
     endDate = this.res.data.endDate.split("T");
     endDate = endDate[0];
     rawDate = this.res.data.startDate.split("T");
-    console.log(rawDate[0]);
+
     xAxis_data.push(this.formatDate(rawDate[0]));
     remaining.push(parseInt(this.res.data.originalScope));
     completed.push(0);
@@ -1074,10 +1088,10 @@ class Graph {
     options.subtitle = {
       // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
       text: `
-        <span  style="font-size:1.50rem;">${av_burndown}</span><span style="color:#c0c0c0"> Average Burndown</span>
-        <span style="font-size:1.25rem;">${this.res.data.itemsNotEstimated}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
-        <span style="font-size:1.25rem;">${this.res.data.totalScopeIncrease}</span><span style="color:#c0c0c0"> Total Scope increase</span></span>
-        <span style="font-size:1.25rem;">${this.res.data.remainingStoryPoints}</span><span style="color:#c0c0c0"> Story points remaining </span></span>
+        <span  style="font-size:18px;">${av_burndown}</span><span style="color:#c0c0c0"> Average Burndown</span>
+        <span style="font-size:18px;">${this.res.data.itemsNotEstimated}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
+        <span style="font-size:18px;">${this.res.data.totalScopeIncrease}</span><span style="color:#c0c0c0"> Total Scope increase</span></span>
+        <span style="font-size:18px;">${this.res.data.remainingStoryPoints}</span><span style="color:#c0c0c0"> Story points remaining </span></span>
       `,
       floating: true,
       align: "right",
@@ -1332,105 +1346,11 @@ class Graph {
       // std_temp.push([my_data_copy[i][0], roll_mean - variance, roll_mean + variance])
     }
 
-    // rolling_average = total_point_array.map(roll => {
-    //   return {
-    //     date: roll[0],
-    //     days: roll[1]
-    //   };
-    // });
-    // //Same date data in a single object
-    // var output = [];
-    // rolling_average.forEach(function (item) {
-    //   var existing = output.filter(function (v, i) {
-    //     return v.date === item.date;
-    //   });
-    //   if (existing.length) {
-    //     var existingIndex = output.indexOf(existing[0]);
-    //     output[existingIndex].days = output[existingIndex].days.concat(
-    //       item.days
-    //     );
-    //   } else {
-    //     item.days = [item.days];
-    //     output.push(item);
-    //   }
-    // });
-    // let output_temp = JSON.parse(JSON.stringify(output));
-    // let start_data = output_temp[0];
     total = issues.length + bugs.length;
     average = average / total;
     average = average * 100;
     average = Math.round(average);
     average = average / 100;
-
-    // //Calculation of rolling av and std. dev for a window
-    // let roll_average = [],
-    //   std_dev_final_temp = [];
-    // for (let i = 1; i < output_temp.length; i++) {
-    //   let present_data = output_temp[i],
-    //     past_data = output_temp[i - 1],
-    //     std_dev_temp = [];
-
-    //   let present_days_data = present_data.days;
-    //   let present_days_data_length = present_days_data.length;
-    //   let present_days_arraySum = present_days_data.reduce((a, b) => a + b, 0);
-    //   let present_mean = present_days_arraySum / present_days_data_length;
-
-    //   let past_days_data = past_data.days;
-    //   let past_days_data_length = past_days_data.length;
-    //   let past_days_arraySum = past_days_data.reduce((a, b) => a + b, 0);
-    //   let past_mean = past_days_arraySum / past_days_data_length;
-    //   let roll_average_window_data = [...present_days_data, ...past_days_data];
-    //   let date_difference = present_data.date - past_data.date;
-
-    //   //adjustment for missing date data
-    //   if (date_difference > 86400000) {
-    //     let j = date_difference / 86400000;
-    //     for (let k = 1; k <= j; k++) {
-    //       roll_average.push(0);
-    //       std_dev_temp[0] = past_data.date + k * 86400000;
-    //       std_dev_temp[1] = 0;
-    //       std_dev_temp[2] = 0;
-    //       std_dev_final_temp.push(std_dev_temp);
-    //     }
-    //   } else {
-    //     // roll_average.push((present_mean + past_mean) / 2);
-    //     let sum = 0;
-    //     let days_data = present_data.days;
-    //     days_data.concat(past_data.days);
-    //     roll_average_window_data.map(day_data => {
-    //       sum += day_data;
-    //     });
-    //     let mean_temp = sum / roll_average_window_data.length;
-    //     roll_average.push(mean_temp);
-    //     sum = 0;
-    //     roll_average_window_data.map(day_data => {
-    //       day_data = (day_data - mean_temp) * (day_data - mean_temp);
-    //       sum += day_data;
-    //     });
-    //     let variance_temp = sum / days_data.length;
-    //     variance_temp = Math.sqrt(variance_temp);
-    //     std_dev_temp[0] = present_data.date;
-    //     std_dev_temp[1] = mean_temp - variance_temp;
-    //     std_dev_temp[2] = mean_temp + variance_temp;
-    //     std_dev_final_temp.push(std_dev_temp);
-    //   }
-    // }
-    // //For fixing date issue in area chart
-    // if (std_dev_final_temp.length > 1) {
-    //   std_dev_final_temp[0][0] = start_data.date + 86400000;
-    // }
-    // let std_dev_final = JSON.parse(JSON.stringify(std_dev_final_temp));
-    // for (let i = 1; i < std_dev_final.length; i++) {
-    //   let present_object = std_dev_final[i];
-    //   let past_object = std_dev_final[i - 1];
-    //   present_object[0] = past_object[0] + 86400000;
-    //   std_dev_final[i] = present_object;
-    // }
-
-    // let final_min;
-    // if (std_dev_final.length > 1) {
-    //   final_min = std_dev_final[0][0];
-    // }
 
     options.chart = {
       height: 0,
