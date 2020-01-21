@@ -854,7 +854,7 @@ class Graph {
     let end_scopeObj = {};
     let averegeBurnDown;
     let totalScopeIncrease;
-    let taskRemaining;
+    let hoursRemaining;
     let percentageCompleted;
     let sprintStartDate = this.res.data.startDate.split("T");
     let sprintEndDate = this.res.data.endDate.split("T");
@@ -877,7 +877,7 @@ class Graph {
 
     averegeBurnDown = parseFloat(this.res.data.averageBurndown).toFixed(2);
     totalScopeIncrease = this.res.data.totalScopeIncrease;
-    taskRemaining = this.res.data.hoursRemaining;
+    hoursRemaining = this.res.data.hoursRemaining;
     percentageCompleted = this.res.data.percentageCompleted;
     this.res.data.burndown.map(data => {
       let remaining_hours_object = {};
@@ -908,7 +908,7 @@ class Graph {
       text: `
         <span  style="font-size:1.50rem;">${averegeBurnDown}</span><span style="color:#c0c0c0"> Average Burndown</span>
         <span style="font-size:1.25rem;">${totalScopeIncrease}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
-        <span style="font-size:1.25rem;">${taskRemaining}</span><span style="color:#c0c0c0"> Total Scope increase</span></span>
+        <span style="font-size:1.25rem;">${hoursRemaining}</span><span style="color:#c0c0c0"> Hours remaining</span></span>
         
       `,
       floating: true,
