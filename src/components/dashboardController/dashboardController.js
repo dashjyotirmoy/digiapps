@@ -55,7 +55,7 @@ const DashboardController = props => {
     <BrowserRouter basename={dashConstants.baseName.name}>
       {componentArray}
       <Switch>
-        <Route path={"/:productSelected"} component={DefinitionLoader} /> sd
+        <Route path={"/:productSelected"} component={DefinitionLoader} />
         <Redirect exact from={"/"} to={`/velocity`} />
       </Switch>
     </BrowserRouter>

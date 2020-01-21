@@ -2,100 +2,6 @@
   "widgets": [
     {
       "Id": "1",
-      "name": "SummaryView",
-      "title": "EY DevOps",
-      "description": "EY DevOps",
-      "basePath": "../analyticalLibrary/",
-      "compPath": "SummaryView/SummaryView",
-      "position": 1,
-      "render": {
-        "licenseKey": "lic-ex-sprint-summaryv01-22453135",
-        "graphPath": "/dev/dashboard/sprint/",
-        "group": ["Default", "All"],
-        "securityRoles": ["Admins"]
-      },
-      "executor": {
-        "apiURI": "/dev/dashboard/v1/sprint/{id}",
-        "licenseKey": "lic-ex-sprint-summaryv01-22453135"
-      },
-      "attributes": [
-        {
-          "name": "Sprint",
-          "value": "1"
-        },
-        {
-          "name": "StartDate",
-          "value": ""
-        },
-        {
-          "name": "EndDate",
-          "value": ""
-        },
-        {
-          "name": "Stories",
-          "value": "4"
-        }
-      ],
-      "dimensions": [
-        {
-          "name": "ItemMetric",
-          "title": "Overview",
-          "compPath": "SummaryView/Metrics/ItemMetric",
-          "description": "Current Project Status",
-          "priority": {
-            "x": 1,
-            "y": 2
-          },
-          "uri": "/dimensions/{name}",
-          "graph": {
-            "type": "pie",
-            "expression": "value",
-            "datamodel": "schema"
-          }
-        },
-        {
-          "name": "MainMetrics",
-          "title": "MainMetrics Data",
-          "compPath": "SummaryView/Metrics/MainMetrics",
-          "description": "Go Live",
-          "priority": {
-            "x": 1,
-            "y": 2
-          },
-          "uri": "/dimensions/{Golive}",
-          "graph": {
-            "type": "line",
-            "expression": "value",
-            "datamodel": "schema"
-          }
-        }
-      ],
-      "metrics": [
-        {
-          "name": "burndown",
-          "title": "burndown",
-          "description": "burndown",
-          "uri": "/metric/{name}",
-          "mapping": {
-            "dimensions": ["Project Status", "GoLive"],
-            "attributes": ["Sprint"]
-          },
-          "expression": "value",
-          "data": ""
-        }
-      ],
-      "route": {},
-      "dragPosition": [
-        {
-          "currPos": 1,
-          "defPos": 2,
-          "role": "Admin"
-        }
-      ]
-    },
-
-    {
-      "Id": "2",
       "name": "ProductInfoBar",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -182,7 +88,7 @@
       ]
     },
     {
-      "Id": "3",
+      "Id": "2",
       "name": "ProductDefBar",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -268,7 +174,7 @@
       ]
     },
     {
-      "Id": "4",
+      "Id": "3",
       "name": "Customer",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -352,7 +258,7 @@
       ]
     },
     {
-      "Id": "5",
+      "Id": "4",
       "name": "Quality",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -436,7 +342,7 @@
       ]
     },
     {
-      "Id": "6",
+      "Id": "5",
       "name": "Velocity",
       "title": "EY DevOps",
       "description": "EY DevOps",

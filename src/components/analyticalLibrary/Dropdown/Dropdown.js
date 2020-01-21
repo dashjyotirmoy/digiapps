@@ -30,7 +30,7 @@ class CustDropdown extends Component {
 
         <Dropdown.Menu
           as={DropdownMenu}
-          className="dropdown-menu width-fit-content dropdown-menu-right font-aggegate-sub-text mr-0 bg-secondary"
+          className="w-inherit width-fit-content dropdown-menu-right font-aggegate-sub-text mr-0 bg-secondary"
         >
           {dropdownItems}
         </Dropdown.Menu>
