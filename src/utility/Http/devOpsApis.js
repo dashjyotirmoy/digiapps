@@ -6,6 +6,10 @@ const devovOpsApi = axios.create({
   baseURL: mainBase
 });
 
+const getAllExecutives = () => {
+  return devovOpsApi.get(`/executive/all`);
+};
+
 const getExecInsightsData = execId => {
   return devovOpsApi.get(`/executive/${execId}/executiveInsights`);
 };
@@ -39,5 +43,6 @@ export default {
   getExecInsightsData,
   getProjectInsightsData,
   getSprintInsightsData,
-  getQualityMetricsData
+  getQualityMetricsData,
+  getAllExecutives
 };

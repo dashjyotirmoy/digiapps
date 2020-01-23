@@ -2,6 +2,7 @@ import * as actionType from "../actions/actionTypes";
 
 const initialState = {
   resetRepo: "",
+  projectID: "",
   currentProject: {
     projectDetails: {},
     projectDataReceived: false

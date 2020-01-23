@@ -21,9 +21,11 @@ import BubbleHigh from "../../Charts/BubbleChart/BubbleChart";
 import { TooltipHoc } from "../../TooltiHOC/TooltipHoc";
 import ModalBackDrop from "../../ModalBackDrop/ModalBackDrop";
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
-
+import { Route, Switch } from "react-router-dom";
 import Spinner from "../../Spinner/Spinner";
 import Dropdown from "../../Dropdown/Dropdown";
+import Velocity from "./Velocity";
+import { translations } from "../../Translations/Translations";
 
 const chartCompList = [
   {
@@ -93,7 +95,9 @@ class Quality extends Component {
       metricType: ""
     });
   };
-
+  routeToVelocity = () => {
+    this.props.history.push("/velocity");
+  };
   fetchQualityData = () => {
     let type;
     this.setState({
@@ -101,32 +105,40 @@ class Quality extends Component {
       charts: [],
       qualityMetrics: []
     });
-    this.props
-      .qualityDataDispatch(this.props.currentExecId, this.props.projId)
-      .then(item => {
-        if (this.props.qualityData.repositories.length > 0) {
-          this.setRepository(this.props.qualityData);
-          this.setState({
-            show: false
-          });
-          if (this.state.selectedRepo === "") {
-            type = this.setRawDefaultRepo(
-              this.props.qualityData.repositories,
-              this.props.qualityData.outstandingBugs,
-              this.props.qualityData.averageDefectResolutionTime
+    if (
+      this.props.currentExecId === "" ||
+      this.props.projectID === "" ||
+      this.props.projectID === undefined
+    ) {
+      this.routeToVelocity();
+    } else {
+      this.props
+        .qualityDataDispatch(this.props.currentExecId, this.props.projectID)
+        .then(item => {
+          if (this.props.qualityData.repositories.length > 0) {
+            this.setRepository(this.props.qualityData);
+            this.setState({
+              show: false
+            });
+            if (this.state.selectedRepo === "") {
+              type = this.setRawDefaultRepo(
+                this.props.qualityData.repositories,
+                this.props.qualityData.outstandingBugs,
+                this.props.qualityData.averageDefectResolutionTime
+              );
+            }
+
+            this.createCharts(this.createChartObject(type));
+          } else {
+            this.props.resetProjectRepoDispatch(
+              this.props.qualityData.repositories
             );
           }
-
-          this.createCharts(this.createChartObject(type));
-        } else {
-          this.props.resetProjectRepoDispatch(
-            this.props.qualityData.repositories
-          );
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
   };
 
   setRawDefaultRepo(rawData, outstandingBugs, averageResolution) {
@@ -163,7 +175,7 @@ class Quality extends Component {
   createMetricObject = mergObj => {
     return mergObj.map(item => {
       return {
-        type: item[0],
+        type: translations[item[0]],
         position: this.setMetricPos(item),
         value:
           item[0] === "coverage"
@@ -515,8 +527,11 @@ class Quality extends Component {
                     Critical{" "}
                   </Col>
                   <Col className="font-size-xs pr-0">
+                    <FontAwesomeIcon className="high" icon={faSquare} /> High{" "}
+                  </Col>
+                  <Col className="font-size-xs pr-0">
                     <FontAwesomeIcon className="medium" icon={faSquare} />{" "}
-                    Medium{" "}
+                    Medium
                   </Col>
                   <Col className="font-size-xs pr-0">
                     <FontAwesomeIcon className="low" icon={faSquare} /> Low
@@ -615,7 +630,8 @@ const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
-    projId: state.productDetails.currentProject.projectDetails.id,
+    // projectID: state.productDetails.projectID,
+    projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.qualityData.currentRepo
   };
 };

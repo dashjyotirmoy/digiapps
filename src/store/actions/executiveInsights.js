@@ -1,6 +1,20 @@
 import api from "../../utility/Http/devOpsApis";
 import * as actionTypes from "./actionTypes";
 
+export const execAllDispatch = () => async dispatch => {
+  try {
+    const response = await api.getAllExecutives();
+    let data = response.data;
+    dispatch({
+      type: actionTypes.GET_EXEC_DATA,
+      payload: {
+        getAllExec: data
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 export const execInsightsDispatch = execId => async dispatch => {
   try {
     const response = await api.getExecInsightsData(execId);
