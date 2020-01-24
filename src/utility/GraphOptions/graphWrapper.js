@@ -824,14 +824,14 @@ class Graph {
         type: "line",
         color: "#9EF988",
         name: "Upper Limit",
-        dashStyle: "shortdash"
+        dashStyle: "ShortDash"
       },
       {
         // Series that mimics the plot line
         type: "line",
         color: "#DAC131",
         name: "Lower Limit",
-        dashStyle: "shortdash"
+        dashStyle: "ShortDash"
       }
     ];
 

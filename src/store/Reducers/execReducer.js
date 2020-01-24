@@ -1,4 +1,5 @@
 const initialState = {
+  executiveInfo: {},
   executiveId: "4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f",
   currentExecutiveInfo: {
     executiveData: {},
@@ -7,10 +8,10 @@ const initialState = {
 };
 const dimReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_EXECUTVE_ID':
+    case "GET_EXEC_DATA":
       return {
         ...state,
-        executiveId: action.payload.executiveId
+        executiveInfo: action.payload.getAllExec
       };
     case "SET_EXEC_DATA":
       return {
@@ -20,6 +21,7 @@ const dimReducer = (state = initialState, action) => {
           executiveDataReceived: action.payload.executiveDataReceived
         }
       };
+
     default:
       return state;
   }

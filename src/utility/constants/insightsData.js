@@ -29,9 +29,9 @@ export default [
         subItem: [
           "Bugs track code that is demonstrably wrong or highly likely to yield unexpected behaviour",
           "Vulnerabilities are raised on code that is potentially vulnerable to exploitation by hackers",
-          "Code smells maintainability issues in the code that indicates design weakness which will slow down development and increase risk of bugs and failures in future",
+          "Code smells are maintainability issues in the code that indicates design weakness which will slow down development and increase risk of bugs and failures in future",
           "Coverage is the portion of code covered by unit tests",
-          "Duplication indicates duplication of code in term of lines of code, code blocks and files"
+          "Duplication indicates duplication of code in terms of lines of code, code blocks and files"
         ]
       },
       {
