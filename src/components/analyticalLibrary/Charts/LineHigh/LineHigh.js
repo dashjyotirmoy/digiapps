@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
-import Graph from "../../../../utility/GraphOptions/graphWrapper";
+import QualityGraph from "../../../../utility/GraphOptions/qualityWrapper";
 
 class LineHigh extends Component {
   state = {
@@ -9,7 +9,7 @@ class LineHigh extends Component {
   };
 
   componentDidMount() {
-    let temp_options = new Graph(this.props, this.props.type);
+    let temp_options = new QualityGraph(this.props, this.props.type);
     this.setState({
       options: temp_options.options,
       received: 1
@@ -22,7 +22,7 @@ class LineHigh extends Component {
       this.setState({
         received: 0
       });
-      let temp_options = new Graph(nextProps, nextProps.type);
+      let temp_options = new QualityGraph(nextProps, nextProps.type);
       this.setState({
         options: temp_options.options,
         received: 1

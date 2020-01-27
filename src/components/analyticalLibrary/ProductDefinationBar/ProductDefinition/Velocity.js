@@ -6,31 +6,11 @@ import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
 import { chartDataDispatch } from "../../../../store/actions/chartData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import throuput from "../../../../content/img/throuput.png";
-import depChange from "../../../../content/img/DepChange.png";
-import degreeTest from "../../../../content/img/degreeTest.png";
 import VelocityTrend from "../../Charts/VelocityTrends/VelocityTrend";
 import SprintBurndown from "../../Charts/SprintBurnDown/SprintBurnDown";
 import Spinner from "../../Spinner/Spinner";
 import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
 import { translations } from "../../Translations/Translations";
-
-// var initialData = [
-//   {
-//     name: "dcp",
-//     type: "BreakDownHigh",
-//     data: "BreakDownHigh",
-//     title: BreakDownHigh,
-//     component: {}
-//   },
-//   {
-//     name: "dtra",
-//     type: "SprintBurndown",
-//     data: "Deployment/Change Frequency",
-//     title: SprintBurndown,
-//     component: {}
-//   }
-// ];
 
 class Velocity extends Component {
   state = {

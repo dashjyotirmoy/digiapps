@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import Highcharts from "highcharts";
 import HighchartsMore from "highcharts/highcharts-more";
-import Graph from "../../../../utility/GraphOptions/graphWrapper";
+import VelocityGraph from "../../../../utility/GraphOptions/velocityWrapper";
 HighchartsMore(Highcharts);
 var temp_options;
 
@@ -13,7 +13,11 @@ class ControlChartHigh extends Component {
   };
 
   componentDidMount() {
-    temp_options = new Graph(this.props, this.props.type, this.props.data);
+    temp_options = new VelocityGraph(
+      this.props,
+      this.props.type,
+      this.props.data
+    );
     this.setState({
       options: temp_options.options,
       received: 1

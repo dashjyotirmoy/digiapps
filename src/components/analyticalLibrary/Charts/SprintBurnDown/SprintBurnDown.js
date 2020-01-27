@@ -1,7 +1,7 @@
 import React from "react";
 import { Component } from "react";
 import ChartHOc from "../../Charts/ChartHOC/ChartHOC";
-import Graph from "../../../../utility/GraphOptions/graphWrapper";
+import VelocityGraph from "../../../../utility/GraphOptions/velocityWrapper";
 
 var temp_options;
 class SprintBurndown extends Component {
@@ -18,7 +18,7 @@ class SprintBurndown extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      temp_options = new Graph(this.props, this.props.type);
+      temp_options = new VelocityGraph(this.props, this.props.type);
       this.setState({
         options: temp_options.options,
         received: 1

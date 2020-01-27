@@ -1,9 +1,8 @@
 //Wrapper class which contains logic for providing data to the analytical graph components
 
 import Options from "./optionsModel";
-var sd = "Start date";
 
-class Graph {
+class QualityGraph {
   constructor(props) {
     this.res = props;
     this.options = this.generateOption(props.type);
@@ -13,15 +12,12 @@ class Graph {
     const baseOptions = new Options();
     let updatedOptions = {};
     switch (type) {
-      case "line":
-        updatedOptions = this.generateLine(baseOptions);
-        return updatedOptions;
-      case "ColumnHigh":
-        updatedOptions = this.generateColumn(baseOptions);
-        return updatedOptions;
-      case "ControlChartHigh":
-        updatedOptions = this.generateControlChart(baseOptions);
-        return updatedOptions;
+      //   case "line":
+      //     updatedOptions = this.generateLine(baseOptions);
+      //     return updatedOptions;
+      //   case "ColumnHigh":
+      //     updatedOptions = this.generateColumn(baseOptions);
+      //     return updatedOptions;
       case "MultipleLineHigh":
         updatedOptions = this.generateMultipleLine(baseOptions);
         return updatedOptions;
@@ -33,15 +29,6 @@ class Graph {
         return updatedOptions;
       case "DefectHigh":
         updatedOptions = this.generateDefect(baseOptions);
-        return updatedOptions;
-      case "VelocityTrends":
-        updatedOptions = this.generateVelocityTrends(baseOptions);
-        return updatedOptions;
-      case "SprintBurndown":
-        updatedOptions = this.generateSprintBurnDown(baseOptions);
-        return updatedOptions;
-      case "ProjectBurnDown":
-        updatedOptions = this.generateProjectBurnDown(baseOptions);
         return updatedOptions;
       default:
         return null;
@@ -55,7 +42,7 @@ class Graph {
     let end = new Date(this.res.burndown.endDate).toLocaleDateString();
     let startDate = start;
 
-    let splitDate, preFormatDate, postFormatDate;
+    let splitDate, postFormatDate;
     let monthsArray = [
       "Jan",
       "Feb",
@@ -637,556 +624,6 @@ class Graph {
     return options;
   }
 
-  generateVelocityTrends(options) {
-    let planned_Velocity_Percentage = [],
-      actual_Velocity_Percentage = [],
-      limit_Percentage,
-      upper_Limit,
-      lower_limit;
-
-    let av_Velocity = this.res.data.averageVelocity;
-
-    limit_Percentage = (av_Velocity * 10) / 100;
-
-    upper_Limit =
-      ((parseFloat(av_Velocity) + limit_Percentage) / av_Velocity) * 100;
-    lower_limit =
-      ((parseFloat(av_Velocity) - limit_Percentage) / av_Velocity) * 100;
-
-    this.res.data.metrics.map((data, index) => {
-      let planned_Velocity = {},
-        actual_velocity = {};
-
-      let charLength = data.name.length;
-
-      planned_Velocity.x = parseInt(data.name.charAt(charLength - 1));
-      planned_Velocity.y = (data.storyPointsPlanned / av_Velocity) * 100;
-
-      actual_velocity.x = parseInt(data.name.charAt(charLength - 1));
-      actual_velocity.y = (data.storyPointsDelivered / av_Velocity) * 100;
-
-      planned_Velocity.actual_value = parseInt(data.storyPointsPlanned);
-      actual_velocity.actual_value = parseInt(data.storyPointsDelivered);
-
-      actual_velocity.diff =
-        data.storyPointsDelivered - data.storyPointsPlanned;
-
-      planned_Velocity_Percentage.push(planned_Velocity);
-      actual_Velocity_Percentage.push(actual_velocity);
-    });
-
-    options.chart = {
-      height: 0,
-      backgroundColor: ""
-    };
-
-    options.credits = {
-      enabled: false
-    };
-
-    options.title = {
-      text: "Velocity Trend",
-      align: "left",
-      style: {
-        color: "#f5f5f5",
-        fontWeight: "bold"
-      }
-    };
-
-    options.xAxis = {
-      lineWidth: 0,
-      tickLength: 0,
-      labels: {
-        style: {
-          color: "#f5f5f5"
-        },
-        format: "Sprint {value}"
-      }
-    };
-
-    options.yAxis = {
-      min: 0,
-      max: 160,
-      gridLineColor: "transparent",
-      tickInterval: 20,
-      title: {
-        text: " ",
-        style: {
-          color: "#f5f5f5"
-        }
-      },
-      labels: {
-        style: {
-          color: "#f5f5f5"
-        },
-        format: "{value} %"
-      },
-      lineColor: "blue",
-      stackLabels: {
-        enabled: false
-      },
-
-      plotLines: [
-        {
-          value: upper_Limit,
-          color: "#9EF988",
-          dashStyle: "shortdash",
-          width: 2
-        },
-        {
-          value: lower_limit,
-          color: "#DAC131",
-          dashStyle: "shortdash",
-          width: 2
-        }
-      ]
-    };
-
-    options.legend = {
-      enabled: true,
-      backgroundColor: "transparent",
-      itemStyle: {
-        color: "#ffffff",
-        fontWeight: "normal"
-      },
-      itemHoverStyle: {
-        color: "#d3d3d3"
-      },
-      align: "right",
-      verticalAlign: "top",
-      y: -30
-    };
-
-    options.tooltip = {
-      formatter: function() {
-        return this.series.name + ": " + this.point.actual_value;
-      }
-    };
-    options.plotOptions = {
-      series: {
-        borderRadius: 6
-      },
-
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      }
-    };
-
-    options.series = [
-      {
-        name: "Planned Velocity",
-        type: "column",
-        data: planned_Velocity_Percentage,
-        color: "#3185ab",
-        borderWidth: 0,
-
-        pointWidth: 15,
-        pointPadding: 0.1,
-        dataLabels: {
-          enabled: false
-        }
-      },
-      {
-        type: "column",
-        name: "Actual Velocity",
-        data: actual_Velocity_Percentage,
-        color: "#ad5a5d",
-        borderWidth: 0,
-
-        pointWidth: 15,
-        pointPadding: 0.1,
-        dataLabels: {
-          enabled: true,
-          inside: false,
-
-          crop: true,
-          shape: "callout",
-          backgroundColor: "#5cbef2",
-          borderColor: "#ECEDEE",
-          color: "#f5f5f5",
-          borderWidth: 0,
-          borderRadius: 5,
-          y: -10,
-          style: {
-            fontFamily: "Helvetica, sans-serif",
-            fontSize: "10px",
-            fontWeight: "normal",
-            textShadow: "none"
-          },
-          formatter: function(e) {
-            return "<strong>" + this.point.diff + "</strong>";
-          }
-        }
-      },
-      {
-        // Series that mimics the plot line
-        type: "line",
-        color: "#9EF988",
-        name: "Upper Limit",
-        dashStyle: "ShortDash"
-      },
-      {
-        // Series that mimics the plot line
-        type: "line",
-        color: "#DAC131",
-        name: "Lower Limit",
-        dashStyle: "ShortDash"
-      }
-    ];
-
-    return options;
-  }
-  formatDate(preFormatDate) {
-    let splitDate, postFormatDate;
-    let monthsArray = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "April",
-      "May",
-      "June",
-      "July",
-      "Aug",
-      "Sept",
-      "Oct",
-      "Nov",
-      "Dec"
-    ];
-    splitDate = preFormatDate.split("-");
-    postFormatDate =
-      splitDate[2] + " " + monthsArray[splitDate[1] - 1] + " " + splitDate[0];
-    return postFormatDate;
-  }
-
-  generateSprintBurnDown(options) {
-    let remainingHours = [];
-    let totalScope = [];
-    let sprintBurndown = [];
-    let start_burnDownObj = {};
-    let end_burnDownObj = {};
-    let start_scopeObj = {};
-    let end_scopeObj = {};
-    let averegeBurnDown;
-    let totalScopeIncrease;
-    let hoursRemaining;
-    let percentageCompleted;
-    let sprintStartDate = this.res.data.startDate.split("T");
-    let sprintEndDate = this.res.data.endDate.split("T");
-
-    start_scopeObj.x = new Date(sprintStartDate[0]).getTime();
-    start_scopeObj.y = parseInt(this.res.data.originalScope);
-
-    end_scopeObj.x = new Date(sprintEndDate[0]).getTime();
-    end_scopeObj.y =
-      parseInt(this.res.data.originalScope) +
-      parseInt(this.res.data.totalScopeIncrease);
-    totalScope.push(start_scopeObj, end_scopeObj);
-
-    start_burnDownObj.x = new Date(sprintStartDate[0]).getTime();
-    start_burnDownObj.y = parseInt(this.res.data.burndown[0].remainingHours);
-
-    end_burnDownObj.x = new Date(sprintEndDate[0]).getTime();
-    end_burnDownObj.y = 0;
-    sprintBurndown.push(start_burnDownObj, end_burnDownObj);
-
-    averegeBurnDown = parseFloat(this.res.data.averageBurndown).toFixed(2);
-    totalScopeIncrease = this.res.data.totalScopeIncrease;
-    hoursRemaining = this.res.data.hoursRemaining;
-    percentageCompleted = this.res.data.percentageCompleted;
-    this.res.data.burndown.map(data => {
-      let remaining_hours_object = {};
-      let rawDate = data.date.split("T");
-      remaining_hours_object.x = new Date(rawDate[0]).getTime();
-      remaining_hours_object.y = parseInt(data.remainingHours);
-      remainingHours.push(remaining_hours_object);
-    });
-
-    options.title = {
-      text: `<span style='color:#f5f5f5;'>${
-        this.res.title
-      }</span><br><span style='color:#C0C0C0; font-size:12px;'>${this.formatDate(
-        sprintStartDate[0]
-      )} - ${this.formatDate(
-        sprintEndDate[0]
-      )}</span><br><br><span style='color : #50E3C2'>${parseFloat(
-        percentageCompleted
-      ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
-      align: "left",
-      style: {
-        color: "#f5f5f5"
-      }
-    };
-
-    options.subtitle = {
-      // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
-      text: `
-      <span  style="font-size:18px;">${averegeBurnDown}</span><span style="color:#c0c0c0"> Average Burndown</span>
-      <span  style="font-size:18px;">${totalScopeIncrease}</span><span style="color:#c0c0c0"> Total scope increase</span></span><br/>
-      <span  style="font-size:18px;">${hoursRemaining}</span><span style="color:#c0c0c0"> Hours remaining</span></span>
-        
-      `,
-      floating: true,
-      align: "right",
-      x: -20,
-      y: 40,
-      style: {
-        color: "#f5f5f5"
-      }
-    };
-
-    options.xAxis = {
-      type: "datetime",
-      dateTimeLabelFormats: {
-        day: "%b %e"
-      },
-      gridLineWidth: 0,
-      lineColor: "transparent",
-      tickLength: 0,
-      labels: {
-        style: {
-          color: "#f5f5f5"
-        }
-      }
-    };
-    options.yAxis = {
-      min: 0,
-      // max: 100,
-      tickInterval: 100,
-      lineColor: "transparent",
-      gridLineWidth: 0,
-      labels: {
-        style: {
-          color: "#f5f5f5"
-        }
-      },
-      title: {
-        enabled: false
-      }
-    };
-
-    options.credits = {
-      enabled: false
-    };
-
-    options.legend = {
-      enabled: true,
-      itemStyle: {
-        color: "#f5f5f5",
-        fontWeight: "normal"
-      }
-    };
-    options.plotOptions = {
-      series: {
-        // pointStart: Date.UTC(2019, 9, 10),
-        pointInterval: 86400000,
-        marker: {
-          enabled: false
-        }
-      }
-    };
-
-    options.series = [
-      {
-        name: "Remaining",
-        data: remainingHours,
-        type: "area",
-        color: "#4370FE"
-      },
-      {
-        name: "Total Scope",
-        data: totalScope,
-        type: "line",
-        color: "#A35FC0"
-      },
-      {
-        name: "Burndown",
-        data: sprintBurndown,
-        type: "line",
-        color: "#BA8054"
-      }
-    ];
-    return options;
-  }
-
-  generateProjectBurnDown(options) {
-    let remaining = [],
-      completed = [],
-      burndown = [],
-      totalScope = [],
-      xAxis_data = [],
-      startDate = [],
-      endDate = [];
-    let rawDate = [],
-      av_burndown,
-      percentageCompleted;
-    av_burndown = parseInt(this.res.data.averageBurndown);
-    av_burndown = Math.round(av_burndown * 100) / 100;
-    startDate = this.res.data.startDate.split("T");
-    startDate = startDate[0];
-    endDate = this.res.data.endDate.split("T");
-    endDate = endDate[0];
-    rawDate = this.res.data.startDate.split("T");
-
-    xAxis_data.push(this.formatDate(rawDate[0]));
-    remaining.push(parseInt(this.res.data.originalScope));
-    completed.push(0);
-    burndown.push(parseInt(this.res.data.originalScope));
-    totalScope.push(parseInt(this.res.data.originalScope));
-    percentageCompleted = this.res.data.percentageCompleted;
-
-    this.res.data.metrics.map(data => {
-      let remaining_object = {},
-        completed_object = {},
-        sprint_name,
-        remaining_temp,
-        burndown_object = {},
-        totalScope_object = {};
-      sprint_name = data.name;
-      xAxis_data.push(data.name);
-      // completed_object.x = parseInt(sprint_name[sprint_name.length - 1]);
-      completed_object.y = parseInt(data.completedStoryPoints);
-      remaining_temp =
-        parseInt(data.totalstoryPoints) - parseInt(data.completedStoryPoints);
-      // remaining_object.x = parseInt(sprint_name[sprint_name.length - 1]);
-      remaining_object.y = remaining_temp;
-      // burndown_object.x = parseInt(sprint_name[sprint_name.length - 1]);
-      burndown_object.y = remaining_temp;
-      // totalScope_object.x = parseInt(sprint_name[sprint_name.length - 1]);
-      totalScope_object.y = parseInt(data.totalstoryPoints);
-      burndown.push(burndown_object);
-      totalScope.push(totalScope_object);
-      remaining.push(remaining_object);
-      completed.push(completed_object);
-    });
-    options.chart = {
-      height: 0,
-      backgroundColor: " "
-    };
-    // options.title = {
-    //     text: this.res.title,
-    //     align: "left",
-    //     style: {
-    //         color: "#f5f5f5"
-    //     }
-    // }
-    options.title = {
-      text: `<span style='color:#f5f5f5;'>${
-        this.res.title
-      }</span><br><span style='color:#C0C0C0; font-size:12px;'>${this.formatDate(
-        startDate
-      )} - ${this.formatDate(
-        endDate
-      )}</span><br><span style='color : #50E3C2'>${parseFloat(
-        percentageCompleted
-      ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
-      align: "left",
-      style: {
-        color: "#f5f5f5"
-      }
-    };
-    options.subtitle = {
-      // text: '<div class="row"><div class="col"><div class="row"><div class="col"><span style="font-size: 20px;">32</span></div><div class="col">Average Burndown </div></div></div><div class="col"><div class="row"><div class="col">6 </div><div class="col">Items not estiomated </div></div></div><div class="col"><div class="row"><div class="col">26</div><div class="col">Total Scope increase </div></div></div><div class="col"><div class="row"><div class="col">164</div><div class="col">Story points remaining</div></div></div></div>',
-      text: `
-        <span  style="font-size:18px;">${av_burndown}</span><span style="color:#c0c0c0"> Average Burndown</span>
-        <span style="font-size:18px;">${this.res.data.itemsNotEstimated}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
-        <span style="font-size:18px;">${this.res.data.totalScopeIncrease}</span><span style="color:#c0c0c0"> Total Scope increase</span></span>
-        <span style="font-size:18px;">${this.res.data.remainingStoryPoints}</span><span style="color:#c0c0c0"> Story points remaining </span></span>
-      `,
-      floating: true,
-      align: "right",
-      x: -20,
-      y: 40,
-      style: {
-        color: "#f5f5f5"
-      }
-    };
-    options.yAxis = {
-      gridLineWidth: 0,
-      labels: {
-        enabled: true,
-        style: {
-          color: "#f5f5f5"
-        }
-      },
-      title: {
-        text: ``,
-        rotation: 0
-      }
-    };
-    options.legend = {
-      enabled: true,
-      backgroundColor: "transparent",
-      itemStyle: {
-        color: "#ffffff",
-        fontWeight: "normal"
-      },
-      itemHoverStyle: {
-        color: "#d3d3d3"
-      }
-    };
-    options.xAxis = {
-      gridLineWidth: 0,
-      tickWidth: 0,
-      categories: xAxis_data,
-      labels: {
-        style: {
-          color: "#f5f5f5"
-        }
-      },
-      lineColor: "transparent"
-    };
-    options.plotOptions = {
-      column: {
-        stacking: "normal",
-        dataLabels: {
-          enabled: false
-        }
-      },
-      series: {
-        borderRadius: 1
-      }
-    };
-    options.tooltip = {
-      shared: true
-    };
-    options.series = [
-      {
-        name: "Completed",
-        type: "column",
-        data: completed,
-        color: "#0582EC",
-        borderColor: "#3185ab"
-      },
-      {
-        name: "Remaining",
-        type: "column",
-        data: remaining,
-        color: "#7d12ff",
-        borderColor: "#7d12ff"
-      },
-      {
-        name: "Burndown",
-        type: "line",
-        marker: {
-          enabled: false
-        },
-        color: "#9EF988",
-        data: burndown
-      },
-      {
-        name: "Total Scope",
-        type: "line",
-        marker: {
-          enabled: false
-        },
-        color: "#DAC131",
-        data: totalScope
-      }
-    ];
-
-    return options;
-  }
   //function that Creates data for Control charts
 
   generateControlChart(options) {
@@ -1195,7 +632,6 @@ class Graph {
       rawDate,
       average = 0,
       total,
-      rolling_average,
       issue = [],
       bug = [];
 
@@ -1289,17 +725,14 @@ class Graph {
     let rolling_period;
 
     if (my_data_length >= 1) {
-      let first_day = my_data[0];
-      let last_day = my_data[my_data_length - 1];
-
       rolling_period = Math.round(my_data_length / 5);
     }
-    // rolling_period = 14
+
     let my_data_copy = JSON.parse(JSON.stringify(my_data));
     //temp roll average and std. dev. Calculation
     let roll_average_temp = [],
       std_temp = [];
-    // for (let i = rolling_period - 1; i < my_data_copy.length; i++)
+
     for (let i = 0; i < my_data_copy.length; i++) {
       let my_sum = 0,
         local_index = i,
@@ -1343,7 +776,6 @@ class Graph {
           roll_mean + variance
         ]);
       }
-      // std_temp.push([my_data_copy[i][0], roll_mean - variance, roll_mean + variance])
     }
 
     total = issues.length + bugs.length;
@@ -1479,7 +911,6 @@ class Graph {
         name: "Rolling Av.",
         type: "line",
         data: roll_average_temp,
-        // pointStart: final_min,
         pointInterval: 86400000,
         marker: {
           enabled: false
@@ -1551,9 +982,7 @@ class Graph {
       verticalAlign: "top",
       y: -30
     };
-    // options.tooltip = {
-    //   pointFormat: "{series.name}: {point.y}"
-    // };
+
     options.tooltip = {
       formatter: function() {
         return this.series.name + " " + this.y;
@@ -1573,7 +1002,6 @@ class Graph {
         }
       },
       bar: {
-        // pointStart: "",
         borderColor: "",
         borderRadiusTopLeft: 4
       }
@@ -1666,4 +1094,4 @@ class Graph {
   }
 }
 
-export default Graph;
+export default QualityGraph;

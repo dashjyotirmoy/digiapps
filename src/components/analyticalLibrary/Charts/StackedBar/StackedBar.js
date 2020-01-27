@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
-import Graph from "../../../../utility/GraphOptions/graphWrapper";
+import QualityGraph from "../../../../utility/GraphOptions/qualityWrapper";
+
 var temp_options;
 class BarHigh extends Component {
   state = {
@@ -15,7 +16,7 @@ class BarHigh extends Component {
   }
 
   componentDidMount() {
-    temp_options = new Graph(this.props, this.props.type);
+    temp_options = new QualityGraph(this.props, this.props.type);
     this.setState({
       options: temp_options.options,
       received: 1

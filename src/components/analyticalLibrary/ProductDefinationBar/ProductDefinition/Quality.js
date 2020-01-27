@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import classnames from "classnames";
-import { Row, Container, Col, Form } from "react-bootstrap";
+import { Row, Container, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSquare,
@@ -21,10 +21,8 @@ import BubbleHigh from "../../Charts/BubbleChart/BubbleChart";
 import { TooltipHoc } from "../../TooltiHOC/TooltipHoc";
 import ModalBackDrop from "../../ModalBackDrop/ModalBackDrop";
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
-import { Route, Switch } from "react-router-dom";
 import Spinner from "../../Spinner/Spinner";
 import Dropdown from "../../Dropdown/Dropdown";
-import Velocity from "./Velocity";
 import { translations } from "../../Translations/Translations";
 
 const chartCompList = [
@@ -65,14 +63,10 @@ class Quality extends Component {
       lg: [
         { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
         { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false }
-        // { i: "2", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-        // { i: "3", x: 6, y: 2, w: 6, h: 2, isResizable: false }
       ],
       md: [
         { i: "0", x: 0, y: 0, w: 5, h: 2, isResizable: false },
         { i: "1", x: 6, y: 0, w: 5, h: 2, isResizable: false }
-        // { i: "2", x: 0, y: 2, w: 4, h: 2, isResizable: false },
-        // { i: "3", x: 4, y: 2, w: 6, h: 2, isResizable: false }
       ]
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
@@ -349,14 +343,6 @@ class Quality extends Component {
     });
   };
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.projId !== nextProps.projId) {
-  //     this.setState({
-  //       all_data: true
-  //     });
-  //   }
-  // }
-
   componentDidMount() {
     if (this.state.selectedRepo === "") {
       this.setState({
@@ -394,7 +380,6 @@ class Quality extends Component {
         };
       });
 
-      // const metricValues = this.splitMetricValues(repoDetails);
       this.setState({
         repoData: repoDetails
       });
@@ -414,8 +399,6 @@ class Quality extends Component {
         projectName: ele.repoName
       };
     });
-
-    // this.fetchQualityData();
 
     this.setState({
       selectedRepo: repoDetails[selectedIndex].projectName
@@ -630,7 +613,6 @@ const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
-    // projectID: state.productDetails.projectID,
     projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.qualityData.currentRepo
   };
