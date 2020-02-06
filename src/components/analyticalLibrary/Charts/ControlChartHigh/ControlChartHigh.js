@@ -6,41 +6,15 @@ import VelocityGraph from "../../../../utility/GraphOptions/velocityWrapper";
 HighchartsMore(Highcharts);
 var temp_options;
 
-class ControlChartHigh extends Component {
-  state = {
-    options: {},
-    received: 0
-  };
-
-  componentDidMount() {
-    temp_options = new VelocityGraph(
-      this.props,
-      this.props.type,
-      this.props.data
-    );
-    this.setState({
-      options: temp_options.options,
-      received: 1
-    });
-  }
-
-  componentWillReceiveProps(nextprops) {
-    if (this.props.title !== nextprops.title) {
-      const updatedOptions = Object.assign({}, this.state.options);
-      updatedOptions.title.text = nextprops.title;
-      this.setState({
-        ...this.state,
-        options: updatedOptions
-      });
-    }
-  }
-  render() {
-    return (
-      <React.Fragment>
-        {this.state.received ? <ChartHOC options={this.state.options} /> : null}
-      </React.Fragment>
-    );
-  }
-}
-
+const ControlChartHigh = props => {
+  var temp_options;
+  let options = {};
+  temp_options = new VelocityGraph(props, props.type, props.data);
+  options = temp_options.options;
+  return (
+    <React.Fragment>
+      <ChartHOC options={options} />
+    </React.Fragment>
+  );
+};
 export default ControlChartHigh;

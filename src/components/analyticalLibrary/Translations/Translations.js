@@ -19,5 +19,9 @@ export const translations = {
   vulnerabilities: "Vulnerabilities",
   codeSmells: "Code Smells",
   coverage: "Coverage",
-  duplication: "Duplication"
+  duplication: "Duplication",
+  MultipleLineHigh: "MultipleLineHigh",
+  AreaHigh: "AreaHigh",
+  BarHigh: "BarHigh",
+  DefectHigh: "DefectHigh"
 };

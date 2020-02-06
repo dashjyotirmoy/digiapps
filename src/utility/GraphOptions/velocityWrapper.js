@@ -49,22 +49,47 @@ class VelocityGraph {
     return postFormatDate;
   }
 
+  rolling_average_output = rolling_average_temp => {
+    let output_dynamic = [];
+
+    rolling_average_temp.forEach(function(item) {
+      let existing = output_dynamic.filter(function(ele, i) {
+        return ele.date === item.date;
+      });
+      if (existing.length) {
+        let existingIndex = output_dynamic.indexOf(existing[0]);
+        output_dynamic[existingIndex].days = output_dynamic[
+          existingIndex
+        ].days.concat(item.days);
+      } else {
+        item.days = [item.days];
+        output_dynamic.push(item);
+      }
+    });
+    return output_dynamic;
+  };
+
   //function that Creates data for Control charts
 
   generateControlChart(options) {
-    let issues = [],
+    let userStory = [],
       bugs = [],
       rawDate,
       average = 0,
       total,
-      issue = [],
-      bug = [];
+      total_point_array = [],
+      total_point_array_temp = [],
+      rolling_average_temp = [],
+      rollingAvgData = [],
+      rolling_period,
+      rollingAvgData_copy = [];
 
+    //block to separate user story and bug data from the response
     this.res.data.map(series => {
       if (series.name === "userStory") {
         if (series.values.length > 0) {
           series.values.map(data => {
-            issues.push([data.endDate, data.difference]);
+            userStory.push([data.endDate, data.difference]);
           });
         }
       } else {
@@ -75,8 +100,9 @@ class VelocityGraph {
         }
       }
     });
-    if (issues.length > 0) {
-      issues = issues.map(issue => {
+
+    if (userStory.length > 0) {
+      userStory = userStory.map(issue => {
         rawDate = issue[0].split("T");
         issue[1] = parseInt(issue[1]);
         issue[0] = new Date(rawDate[0]).getTime();
@@ -95,49 +121,35 @@ class VelocityGraph {
       });
     }
 
-    let total_point_array = JSON.parse(JSON.stringify(issues));
+    total_point_array = [...userStory];
     total_point_array = total_point_array.concat(bugs);
     total_point_array.sort((a, b) => a[0] - b[0]);
 
-    let total_point_array_temp = JSON.parse(JSON.stringify(total_point_array));
-    let rolling_average_temp = total_point_array_temp.map(roll => {
+    total_point_array_temp = [...total_point_array];
+    rolling_average_temp = total_point_array_temp.map(item => {
       return {
-        date: roll[0],
-        days: roll[1]
+        date: item[0],
+        days: item[1]
       };
     });
-    var output_dynamic = [];
-    rolling_average_temp.forEach(function(item) {
-      var existing = output_dynamic.filter(function(v, i) {
-        return v.date === item.date;
-      });
-      if (existing.length) {
-        var existingIndex = output_dynamic.indexOf(existing[0]);
-        output_dynamic[existingIndex].days = output_dynamic[
-          existingIndex
-        ].days.concat(item.days);
-      } else {
-        item.days = [item.days];
-        output_dynamic.push(item);
-      }
-    });
 
-    let my_data = [];
+    const output_dynamic = this.rolling_average_output(rolling_average_temp);
+
     output_dynamic.map(data => {
       let local_data = [];
       local_data[0] = data.date;
       local_data = [...local_data, ...data.days];
-      my_data.push(local_data);
+      rollingAvgData.push(local_data);
     });
 
-    for (let i = 1; i < my_data.length; i++) {
-      let present_date = my_data[i],
-        past_date = my_data[i - 1];
+    for (let i = 1; i < rollingAvgData.length; i++) {
+      let present_date = rollingAvgData[i],
+        past_date = rollingAvgData[i - 1];
       let date_difference_temp = (present_date[0] - past_date[0]) / 86400000;
       if (date_difference_temp > 1) {
         let missing_date_index = i;
         for (let j = 1; j < date_difference_temp; j++) {
-          my_data.splice(missing_date_index, 0, [
+          rollingAvgData.splice(missing_date_index, 0, [
             past_date[0] + 86400000 * j,
             0
           ]);
@@ -146,64 +158,66 @@ class VelocityGraph {
       }
     }
 
-    let my_data_length = my_data.length;
-    let rolling_period;
+    let rollingAvgData_length = rollingAvgData.length;
 
-    if (my_data_length >= 1) {
-      rolling_period = Math.round(my_data_length / 5);
+    if (rollingAvgData_length >= 1) {
+      rolling_period = Math.round(rollingAvgData_length / 5);
     }
 
-    let my_data_copy = JSON.parse(JSON.stringify(my_data));
+    rollingAvgData_copy = [...rollingAvgData];
     //temp roll average and std. dev. Calculation
     let roll_average_temp = [],
       std_temp = [];
 
-    for (let i = 0; i < my_data_copy.length; i++) {
-      let my_sum = 0,
+    for (let i = 0; i < rollingAvgData_copy.length; i++) {
+      let totalSum = 0,
         local_index = i,
         total_points = 0,
         roll_mean;
       // roll. average calculation
       for (let j = 0; j < rolling_period && local_index - j >= 0; j++) {
-        let one_day_data = JSON.parse(
-          JSON.stringify(my_data_copy[local_index - j])
+        let rollingItem = JSON.parse(
+          JSON.stringify(rollingAvgData_copy[local_index - j])
         );
-        for (let k = 1; k < one_day_data.length; k++) {
-          my_sum = my_sum + one_day_data[k];
+        for (let k = 1; k < rollingItem.length; k++) {
+          totalSum = totalSum + rollingItem[k];
           total_points++;
         }
       }
-      roll_average_temp.push([my_data_copy[i][0], my_sum / total_points]);
-      roll_mean = my_sum / total_points;
-      my_sum = 0;
+      roll_average_temp.push([
+        rollingAvgData_copy[i][0],
+        totalSum / total_points
+      ]);
+      roll_mean = totalSum / total_points;
+      totalSum = 0;
       total_points = 0;
       let variance;
       // std. dev. calculation for the same rolling period
       for (let l = 0; l < rolling_period && local_index - l >= 0; l++) {
-        let one_day_data_2 = JSON.parse(
-          JSON.stringify(my_data_copy[local_index - l])
+        let rollingItem_2 = JSON.parse(
+          JSON.stringify(rollingAvgData_copy[local_index - l])
         );
-        for (let m = 1; m < one_day_data_2.length; m++) {
-          my_sum =
-            my_sum +
-            (one_day_data_2[m] - roll_mean) * (one_day_data_2[m] - roll_mean);
+        for (let m = 1; m < rollingItem_2.length; m++) {
+          totalSum =
+            totalSum +
+            (rollingItem_2[m] - roll_mean) * (rollingItem_2[m] - roll_mean);
           total_points++;
         }
-        variance = my_sum / total_points;
+        variance = totalSum / total_points;
         variance = Math.sqrt(variance);
       }
       if (roll_mean - variance < 0) {
-        std_temp.push([my_data_copy[i][0], 0, roll_mean + variance]);
+        std_temp.push([rollingAvgData_copy[i][0], 0, roll_mean + variance]);
       } else {
         std_temp.push([
-          my_data_copy[i][0],
+          rollingAvgData_copy[i][0],
           roll_mean - variance,
           roll_mean + variance
         ]);
       }
     }
 
-    total = issues.length + bugs.length;
+    total = userStory.length + bugs.length;
     average = average / total;
     average = average * 100;
     average = Math.round(average);
@@ -308,7 +322,7 @@ class VelocityGraph {
         name: "User Story",
         type: "scatter",
         color: "grey",
-        data: issues,
+        data: userStory,
         pointInterval: 86400000,
         marker: {
           symbol: "circle",
@@ -710,18 +724,18 @@ class VelocityGraph {
       totalScope = [],
       xAxis_data = [],
       startDate = [],
-      endDate = [];
-    let rawDate = [],
+      endDate = [],
+      rawDate = [],
       av_burndown,
       percentageCompleted;
-    av_burndown = parseInt(this.res.data.averageBurndown);
-    av_burndown = Math.round(av_burndown * 100) / 100;
-    startDate = this.res.data.startDate.split("T");
-    startDate = startDate[0];
-    endDate = this.res.data.endDate.split("T");
-    endDate = endDate[0];
-    rawDate = this.res.data.startDate.split("T");
 
+    av_burndown =
+      Math.round(parseInt(this.res.data.averageBurndown) * 100) / 100;
+
+    startDate = this.res.data.startDate.split("T")[0];
+    endDate = this.res.data.endDate.split("T")[0];
+
+    rawDate = this.res.data.startDate.split("T");
     xAxis_data.push(this.formatDate(rawDate[0]));
     remaining.push(parseInt(this.res.data.originalScope));
     completed.push(0);

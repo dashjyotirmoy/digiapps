@@ -12,12 +12,6 @@ class QualityGraph {
     const baseOptions = new Options();
     let updatedOptions = {};
     switch (type) {
-      //   case "line":
-      //     updatedOptions = this.generateLine(baseOptions);
-      //     return updatedOptions;
-      //   case "ColumnHigh":
-      //     updatedOptions = this.generateColumn(baseOptions);
-      //     return updatedOptions;
       case "MultipleLineHigh":
         updatedOptions = this.generateMultipleLine(baseOptions);
         return updatedOptions;
@@ -35,13 +29,9 @@ class QualityGraph {
     }
   };
 
-  //function that Creates data for Line chart
+  // preformatDate is in format DD/MM/YYYY postFormatDate will be in format DD MMM YYYY
 
-  generateLine(options) {
-    let start = new Date(this.res.burndown.startDate).toLocaleDateString();
-    let end = new Date(this.res.burndown.endDate).toLocaleDateString();
-    let startDate = start;
-
+  formatDateToDDMMMYYYY(preFormatDate) {
     let splitDate, postFormatDate;
     let monthsArray = [
       "Jan",
@@ -57,140 +47,13 @@ class QualityGraph {
       "Nov",
       "Dec"
     ];
-
-    // preformatDate is in format DD/MM/YYYY postFormatDate will be in format DD MMM YYYY
-
-    function formatDateToDDMMMYYYY(preFormatDate) {
-      splitDate = preFormatDate.split("/");
-      postFormatDate =
-        splitDate[0] + " " + monthsArray[splitDate[1] - 1] + " " + splitDate[2];
-      return postFormatDate;
-    }
-
-    let dateParts = startDate.split("/");
-    start = dateParts[1] + "/" + dateParts[0] + "/" + dateParts[2];
-    startDate = new Date(dateParts[2], dateParts[0] - 1, +dateParts[1]);
-    let endDate = end;
-    dateParts = endDate.split("/");
-    end = dateParts[1] + "/" + dateParts[0] + "/" + dateParts[2];
-    endDate = new Date(dateParts[2], dateParts[0] - 1, +dateParts[1]);
-    let Difference_In_Time = endDate.getTime() - startDate.getTime();
-    let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    let hours = this.res.burndown.burndown.remainingHours;
-    let final_data = [];
-    for (let i = 0; i < hours.length; i++) {
-      let temp_data = [];
-      temp_data[0] = startDate.getTime() + i * 86400000 + 19800000;
-      temp_data[1] = hours[i];
-      final_data.push(temp_data);
-    }
-    // setting Start date and End date to format DD MMM YYYY
-
-    start = formatDateToDDMMMYYYY(start);
-    end = formatDateToDDMMMYYYY(end);
-
-    options.chart = {
-      type: "line",
-      height: 0,
-      backgroundColor: ""
-    };
-    options.tootltip = {
-      enabled: true,
-      pointFormat: "{series.name}: {point.y}"
-    };
-    options.xAxis = {
-      type: "datetime",
-      dateTimeLabelFormats: {
-        day: "%b %e"
-      },
-      gridLineWidth: 0.5,
-      gridLineColor: "#3B4350",
-      tickInterval: 10,
-      // max: Difference_In_Days,
-      labels: {
-        enabled: false
-      },
-      tickLength: 0,
-      lineWidth: 0
-    };
-    options.yAxis = [
-      {
-        max: parseInt(this.res.burndown.burndown.totalHours),
-        labels: {
-          enabled: false
-        },
-        title: {
-          text: `Start date`,
-          rotation: 0,
-          x: -25,
-          y: -10,
-          style: {
-            color: "#f5f5f5",
-            width: "500px"
-          }
-        },
-        gridLineColor: "null"
-      },
-      {
-        title: {
-          text: `${start}`,
-          rotation: 0,
-          alaign: "right",
-          x: 40,
-          y: 20,
-          style: {
-            color: "#a6a6a6",
-            width: `500px`,
-            fontSize: "0.75em"
-          }
-        }
-      },
-
-      {
-        title: {
-          text: `End date`,
-          rotation: 0,
-          x: 35,
-          y: -10,
-          style: {
-            color: "#f5f5f5",
-            width: `500px`
-          }
-        },
-        opposite: true
-      },
-      {
-        title: {
-          text: `${end}`,
-          rotation: 0,
-          x: -20,
-          y: 20,
-          style: {
-            color: "#a6a6a6",
-            width: `500px`,
-            fontSize: "0.75em"
-          }
-        },
-        opposite: true
-      }
-    ];
-    options.series = [
-      {
-        name: "Remaining hours",
-        data: final_data,
-        color: "",
-        lineColor: "#C0C063",
-        fillOpacity: 0.1,
-        marker: {
-          enabled: false
-        }
-      }
-    ];
-    options.title = {
-      text: null
-    };
-    return options;
+    splitDate = preFormatDate.split("/");
+    postFormatDate =
+      splitDate[0] + " " + monthsArray[splitDate[1] - 1] + " " + splitDate[2];
+    return postFormatDate;
   }
+
+  //function that Creates data for Bugs, vulnerabilities and codesmells chart
 
   generateMultipleLine(options) {
     let bugs_array,
@@ -301,6 +164,7 @@ class QualityGraph {
     return options;
   }
 
+  //function that generates metrics for bugs , vulnerabilites and codesmells
   generateData = rawData => {
     let points_array = [];
     rawData.map(bvc => {
@@ -316,6 +180,8 @@ class QualityGraph {
     });
     return points_array;
   };
+
+  //function that generated data fro coverage chart
 
   generateArea(options) {
     let lines_to_cover = [],
@@ -424,100 +290,9 @@ class QualityGraph {
     ];
     return options;
   }
-  //function that Creates data for Column chart
 
-  generateColumn(options) {
-    options.chart = {
-      type: "column",
-      height: 0,
-      backgroundColor: ""
-    };
-    options.title = {
-      text: this.res.title,
-      align: "left",
-      style: {
-        color: "#f5f5f5",
-        fontWeight: "bold"
-      }
-    };
-    options.xAxis = {
-      type: "datetime",
-      dateTimeLabelFormats: {
-        day: "%b %e"
-      },
-      lineWidth: 1,
-      tickLength: 0,
-      style: {
-        color: "#f5f5f5"
-      }
-    };
-    options.yAxis = {
-      min: 0,
-      gridLineColor: "transparent",
-      title: {
-        text: "y title",
-        style: {
-          color: "#f5f5f5"
-        }
-      },
-      lineColor: "blue",
-      stackLabels: {
-        enabled: true
-      }
-    };
-    options.plotOptions = {
-      column: {
-        stacking: "normal",
-        dataLabels: {
-          enabled: true
-        }
-      }
-    };
-    options.legend = {
-      enabled: true,
-      itemStyle: {
-        color: "#f5f5f5",
-        fontWeight: "normal"
-      },
-      itemHoverStyle: {
-        color: "#D3D3D3",
-        fontWeight: ""
-      },
-      align: "right",
-      verticalAlign: "top",
-      y: -30
-    };
-    options.series = [
-      {
-        name: "A",
-        data: [5, 3, 4, 7, 8],
-        color: "#7d12ff",
-        borderWidth: 0,
-        pointStart: Date.UTC(2019, 10, 15),
-        pointInterval: 86400000,
-        pointWidth: 10
-      },
-      {
-        name: "B",
-        data: [2, 2, 3, 2, 6],
-        color: "#ab20fd",
-        borderWidth: 0,
-        pointStart: Date.UTC(2019, 10, 15),
-        pointInterval: 86400000,
-        pointWidth: 10
-      },
-      {
-        name: "C",
-        data: [3, 4, 4, 2, 5],
-        color: "#200589",
-        borderWidth: 0,
-        pointStart: Date.UTC(2019, 10, 15),
-        pointInterval: 86400000,
-        pointWidth: 10
-      }
-    ];
-    return options;
-  }
+  // function that generates data for Average defect resolution time
+
   generateDefect(options) {
     let final_data = [];
     this.res.data[0].map(data => {
@@ -624,312 +399,6 @@ class QualityGraph {
     return options;
   }
 
-  //function that Creates data for Control charts
-
-  generateControlChart(options) {
-    let issues = [],
-      bugs = [],
-      rawDate,
-      average = 0,
-      total,
-      issue = [],
-      bug = [];
-
-    this.res.data.map(series => {
-      if (series.name === "userStory") {
-        if (series.values.length > 0) {
-          series.values.map(data => {
-            issues.push([data.endDate, data.difference]);
-          });
-        }
-      } else {
-        if (series.values.length > 0) {
-          series.values.map(data => {
-            bugs.push([data.endDate, data.difference]);
-          });
-        }
-      }
-    });
-    if (issues.length > 0) {
-      issues = issues.map(issue => {
-        rawDate = issue[0].split("T");
-        issue[1] = parseInt(issue[1]);
-        issue[0] = new Date(rawDate[0]).getTime();
-        average += issue[1];
-        return issue;
-      });
-    }
-
-    if (bugs.length > 0) {
-      bugs = bugs.map(bug => {
-        rawDate = bug[0].split("T");
-        bug[1] = parseInt(bug[1]);
-        bug[0] = new Date(rawDate[0]).getTime();
-        average += bug[1];
-        return bug;
-      });
-    }
-
-    let total_point_array = JSON.parse(JSON.stringify(issues));
-    total_point_array = total_point_array.concat(bugs);
-    total_point_array.sort((a, b) => a[0] - b[0]);
-
-    let total_point_array_temp = JSON.parse(JSON.stringify(total_point_array));
-    let rolling_average_temp = total_point_array_temp.map(roll => {
-      return {
-        date: roll[0],
-        days: roll[1]
-      };
-    });
-    var output_dynamic = [];
-    rolling_average_temp.forEach(function(item) {
-      var existing = output_dynamic.filter(function(v, i) {
-        return v.date === item.date;
-      });
-      if (existing.length) {
-        var existingIndex = output_dynamic.indexOf(existing[0]);
-        output_dynamic[existingIndex].days = output_dynamic[
-          existingIndex
-        ].days.concat(item.days);
-      } else {
-        item.days = [item.days];
-        output_dynamic.push(item);
-      }
-    });
-
-    let my_data = [];
-    output_dynamic.map(data => {
-      let local_data = [];
-      local_data[0] = data.date;
-      local_data = [...local_data, ...data.days];
-      my_data.push(local_data);
-    });
-
-    for (let i = 1; i < my_data.length; i++) {
-      let present_date = my_data[i],
-        past_date = my_data[i - 1];
-      let date_difference_temp = (present_date[0] - past_date[0]) / 86400000;
-      if (date_difference_temp > 1) {
-        let missing_date_index = i;
-        for (let j = 1; j < date_difference_temp; j++) {
-          my_data.splice(missing_date_index, 0, [
-            past_date[0] + 86400000 * j,
-            0
-          ]);
-          missing_date_index++;
-        }
-      }
-    }
-
-    let my_data_length = my_data.length;
-    let rolling_period;
-
-    if (my_data_length >= 1) {
-      rolling_period = Math.round(my_data_length / 5);
-    }
-
-    let my_data_copy = JSON.parse(JSON.stringify(my_data));
-    //temp roll average and std. dev. Calculation
-    let roll_average_temp = [],
-      std_temp = [];
-
-    for (let i = 0; i < my_data_copy.length; i++) {
-      let my_sum = 0,
-        local_index = i,
-        total_points = 0,
-        roll_mean;
-      // roll. average calculation
-      for (let j = 0; j < rolling_period && local_index - j >= 0; j++) {
-        let one_day_data = JSON.parse(
-          JSON.stringify(my_data_copy[local_index - j])
-        );
-        for (let k = 1; k < one_day_data.length; k++) {
-          my_sum = my_sum + one_day_data[k];
-          total_points++;
-        }
-      }
-      roll_average_temp.push([my_data_copy[i][0], my_sum / total_points]);
-      roll_mean = my_sum / total_points;
-      my_sum = 0;
-      total_points = 0;
-      let variance;
-      // std. dev. calculation for the same rolling period
-      for (let l = 0; l < rolling_period && local_index - l >= 0; l++) {
-        let one_day_data_2 = JSON.parse(
-          JSON.stringify(my_data_copy[local_index - l])
-        );
-        for (let m = 1; m < one_day_data_2.length; m++) {
-          my_sum =
-            my_sum +
-            (one_day_data_2[m] - roll_mean) * (one_day_data_2[m] - roll_mean);
-          total_points++;
-        }
-        variance = my_sum / total_points;
-        variance = Math.sqrt(variance);
-      }
-      if (roll_mean - variance < 0) {
-        std_temp.push([my_data_copy[i][0], 0, roll_mean + variance]);
-      } else {
-        std_temp.push([
-          my_data_copy[i][0],
-          roll_mean - variance,
-          roll_mean + variance
-        ]);
-      }
-    }
-
-    total = issues.length + bugs.length;
-    average = average / total;
-    average = average * 100;
-    average = Math.round(average);
-    average = average / 100;
-
-    options.chart = {
-      height: 0,
-      backgroundColor: ""
-    };
-    options.title = {
-      text: this.res.title,
-      align: "left",
-      style: {
-        color: "#f5f5f5",
-        fontWeight: "bold"
-      }
-    };
-    options.subtitle = {
-      text: `${average || 0} <br>Days on average`,
-      align: "left",
-      floating: true,
-      x: 70,
-      y: 50,
-      style: {
-        color: "#f5f5f5",
-        fontWeight: "",
-        fontSize: "18px"
-      }
-    };
-    options.xAxis = {
-      type: "datetime",
-      dateTimeLabelFormats: {
-        day: "%b %e"
-      },
-      labels: {
-        style: {
-          color: "#f5f5f5"
-        }
-      },
-      lineWidth: 0,
-      tickLength: 0,
-      style: {
-        color: "#f5f5f5"
-      }
-    };
-    options.yAxis = {
-      min: -0.5,
-      gridLineColor: "",
-      title: {
-        text: "Days",
-        style: {
-          color: "#f5f5f5"
-        }
-      },
-      labels: {
-        style: {
-          color: "#f5f5f5"
-        }
-      },
-      plotLines: [
-        {
-          value: average,
-          color: "#9057ED",
-          width: 2,
-          label: {
-            text: average,
-            align: "left",
-            style: {
-              color: "white"
-            }
-          }
-        }
-      ]
-    };
-    options.tooltip = {
-      pointFormat: "{point.y}"
-    };
-    options.legend = {
-      enabled: true,
-      backgroundColor: "transparent",
-      align: "right",
-      verticalAlign: "top",
-      y: -30,
-      x: -30,
-      itemStyle: {
-        color: "#ffffff",
-        fontWeight: "normal"
-      },
-      itemHoverStyle: {
-        color: "#D3D3D3"
-      },
-      labelFormatter: function() {
-        if (this.name === "Bug" || this.name === "User Story") {
-          return this.userOptions.data.length + " " + this.name;
-        } else {
-          return this.name;
-        }
-      }
-    };
-    options.series = [
-      {
-        name: "User Story",
-        type: "scatter",
-        color: "grey",
-        data: issues,
-        pointInterval: 86400000,
-        marker: {
-          symbol: "circle",
-          fillColor: "#6DEB9C"
-        },
-        tooltip: {
-          pointFormat: "{point.x:%d/%m/%Y}<br>{point.y} days"
-        }
-      },
-      {
-        name: "Bug",
-        type: "scatter",
-        color: "#A9CCE3",
-        data: bugs,
-        pointInterval: 86400000,
-        marker: {
-          symbol: "circle",
-          fillColor: "#0582EC"
-        },
-        tooltip: {
-          pointFormat: "{point.x:%d/%m/%Y}<br>{point.y} days"
-        }
-      },
-      {
-        name: "Rolling Av.",
-        type: "line",
-        data: roll_average_temp,
-        pointInterval: 86400000,
-        marker: {
-          enabled: false
-        }
-      },
-      {
-        name: "Std. Dev.",
-        type: "arearange",
-        data: std_temp,
-        pointInterval: 86400000,
-        fillOpacity: 0.3,
-        marker: {
-          enabled: false
-        }
-      }
-    ];
-    return options;
-  }
-
   //function that creates data for Bar chart
   generateBar(options) {
     let critical_value = [],
@@ -1028,68 +497,6 @@ class QualityGraph {
         color: "#A42829"
       }
     ];
-    return options;
-  }
-
-  generateDefectColumn(options) {
-    let final_data = [];
-    this.res.data[0].map(data => {
-      let temp_data = [],
-        rawDate;
-      rawDate = data[0].split("T");
-      temp_data[0] = new Date(rawDate[0]).getTime();
-      temp_data[1] = parseInt(data[1]);
-      final_data.push(temp_data);
-    });
-    final_data.sort((a, b) => a[0] - b[0]);
-
-    options.chart = {
-      type: "column",
-      height: 0,
-      backgroundColor: ""
-    };
-    options.title = {
-      text: this.res.title,
-      align: "left",
-      style: {
-        color: "#f5f5f5",
-        fontWeight: "bold"
-      }
-    };
-    options.xAxis = {
-      type: "datetime",
-      dateTimeLabelFormats: {
-        day: "%b %e"
-      },
-      lineWidth: 1,
-      tickLength: 0,
-      style: {
-        color: "#f5f5f5"
-      }
-    };
-    options.yAxis = {
-      min: 0,
-      gridLineColor: "transparent",
-      title: {
-        text: "y title",
-        style: {
-          color: "#f5f5f5"
-        }
-      },
-      lineColor: "blue",
-      stackLabels: {
-        enabled: true
-      }
-    };
-    options.plotOptions = {
-      column: {
-        stacking: "normal",
-        dataLabels: {
-          enabled: true
-        }
-      }
-    };
-    options.series.data = final_data;
     return options;
   }
 }

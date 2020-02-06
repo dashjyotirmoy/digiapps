@@ -28,25 +28,25 @@ import { translations } from "../../Translations/Translations";
 const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
-    type: "MultipleLineHigh",
+    type: translations.MultipleLineHigh,
     component: LineHigh,
     repoDependent: true
   },
   {
-    name: "Coverage",
-    type: "AreaHigh",
+    name: translations.coverage,
+    type: translations.AreaHigh,
     component: AreaHigh,
     repoDependent: true
   },
   {
     name: "Outstanding Bugs",
-    type: "BarHigh",
+    type: translations.BarHigh,
     component: StackedBar,
     repoDependent: false
   },
   {
     name: "Average Defect Resolution Time",
-    type: "DefectHigh",
+    type: translations.DefectHigh,
     component: ColumnHigh,
     repoDependent: false
   }
