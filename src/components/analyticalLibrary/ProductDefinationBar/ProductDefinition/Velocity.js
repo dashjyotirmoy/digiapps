@@ -11,25 +11,14 @@ import SprintBurndown from "../../Charts/SprintBurnDown/SprintBurnDown";
 import Spinner from "../../Spinner/Spinner";
 import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
 import { translations } from "../../Translations/Translations";
+import Layout from "../../../../utility/layoutManager/layoutManager";
 
 class Velocity extends Component {
   state = {
     charts: [],
-    layout: {
-      lg: [
-        { i: "0", x: 0, y: 0, w: 4, h: 2, isResizable: false },
-        { i: "1", x: 4, y: 0, w: 4, h: 2, isResizable: false },
-        { i: "2", x: 8, y: 0, w: 4, h: 2, isResizable: false },
-        { i: "3", x: 0, y: 2, w: 6, h: 2, isResizable: false },
-        { i: "4", x: 6, y: 2, w: 6, h: 2, isResizable: false }
-      ],
-      md: [
-        { i: "0", x: 0, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "1", x: 5, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "2", x: 0, y: 2, w: 4, h: 2, isResizable: false },
-        { i: "3", x: 4, y: 2, w: 3, h: 2, isResizable: false },
-        { i: "4", x: 7, y: 2, w: 3, h: 2, isResizable: false }
-      ]
+    layout : {
+      lg: [],
+      md:[]
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     gridBreakpoints: { lg: 1200, md: 768, sm: 576, xs: 480, xxs: 0 },
@@ -44,16 +33,17 @@ class Velocity extends Component {
     const layouts = {};
 
     Object.keys(this.state.layout).map(key => {
-      const copy = [...this.state.layout[key]];
-      copy.splice(chartIndex, 1);
-      const indexUpdate = copy.map((ele, index) => {
-        return {
-          ...ele,
-          i: index.toString()
-        };
-      });
-      layouts[key] = indexUpdate;
-    });
+      let copy = [...this.state.layout[key]];
+      if(key === "lg"){
+        let layout_instance = new Layout(copy.length - 1);
+        copy = layout_instance.layout.lg
+      }
+      else if(key === "md"){
+        let layout_instance = new Layout(copy.length - 1);
+        copy = layout_instance.layout.md
+      }
+      layouts[key] = copy
+    }); 
 
     this.setState({
       layout: layouts
@@ -143,6 +133,10 @@ class Velocity extends Component {
         all_data: true
       });
     }
+    let layout_instance = new Layout(5);
+    this.setState({
+      layout: layout_instance.layout
+    })
   }
 
   componentDidUpdate() {

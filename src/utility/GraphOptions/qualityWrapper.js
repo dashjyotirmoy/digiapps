@@ -63,10 +63,10 @@ class QualityGraph {
       vul_metrics_data,
       codeSmell_metrics_data;
 
-    bugs_metrics_data = this.res.data[0].bugs.bugsMetricsList;
-    vul_metrics_data = this.res.data[1].vulberablities
-      .vulnerabilitiesMetricsList;
-    codeSmell_metrics_data = this.res.data[2].codesmells.codeSmellsMetricsList;
+      bugs_metrics_data = this.res.data.bugs.bugsMetricsList;
+      vul_metrics_data = this.res.data.vulnerabilities
+        .vulnerabilitiesMetricsList;
+      codeSmell_metrics_data = this.res.data.codeSmells.codeSmellsMetricsList;
 
     bugs_array = this.generateData(bugs_metrics_data);
     vulnerabilities_array = this.generateData(vul_metrics_data);
@@ -186,7 +186,7 @@ class QualityGraph {
   generateArea(options) {
     let lines_to_cover = [],
       covered_lines = [];
-    this.res.data[0].coverageMetricsList.map(day_data => {
+    this.res.data.coverageMetricsList.map(day_data => {
       let to_cover_point = [],
         covered_point = [];
       let rawDate = day_data.date.split("T");
@@ -295,7 +295,7 @@ class QualityGraph {
 
   generateDefect(options) {
     let final_data = [];
-    this.res.data[0].map(data => {
+    this.res.data.map(data => {
       let temp_data = {},
         rawDate;
       rawDate = data.date.split("T");
@@ -405,10 +405,10 @@ class QualityGraph {
       high_value = [],
       medium_value = [],
       low_value = [];
-    critical_value.push(parseInt(this.res.data[0].critical));
-    high_value.push(parseInt(this.res.data[0].high));
-    medium_value.push(parseInt(this.res.data[0].medium));
-    low_value.push(parseInt(this.res.data[0].low));
+    critical_value.push(parseInt(this.res.data.critical));
+    high_value.push(parseInt(this.res.data.high));
+    medium_value.push(parseInt(this.res.data.medium));
+    low_value.push(parseInt(this.res.data.low));
     options.chart = {
       type: "bar",
       height: 0,
