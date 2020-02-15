@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import classnames from "classnames";
-import { Row, Container, Col, Form } from "react-bootstrap";
+import { Row, Container, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSquare,
@@ -21,34 +21,33 @@ import BubbleHigh from "../../Charts/BubbleChart/BubbleChart";
 import { TooltipHoc } from "../../TooltiHOC/TooltipHoc";
 import ModalBackDrop from "../../ModalBackDrop/ModalBackDrop";
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
-import { Route, Switch } from "react-router-dom";
 import Spinner from "../../Spinner/Spinner";
 import Dropdown from "../../Dropdown/Dropdown";
-import Velocity from "./Velocity";
 import { translations } from "../../Translations/Translations";
+import Layout from "../../../../utility/layoutManager/layoutManager";
 
 const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
-    type: "MultipleLineHigh",
+    type: translations.MultipleLineHigh,
     component: LineHigh,
     repoDependent: true
   },
   {
-    name: "Coverage",
-    type: "AreaHigh",
+    name: translations.coverage,
+    type: translations.AreaHigh,
     component: AreaHigh,
     repoDependent: true
   },
   {
     name: "Outstanding Bugs",
-    type: "BarHigh",
+    type: translations.BarHigh,
     component: StackedBar,
     repoDependent: false
   },
   {
     name: "Average Defect Resolution Time",
-    type: "DefectHigh",
+    type: translations.DefectHigh,
     component: ColumnHigh,
     repoDependent: false
   }
@@ -62,18 +61,8 @@ class Quality extends Component {
     displayMetric: false,
     metricType: "",
     layout: {
-      lg: [
-        { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-        { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false }
-        // { i: "2", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-        // { i: "3", x: 6, y: 2, w: 6, h: 2, isResizable: false }
-      ],
-      md: [
-        { i: "0", x: 0, y: 0, w: 5, h: 2, isResizable: false },
-        { i: "1", x: 6, y: 0, w: 5, h: 2, isResizable: false }
-        // { i: "2", x: 0, y: 2, w: 4, h: 2, isResizable: false },
-        // { i: "3", x: 4, y: 2, w: 6, h: 2, isResizable: false }
-      ]
+      lg: [],
+      md: []
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
@@ -247,9 +236,7 @@ class Quality extends Component {
       bugs_vulnerability_codeSmell: [
         { name: rawData.repoName },
         { title: "Bugs, Vulnerabilities & Code Smells" },
-        { bugs: rawData.bugs },
-        { vulberablities: rawData.vulnerabilities },
-        { codesmells: rawData.codeSmells }
+        rawData
       ],
       coverage: [
         { name: rawData.repoName },
@@ -292,21 +279,20 @@ class Quality extends Component {
   };
 
   createCharts = (list, removed) => {
-    let selectedIndex;
-    const updatedList = list.filter((ele, index) => {
-      if (index !== removed) return Object.assign({}, ele);
+    let list_temp = list[0];
+    const updatedList = list_temp.filter((ele, index) => {
+      if (index !== removed) 
+      {
+      return Object.assign({}, ele);
+      }
     });
-
-    updatedList.map((item, ind) => {
-      return item.map((ele, index) => {
-        if (ele !== undefined) {
-          selectedIndex = ind;
-          ele.data = ele.data.splice(2);
-          ele.component = this.setChart(ele.title, ele.data);
-        }
-      });
+    updatedList.map(ele => {
+      ele.component = this.setChart(
+        ele.title,
+        ele.data[2]
+      );
     });
-    const chartList = updatedList.splice(selectedIndex, 1);
+    let chartList = []; chartList[0] = updatedList;
     this.setState({
       qualityMetrics: test,
       charts: chartList
@@ -334,28 +320,21 @@ class Quality extends Component {
     this.createCharts(charts, chartIndex);
     const layouts = {};
     Object.keys(this.state.layout).map(key => {
-      const copy = [...this.state.layout[key]];
-      copy.splice(chartIndex, 1);
-      const indexUpdate = copy.map((ele, index) => {
-        return {
-          ...ele,
-          i: index.toString()
-        };
-      });
-      layouts[key] = indexUpdate;
-    });
+      let copy = [...this.state.layout[key]];
+      if(key === "lg"){
+        let layout_instance = new Layout(copy.length - 1);
+        copy = layout_instance.layout.lg
+      }
+      else if(key === "md"){
+        let layout_instance = new Layout(copy.length - 1);
+        copy = layout_instance.layout.md
+      }
+      layouts[key] = copy
+    }); 
     this.setState({
       layout: layouts
     });
   };
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.projId !== nextProps.projId) {
-  //     this.setState({
-  //       all_data: true
-  //     });
-  //   }
-  // }
 
   componentDidMount() {
     if (this.state.selectedRepo === "") {
@@ -363,6 +342,10 @@ class Quality extends Component {
         all_data: true
       });
     }
+    let layout_instance = new Layout(2);
+    this.setState({
+      layout: layout_instance.layout
+    })
   }
 
   markSelected = (prodList, id) => {
@@ -394,7 +377,6 @@ class Quality extends Component {
         };
       });
 
-      // const metricValues = this.splitMetricValues(repoDetails);
       this.setState({
         repoData: repoDetails
       });
@@ -415,8 +397,6 @@ class Quality extends Component {
       };
     });
 
-    // this.fetchQualityData();
-
     this.setState({
       selectedRepo: repoDetails[selectedIndex].projectName
     });
@@ -431,16 +411,10 @@ class Quality extends Component {
       this.props.qualityData.repositories
     );
     test = qualityMetrics;
+    let layout_instance = new Layout(chartCompList.length);
     this.setState({
-      layout: {
-        lg: [
-          { i: "0", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-          { i: "1", x: 6, y: 0, w: 6, h: 2, isResizable: false },
-          { i: "2", x: 0, y: 0, w: 6, h: 2, isResizable: false },
-          { i: "3", x: 6, y: 2, w: 6, h: 2, isResizable: false }
-        ]
-      }
-    });
+      layout: layout_instance.layout
+    })
 
     const type = this.setRawRepoObjects(
       this.props.qualityData.repositories[selectedIndex],
@@ -630,7 +604,6 @@ const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
-    // projectID: state.productDetails.projectID,
     projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.qualityData.currentRepo
   };

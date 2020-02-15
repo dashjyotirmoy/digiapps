@@ -5,7 +5,6 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown/Dropdown";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import classnames from "classnames";
 import { projInsightDispatch } from "../../../store/actions/projectInsights";
 import { sprintInsightsDispatch } from "../../../store/actions/sprintInsights";
 import api from "../../../utility/Http/devOpsApis";
@@ -13,7 +12,6 @@ import prodAggEnabled from "../../../content/img/prodAggButton.svg";
 import prodAggDisabled from "../../../content/img/prodAggButtonDisabbled.svg";
 import { translations } from "../Translations/";
 import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
-import { isQuality } from "../../../utility/classUtility/classUtil";
 import Widgets from "../../dashboardController/widgetParser";
 
 import { qualityDataDispatch } from "../../../store/actions/qualityData";
@@ -132,10 +130,6 @@ class ProductInfoBar extends Component {
         projectName: ele.name
       };
     });
-    // this.getQualityData(
-    //   this.props.executiveId,
-    //   sprintDetails[sprintData.selectedIndex].id
-    // );
 
     productMetrics = this.setProductMetrics(
       res.data.sprintCount,
@@ -282,12 +276,11 @@ class ProductInfoBar extends Component {
 
     const projectDimensions = new Widgets();
     const Components = projectDimensions.loadDimensions(dimensionData);
-    const LineHigh = Components["LineHigh"];
     const prodAggViewIcon = this.state.prodAggView
       ? prodAggEnabled
       : prodAggDisabled;
-    const qualityView = isQuality(this.props.selectedTab);
     const Donut = Components["Donut"];
+
     if (this.state.show) {
       return <Spinner show={this.state.show} />;
     } else {
@@ -407,41 +400,6 @@ class ProductInfoBar extends Component {
                       </Dropdown>
                     </Row>
                   </Col>
-                  {/* <Col sm={2} className={classnames(
-                      "border-right",
-                      "border-dark",
-                      "p-0",
-                      "h-100",
-                      { "d-none": !qualityView },
-                      { "col-xl-2_5 col-lg-2_5 col-md-2_5": qualityView }
-                    )}
-                  >
-                    <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
-                      <Dropdown
-                        listData={this.state.repoData}
-                        direction="down"
-                        onSelectDelegate={this.handleRepoChange}
-                      >
-                        <Row className="h-100 m-0 p-0">
-                          <Col sm={10} md={10} lg={10} xl={10}>
-                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
-                              {this.state.selectedRepo}
-                            </p>
-                          </Col>
-                          <Col
-                            sm={2}
-                            md={2}
-                            md={2}
-                            lg={2}
-                            xl={2}
-                            className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
-                          >
-                            <FontAwesomeIcon icon={faChevronDown} />
-                          </Col>
-                        </Row>
-                      </Dropdown>
-                    </Row>
-                  </Col> */}
                 </Row>
               </Col>
               <Col sm={12} md={5} lg={7} xl={6} className="h-100">

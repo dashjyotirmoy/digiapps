@@ -28,25 +28,6 @@ const StyleMainTab = styled.div`
     
   }
 `;
-const StyleSideTab = styled.div`
-  .nav-tabs { {
-    border-bottom:0;
-  }
-  
-  .nav-item{
-    border:unset !important;
-  }
-  .nav-link {
-    display: block;
-    padding: .5rem .5rem;
-}
-  .nav-link.active{
-    color:#f5f5f5;
-    background-color: unset;
-    font-weight:700 !important;
-  }
-
-`;
 
 class ProductDefBar extends Component {
   state = {

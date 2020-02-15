@@ -1,35 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
-import Graph from "../../../../utility/GraphOptions/graphWrapper";
-var temp_options;
-class BarHigh extends Component {
-  state = {
-    options: {},
-    received: 0
-  };
-
-  generateOptions() {
-    this.setState({
-      options: temp_options.generateOption()
-    });
-  }
-
-  componentDidMount() {
-    temp_options = new Graph(this.props, this.props.type);
-    this.setState({
-      options: temp_options.options,
-      received: 1
-    });
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        {this.state.received ? (
-          <ChartHOC options={this.state.options} type={"bar"} />
-        ) : null}
-      </React.Fragment>
-    );
-  }
-}
+import QualityGraph from "../../../../utility/GraphOptions/qualityWrapper";
+const BarHigh = props => {
+  let options = {};
+  let temp_options;
+  temp_options = new QualityGraph(props, props.type);
+  options = temp_options.options;
+  return (
+    <React.Fragment>
+      <ChartHOC options={options} type={"bar"} />
+    </React.Fragment>
+  );
+};
 export default BarHigh;
