@@ -77,7 +77,7 @@ class QualityGraph {
 
     options.tooltip = {
       pointFormat:
-        "{series.name}: {point.y}<br>blocked: {point.blocked}<br>critical: {point.critical}<br>major: {point.major}<br>minor: {point.minor}"
+        "{series.name}: {point.y}<br>blocker: {point.blocker}<br>critical: {point.critical}<br>major: {point.major}<br>minor: {point.minor}"
     };
     options.chart = {
       height: 0,
@@ -172,7 +172,7 @@ class QualityGraph {
       let rawDate = bvc.date.split("T");
       point_data.x = new Date(rawDate[0]).getTime();
       point_data.y = parseInt(bvc.value);
-      point_data.blocked = bvc.blocked;
+      point_data.blocker = bvc.blocker;
       point_data.critical = bvc.critical;
       point_data.major = bvc.major;
       point_data.minor = bvc.minor;
@@ -351,7 +351,7 @@ class QualityGraph {
     };
     options.yAxis = {
       min: 0,
-      max: 15,
+      // max: 15,
       tickInterval: 2,
       gridLineColor: "transparent",
       title: {
