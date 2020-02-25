@@ -392,7 +392,7 @@ class QualityGraph {
         data: final_data,
         color: "#7d12ff",
         borderWidth: 0,
-        pointWidth: 10,
+        // pointWidth: 10,
         pointInterval: 86400000
       }
     ];
