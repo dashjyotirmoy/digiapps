@@ -43,7 +43,7 @@ class Velocity extends Component {
         copy = layout_instance.layout.md
       }
       layouts[key] = copy
-    }); 
+    });
 
     this.setState({
       layout: layouts
