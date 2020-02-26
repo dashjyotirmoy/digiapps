@@ -49,7 +49,7 @@ const Grid = props => {
   return (
     <Container fluid className="">
       <ResponsiveGridLayout
-        maxRows={2}
+        // maxRows={2}
         className="layout"
         autoSize={false}
         layouts={props.layouts}

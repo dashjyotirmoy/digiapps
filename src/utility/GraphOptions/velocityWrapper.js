@@ -319,6 +319,25 @@ class VelocityGraph {
     };
     options.series = [
       {
+        name: "Rolling Av.",
+        type: "line",
+        data: roll_average_temp,
+        pointInterval: 86400000,
+        marker: {
+          enabled: false
+        }
+      },
+      {
+        name: "Std. Dev.",
+        type: "arearange",
+        data: std_temp,
+        pointInterval: 86400000,
+        fillOpacity: 0.3,
+        marker: {
+          enabled: false
+        }
+      },
+      {
         name: "User Story",
         type: "scatter",
         color: "grey",
@@ -345,25 +364,6 @@ class VelocityGraph {
         tooltip: {
           pointFormat: "{point.x:%d/%m/%Y}<br>{point.y} days"
         }
-      },
-      {
-        name: "Rolling Av.",
-        type: "line",
-        data: roll_average_temp,
-        pointInterval: 86400000,
-        marker: {
-          enabled: false
-        }
-      },
-      {
-        name: "Std. Dev.",
-        type: "arearange",
-        data: std_temp,
-        pointInterval: 86400000,
-        fillOpacity: 0.3,
-        marker: {
-          enabled: false
-        }
       }
     ];
     return options;
@@ -374,6 +374,7 @@ class VelocityGraph {
       actual_Velocity_Percentage = [],
       limit_Percentage,
       upper_Limit,
+      xAxis_data = [],
       lower_limit;
 
     let av_Velocity = this.res.data.averageVelocity;
@@ -391,10 +392,14 @@ class VelocityGraph {
 
       let charLength = data.name.length;
 
-      planned_Velocity.x = parseInt(data.name.charAt(charLength - 1));
+      xAxis_data.push(data.name);
+
+      // planned_Velocity.x = parseInt(data.name.charAt(charLength - 1));
+      planned_Velocity.xAxis = data.name;
       planned_Velocity.y = (data.storyPointsPlanned / av_Velocity) * 100;
 
-      actual_velocity.x = parseInt(data.name.charAt(charLength - 1));
+      // actual_velocity.x = parseInt(data.name.charAt(charLength - 1));
+      actual_velocity.xAxis = data.name;
       actual_velocity.y = (data.storyPointsDelivered / av_Velocity) * 100;
 
       planned_Velocity.actual_value = parseInt(data.storyPointsPlanned);
@@ -428,17 +433,18 @@ class VelocityGraph {
     options.xAxis = {
       lineWidth: 0,
       tickLength: 0,
+      categories: xAxis_data,
       labels: {
         style: {
           color: "#f5f5f5"
         },
-        format: "Sprint {value}"
+        // format: "Sprint {value}"
       }
     };
 
     options.yAxis = {
       min: 0,
-      max: 160,
+      // max: 160,
       gridLineColor: "transparent",
       tickInterval: 20,
       title: {
@@ -491,7 +497,9 @@ class VelocityGraph {
 
     options.tooltip = {
       formatter: function() {
-        return this.series.name + ": " + this.point.actual_value;
+        return (
+          `${this.point.xAxis}<br>${this.series.name}: ${this.point.actual_value}`
+        )
       }
     };
     options.plotOptions = {
@@ -500,7 +508,7 @@ class VelocityGraph {
       },
 
       column: {
-        pointPadding: 0.2,
+        pointPadding: 0.5,
         borderWidth: 0
       }
     };
@@ -513,7 +521,7 @@ class VelocityGraph {
         color: "#3185ab",
         borderWidth: 0,
 
-        pointWidth: 15,
+        // pointWidth: 15,
         pointPadding: 0.1,
         dataLabels: {
           enabled: false
@@ -526,7 +534,7 @@ class VelocityGraph {
         color: "#ad5a5d",
         borderWidth: 0,
 
-        pointWidth: 15,
+        // pointWidth: 15,
         pointPadding: 0.1,
         dataLabels: {
           enabled: true,
@@ -661,7 +669,7 @@ class VelocityGraph {
     };
     options.yAxis = {
       min: 0,
-      tickInterval: 100,
+      // tickInterval: 100,
       lineColor: "transparent",
       gridLineWidth: 0,
       labels: {

@@ -106,6 +106,10 @@ class Quality extends Component {
         .then(item => {
           if (this.props.qualityData.repositories.length > 0) {
             this.setRepository(this.props.qualityData);
+            let layout_instance = new Layout(2);
+            this.setState({
+              layout: layout_instance.layout
+            })
             this.setState({
               show: false
             });
@@ -115,9 +119,10 @@ class Quality extends Component {
                 this.props.qualityData.outstandingBugs,
                 this.props.qualityData.averageDefectResolutionTime
               );
+              this.createCharts(this.createChartObject(type));
             }
 
-            this.createCharts(this.createChartObject(type));
+            // this.createCharts(this.createChartObject(type));
           } else {
             this.props.resetProjectRepoDispatch(
               this.props.qualityData.repositories
@@ -336,8 +341,20 @@ class Quality extends Component {
     });
   };
 
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
+    console.log(this.props)
+    if (
+      this.props.projectID !== nextProps.projectID
+    ) {
+      this.setState({
+        all_data: true
+      });
+    }
+  }
+
   componentDidMount() {
-    if (this.state.selectedRepo === "") {
+    if (this.state.selectedRepo === undefined || this.state.selectedRepo === "") {
       this.setState({
         all_data: true
       });
@@ -378,10 +395,11 @@ class Quality extends Component {
       });
 
       this.setState({
-        repoData: repoDetails
+        repoData: repoDetails,
+        selectedRepo: ""
       });
 
-      this.props.repoDropValDispatch(this.state.selectedRepo);
+      this.props.repoDropValDispatch("");
     }
   };
 
@@ -605,7 +623,8 @@ const mapStateToProps = state => {
     currentExecId: state.execData.executiveId,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
-    currentRepo: state.qualityData.currentRepo
+    currentRepo: state.qualityData.currentRepo,
+    sprintId: state.productDetails.currentSprint.sprintInfo.id
   };
 };
 

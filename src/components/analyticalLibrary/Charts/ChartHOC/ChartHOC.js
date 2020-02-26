@@ -8,8 +8,10 @@ class ChartHOC extends Component {
   render() {
     let optionsData = { ...this.props.options };
     let containerHeight = this.props.containerHeight;
+    let containerWidth = this.props.containerWidth;
     optionsData.chart = {
       height: containerHeight,
+      width: containerWidth,
       backgroundColor: "",
       type: this.props.type
     };

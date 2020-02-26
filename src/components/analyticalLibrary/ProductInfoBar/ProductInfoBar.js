@@ -5,7 +5,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown/Dropdown";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { projInsightDispatch } from "../../../store/actions/projectInsights";
+import { projInsightDispatch, resetProjectRepoDispatch } from "../../../store/actions/projectInsights";
 import { sprintInsightsDispatch } from "../../../store/actions/sprintInsights";
 import api from "../../../utility/Http/devOpsApis";
 import prodAggEnabled from "../../../content/img/prodAggButton.svg";
@@ -17,7 +17,7 @@ import Widgets from "../../dashboardController/widgetParser";
 import { qualityDataDispatch } from "../../../store/actions/qualityData";
 import Spinner from "../../analyticalLibrary/Spinner/Spinner";
 import { execInsightsDispatch } from "../../../store/actions/executiveInsights";
-
+import {repoDropValDispatch} from '../../../store/actions/qualityData'
 let productMetrics;
 class ProductInfoBar extends Component {
   state = {
@@ -52,14 +52,12 @@ class ProductInfoBar extends Component {
     const projects = res.data.projects;
     const projLength = projects.length;
     const { list, selectedIndex } = this.markSelected(projects, projects[0].id);
-    const prrojDetail = list.filter(ele => {
-      if (ele.id === "fa2a71e3-1469-4240-9f8b-5694a98145cf") {
-        return {
-          id: ele.id,
-          projectName: ele.projectName
-        };
-      }
-    });
+    const prrojDetail = list.map(ele => {
+              return {
+                id: ele.id,
+                projectName: ele.projectName
+              };
+          }); 
     this.setState({
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
@@ -73,14 +71,12 @@ class ProductInfoBar extends Component {
   updateProject = projectId => {
     const projects = [...this.state.productData];
     const { list, selectedIndex } = this.markSelected(projects, projectId);
-    const prrojDetail = list.filter(ele => {
-      if (ele.id === "fa2a71e3-1469-4240-9f8b-5694a98145cf") {
-        return {
-          id: ele.id,
-          projectName: ele.projectName
-        };
-      }
-    });
+    const prrojDetail = list.map(ele => {
+            return {
+              id: ele.id,
+              projectName: ele.projectName
+            };
+        }); 
     this.setState({
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
@@ -91,6 +87,7 @@ class ProductInfoBar extends Component {
   //axios call to fetch project details
 
   getProjectDetails = (projectID, executiveId) => {
+    // this.props.qualityDataDispatch(projectID, executiveId);
     this.props.projInsightDispatch(projectID, executiveId);
     api
       .getProjectInsightsData(projectID, executiveId)
@@ -140,11 +137,14 @@ class ProductInfoBar extends Component {
       sprintDetails[sprintData.selectedIndex].id,
       this.props.executiveId
     );
+    this.props.repoDropValDispatch();
+    this.props.resetProjectRepoDispatch();
     this.setState({
       sprintData: sprintDetails,
       selectedSprint: sprintDetails[sprintData.selectedIndex].projectName,
       show: false
     });
+
   };
 
   setProductMetrics(data, cpi, spi) {
@@ -300,7 +300,7 @@ class ProductInfoBar extends Component {
                 <div className="w-100">
                   <p className=" m-0 text-center text-white m-0 font-title">
                     {this.props.execDataReceived
-                      ? this.props.projectList.name.split(" ")[0]
+                      ? this.props.projectList.name
                       : ""}
                   </p>
                   <p className="font-aggegate-sub-text m-0 text-center text-white-50 m-0 width-fit-content">
@@ -533,6 +533,7 @@ const mapStateToProps = state => {
     sprintData: state.productDetails.currentSprint.sprintInfo,
     sprintDataReceived: state.productDetails.currentSprint.sprintReceived,
     velocityCharts: state.chartData.currentChartData.chartDetails,
+    qualityData: state.qualityData.currentQualityData.qualityDetails,
     chartDataReceived: state.chartData.currentChartData.chartDataReceived,
     selectedTab: state.chartData.currentTab,
     resetTab: state.qualityData.resetTab,
@@ -548,7 +549,8 @@ const mapDispatchToProps = dispatch => {
     {
       projInsightDispatch,
       sprintInsightsDispatch,
-
+      repoDropValDispatch,
+      resetProjectRepoDispatch,
       qualityDataDispatch,
       execInsightsDispatch
     },

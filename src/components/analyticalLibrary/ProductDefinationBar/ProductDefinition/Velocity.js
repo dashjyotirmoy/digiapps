@@ -43,7 +43,7 @@ class Velocity extends Component {
         copy = layout_instance.layout.md
       }
       layouts[key] = copy
-    }); 
+    });
 
     this.setState({
       layout: layouts
@@ -162,6 +162,10 @@ class Velocity extends Component {
         this.createCharts(
           this.createChartObject(this.props.velocityCharts.details)
         );
+        let layout_instance = new Layout(5);
+            this.setState({
+              layout: layout_instance.layout
+            })
         this.setState({
           response: this.props.velocityCharts,
           received: true,
