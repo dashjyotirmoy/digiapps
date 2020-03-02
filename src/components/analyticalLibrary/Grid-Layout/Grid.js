@@ -9,6 +9,7 @@ import { velocityGraphInfo } from "../Translations/velocityGraphInfo";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Grid = props => {
+  console.log(props)
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
       <div className="border border-dark grid-graph-comp" key={ele.i}>

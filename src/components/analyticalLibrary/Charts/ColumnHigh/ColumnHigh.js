@@ -1,22 +1,20 @@
-import React, { Component } from "react";
+import React from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
-import Highcharts from "highcharts";
-import HighchartsMore from "highcharts/highcharts-more";
 import QualityGraph from "../../../../utility/GraphOptions/qualityWrapper";
+import Dimensions from "react-dimensions";
 
-HighchartsMore(Highcharts);
-var temp_options;
 
-const ControlChartHigh = props => {
+const ColumnHigh = props => {
   var temp_options;
   let options = {};
   temp_options = new QualityGraph(props, props.type, props.data);
   options = temp_options.options;
+  let containerHeight = props.containerHeight;
   return (
     <React.Fragment>
-      <ChartHOC options={options} type={"column"} />
+      <ChartHOC options={options} type={"column"} height = {containerHeight}/>
     </React.Fragment>
   );
 };
 
-export default ControlChartHigh;
+export default Dimensions()(ColumnHigh);

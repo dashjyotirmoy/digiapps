@@ -138,7 +138,7 @@ class QualityGraph {
         name: "Bugs",
         type: "line",
         marker: {
-          enabled: false
+          enabled: true
         },
         pointInterval: 86400000
       },
@@ -147,7 +147,7 @@ class QualityGraph {
         type: "line",
         name: "Vulnerabilities",
         marker: {
-          enabled: false
+          enabled: true
         },
         pointInterval: 86400000
       },
@@ -156,7 +156,7 @@ class QualityGraph {
         type: "line",
         name: "Code Smells",
         marker: {
-          enabled: false
+          enabled: true
         },
         pointInterval: 86400000
       }
