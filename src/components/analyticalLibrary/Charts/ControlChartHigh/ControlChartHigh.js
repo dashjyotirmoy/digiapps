@@ -7,7 +7,7 @@ import Dimensions from "react-dimensions";
 
 HighchartsMore(Highcharts);
 
-const ControlChartHigh = props => {
+const ControlChartHigh = React.forwardRef((props, ref) => {
   var temp_options;
   let options = {};
   temp_options = new VelocityGraph(props, props.type, props.data);
@@ -15,8 +15,8 @@ const ControlChartHigh = props => {
   options = temp_options.options;
   return (
     <React.Fragment>
-      <ChartHOC options={options} height = {containerHeight}/>
+      <ChartHOC ref={ref} options={options} height={containerHeight} />
     </React.Fragment>
   );
-};
+});
 export default Dimensions()(ControlChartHigh);

@@ -100,23 +100,6 @@ class ProductDefBar extends Component {
                 ) : null}
               </StyleMainTab>
             </Col>
-            <Col
-              md={4}
-              lg={3}
-              xl={3}
-              className="d-flex justify-content-xl-end justify-content-lg-end justify-content-md-start"
-            >
-              <Row className="w-100 p-0 m-0 align-content-center d-flex justify-content-around">
-                <Col className="p-0 font-aggegate-sub-text nav-link">1m</Col>
-                <Col className="p-0 font-aggegate-sub-text">3m</Col>
-                <Col className="p-0 font-aggegate-sub-text">6m</Col>
-                <Col className="p-0 font-aggegate-sub-text">1y</Col>
-                <Col className="p-0 font-aggegate-sub-text">custom</Col>
-                <Col className="p-0 font-aggegate-sub-text">
-                  <FontAwesomeIcon icon={faFunnelDollar} />
-                </Col>
-              </Row>
-            </Col>
           </Row>
         </Container>
       </ErrorBoundaries>
