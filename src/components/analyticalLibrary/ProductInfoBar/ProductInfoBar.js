@@ -5,7 +5,10 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown/Dropdown";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { projInsightDispatch, resetProjectRepoDispatch } from "../../../store/actions/projectInsights";
+import {
+  projInsightDispatch,
+  resetProjectRepoDispatch
+} from "../../../store/actions/projectInsights";
 import { sprintInsightsDispatch } from "../../../store/actions/sprintInsights";
 import api from "../../../utility/Http/devOpsApis";
 import prodAggEnabled from "../../../content/img/prodAggButton.svg";
@@ -17,7 +20,7 @@ import Widgets from "../../dashboardController/widgetParser";
 import { qualityDataDispatch } from "../../../store/actions/qualityData";
 import Spinner from "../../analyticalLibrary/Spinner/Spinner";
 import { execInsightsDispatch } from "../../../store/actions/executiveInsights";
-import {repoDropValDispatch} from '../../../store/actions/qualityData'
+import { repoDropValDispatch } from "../../../store/actions/qualityData";
 let productMetrics;
 class ProductInfoBar extends Component {
   state = {
@@ -52,12 +55,12 @@ class ProductInfoBar extends Component {
     const projects = res.data.projects;
     const projLength = projects.length;
     const { list, selectedIndex } = this.markSelected(projects, projects[0].id);
-    const prrojDetail = list.map(ele => {
-              return {
-                id: ele.id,
-                projectName: ele.projectName
-              };
-          }); 
+    const prrojDetail = list.map(ele => {
+      return {
+        id: ele.id,
+        projectName: ele.projectName
+      };
+    });
     this.setState({
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
@@ -71,12 +74,12 @@ class ProductInfoBar extends Component {
   updateProject = projectId => {
     const projects = [...this.state.productData];
     const { list, selectedIndex } = this.markSelected(projects, projectId);
-    const prrojDetail = list.map(ele => {
-            return {
-              id: ele.id,
-              projectName: ele.projectName
-            };
-        }); 
+    const prrojDetail = list.map(ele => {
+      return {
+        id: ele.id,
+        projectName: ele.projectName
+      };
+    });
     this.setState({
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
@@ -113,7 +116,7 @@ class ProductInfoBar extends Component {
   //method to set current sprint value and set sprint details
 
   setSprint = res => {
-    let sprints = res.data.sprintDetails;
+    let sprints = res.data.sprintDetails.reverse();
 
     const stateFromProjects = sprints.filter(item => {
       if (item.state === "CURRENT") {
@@ -128,11 +131,7 @@ class ProductInfoBar extends Component {
       };
     });
 
-    productMetrics = this.setProductMetrics(
-      res.data.sprintCount,
-      res.data.cpi,
-      res.data.spi
-    );
+    productMetrics = this.setProductMetrics(res.data.sprintCount);
     this.getSprintData(
       sprintDetails[sprintData.selectedIndex].id,
       this.props.executiveId
@@ -144,14 +143,11 @@ class ProductInfoBar extends Component {
       selectedSprint: sprintDetails[sprintData.selectedIndex].projectName,
       show: false
     });
-
   };
 
-  setProductMetrics(data, cpi, spi) {
+  setProductMetrics(data) {
     const metrics = [
       { name: "Head Count", value: this.props.projDetails.totalMembers },
-      { name: "SPI", value: parseFloat(spi).toFixed(2) },
-      { name: "CPI", value: parseFloat(cpi).toFixed(2) },
       { name: "Sprint Count", value: `${data.completed} / ${data.total}` }
     ];
     return metrics;
@@ -404,7 +400,7 @@ class ProductInfoBar extends Component {
               </Col>
               <Col sm={12} md={5} lg={7} xl={6} className="h-100">
                 <Row className="h-100">
-                  <Col md={7} xl={8} lg={8} className="h-100">
+                  <Col md={7} xl={5} lg={8} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
                       <Row className="px-4 h-100 w-100 d-flex align-items-center justify-content-between ">
                         {productMetrics.map(item => {
@@ -431,7 +427,7 @@ class ProductInfoBar extends Component {
                   </Col>
                   <Col
                     lg={4}
-                    xl={4}
+                    xl={6}
                     md={5}
                     className="d-md-block p-0 d-lg-block d-xl-block d-sm-none"
                   >
