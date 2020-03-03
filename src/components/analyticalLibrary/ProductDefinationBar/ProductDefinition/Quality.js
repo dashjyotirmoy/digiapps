@@ -342,8 +342,6 @@ class Quality extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-    console.log(this.props)
     if (
       this.props.projectID !== nextProps.projectID
     ) {

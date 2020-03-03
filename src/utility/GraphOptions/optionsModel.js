@@ -1,5 +1,5 @@
 class Options {
-  chart = {};
+  chart = {reflow : true};
   credits = {
     enabled: false
   };

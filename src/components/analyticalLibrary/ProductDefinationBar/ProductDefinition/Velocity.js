@@ -74,13 +74,13 @@ class Velocity extends Component {
   setChart = (type, title, data) => {
     switch (type) {
       case "VelocityTrends":
-        return <VelocityTrend title={title} type={type} data={data} />;
+        return <VelocityTrend title={title} type={type} data={data} key = {title} />;
       case "ControlChartHigh":
-        return <ControlChartHigh title={title} type={type} data={data} />;
+        return <ControlChartHigh title={title} type={type} data={data} key = {title} />;
       case "ProjectBurnDown":
-        return <BreakDownHigh title={title} type={type} data={data} />;
+        return <BreakDownHigh title={title} type={type} data={data} key = {title} />;
       case "SprintBurndown":
-        return <SprintBurndown title={title} type={type} data={data} />;
+        return <SprintBurndown title={title} type={type} data={data} key = {title} />;
       default:
         return "";
     }
