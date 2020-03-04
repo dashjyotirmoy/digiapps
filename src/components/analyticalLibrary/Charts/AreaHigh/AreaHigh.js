@@ -2,7 +2,7 @@ import React from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import QualityGraph from "../../../../utility/GraphOptions/qualityWrapper";
 import Dimensions from "react-dimensions";
-const AreaHigh = props => {
+const AreaHigh = React.forwardRef((props, ref) => {
   let options = {};
   let temp_options;
   temp_options = new QualityGraph(props, props.type);
@@ -10,8 +10,13 @@ const AreaHigh = props => {
   options = temp_options.options;
   return (
     <React.Fragment>
-      <ChartHOC options={options} type={"area"} height ={containerHeight} />
+      <ChartHOC
+        ref={ref}
+        options={options}
+        type={"area"}
+        height={containerHeight}
+      />
     </React.Fragment>
   );
-};
+});
 export default Dimensions()(AreaHigh);
