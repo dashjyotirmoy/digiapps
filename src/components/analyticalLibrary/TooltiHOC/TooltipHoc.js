@@ -8,4 +8,4 @@ export const TooltipHoc = (props) => {
             {props.children}
         </OverlayTrigger>
     );
-};
+}; 

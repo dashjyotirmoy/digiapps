@@ -14,3 +14,4 @@ export const velocityGraphInfo = {
   "Velocity Trend":
     "Velocity Trend shows the comparison between planned and delivered story points till the current sprint. We are also setting the allowable upper limit and lower limit as +-10% for sprint-wise efficiency analysis."
 };
+
