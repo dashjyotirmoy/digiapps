@@ -4,10 +4,16 @@ import api from "../../utility/Http/devOpsApis";
 export const chartDataDispatch = (
   execId,
   projectId,
-  sprintId
+  sprintId,
+  teamID
 ) => async dispatch => {
   try {
-    const response = await api.getVelocityData(execId, projectId, sprintId);
+    const response = await api.getVelocityData(
+      execId,
+      projectId,
+      sprintId,
+      teamID
+    );
     dispatch({
       type: actionTypes.SET_CHARTS_DETAILS,
       payload: {

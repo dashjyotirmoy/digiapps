@@ -16,9 +16,9 @@ import Layout from "../../../../utility/layoutManager/layoutManager";
 class Velocity extends Component {
   state = {
     charts: [],
-    layout : {
+    layout: {
       lg: [],
-      md:[]
+      md: []
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     gridBreakpoints: { lg: 1200, md: 768, sm: 576, xs: 480, xxs: 0 },
@@ -34,15 +34,14 @@ class Velocity extends Component {
 
     Object.keys(this.state.layout).map(key => {
       let copy = [...this.state.layout[key]];
-      if(key === "lg"){
+      if (key === "lg") {
         let layout_instance = new Layout(copy.length - 1);
-        copy = layout_instance.layout.lg
-      }
-      else if(key === "md"){
+        copy = layout_instance.layout.lg;
+      } else if (key === "md") {
         let layout_instance = new Layout(copy.length - 1);
-        copy = layout_instance.layout.md
+        copy = layout_instance.layout.md;
       }
-      layouts[key] = copy
+      layouts[key] = copy;
     });
 
     this.setState({
@@ -74,13 +73,21 @@ class Velocity extends Component {
   setChart = (type, title, data) => {
     switch (type) {
       case "VelocityTrends":
-        return <VelocityTrend title={title} type={type} data={data} key = {title} />;
+        return (
+          <VelocityTrend title={title} type={type} data={data} key={title} />
+        );
       case "ControlChartHigh":
-        return <ControlChartHigh title={title} type={type} data={data} key = {title} />;
+        return (
+          <ControlChartHigh title={title} type={type} data={data} key={title} />
+        );
       case "ProjectBurnDown":
-        return <BreakDownHigh title={title} type={type} data={data} key = {title} />;
+        return (
+          <BreakDownHigh title={title} type={type} data={data} key={title} />
+        );
       case "SprintBurndown":
-        return <SprintBurndown title={title} type={type} data={data} key = {title} />;
+        return (
+          <SprintBurndown title={title} type={type} data={data} key={title} />
+        );
       default:
         return "";
     }
@@ -136,7 +143,7 @@ class Velocity extends Component {
     let layout_instance = new Layout(5);
     this.setState({
       layout: layout_instance.layout
-    })
+    });
   }
 
   componentDidUpdate() {
@@ -156,16 +163,17 @@ class Velocity extends Component {
       .chartDataDispatch(
         this.props.currentExecId,
         this.props.projId,
-        this.props.sprintId
+        this.props.sprintId,
+        this.props.teamId
       )
       .then(res => {
         this.createCharts(
           this.createChartObject(this.props.velocityCharts.details)
         );
         let layout_instance = new Layout(5);
-            this.setState({
-              layout: layout_instance.layout
-            })
+        this.setState({
+          layout: layout_instance.layout
+        });
         this.setState({
           response: this.props.velocityCharts,
           received: true,
@@ -202,7 +210,8 @@ const mapStateToProps = state => {
     currentExecId: state.execData.executiveId,
     velocityCharts: state.chartData.currentChartData.chartDetails,
     projId: state.productDetails.currentProject.projectDetails.id,
-    sprintId: state.productDetails.currentSprint.sprintInfo.id
+    sprintId: state.productDetails.currentSprint.sprintInfo.id,
+    teamId: state.productDetails.currentSprint.teamId
   };
 };
 
