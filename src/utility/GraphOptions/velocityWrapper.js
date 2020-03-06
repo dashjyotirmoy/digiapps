@@ -73,7 +73,15 @@ class VelocityGraph {
 
   generateControlChart(options) {
     let userStory = [],
+      combinedURL,
+      baseURL = 'https://dev.azure.com/organization_name/project_id/_queries/query/?wiql=SELECT [System.Id]%2C[System.WorkItemType]%2C[System.Title] FROM WorkItems WHERE [System.Id] IN (work_item_ids)&name=Cycle time work items',
       bugs = [],
+      IDs = [],
+      projID = this.res.projID,
+      organization = this.res.organization,
+      newURL,
+      userStoryPoints = [],
+      bugsPoints = [],
       rawDate,
       average = 0,
       total,
@@ -223,6 +231,34 @@ class VelocityGraph {
     average = Math.round(average);
     average = average / 100;
 
+    this.res.data.map(series => {
+      if (series.name === "userStory") {
+        if (series.values.length > 0) {
+          series.values.map(data => {
+            let pointData = {};
+            let rawDate = data.endDate.split("T");
+            pointData.x = new Date(rawDate[0]).getTime();
+            pointData.y = parseInt(data.difference);
+            pointData.url = data.url;
+            pointData.id = data.id;
+            userStoryPoints.push(pointData);
+          });
+        }
+      } else {
+        if (series.values.length > 0) {
+          series.values.map(data => {
+            let pointData = {};
+            let rawDate = data.endDate.split("T");
+            pointData.x = new Date(rawDate[0]).getTime();
+            pointData.y = parseInt(data.difference);
+            pointData.url = data.url;
+            pointData.id = data.id;
+            bugsPoints.push(pointData);
+          });
+        }
+      }
+    });
+
     options.chart = {
       height: 0,
       backgroundColor: ""
@@ -293,7 +329,70 @@ class VelocityGraph {
       ]
     };
     options.tooltip = {
-      pointFormat: "{point.y}"
+      xDateFormat: '%Y-%m-%d',
+      shared: true,
+      useHTML: true,
+      style: {
+        pointerEvents: 'auto'
+      },
+      pointFormatter: function(t){
+        combinedURL = baseURL;
+        IDs = [];
+        let x = this.x;
+        let y = this.y;
+        let d = new Date(x);
+        let date = d.getDate();
+        let month = d.getMonth() + 1;
+        let year = d.getFullYear();
+        let dateStr = date + "/" + month + "/" + year;        
+        var ret = `${dateStr}<br>`
+        let name = this.series.chart.series[2].name;
+        let points = this.series.chart.series[2].points;
+        let name1 = this.series.chart.series[3].name;
+        let points1 = this.series.chart.series[3].points;
+        points.map(ele => {
+            if(ele.x === x && ele.y === y){
+              ret += `${name} ${ele.id}: ${ele.y} days<br>`
+              IDs.push(ele.id)
+            }
+          })
+        points1.map(ele => {
+            if(ele.x === x && ele.y === y){
+                ret += `${name1} ${ele.id}: ${ele.y} days<br>`
+                IDs.push(ele.id)
+            }
+        })
+        let newIDs = '(';
+        let idCount = 0;
+        IDs.map(ele => {
+          let id = ele.toString();
+          newIDs += id;
+          idCount++;
+          if(idCount > 0){
+            newIDs += ','
+          }
+        })
+        newIDs.slice(0,-1)
+        newIDs = newIDs.substring(0, newIDs.length-1);
+        newIDs += ')';
+        newURL = baseURL.replace("(work_item_ids)", newIDs);
+        newURL = newURL.replace("project_id", projID);
+        newURL = newURL.replace("organization_name", organization);
+        return ret;
+      }
+    };
+
+    options.plotOptions = {
+      series: {
+        cursor: 'pointer',
+        point: {
+            events: {
+                click: function () {
+                    window.open(newURL, '_blank')
+                }
+            }
+        }
+      }
     };
     options.legend = {
       enabled: true,
@@ -325,7 +424,8 @@ class VelocityGraph {
         pointInterval: 86400000,
         marker: {
           enabled: false
-        }
+        },
+        enableMouseTracking: false
       },
       {
         name: "Std. Dev.",
@@ -335,13 +435,14 @@ class VelocityGraph {
         fillOpacity: 0.3,
         marker: {
           enabled: false
-        }
+        },
+        enableMouseTracking: false
       },
       {
         name: "User Story",
         type: "scatter",
         color: "grey",
-        data: userStory,
+        data: userStoryPoints,
         pointInterval: 86400000,
         marker: {
           symbol: "circle",
@@ -355,7 +456,7 @@ class VelocityGraph {
         name: "Bug",
         type: "scatter",
         color: "#A9CCE3",
-        data: bugs,
+        data: bugsPoints,
         pointInterval: 86400000,
         marker: {
           symbol: "circle",

@@ -138,6 +138,7 @@ class QualityGraph {
         name: "Bugs",
         type: "line",
         marker: {
+          symbol: 'circle',
           enabled: true
         },
         pointInterval: 86400000
@@ -147,6 +148,7 @@ class QualityGraph {
         type: "line",
         name: "Vulnerabilities",
         marker: {
+          symbol: 'circle',
           enabled: true
         },
         pointInterval: 86400000
@@ -156,6 +158,7 @@ class QualityGraph {
         type: "line",
         name: "Code Smells",
         marker: {
+          symbol: 'circle',
           enabled: true
         },
         pointInterval: 86400000
@@ -273,6 +276,7 @@ class QualityGraph {
         name: "Lines to cover",
         data: lines_to_cover,
         marker: {
+          symbol: 'circle',
           enabled: true
         },
         color: "#5173CE",
@@ -282,6 +286,7 @@ class QualityGraph {
         name: "Covered lines",
         data: covered_lines,
         marker: {
+          symbol: 'circle',
           enabled: true
         },
         color: "#657DBD",
