@@ -3,25 +3,21 @@ export const velocityGraphInfo = {
   <p>
   Release Cycle Time depicts the time taken by a user story and/or a bug
   to change from active (when the work starts) to closed (when the work
-  is completed) state at a sprint level.{" "}
+  is completed) state at a sprint level.{" "}.  This involves measuring the cycle time for each issue (story, bug,
+    etc.) we work on from the time we start coding until the issue is
+    resolved and the code change is released to production and being used
+    by the customers.
 </p>
-<p>
-  This involves measuring the cycle time for each issue (story, bug,
-  etc.) we work on from the time we start coding until the issue is
-  resolved and the code change is released to production and being used
-  by the customers.
-</p>
+
 <p>
   For eg: If a user story / bug is created and assigned to some
   developer on 01/01/2000 (the work state is New), then suppose the
   developer takes up the task and start working on it on 07/01/2000 (the
   work state is changed to Active now) and completes the task on
-  09/01/2000 (the work state is changed to Closed now).
-</p>
-<p>
-  Here Release Cycle Time is calculated from 07/01/2000 to 09/01/2000
+  09/01/2000 (the work state is changed to Closed now). Here Release Cycle Time is calculated from 07/01/2000 to 09/01/2000
   i.e, 2 days
 </p>
+
       
     </div>`,
   "Deployment Lead Time": `<p>
