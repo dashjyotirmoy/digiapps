@@ -78,7 +78,14 @@ class Velocity extends Component {
         );
       case "ControlChartHigh":
         return (
-          <ControlChartHigh title={title} type={type} data={data} key={title} projID = {this.props.projId} organization = {this.props.organization} />
+          <ControlChartHigh
+            title={title}
+            type={type}
+            data={data}
+            key={title}
+            projID={this.props.projId}
+            organization={this.props.organization}
+          />
         );
       case "ProjectBurnDown":
         return (
@@ -212,7 +219,8 @@ const mapStateToProps = state => {
     projId: state.productDetails.currentProject.projectDetails.id,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
     teamId: state.productDetails.currentSprint.teamId,
-    organization: state.productDetails.currentProject.projectDetails.organization,
+    organization:
+      state.productDetails.currentProject.projectDetails.organization
   };
 };
 

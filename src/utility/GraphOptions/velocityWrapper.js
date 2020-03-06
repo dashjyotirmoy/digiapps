@@ -74,7 +74,8 @@ class VelocityGraph {
   generateControlChart(options) {
     let userStory = [],
       combinedURL,
-      baseURL = 'https://dev.azure.com/organization_name/project_id/_queries/query/?wiql=SELECT [System.Id]%2C[System.WorkItemType]%2C[System.Title] FROM WorkItems WHERE [System.Id] IN (work_item_ids)&name=Cycle time work items',
+      baseURL =
+        "https://dev.azure.com/organization_name/project_id/_queries/query/?wiql=SELECT [System.Id]%2C[System.WorkItemType]%2C[System.Title] FROM WorkItems WHERE [System.Id] IN (work_item_ids)&name=Cycle time work items",
       bugs = [],
       IDs = [],
       projID = this.res.projID,
@@ -268,7 +269,7 @@ class VelocityGraph {
       align: "left",
       style: {
         color: "#f5f5f5",
-        fontWeight: "bold"
+        fontWeight: "normal"
       }
     };
     options.subtitle = {
@@ -329,13 +330,13 @@ class VelocityGraph {
       ]
     };
     options.tooltip = {
-      xDateFormat: '%Y-%m-%d',
+      xDateFormat: "%Y-%m-%d",
       shared: true,
       useHTML: true,
       style: {
-        pointerEvents: 'auto'
+        pointerEvents: "auto"
       },
-      pointFormatter: function(t){
+      pointFormatter: function(t) {
         combinedURL = baseURL;
         IDs = [];
         let x = this.x;
@@ -344,37 +345,37 @@ class VelocityGraph {
         let date = d.getDate();
         let month = d.getMonth() + 1;
         let year = d.getFullYear();
-        let dateStr = date + "/" + month + "/" + year;        
-        var ret = `${dateStr}<br>`
+        let dateStr = date + "/" + month + "/" + year;
+        var ret = `${dateStr}<br>`;
         let name = this.series.chart.series[2].name;
         let points = this.series.chart.series[2].points;
         let name1 = this.series.chart.series[3].name;
         let points1 = this.series.chart.series[3].points;
         points.map(ele => {
-            if(ele.x === x && ele.y === y){
-              ret += `${name} ${ele.id}: ${ele.y} days<br>`
-              IDs.push(ele.id)
-            }
-          })
+          if (ele.x === x && ele.y === y) {
+            ret += `${name} ${ele.id}: ${ele.y} days<br>`;
+            IDs.push(ele.id);
+          }
+        });
         points1.map(ele => {
-            if(ele.x === x && ele.y === y){
-                ret += `${name1} ${ele.id}: ${ele.y} days<br>`
-                IDs.push(ele.id)
-            }
-        })
-        let newIDs = '(';
+          if (ele.x === x && ele.y === y) {
+            ret += `${name1} ${ele.id}: ${ele.y} days<br>`;
+            IDs.push(ele.id);
+          }
+        });
+        let newIDs = "(";
         let idCount = 0;
         IDs.map(ele => {
           let id = ele.toString();
           newIDs += id;
           idCount++;
-          if(idCount > 0){
-            newIDs += ','
+          if (idCount > 0) {
+            newIDs += ",";
           }
-        })
-        newIDs.slice(0,-1)
-        newIDs = newIDs.substring(0, newIDs.length-1);
-        newIDs += ')';
+        });
+        newIDs.slice(0, -1);
+        newIDs = newIDs.substring(0, newIDs.length - 1);
+        newIDs += ")";
         newURL = baseURL.replace("(work_item_ids)", newIDs);
         newURL = newURL.replace("project_id", projID);
         newURL = newURL.replace("organization_name", organization);
@@ -384,13 +385,13 @@ class VelocityGraph {
 
     options.plotOptions = {
       series: {
-        cursor: 'pointer',
+        cursor: "pointer",
         point: {
-            events: {
-                click: function () {
-                    window.open(newURL, '_blank')
-                }
+          events: {
+            click: function() {
+              window.open(newURL, "_blank");
             }
+          }
         }
       }
     };
@@ -527,7 +528,7 @@ class VelocityGraph {
       align: "left",
       style: {
         color: "#f5f5f5",
-        fontWeight: "bold"
+        fontWeight: "normal"
       }
     };
 
@@ -538,7 +539,7 @@ class VelocityGraph {
       labels: {
         style: {
           color: "#f5f5f5"
-        },
+        }
         // format: "Sprint {value}"
       }
     };
@@ -598,9 +599,7 @@ class VelocityGraph {
 
     options.tooltip = {
       formatter: function() {
-        return (
-          `${this.point.xAxis}<br>${this.series.name}: ${this.point.actual_value}`
-        )
+        return `${this.point.xAxis}<br>${this.series.name}: ${this.point.actual_value}`;
       }
     };
     options.plotOptions = {

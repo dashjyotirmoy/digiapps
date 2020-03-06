@@ -63,10 +63,9 @@ class QualityGraph {
       vul_metrics_data,
       codeSmell_metrics_data;
 
-      bugs_metrics_data = this.res.data.bugs.bugsMetricsList;
-      vul_metrics_data = this.res.data.vulnerabilities
-        .vulnerabilitiesMetricsList;
-      codeSmell_metrics_data = this.res.data.codeSmells.codeSmellsMetricsList;
+    bugs_metrics_data = this.res.data.bugs.bugsMetricsList;
+    vul_metrics_data = this.res.data.vulnerabilities.vulnerabilitiesMetricsList;
+    codeSmell_metrics_data = this.res.data.codeSmells.codeSmellsMetricsList;
 
     bugs_array = this.generateData(bugs_metrics_data);
     vulnerabilities_array = this.generateData(vul_metrics_data);
@@ -138,8 +137,8 @@ class QualityGraph {
         name: "Bugs",
         type: "line",
         marker: {
-          symbol: 'circle',
-          enabled: true
+          enabled: true,
+          symbol: "circle"
         },
         pointInterval: 86400000
       },
@@ -148,8 +147,8 @@ class QualityGraph {
         type: "line",
         name: "Vulnerabilities",
         marker: {
-          symbol: 'circle',
-          enabled: true
+          enabled: true,
+          symbol: "circle"
         },
         pointInterval: 86400000
       },
@@ -158,8 +157,8 @@ class QualityGraph {
         type: "line",
         name: "Code Smells",
         marker: {
-          symbol: 'circle',
-          enabled: true
+          enabled: true,
+          symbol: "circle"
         },
         pointInterval: 86400000
       }
@@ -276,8 +275,8 @@ class QualityGraph {
         name: "Lines to cover",
         data: lines_to_cover,
         marker: {
-          symbol: 'circle',
-          enabled: true
+          enabled: true,
+          symbol: "circle"
         },
         color: "#5173CE",
         pointInterval: 86400000
@@ -286,8 +285,8 @@ class QualityGraph {
         name: "Covered lines",
         data: covered_lines,
         marker: {
-          symbol: 'circle',
-          enabled: true
+          enabled: true,
+          symbol: "circle"
         },
         color: "#657DBD",
         pointInterval: 86400000
@@ -420,7 +419,7 @@ class QualityGraph {
       backgroundColor: ""
     };
     options.title = {
-      text: "Outstanding defects",
+      text: "Outstanding Defects",
       style: {
         color: "#f5f5f5"
       },
