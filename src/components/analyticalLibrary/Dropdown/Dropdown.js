@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownMenu from "./DropdownMenu";
 import DropdownToggle from "./DropdownToggle";
+import './Dropdown.css';
 
 class CustDropdown extends Component {
   render() {
@@ -30,11 +31,12 @@ class CustDropdown extends Component {
 
         <Dropdown.Menu
           as={DropdownMenu}
-          className="w-inherit width-fit-content dropdown-menu-right font-aggegate-sub-text mr-0 bg-secondary"
+          className="w-inherit width-fit-content dropdown-menu-right font-aggegate-sub-text mr-0 bg-secondary dropdown-h100-scroll"
         >
           {dropdownItems}
         </Dropdown.Menu>
-      </Dropdown>
+
+      </Dropdown >
     );
   }
 }
