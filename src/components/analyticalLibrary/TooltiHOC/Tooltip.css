@@ -1,0 +1,22 @@
+.bg-color{
+    background-color: #334154;
+    color: #f5f5f5;
+    font-size: 18px;
+    padding: 12px;
+    margin: 0px;
+    border-bottom: 1px solid #f5f5f5;
+}
+.body-col{
+    margin: 0px;
+    padding: 10px;
+    background-color: #334154;
+    color: #f5f5f5;
+}
+div#popover-basic{
+    box-shadow: 6px 5px 5px 0px #212529;
+}
+.bs-popover-bottom>.arrow::after{
+    border-bottom-color: #334154!important;
+    
+    
+}

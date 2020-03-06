@@ -31,7 +31,8 @@ const prodReducer = (state = initialState, action) => {
       return {
         ...state,
         currentSprint: {
-          sprintInfo: action.payload.data,
+          sprintInfo: action.payload.data.sprintDetails[0],
+          teamId: action.payload.data.teamId,
           sprintReceived: action.payload.sprintReceived
         }
       };

@@ -7,13 +7,9 @@ const CustomMenu = React.forwardRef(
     const [value, setValue] = useState("");
 
     return (
-      <div
-        ref={ref}
-        className={className}
-        aria-labelledby={labeledBy}
-      >
+      <div ref={ref} className={className} aria-labelledby={labeledBy}>
         <FormControl
-          autofocus
+          autoFocus
           className="mx-3 my-2 w-auto"
           placeholder="Type to filter..."
           onChange={e => setValue(e.target.value)}
@@ -23,7 +19,9 @@ const CustomMenu = React.forwardRef(
           <li>
             {React.Children.toArray(children).filter(
               child =>
-                !value || child.props.children.toLowerCase().startsWith(value) || child.props.children.startsWith(value)
+                !value ||
+                child.props.children.toLowerCase().startsWith(value) ||
+                child.props.children.startsWith(value)
             )}
           </li>
         </ul>

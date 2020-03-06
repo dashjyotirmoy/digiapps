@@ -26,8 +26,10 @@ class ProductInfoBar extends Component {
   state = {
     productData: [],
     sprintData: [],
+    teamData: [],
     selectedProduct: "",
     selectedSprint: "",
+    selectedTeam: "",
     response: {},
     recieved: false,
     prodAggView: false,
@@ -94,7 +96,7 @@ class ProductInfoBar extends Component {
     this.props.projInsightDispatch(projectID, executiveId);
     api
       .getProjectInsightsData(projectID, executiveId)
-      .then(this.setSprint)
+      .then(this.setTeams)
       .catch(error => {
         console.error(error);
       });
@@ -105,44 +107,125 @@ class ProductInfoBar extends Component {
   //Handling Sprint Data starts
   // axios call to fetch sprint details
 
-  getSprintData = (sprintId, selectedProjectId) => {
+  getSprintData = (sprintId, selectedProjectId, teamID) => {
     this.props.sprintInsightsDispatch(
       sprintId,
       this.props.executiveId,
-      this.props.projectID
+      this.props.projectID,
+      teamID
     );
+  };
+
+  setTeams = res => {
+    let teams = res.data.teamDetails.reverse();
+
+    const teamData = this.markSelected(teams, teams[0].teamId);
+    const teamDetails = teamData.list.map(ele => {
+      return {
+        id: ele.teamId,
+        projectName: ele.teamName,
+        sprintDetails: ele.sprintDetails
+      };
+    });
+    productMetrics = this.setProductMetrics(res.data.sprintCount);
+    this.props.repoDropValDispatch();
+    this.props.resetProjectRepoDispatch();
+    this.setState({
+      teamData: teamDetails,
+      selectedTeam: teamDetails[teamData.selectedIndex].projectName,
+      selectedTeamId: teamDetails[teamData.selectedIndex].id,
+      show: false
+    });
+    this.setSprint(
+      teams,
+      teamDetails[teamData.selectedIndex].id,
+      teamData.selectedIndex
+    );
+  };
+
+  updateTeam = teamId => {
+    const teams = [...this.state.teamData];
+    const { list, selectedIndex } = this.markSelected(teams, teamId);
+    const teamDetail = list.map(ele => {
+      return {
+        id: ele.id,
+        projectName: ele.projectName,
+        sprintDetails: ele.sprintDetails
+      };
+    });
+    this.setState({
+      teamData: teamDetail,
+      selectedTeam: teamDetail[selectedIndex].projectName
+    });
+    this.setSprint(teams, teams[selectedIndex].id, selectedIndex, true);
   };
 
   //method to set current sprint value and set sprint details
 
-  setSprint = res => {
-    let sprints = res.data.sprintDetails.reverse();
+  setSprint = (res, teamID, selectedIndex, isUpdate) => {
+    // let sprints = res.data.sprintsfromTeam.reverse();
+    let teamDetail, sprintsfromTeam;
+    let stateFromProjects;
+    if (isUpdate) {
+      teamDetail = res.map(ele => {
+        return {
+          teamId: ele.id,
+          teamName: ele.projectName,
+          sprintDetails: ele.sprintDetails
+        };
+      });
+      sprintsfromTeam = teamDetail.map(item => {
+        if (item.teamId === teamID) {
+          return item.sprintDetails;
+        }
+      });
+    } else {
+      sprintsfromTeam = res.map(item => {
+        if (item.teamId === teamID) {
+          return item.sprintDetails;
+        }
+      });
+    }
 
-    const stateFromProjects = sprints.filter(item => {
-      if (item.state === "CURRENT") {
-        return item.id;
-      }
-    });
-    const sprintData = this.markSelected(sprints, stateFromProjects[0].id);
-    const sprintDetails = sprintData.list.map(ele => {
-      return {
-        id: ele.id,
-        projectName: ele.name
-      };
-    });
+    let sprints = sprintsfromTeam[selectedIndex].reverse();
 
-    productMetrics = this.setProductMetrics(res.data.sprintCount);
-    this.getSprintData(
-      sprintDetails[sprintData.selectedIndex].id,
-      this.props.executiveId
-    );
-    this.props.repoDropValDispatch();
-    this.props.resetProjectRepoDispatch();
-    this.setState({
-      sprintData: sprintDetails,
-      selectedSprint: sprintDetails[sprintData.selectedIndex].projectName,
-      show: false
-    });
+    if (sprints.length > 0) {
+      stateFromProjects = sprints.filter(item => {
+        if (item.state === "CURRENT") {
+          return item.id;
+        }
+      });
+      const sprintData = this.markSelected(sprints, stateFromProjects[0].id);
+      const sprintDetails = sprintData.list.map(ele => {
+        return {
+          id: ele.id,
+          projectName: ele.name
+        };
+      });
+
+      this.getSprintData(
+        sprintDetails[sprintData.selectedIndex].id,
+        this.props.executiveId,
+        teamID
+      );
+      this.props.repoDropValDispatch();
+      this.props.resetProjectRepoDispatch();
+      this.setState({
+        sprintData: sprintDetails,
+        selectedSprint: sprintDetails[sprintData.selectedIndex].projectName,
+        show: false
+      });
+    } else {
+      // this.getSprintData(
+      //   this.props.sprintData.id,
+      //   this.props.executiveId,
+      //   teamID
+      // );
+      this.setState({
+        sprintData: sprints,
+        selectedSprint: "No Sprints available"
+      });
+    }
   };
 
   setProductMetrics(data) {
@@ -163,7 +246,7 @@ class ProductInfoBar extends Component {
       sprintData: list,
       selectedSprint: list[selectedIndex].projectName
     });
-    this.getSprintData(sprintId, this.props.executiveId);
+    this.getSprintData(sprintId, this.props.executiveId, this.props.teamId);
   };
 
   // Handling sprint Data ends
@@ -253,10 +336,8 @@ class ProductInfoBar extends Component {
     this.updateSprint(sprintId);
   };
 
-  //handler function when the repository is changed
-
-  handleRepoChange = repoID => {
-    this.updateRepository(repoID);
+  teamOnSelectHandler = (teamId, evtKey) => {
+    this.updateTeam(teamId);
   };
 
   onProdAggViewClickHandler = () => {
@@ -306,13 +387,9 @@ class ProductInfoBar extends Component {
                   </p>
                 </div>
               </Col>
-              <Col className="h-100 pl-0" sm={12} md={5} lg={4} xl={5}>
+              <Col className="h-100 pl-0" sm={12} md={5} lg={4} xl={7}>
                 <Row className="h-100">
-                  <Col
-                    sm={2}
-                    md={2}
-                    className="prodAgg p-0 col-lg-1_5 col-xl-1_5"
-                  >
+                  <Col sm={2} md={2} className="prodAgg p-0 col-lg-1 col-xl-1">
                     <Row className="h-100">
                       <TooltipHoc
                         info={
@@ -332,10 +409,10 @@ class ProductInfoBar extends Component {
                     </Row>
                   </Col>
                   <Col
-                    sm={6}
-                    md={6}
-                    lg={6}
-                    xl={6}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                    xl={4}
                     className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
                   >
                     {this.props.projectListReceived ? (
@@ -348,6 +425,39 @@ class ProductInfoBar extends Component {
                           <Col sm={10} md={10} lg={10} xl={10}>
                             <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
                               {this.state.selectedProduct}
+                            </p>
+                          </Col>
+                          <Col
+                            sm={2}
+                            md={2}
+                            md={2}
+                            lg={2}
+                            xl={2}
+                            className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                          >
+                            <FontAwesomeIcon icon={faChevronDown} />
+                          </Col>
+                        </Row>
+                      </Dropdown>
+                    ) : null}
+                  </Col>
+                  <Col
+                    sm={3}
+                    md={3}
+                    lg={3}
+                    xl={3}
+                    className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
+                  >
+                    {this.props.projectListReceived ? (
+                      <Dropdown
+                        listData={this.state.teamData}
+                        direction="down"
+                        onSelectDelegate={this.teamOnSelectHandler}
+                      >
+                        <Row className="h-100">
+                          <Col sm={10} md={10} lg={10} xl={10}>
+                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                              {this.state.selectedTeam}
                             </p>
                           </Col>
                           <Col
@@ -398,7 +508,7 @@ class ProductInfoBar extends Component {
                   </Col>
                 </Row>
               </Col>
-              <Col sm={12} md={5} lg={7} xl={6} className="h-100">
+              <Col sm={12} md={5} lg={7} xl={4} className="h-100">
                 <Row className="h-100">
                   <Col md={7} xl={5} lg={8} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
@@ -525,6 +635,7 @@ const mapStateToProps = state => {
       state.execData.currentExecutiveInfo.executiveDataReceived,
     projDetails: state.productDetails.currentProject.projectDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
+    teamId: state.productDetails.currentSprint.teamId,
     projectRecieved: state.productDetails.currentProject.projectDataReceived,
     sprintData: state.productDetails.currentSprint.sprintInfo,
     sprintDataReceived: state.productDetails.currentSprint.sprintReceived,
