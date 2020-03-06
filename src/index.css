@@ -95,7 +95,8 @@ a:hover {
 }
 
 .bg-prodInfo-prod {
-  background-color: #334154;
+  background-color: #334154c7;
+    border: 1px solid #f5f5f517;
 }
 
 /* colors */
@@ -343,4 +344,9 @@ a:hover {
 }
 .modal-content {
   background-color: transparent !important;
+}
+.dropdown-menu.show{
+  display: block;
+  left: 13px;
+  top: 45px;
 }

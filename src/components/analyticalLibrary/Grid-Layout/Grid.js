@@ -5,7 +5,7 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
-import CenteredModal from "../ModalFunc/ModalFunction";
+
 import { qualityGraphInfo } from "../Translations/qualityGraphInfo";
 import { velocityGraphInfo } from "../Translations/velocityGraphInfo";
 // import { VelocityModalContent } from '../ModalFunc/VelocityModalContent';
@@ -16,7 +16,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Grid = props => {
   console.log(props);
-  const [modalShow, setModalShow] = React.useState(false);
+
 
   const gridItem = props.layouts["lg"].map((ele, index) => {
     console.log(ele);
