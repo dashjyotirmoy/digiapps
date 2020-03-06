@@ -4,10 +4,11 @@ import api from "../../utility/Http/devOpsApis";
 export const sprintInsightsDispatch = (
   sprintId,
   execId,
-  projectId
+  projectId,
+  teamID
 ) => async dispatch => {
   api
-    .getSprintInsightsData(sprintId, execId, projectId)
+    .getSprintInsightsData(sprintId, execId, projectId, teamID)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_CURRENT_SPRINT,

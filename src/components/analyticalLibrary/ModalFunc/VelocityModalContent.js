@@ -12,7 +12,7 @@ export default [
         </p>
         <h4>Calculation:</h4>
         <p>
-          Story Points Planned Sp =∑▒Story points of all user stories for sprint{" "}
+          Story Points Planned Sp =∑Story points of all user stories for sprint{" "}
         </p>
 
         <p>
@@ -83,31 +83,7 @@ export default [
   },
   {
     title: "Sprint Burndown",
-    list: [
-      <div>
-        <p>
-          Sprint Burndown shows how many hours are left to be burnt each day in
-          a particular sprint that is selected in the project metrics.
-        </p>
-        <p>
-          It also displays the average sprint burndown, total scope increase,
-          total hours remaining and the completed percentage
-        </p>
-        <h4>Original Scope</h4>
-        <p>
-          Original Scope will be evaluated based on the total no. of hours
-          planned at the start of the sprint (first three days of a sprint).
-        </p>
-        <h4>Average Burndown (Bavg) is calculated by:</h4>
-        <p>Bavg=((Original Scope-Hl))⁄D</p>
-        <p>Where,</p>
-        <p>Hl= No. of remaining hours on last day of the sprint,</p>
-        <p>
-          D = Duration of the sprint (weekends, i.e., Sat and Sun are not
-          included).
-        </p>
-      </div>
-    ]
+    list: [<div></div>]
   },
   {
     title: "Release Cycle Time",

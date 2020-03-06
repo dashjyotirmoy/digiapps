@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container,Button,ButtonToolbar} from "react-bootstrap";
+import { Container, Button, ButtonToolbar } from "react-bootstrap";
 import ModalBackDrop from "../ModalBackDrop/ModalBackDrop";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,27 +10,23 @@ import { qualityGraphInfo } from "../Translations/qualityGraphInfo";
 import { velocityGraphInfo } from "../Translations/velocityGraphInfo";
 // import { VelocityModalContent } from '../ModalFunc/VelocityModalContent';
 
-
-
-// 
+//
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-
 const Grid = props => {
-  console.log(props)
+  console.log(props);
   const [modalShow, setModalShow] = React.useState(false);
 
   const gridItem = props.layouts["lg"].map((ele, index) => {
-    console.log(ele)
+    console.log(ele);
     return (
       <div className="border border-dark grid-graph-comp" key={ele.i}>
         <div
           className="position-absolute px-2 text-right text-white w-100"
           style={{ zIndex: "100" }}
         >
-               
-          {/* <p
+          <p
             className="d-inline px-1"
             data-toggle="tooltip"
             data-placement="top"
@@ -40,25 +36,25 @@ const Grid = props => {
                 velocityGraphInfo[props.chartData[ele.i].name] ||
                 qualityGraphInfo[props.chartData[ele.i].name]
               }
+              chartName={props.chartData[ele.i].name}
             >
               <span className="d-inline-block">
                 <FontAwesomeIcon icon={faInfoCircle} />
               </span>
             </TooltipHoc>
-       
-          </p>     */}
-          <p className="d-inline px-1">
-          <span className="d-inline-block" onClick={() => setModalShow(true)}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-              </span>
-      
-      <CenteredModal
-        chartName = {props.chartData[ele.i].name}
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
-         </p>
-          
+          </p>
+          {/* <p className="d-inline px-1">
+            <span className="d-inline-block" onClick={() => setModalShow(true)}>
+              <FontAwesomeIcon icon={faInfoCircle} />
+            </span>
+
+            <CenteredModal
+              chartName={props.chartData[ele.i].name}
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
+          </p> */}
+
           <p
             className="show-cursor d-inline"
             onClick={() => props.removeDelegate(index)}
@@ -72,7 +68,7 @@ const Grid = props => {
       </div>
     );
   });
-  console.log(props.chartData)
+  console.log(props.chartData);
 
   return (
     <Container fluid className="">
@@ -88,8 +84,6 @@ const Grid = props => {
       >
         {gridItem}
       </ResponsiveGridLayout>
-     
-      
     </Container>
   );
 };
