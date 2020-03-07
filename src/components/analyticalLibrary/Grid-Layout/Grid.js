@@ -4,6 +4,7 @@ import ModalBackDrop from "../ModalBackDrop/ModalBackDrop";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 
 import { qualityGraphInfo } from "../Translations/qualityGraphInfo";
@@ -55,9 +56,9 @@ const Grid = props => {
             className="show-cursor d-inline"
             onClick={() => props.removeDelegate(index)}
           >
-            <TooltipHoc info="Remove">
-              <span className="d-inline-block">X</span>
-            </TooltipHoc>
+            <span className="d-inline-block">
+              <FontAwesomeIcon icon={faTimes} />
+            </span>
           </p>
         </div>
         {props.chartData[ele.i].component}
