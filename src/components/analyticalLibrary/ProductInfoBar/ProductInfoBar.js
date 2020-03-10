@@ -231,7 +231,9 @@ class ProductInfoBar extends Component {
   setProductMetrics(data) {
     const metrics = [
       { name: "Head Count", value: this.props.projDetails.totalMembers },
-      { name: "Sprint Count", value: `${data.completed} / ${data.total}` }
+      { name: "Sprint Count", value: `${data.completed} / ${data.total}` },
+      { name: "Team Head Count", value: this.props.projDetails.totalMembers }
+      // For now the Team Head Count is same as Head count, once response is provided this can be modified
     ];
     return metrics;
   }
@@ -510,7 +512,7 @@ class ProductInfoBar extends Component {
               </Col>
               <Col sm={12} md={5} lg={7} xl={4} className="h-100">
                 <Row className="h-100">
-                  <Col md={7} xl={5} lg={8} className="h-100">
+                  <Col md={7} lg={8} xl={7} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
                       <Row className="px-4 h-100 w-100 d-flex align-items-center justify-content-between ">
                         {productMetrics.map(item => {
@@ -536,9 +538,9 @@ class ProductInfoBar extends Component {
                     </Row>
                   </Col>
                   <Col
-                    lg={4}
-                    xl={6}
                     md={5}
+                    lg={4}
+                    xl={5}
                     className="d-md-block p-0 d-lg-block d-xl-block d-sm-none"
                   >
                     <Row className="p-0 m-0 w-100 d-flex align-items-center h-100">
@@ -554,8 +556,8 @@ class ProductInfoBar extends Component {
                                 percentage={this.props.projDetails.features}
                               ></Donut>
                             ) : (
-                              "loading"
-                            )}
+                                "loading"
+                              )}
                           </Col>
                           <Col
                             md={7}
@@ -589,8 +591,8 @@ class ProductInfoBar extends Component {
                                 percentage={this.props.projDetails.userStory}
                               ></Donut>
                             ) : (
-                              "loading"
-                            )}
+                                "loading"
+                              )}
                           </Col>
                           <Col
                             md={7}
