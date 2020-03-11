@@ -87,7 +87,7 @@ class QualityGraph {
       align: "left",
       style: {
         color: "#f5f5f5",
-        fontWeight: "bold"
+        fontWeight: "normal"
       }
     };
     options.xAxis = {
@@ -241,7 +241,7 @@ class QualityGraph {
       align: "left",
       style: {
         color: "#f5f5f5",
-        fontWeight: "bold"
+        fontWeight: "normal"
       }
     };
     options.plotOpions = {
@@ -320,7 +320,7 @@ class QualityGraph {
       align: "left",
       style: {
         color: "#f5f5f5",
-        fontWeight: "bold"
+        fontWeight: "normal"
       }
     };
     options.xAxis = {
@@ -457,7 +457,7 @@ class QualityGraph {
     };
 
     options.tooltip = {
-      formatter: function() {
+      formatter: function () {
         return this.series.name + " " + this.y;
       }
     };
