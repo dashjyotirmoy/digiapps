@@ -232,7 +232,7 @@ class ProductInfoBar extends Component {
     const metrics = [
       { name: "Head Count", value: this.props.projDetails.totalMembers },
       { name: "Sprint Count", value: `${data.completed} / ${data.total}` },
-      { name: "Team Head Count", value: this.props.projDetails.totalMembers }
+      { name: "Team Head Count", value: 25 }
       // For now the Team Head Count is same as Head count, once response is provided this can be modified
     ];
     return metrics;
