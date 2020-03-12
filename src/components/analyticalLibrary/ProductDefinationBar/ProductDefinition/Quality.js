@@ -177,10 +177,10 @@ class Quality extends Component {
               ? `${item[1].value}%`
               : "0.0%"
             : item[0] === "duplication"
-            ? item[1] != null
-              ? `${item[1].value}%`
-              : "0.0%"
-            : item[1].count
+              ? item[1] != null
+                ? `${item[1].value}%`
+                : "0.0%"
+              : item[1].count
       };
     });
   };
@@ -196,42 +196,42 @@ class Quality extends Component {
         item[1].rating === "1.0"
           ? "low"
           : item[1].rating === "2.0"
-          ? "lowest"
-          : item[1].rating === "3.0"
-          ? "medium"
-          : item[1].rating === "4.0"
-          ? "high"
-          : item[1].rating === "5.0"
-          ? "critical"
-          : null;
+            ? "lowest"
+            : item[1].rating === "3.0"
+              ? "medium"
+              : item[1].rating === "4.0"
+                ? "high"
+                : item[1].rating === "5.0"
+                  ? "critical"
+                  : null;
     }
     if (item[0] === "coverage") {
       metricValue =
         item[1].value >= "80"
           ? "low"
           : item[1].value >= "70" && item[1].value <= "80"
-          ? "lowest"
-          : item[1].value >= "50" && item[1].value <= "70"
-          ? "medium"
-          : item[1].value >= "30" && item[1].value <= "50"
-          ? "high"
-          : item[1].value < "30"
-          ? "critical"
-          : null;
+            ? "lowest"
+            : item[1].value >= "50" && item[1].value <= "70"
+              ? "medium"
+              : item[1].value >= "30" && item[1].value <= "50"
+                ? "high"
+                : item[1].value < "30"
+                  ? "critical"
+                  : null;
     }
     if (item[0] === "duplication") {
       metricValue =
         item[1].value < 3
           ? "low"
           : item[1].value >= 3 && item[1].value <= 5
-          ? "lowest"
-          : item[1].value >= 5 && item[1].value <= 10
-          ? "medium"
-          : item[1].value >= 10 && item[1].value <= 20
-          ? "high"
-          : item[1].value > 20
-          ? "critical"
-          : null;
+            ? "lowest"
+            : item[1].value >= 5 && item[1].value <= 10
+              ? "medium"
+              : item[1].value >= 10 && item[1].value <= 20
+                ? "high"
+                : item[1].value > 20
+                  ? "critical"
+                  : null;
     }
     return metricValue;
   };
@@ -286,9 +286,8 @@ class Quality extends Component {
   createCharts = (list, removed) => {
     let list_temp = list[0];
     const updatedList = list_temp.filter((ele, index) => {
-      if (index !== removed) 
-      {
-      return Object.assign({}, ele);
+      if (index !== removed) {
+        return Object.assign({}, ele);
       }
     });
     updatedList.map(ele => {
@@ -326,16 +325,16 @@ class Quality extends Component {
     const layouts = {};
     Object.keys(this.state.layout).map(key => {
       let copy = [...this.state.layout[key]];
-      if(key === "lg"){
+      if (key === "lg") {
         let layout_instance = new Layout(copy.length - 1);
         copy = layout_instance.layout.lg
       }
-      else if(key === "md"){
+      else if (key === "md") {
         let layout_instance = new Layout(copy.length - 1);
         copy = layout_instance.layout.md
       }
       layouts[key] = copy
-    }); 
+    });
     this.setState({
       layout: layouts
     });
@@ -517,14 +516,20 @@ class Quality extends Component {
                     Critical{" "}
                   </Col>
                   <Col className="font-size-xs pr-0">
-                    <FontAwesomeIcon className="high" icon={faSquare} /> High{" "}
+                    <FontAwesomeIcon className="high" icon={faSquare} /> {" "}
+                    High
                   </Col>
                   <Col className="font-size-xs pr-0">
                     <FontAwesomeIcon className="medium" icon={faSquare} />{" "}
                     Medium
                   </Col>
                   <Col className="font-size-xs pr-0">
-                    <FontAwesomeIcon className="low" icon={faSquare} /> Low
+                    <FontAwesomeIcon className="low" icon={faSquare} />{" "}
+                    Low
+                  </Col>
+                  <Col className='font-size-xs pr-0'>
+                    <FontAwesomeIcon className="lowest" icon={faSquare} />{" "}
+                    Very Low
                   </Col>
                 </Row>
               </Col>
@@ -546,8 +551,8 @@ class Quality extends Component {
                               icon={faSquare}
                             />
                           ) : (
-                            ""
-                          )}
+                              ""
+                            )}
                         </span>
                       </Row>
                       <Row className="align-items-center d-flex h-75 justify-content-center row text-white metric-value">

@@ -124,10 +124,11 @@ class ProductInfoBar extends Component {
       return {
         id: ele.teamId,
         projectName: ele.teamName,
-        sprintDetails: ele.sprintDetails
+        sprintDetails: ele.sprintDetails,
+        headCount: ele.teamHeadCount
       };
     });
-    productMetrics = this.setProductMetrics(res.data.sprintCount);
+    productMetrics = this.setProductMetrics(res.data.sprintCount, teamDetails[teamData.selectedIndex].headCount);
     this.props.repoDropValDispatch();
     this.props.resetProjectRepoDispatch();
     this.setState({
@@ -150,9 +151,11 @@ class ProductInfoBar extends Component {
       return {
         id: ele.id,
         projectName: ele.projectName,
-        sprintDetails: ele.sprintDetails
+        sprintDetails: ele.sprintDetails,
+        headCount: ele.headCount
       };
     });
+    productMetrics = this.updateProductMetrics(teamDetail[selectedIndex].headCount);
     this.setState({
       teamData: teamDetail,
       selectedTeam: teamDetail[selectedIndex].projectName
@@ -228,13 +231,22 @@ class ProductInfoBar extends Component {
     }
   };
 
-  setProductMetrics(data) {
+  setProductMetrics(data , headCount, index = 0) {
     const metrics = [
-      { name: "Head Count", value: this.props.projDetails.totalMembers },
-      { name: "Sprint Count", value: `${data.completed} / ${data.total}` }
+      // { name: "Head Count", value: this.props.projDetails.totalMembers },
+      { id : index++ ,name: "Head Count", value: this.props.projDetails.totalMembers },
+      { id : index++, name: "Sprint Count", value: `${data.completed} / ${data.total}` },
+      { id : index++, name: "Team Head Count", value : headCount }
     ];
     return metrics;
   }
+
+  updateProductMetrics(headCount){
+    let newMetrics = [...productMetrics]
+    newMetrics[2].value = headCount;
+    return newMetrics;
+  }
+  
   //method to update sprint details
 
   updateSprint = sprintId => {
@@ -510,13 +522,13 @@ class ProductInfoBar extends Component {
               </Col>
               <Col sm={12} md={5} lg={7} xl={4} className="h-100">
                 <Row className="h-100">
-                  <Col md={7} xl={5} lg={8} className="h-100">
+                  <Col md={7} lg={8} xl={7} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
                       <Row className="px-4 h-100 w-100 d-flex align-items-center justify-content-between ">
                         {productMetrics.map(item => {
                           return (
                             <div
-                              key={item.value}
+                              key={item.id}
                               className="d-flex d-inline-block 
                         flex-column h-100 justify-content-center max-w-18 px-1 
                         py-0  w-auto "
@@ -536,9 +548,9 @@ class ProductInfoBar extends Component {
                     </Row>
                   </Col>
                   <Col
-                    lg={4}
-                    xl={6}
                     md={5}
+                    lg={4}
+                    xl={5}
                     className="d-md-block p-0 d-lg-block d-xl-block d-sm-none"
                   >
                     <Row className="p-0 m-0 w-100 d-flex align-items-center h-100">
@@ -554,8 +566,8 @@ class ProductInfoBar extends Component {
                                 percentage={this.props.projDetails.features}
                               ></Donut>
                             ) : (
-                              "loading"
-                            )}
+                                "loading"
+                              )}
                           </Col>
                           <Col
                             md={7}
@@ -589,8 +601,8 @@ class ProductInfoBar extends Component {
                                 percentage={this.props.projDetails.userStory}
                               ></Donut>
                             ) : (
-                              "loading"
-                            )}
+                                "loading"
+                              )}
                           </Col>
                           <Col
                             md={7}

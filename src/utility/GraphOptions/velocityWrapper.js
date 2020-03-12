@@ -1,10 +1,17 @@
 import Options from "./optionsModel";
 
+
+let controlChartYAxisMaxLimit = 0;
+let controlChartYValues = [];
+
+
 class VelocityGraph {
   constructor(props) {
     this.res = props;
     this.options = this.generateOption(props.type);
   }
+
+
 
   generateOption = type => {
     const baseOptions = new Options();
@@ -52,8 +59,8 @@ class VelocityGraph {
   rolling_average_output = rolling_average_temp => {
     let output_dynamic = [];
 
-    rolling_average_temp.forEach(function(item) {
-      let existing = output_dynamic.filter(function(ele, i) {
+    rolling_average_temp.forEach(function (item) {
+      let existing = output_dynamic.filter(function (ele, i) {
         return ele.date === item.date;
       });
       if (existing.length) {
@@ -92,6 +99,8 @@ class VelocityGraph {
       rollingAvgData = [],
       rolling_period,
       rollingAvgData_copy = [];
+
+      // controlChartYAxisMaxLimit = 0;
 
     //block to separate user story and bug data from the response
     this.res.data.map(series => {
@@ -255,6 +264,20 @@ class VelocityGraph {
             pointData.url = data.url;
             pointData.id = data.id;
             bugsPoints.push(pointData);
+            // console.log(pointData.y);
+            controlChartYValues.push(pointData.y)
+            
+            // console.log(data);
+            if (controlChartYAxisMaxLimit < pointData.y) {
+              controlChartYAxisMaxLimit = pointData.y
+            }
+
+            
+
+            // console.log(bugsPoints);
+
+
+
           });
         }
       }
@@ -265,6 +288,7 @@ class VelocityGraph {
       backgroundColor: ""
     };
     options.title = {
+      useHTML: true,
       text: this.res.title,
       align: "left",
       style: {
@@ -273,7 +297,8 @@ class VelocityGraph {
       }
     };
     options.subtitle = {
-      text: `${average || 0} <br>Days on average`,
+      useHTML: true,
+      text: `<p class='m-0 d-inline'><h3 class='m-0' style='color: #50E3C2'>${average || 0}</h3> Days on average</p>`,
       align: "left",
       floating: true,
       x: 70,
@@ -302,6 +327,7 @@ class VelocityGraph {
     };
     options.yAxis = {
       min: -0.5,
+      max: controlChartYAxisMaxLimit + 30,
       gridLineColor: "",
       title: {
         text: "Days",
@@ -336,7 +362,7 @@ class VelocityGraph {
       style: {
         pointerEvents: "auto"
       },
-      pointFormatter: function(t) {
+      pointFormatter: function (t) {
         combinedURL = baseURL;
         IDs = [];
         let x = this.x;
@@ -388,7 +414,7 @@ class VelocityGraph {
         cursor: "pointer",
         point: {
           events: {
-            click: function() {
+            click: function () {
               window.open(newURL, "_blank");
             }
           }
@@ -409,7 +435,7 @@ class VelocityGraph {
       itemHoverStyle: {
         color: "#D3D3D3"
       },
-      labelFormatter: function() {
+      labelFormatter: function () {
         if (this.name === "Bug" || this.name === "User Story") {
           return this.userOptions.data.length + " " + this.name;
         } else {
@@ -598,7 +624,7 @@ class VelocityGraph {
     };
 
     options.tooltip = {
-      formatter: function() {
+      formatter: function () {
         return `${this.point.xAxis}<br>${this.series.name}: ${this.point.actual_value}`;
       }
     };
@@ -654,7 +680,7 @@ class VelocityGraph {
             fontWeight: "normal",
             textShadow: "none"
           },
-          formatter: function(e) {
+          formatter: function (e) {
             return "<strong>" + this.point.diff + "</strong>";
           }
         }
@@ -724,13 +750,13 @@ class VelocityGraph {
     options.title = {
       text: `<span style='color:#f5f5f5;'>${
         this.res.title
-      }</span><br><span style='color:#C0C0C0; font-size:12px;'>${this.formatDate(
-        sprintStartDate[0]
-      )} - ${this.formatDate(
-        sprintEndDate[0]
-      )}</span><br><br><span style='color : #50E3C2'>${parseFloat(
-        percentageCompleted
-      ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
+        }</span><br><span style='color:#C0C0C0; font-size:12px;'>${this.formatDate(
+          sprintStartDate[0]
+        )} - ${this.formatDate(
+          sprintEndDate[0]
+        )}</span><br><br><span style='color : #50E3C2'>${parseFloat(
+          percentageCompleted
+        ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
       align: "left",
       style: {
         color: "#f5f5f5"
@@ -879,13 +905,13 @@ class VelocityGraph {
     options.title = {
       text: `<span style='color:#f5f5f5;'>${
         this.res.title
-      }</span><br><span style='color:#C0C0C0; font-size:12px;'>${this.formatDate(
-        startDate
-      )} - ${this.formatDate(
-        endDate
-      )}</span><br><span style='color : #50E3C2'>${parseFloat(
-        percentageCompleted
-      ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
+        }</span><br><span style='color:#C0C0C0; font-size:12px;'>${this.formatDate(
+          startDate
+        )} - ${this.formatDate(
+          endDate
+        )}</span><br><span style='color : #50E3C2'>${parseFloat(
+          percentageCompleted
+        ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
       align: "left",
       style: {
         color: "#f5f5f5"
