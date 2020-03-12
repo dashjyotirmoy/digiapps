@@ -124,10 +124,11 @@ class ProductInfoBar extends Component {
       return {
         id: ele.teamId,
         projectName: ele.teamName,
-        sprintDetails: ele.sprintDetails
+        sprintDetails: ele.sprintDetails,
+        headCount: ele.teamHeadCount
       };
     });
-    productMetrics = this.setProductMetrics(res.data.sprintCount);
+    productMetrics = this.setProductMetrics(res.data.sprintCount, teamDetails[teamData.selectedIndex].headCount);
     this.props.repoDropValDispatch();
     this.props.resetProjectRepoDispatch();
     this.setState({
@@ -150,9 +151,11 @@ class ProductInfoBar extends Component {
       return {
         id: ele.id,
         projectName: ele.projectName,
-        sprintDetails: ele.sprintDetails
+        sprintDetails: ele.sprintDetails,
+        headCount: ele.headCount
       };
     });
+    productMetrics = this.updateProductMetrics(teamDetail[selectedIndex].headCount);
     this.setState({
       teamData: teamDetail,
       selectedTeam: teamDetail[selectedIndex].projectName
@@ -228,15 +231,22 @@ class ProductInfoBar extends Component {
     }
   };
 
-  setProductMetrics(data) {
+  setProductMetrics(data , headCount, index = 0) {
     const metrics = [
-      { name: "Head Count", value: this.props.projDetails.totalMembers },
-      { name: "Sprint Count", value: `${data.completed} / ${data.total}` },
-      { name: "Team Head Count", value: 25 }
-      // For now the Team Head Count is same as Head count, once response is provided this can be modified
+      // { name: "Head Count", value: this.props.projDetails.totalMembers },
+      { id : index++ ,name: "Head Count", value: this.props.projDetails.totalMembers },
+      { id : index++, name: "Sprint Count", value: `${data.completed} / ${data.total}` },
+      { id : index++, name: "Team Head Count", value : headCount }
     ];
     return metrics;
   }
+
+  updateProductMetrics(headCount){
+    let newMetrics = [...productMetrics]
+    newMetrics[2].value = headCount;
+    return newMetrics;
+  }
+  
   //method to update sprint details
 
   updateSprint = sprintId => {
@@ -518,7 +528,7 @@ class ProductInfoBar extends Component {
                         {productMetrics.map(item => {
                           return (
                             <div
-                              key={item.value}
+                              key={item.id}
                               className="d-flex d-inline-block 
                         flex-column h-100 justify-content-center max-w-18 px-1 
                         py-0  w-auto "

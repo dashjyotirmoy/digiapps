@@ -100,6 +100,8 @@ class VelocityGraph {
       rolling_period,
       rollingAvgData_copy = [];
 
+      // controlChartYAxisMaxLimit = 0;
+
     //block to separate user story and bug data from the response
     this.res.data.map(series => {
       if (series.name === "userStory") {
@@ -264,13 +266,13 @@ class VelocityGraph {
             bugsPoints.push(pointData);
             // console.log(pointData.y);
             controlChartYValues.push(pointData.y)
-            console.log(controlChartYValues);
+            
             // console.log(data);
             if (controlChartYAxisMaxLimit < pointData.y) {
               controlChartYAxisMaxLimit = pointData.y
             }
 
-            console.log(controlChartYAxisMaxLimit);
+            
 
             // console.log(bugsPoints);
 
