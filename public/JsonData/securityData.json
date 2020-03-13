@@ -1,0 +1,118 @@
+[
+    {
+        "productId": "26414",
+        "productName": "DevOps Dashboard",
+        "productPolicyViolationsCount": "3",
+        "productVulnerabilityAlerts": {
+            "count": "10",
+            "metrics": {
+                "high": "1",
+                "medium": "6",
+                "low": "3"
+            }
+        },
+        "productLibraryAlerts": {
+            "count": "10",
+            "metrics": {
+                "high": "1",
+                "medium": "6",
+                "low": "3"
+            }
+        },
+        "productLibraryStatistics": {
+            "vulnerableCount": "10",
+            "vulnerableAndOutdatedCount": "15",
+            "outdatedCount": "25"
+        },
+        "projects": [
+            {
+                "projectId": "repoId",
+                "projectName": "repoName",
+                "policyViolationsCount": "3",
+                "vulnerabilityAlerts": {
+                    "count": "10",
+                    "metrics": {
+                        "high": "1",
+                        "medium": "6",
+                        "low": "3"
+                    }
+                },
+                "libraryAlerts": {
+                    "count": "10",
+                    "metrics": {
+                        "high": "1",
+                        "medium": "6",
+                        "low": "3"
+                    }
+                },
+                "libraryStatistics": {
+                    "vulnerableCount": "10",
+                    "vulnerableAndOutdatedCount": "15",
+                    "outdatedCount": "25"
+                },
+                "vulnerabilities": [
+                    {
+                        "name": "CVE-2019-17571",
+                        "type": "CVE",
+                        "severity": "Medium",
+                        "score": "5.1",
+                        "libraryId": "12361"
+                    }
+                ],
+                "libraries": [
+                    {
+                        "id": "12361",
+                        "name": "log4j-1.2.15.jar",
+                        "vulnerabilities": {
+                            "high": "1",
+                            "medium": "3",
+                            "low": "2"
+                        },
+                        "licenseCount": "27"
+                    }
+                ],
+                "alerts": {
+                    "perVulnerabilityAlert": [
+                        {
+                            "severity": "High",
+                            "libraryName": "log4j-1.2.15.jar",
+                            "vulnerabilityId": "CVE-2019-17571",
+                            "cvss3score": "9.8",
+                            "cvss2score": "7.5",
+                            "publishedDate": "2020-12-20T00:00:00Z",
+                            "modifiedDate": "2020-03-07T00:00:00Z",
+                            "topFixType": "UPGRADE_VERSION",
+                            "topFixResolution": "Upgrade to version 1.2.18"
+                        }
+                    ],
+                    "perLibraryAlert": [
+                        {
+                            "libraryName": "log4j-1.2.15.jar",
+                            "vulnerabilityType": "Security Vulnerability",
+                            "description": {
+                                "high": "1",
+                                "medium": "0",
+                                "low": "0"
+                            },
+                            "libraryType": "Java",
+                            "creationDate": "2020-03-07T00:00:00Z",
+                            "modifiedDate": "2020-03-07T00:00:00Z"
+                        }
+                    ]
+                },
+                "policies": {
+                    "policyViolations": [
+                        {
+                            "policyId": "7",
+                            "policyName": "mit",
+                            "match": "By License Group",
+                            "action": "Approve",
+                            "creator": "Rahul.Jaiswal5@gds.ey.com",
+                            "creationDate": "2020-03-07T00:00:00Z"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+]

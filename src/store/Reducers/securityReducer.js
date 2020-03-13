@@ -2,8 +2,8 @@ import * as actionType from "../actions/actionTypes";
 
 const initialState = {
     currentRepo: "",
-    currentQualityData: {
-      qualityDetails: {}
+    currentSecurityData: {
+      securityDetails: {}
     }
 };
 const securityReducer = (state = initialState, action) => {

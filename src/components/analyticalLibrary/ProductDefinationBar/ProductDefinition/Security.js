@@ -6,6 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown
 } from "@fortawesome/free-solid-svg-icons";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { repoDropValDispatchSecurity, securityDataDispatch } from '../../../../store/actions/securityData';
+import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
 // import Spinner from "../../Spinner/Spinner";
 
 
@@ -38,13 +42,34 @@ class Security extends Component {
   }
 
   fetchSecurityData = (props) => {
+    let type;
     this.setState({
         all_data: false,
         charts: []
     });
+    this.props
+        .securityDataDispatch(this.props.currentExecId, this.props.projectID)
+        .then(item => {
+            if(this.props.securityData.projects.length > 0){
+                this.setRepository(this.props.securityData);
 
-
-
+                this.setState({
+                    show: false
+                  });
+                if(this.state.selectedRepo === "") {
+                    type = this.setRawDefaultRepo(this.props.securityData);
+                    this.createCharts(this.createChartObject(type));
+                }
+            }
+            else {
+                this.props.resetProjectRepoDispatch(
+                    this.props.securityData.projects
+                );
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
   }
 
     render() {
@@ -109,6 +134,29 @@ class Security extends Component {
         </React.Fragment>
         );
       }
-    }
+}
 
-export default Security;
+//function to map the state received from reducer
+
+const mapStateToProps = state => {
+  return {
+    currentExecId: state.execData.executiveId,
+    securityData: state.qualityData.currentSecurityData.securityDetails,
+    projectID: state.productDetails.currentProject.projectDetails.id,
+    currentRepo: state.securityData.currentRepo,
+    sprintId: state.productDetails.currentSprint.sprintInfo.id
+  };
+};
+
+//function to dispatch action to the reducer
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { securityDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurity },
+    dispatch
+  );
+};
+
+//Connect react component to redux
+
+export default connect(mapStateToProps, mapDispatchToProps)(Security);
