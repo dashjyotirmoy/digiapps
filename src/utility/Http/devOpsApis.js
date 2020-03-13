@@ -40,8 +40,7 @@ const getQualityMetricsData = (execId, projectId) => {
 
 const getSecurityMetricsData = (execId, projectId) => {
   return devovOpsApi.get(
-    // `/widget/securityInsights?executiveId=${execId}&projectId=${projectId}`
-    '/JsonData/securityData.json'
+    `/widget/securityInsights?executiveId=${execId}&projectId=${projectId}`
   );
 }
 
