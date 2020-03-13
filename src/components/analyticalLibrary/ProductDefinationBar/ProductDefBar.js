@@ -96,6 +96,15 @@ class ProductDefBar extends Component {
                         </span>
                       }
                     ></Tab>
+                    <Tab
+                      eventKey="security"
+                      title={
+                        <span className="font-aggegate-sub-text">
+                          {" "}
+                          Security
+                        </span>
+                      }
+                    ></Tab>
                   </Tabs>
                 ) : null}
               </StyleMainTab>
