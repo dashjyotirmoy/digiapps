@@ -54,7 +54,7 @@ class Security extends Component {
                     show: false
                   });
                 if(this.state.selectedRepo === "") {
-                    type = this.setRawDefaultRepo(this.props.securityData);
+                    type = this.setRawObjects(this.props.securityData);
                     this.createCharts(this.createChartObject(type));
                 }
             }
@@ -69,36 +69,35 @@ class Security extends Component {
         });
   }
 
-  setRawDefaultRepo(rawData) {
-    const item = rawData.map((item) => {
-      return {
+  setRawObjects(rawData) {
+    const item =  {
         productPolicyViolationsCount: [
-          { name: item.productName },
+          { name: rawData.productName },
           { title: "Policy Violations" },
-          item.productPolicyViolationsCount
+          rawData.productPolicyViolationsCount
         ],
         productVulnerabilityAlerts: [
-          { name: item.productName },
+          { name: rawData.productName },
           { title: "Per Vulnerability Alert" },
-          item.productVulnerabilityAlerts
+          rawData.productVulnerabilityAlerts
         ],
         productLibraryAlerts: [
-          { name: item.productName},
+          { name: rawData.productName},
           { title: "Per Library Alert" },
-          item.productLibraryAlerts
+          rawData.productLibraryAlerts
         ],
         productLibraryStatistics: [
-          { name: item.productName },
+          { name: rawData.productName },
           { title: "Library Statistics" },
-          item.productLibraryStatistics
+          rawData.productLibraryStatistics
         ]
       };
-    });
-    const splitArr = this.splitRawObj(item);
+    // const splitArr = this.splitRawObj(item);
+    const splitArr = Object.values(item);
     return splitArr;
   }
 
-  setRawRepoObjects = (rawData, selectedRepoData) => {
+  setRepoObjects = (rawData, selectedRepoData) => {
     const item = {
         productPolicyViolationsCount: [
         { name: selectedRepoData.projectName },
@@ -125,6 +124,11 @@ class Security extends Component {
     const splitArr = Object.values(item);
 
     return [splitArr];
+  };
+
+  splitRawObj = type => {
+    const splitArr = type.map(obj => Object.values(obj));
+    return splitArr;
   };
 
   createCharts = (list, removed) => {
@@ -185,7 +189,7 @@ class Security extends Component {
 
   updateSecurityData = (repoId, selectedIndex) => {
 
-    const type = this.setRawRepoObjects(
+    const type = this.setRepoObjects(
         this.props.securityData,
         this.props.securityData.projects[selectedIndex],
         repoId
@@ -265,18 +269,6 @@ class Security extends Component {
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
             /> */}
-            {/* <ResponsiveGridLayout
-                // maxRows={2}
-                className="layout"
-                autoSize={false}
-                layouts={this.state.layouts}
-                compactType={"vertical"}
-                breakpoints={this.state.gridBreakpoints}
-                cols={this.state.gridCol}
-                preventCollision={false}
-            >
-            ok
-            </ResponsiveGridLayout> */}
         </React.Fragment>
         );
       }
