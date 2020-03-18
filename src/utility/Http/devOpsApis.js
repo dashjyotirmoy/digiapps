@@ -38,9 +38,9 @@ const getQualityMetricsData = (execId, projectId) => {
   );
 };
 
-const getSecurityMetricsData = (execId, projectId) => {
+const getSecurityProjectData = (projectId) => {
   return devovOpsApi.get(
-    `/widget/securityInsights?executiveId=${execId}&projectId=${projectId}`
+    `/widget/security-insights/product?productId=${projectId}`
   );
 }
 
@@ -51,5 +51,5 @@ export default {
   getSprintInsightsData,
   getQualityMetricsData,
   getAllExecutives,
-  getSecurityMetricsData
+  getSecurityProjectData
 };
