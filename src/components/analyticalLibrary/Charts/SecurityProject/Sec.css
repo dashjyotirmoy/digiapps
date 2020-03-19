@@ -1,0 +1,72 @@
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+.rounde{
+    border-radius: 25px;
+    border: 2px solid #334154;
+    padding: 20px;
+    text-align: center;
+    background-color: #334154;
+   }
+   .bg{
+     background-color: #232D3B;
+     color: #fff;
+     border-radius: 10px;
+   }
+   .iconend{
+    display: flex;
+    justify-content: flex-end;
+   }
+   .borderadius{
+    background-color: #232D3B!important;
+    border-radius: 10px!important;
+   }
+   .tabhead{
+     background-color: #1D2632;
+     color:#85888E;
+     padding-top: 1rem;
+   }
+   .tabrow{
+    background-color: #334154;
+   
+    padding-top: 1rem;
+   }
+  
+  
+  

@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { repoDropValDispatchSecurity, securityProjectDataDispatch } from '../../../../store/actions/securityData';
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
+import Sec from '../../Charts/SecurityProject/Sec';
 // import Spinner from "../../Spinner/Spinner";
 
 
@@ -313,13 +314,9 @@ class Security extends Component {
               </Dropdown>
             </Col>
           </Row>
-          {/* <Grid
-            //   chartData={this.state.charts[0]}
-              layouts={this.state.layout}
-              removeDelegate={this.removeChartComponent}
-              breakpoint={this.state.gridBreakpoints}
-              columnSize={this.state.gridCol}
-            /> */}
+          {this.state.charts.length ? (
+           <Sec cardsData = {this.state.charts}/>
+          ) : null}
         </React.Fragment>
         );
       }
