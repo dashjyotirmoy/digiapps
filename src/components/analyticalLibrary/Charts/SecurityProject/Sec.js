@@ -72,7 +72,7 @@ const Sec = props => {
 
   return (
     <React.Fragment>
-      <Container fluid>
+      <Container fluid style={{paddingTop: "10px"}}>
         <Row>
           <Col sm={9}>
             <Row>
