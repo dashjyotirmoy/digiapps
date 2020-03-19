@@ -3,7 +3,8 @@ import * as actionType from "../actions/actionTypes";
 const initialState = {
     currentRepo: "",
     currentSecurityData: {
-      securityDetails: {}
+      securityProjectDetails: {},
+      securityRepoDetails: {}
     }
 };
 const securityReducer = (state = initialState, action) => {
@@ -13,13 +14,20 @@ const securityReducer = (state = initialState, action) => {
           ...state,
           currentRepo: action.payload.currentRepo
         };
-      case actionType.SET_SECURITY_DETAILS:
+      case actionType.SET_SECURITY_PROJECT_DETAILS:
         return {
           ...state,
           currentSecurityData: {
-            securityDetails: action.payload.securityDetails
+            securityProjectDetails: action.payload.securityProjectDetails
           }
         };
+        case actionType.SET_SECURITY_REPO_DETAILS:
+          return {
+            ...state,
+            currentSecurityData: {
+              securityRepoDetails: action.payload.securityRepoDetails
+            }
+          }
   
       default:
         return state;
