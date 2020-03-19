@@ -1,16 +1,16 @@
 import * as actionTypes from "./actionTypes";
 import api from "../../utility/Http/devOpsApis";
 
-export const securityDataDispatch = (execId, projectId) =>
+export const securityAlertDataDispatch = (execId, projectId) =>
   //   sprintId
   async dispatch => {
     try {
-      const response = await api.getSecurityMetricsData(execId, projectId);
-      console.log('ggggggggggggwwwwwwwwwwwwxxxxxxxxx', response);
+      const response = await api.getSecurityAlertMetricsData(execId, projectId);
+      console.log('vvvvvvvvvvvvvvvvvvvvvvvv', response);
       dispatch({
         type: actionTypes.SET_SECURITY_DETAILS,
         payload: {
-          securityDetails: response.data,
+          securityAlertDetails: response.data,
           chartDataReceived: true
         }
       });
@@ -19,7 +19,7 @@ export const securityDataDispatch = (execId, projectId) =>
     }
   };
 
-export const repoDropValDispatchSecurity = type => dispatch => {
+export const repoDropValDispatchSecurityAlert = type => dispatch => {
   dispatch({
     type: actionTypes.SET_CURRENT_REPO,
     payload: {

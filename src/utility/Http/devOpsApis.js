@@ -39,8 +39,16 @@ const getQualityMetricsData = (execId, projectId) => {
 };
 
 const getSecurityMetricsData = (execId, projectId) => {
+  console.log('getSecurityMetricsData', execId, projectId);
   return devovOpsApi.get(
     `/widget/securityInsights?executiveId=${execId}&projectId=${projectId}`
+  );
+}
+
+const getSecurityAlertMetricsData = (execId, projectId) => {
+  console.log('getSecurityAlertMetricsData', execId, projectId);
+  return devovOpsApi.get(
+    `/widget/security-insights/alerts?productId=${execId}&projectId=${projectId}`
   );
 }
 
@@ -48,6 +56,7 @@ export default {
   getVelocityData,
   getExecInsightsData,
   getProjectInsightsData,
+  getSecurityAlertMetricsData,
   getSprintInsightsData,
   getQualityMetricsData,
   getAllExecutives,
