@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Grid from "../../Grid-Layout/Grid";
 import { Row, Col } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -41,23 +42,23 @@ class SecurityAlert extends Component {
         all_data: false,
         charts: []
     });
-    console.log('ffffffffffffffqqqqqqqqqqqqqqqqqqqqqqqq', this.props);
     this.props
-        .securityAlertDataDispatch(this.props.productID, this.props.projectID)
+        .securityAlertDataDispatch(this.props.projectID, this.props.projectID)
         .then(item => {
-            if(this.props.securityData.projects.length > 0){
-                this.setRepository(this.props.securityData);
+            if(this.props.securityProjectData.projectDetail.length > 0){
+                this.setRepository(this.props.securityProjectData);
+
                 this.setState({
                     show: false
                   });
                 if(this.state.selectedRepo === "") {
-                    type = this.setRawObjects(this.props.securityData);
+                    type = this.setRawObjects(this.props.securityProjectData);
                     this.createCharts(this.createChartObject(type));
                 }
             }
             else {
                 this.props.resetProjectRepoDispatch(
-                    this.props.securityData.projects
+                    this.props.securityProjectData.projects
                 );
             }
         })
@@ -66,27 +67,73 @@ class SecurityAlert extends Component {
         });
   }
 
+  setRepository = res => {
+    const repositoryData = res.projectDetail;
+    if (repositoryData !== null) {
+      const { list } = this.markSelected(
+        repositoryData,
+        repositoryData[0].projId
+      );
+      const repoDetails = list.map(ele => {
+        return {
+          id: ele.projId,
+          projectName: ele.projName
+        };
+      });
+
+      this.setState({
+        repoData: repoDetails,
+        selectedRepo: ""
+      });
+
+      this.props.repoDropValDispatchSecurity("");
+    }
+  };
+
+  markSelected = (prodList, id) => {
+    const resetList = this.resetSelect(prodList);
+    let selectedIndex = 0;
+    const selectedParamList = resetList.map((ele, index) => {
+      if (ele.repoKey === id) {
+        selectedIndex = index;
+        return ele;
+      }
+      return ele;
+    });
+    return {
+      list: selectedParamList,
+      selectedIndex: selectedIndex
+    };
+  };
+
+  resetSelect = prodList => {
+    const defaultList = prodList.map(ele => {
+      return ele;
+    });
+    return defaultList;
+  };
+
   setRawObjects(rawData) {
     const item =  {
         productPolicyViolationsCount: [
-          { name: rawData.productName },
+          { name: rawData.name },
           { title: "Policy Violations" },
-          rawData.productPolicyViolationsCount
+          rawData.policyViolationsCount
         ],
         productVulnerabilityAlerts: [
-          { name: rawData.productName },
+          { name: rawData.name },
           { title: "Per Vulnerability Alert" },
-          rawData.productVulnerabilityAlerts
+          rawData.vulnerabilityAlerts
         ],
         productLibraryAlerts: [
-          { name: rawData.productName},
+          { name: rawData.name},
           { title: "Per Library Alert" },
-          rawData.productLibraryAlerts
+          rawData.libraryAlerts
         ],
         productLibraryStatistics: [
-          { name: rawData.productName },
+          { name: rawData.name },
           { title: "Library Statistics" },
-          rawData.productLibraryStatistics
+          rawData.libraryStatistics
         ]
       };
     // const splitArr = this.splitRawObj(item);
@@ -129,33 +176,38 @@ class SecurityAlert extends Component {
   };
 
   createCharts = (list, removed) => {
-    let list_temp = list[0];
-    const updatedList = list_temp.filter((ele, index) => {
+    // let list_temp = list[0];
+    const updatedList = list.filter((ele, index) => {
       if (index !== removed) {
         return Object.assign({}, ele);
       }
     });
-    updatedList.map(ele => {
-      ele.component = this.setChart(
-        ele.title,
-        ele.data[2]
-      );
-    });
-    let chartList = []; chartList[0] = updatedList;
+    // updatedList.map(ele => {
+    //   ele.component = this.setChart(
+    //     ele.title,
+    //     ele.data[2]
+    //   );
+    // });
+    // let chartList = []; chartList[0] = updatedList;
     this.setState({
-      charts: chartList
+      charts: updatedList
     });
   };
 
   createChartObject = typeObj => {
     const processedData = typeObj.map((item, index) => {
-      return item.map(ele => {
-        return {
-          name: ele[1].title,
-          data: ele,
-          title: ele[1].title
-        };
-      });
+      // return item.map(ele => {
+      //   return {
+      //     name: ele[1].title,
+      //     data: ele,
+      //     title: ele[1].title
+      //   };
+      // });
+      return  {
+        name: item[0].name,
+        data: item,
+        title: item[1].title
+      }
     });
     return processedData;
   };
@@ -166,7 +218,7 @@ class SecurityAlert extends Component {
 
   updateRepository = repoId => {
     const { list, selectedIndex } = this.markSelected(
-      this.props.securityData.projects,
+      this.props.securityProjectData.projects,
       repoId
     );
     const repoDetails = list.map(ele => {
@@ -180,15 +232,15 @@ class SecurityAlert extends Component {
       selectedRepo: repoDetails[selectedIndex].projectName
     });
 
-    this.props.repoDropValDispatchSecurityAlert(repoDetails[selectedIndex].projectName);
+    this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].projectName);
     this.updateSecurityData(repoId, selectedIndex);
   };
 
   updateSecurityData = (repoId, selectedIndex) => {
 
     const type = this.setRepoObjects(
-        this.props.securityData,
-        this.props.securityData.projects[selectedIndex],
+        this.props.securityProjectData,
+        this.props.securityProjectData.projects[selectedIndex],
         repoId
     );
 
@@ -225,7 +277,7 @@ class SecurityAlert extends Component {
         //  <div style={{ color: "white" }}>security </div>
 
         <React.Fragment>
-         <div>security Alert</div>
+          <div>security component view</div>
         </React.Fragment>
         );
       }
@@ -236,8 +288,8 @@ class SecurityAlert extends Component {
 const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
-    securityData: state.securityData.currentSecurityData.securityDetails,
-    productID: state.productDetails.currentProject.projectDetails.id,
+    securityProjectData: state.securityData.currentSecurityData.securityProjectDetails,
+    projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.securityData.currentRepo,
     sprintId: state.productDetails.currentSprint.sprintInfo.id
   };

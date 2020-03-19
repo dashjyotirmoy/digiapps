@@ -6,9 +6,8 @@ export const securityAlertDataDispatch = (execId, projectId) =>
   async dispatch => {
     try {
       const response = await api.getSecurityAlertMetricsData(execId, projectId);
-      console.log('vvvvvvvvvvvvvvvvvvvvvvvv', response);
       dispatch({
-        type: actionTypes.SET_SECURITY_DETAILS,
+        type: actionTypes.SET_SECURITY_PROJECT_DETAILS,
         payload: {
           securityAlertDetails: response.data,
           chartDataReceived: true

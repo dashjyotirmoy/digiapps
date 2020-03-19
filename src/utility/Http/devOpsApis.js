@@ -45,7 +45,6 @@ const getSecurityProjectData = (projectId) => {
 }
 
 const getSecurityAlertMetricsData = (execId, projectId) => {
-  console.log('getSecurityAlertMetricsData', execId, projectId);
   return devovOpsApi.get(
     `/widget/security-insights/alerts?productId=${execId}&projectId=${projectId}`
   );
