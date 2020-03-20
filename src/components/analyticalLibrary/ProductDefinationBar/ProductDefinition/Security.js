@@ -8,10 +8,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { repoDropValDispatchSecurity, securityProjectDataDispatch, securityRepoDataDispatch } from '../../../../store/actions/securityData';
+import { repoDropValDispatchSecurity, securityProjectDataDispatch, securityRepoDataDispatch, securityPolicyDataDispatch } from '../../../../store/actions/securityData';
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
 import Sec from '../../Charts/SecurityProject/Sec';
 import Spinner from "../../Spinner/Spinner";
+import Policy from '../../Charts/SecurityPolicy/Policy';
 
 
 
@@ -204,7 +205,8 @@ class Security extends Component {
     // });
     // let chartList = []; chartList[0] = updatedList;
     this.setState({
-      charts: updatedList
+      charts: updatedList,
+      componentType: "Product"
     });
   };
 
@@ -260,6 +262,31 @@ class Security extends Component {
 
     this.createCharts(this.createChartObject(type));
   };
+
+  setPolicy = () => {
+    this.setState({
+      charts: []
+    })
+    this.props.securityPolicyDataDispatch(this.props.projectID, this.props.currentRepo)
+    .then(() => {this.setPolicyData(this.props.securityPolicyData)});
+  }
+
+  setPolicyData = (rawData) => {
+    console.log(rawData);
+    this.setState({
+      charts: rawData.policyViolations,
+      componentType: "Policy"
+    })
+  }
+
+  setAlert = () => {
+    this.props.securityAlertDataDispatch(this.props.projectID, this.props.currentRepo)
+    .then(() => {this.setAlertData(this.props.securityAlertData)});
+  }
+
+  setAlertData = (rawData) => {
+    
+  }
 
   componentDidUpdate() {
     if (this.state.all_data) {
@@ -327,9 +354,18 @@ class Security extends Component {
                 </Row>
               </Dropdown>
             </Col>
+            <Col>
+            <button onClick ={this.setAlert} >Alert</button>
+          </Col>
+          <Col>
+            <button onClick ={this.setPolicy} >Policy</button>
+          </Col>
           </Row>
           {this.state.charts.length && this.state.componentType === "Product" ? (
            <Sec cardsData = {this.state.charts}/>
+          ) : null}
+          {this.state.charts.length && this.state.componentType === "Policy" ? (
+           <Policy cardsData = {this.state.charts}/>
           ) : null}
         </React.Fragment>
         );
@@ -344,6 +380,8 @@ const mapStateToProps = state => {
     currentExecId: state.execData.executiveId,
     securityProjectData: state.securityData.securityProjectDetails,
     securityRepoData: state.securityData.securityRepoDetails,
+    securityPolicyData: state.securityData.securityPolicyDetails,
+    securityAlertData: state.securityData.securityAlertDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.securityData.currentRepo,
     sprintId: state.productDetails.currentSprint.sprintInfo.id
@@ -354,7 +392,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { securityProjectDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurity, securityRepoDataDispatch },
+    { securityProjectDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurity, securityRepoDataDispatch, securityPolicyDataDispatch },
     dispatch
   );
 };

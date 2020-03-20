@@ -50,6 +50,19 @@ const getSecurityRepoData = (projectId, repoId) => {
   );
 };
 
+const getSecurityPolicyData = (projectId, repoId) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/policies?productId=${projectId}&projectId=${repoId}`
+  );
+}
+
+const getSecurityAlertData = (projectId, repoId) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/alerts?productId=${projectId}&projectId=${repoId}`
+  );
+}
+
+
 export default {
   getVelocityData,
   getExecInsightsData,
@@ -58,5 +71,7 @@ export default {
   getQualityMetricsData,
   getAllExecutives,
   getSecurityProjectData,
-  getSecurityRepoData
+  getSecurityRepoData,
+  getSecurityPolicyData,
+  getSecurityAlertData
 };
