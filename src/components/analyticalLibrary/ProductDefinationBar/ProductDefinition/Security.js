@@ -8,10 +8,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { repoDropValDispatchSecurity, securityProjectDataDispatch } from '../../../../store/actions/securityData';
+import { repoDropValDispatchSecurity, securityProjectDataDispatch, securityRepoDataDispatch } from '../../../../store/actions/securityData';
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
 import Sec from '../../Charts/SecurityProject/Sec';
-// import Spinner from "../../Spinner/Spinner";
+import Spinner from "../../Spinner/Spinner";
 
 
 
@@ -32,7 +32,8 @@ class Security extends Component {
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
     show: true,
     selectedRepo: "",
-    repoData: []
+    repoData: [],
+    componentType: "Product"
   };
 
   removeChartComponent = (chartIndex) => {
@@ -97,7 +98,7 @@ class Security extends Component {
     const resetList = this.resetSelect(prodList);
     let selectedIndex = 0;
     const selectedParamList = resetList.map((ele, index) => {
-      if (ele.repoKey === id) {
+      if (ele.projId === id) {
         selectedIndex = index;
         return ele;
       }
@@ -144,33 +145,43 @@ class Security extends Component {
     return splitArr;
   }
 
-  setRepoObjects = (rawData, selectedRepoData) => {
+  setRepoObjects = (rawData) => {
     const item = {
         productPolicyViolationsCount: [
-        { name: selectedRepoData.projectName },
+        { name: rawData.projName },
         { title: "Policy Violations" },
-        selectedRepoData.policyViolationsCount
+        rawData.policyViolationsCount
       ],
       productVulnerabilityAlerts: [
-        { name: selectedRepoData.projectName },
+        { name: rawData.projName },
         { title: "Per Vulnerability Alert" },
-        selectedRepoData.vulnerabilityAlerts
+        rawData.vulnerabilityAlerts
       ],
       productLibraryAlerts: [
-        { name: selectedRepoData.projectName},
+        { name: rawData.projName},
         { title: "Per Library Alert" },
-        selectedRepoData.libraryAlerts
+        rawData.libraryAlerts
       ],
       productLibraryStatistics: [
-        { name: selectedRepoData.projectName },
+        { name: rawData.projName },
         { title: "Library Statistics" },
-        selectedRepoData.libraryStatistics
+        rawData.libraryStatistics
+      ],
+      vulnerabilities: [
+        { name: rawData.projName },
+        { title: "Vulnerabilities" },
+        rawData.vulnerabilities 
+      ],
+      libraries: [
+        { name: rawData.projName },
+        { title: "Libraries" },
+        rawData.libraries
       ]
     };
 
     const splitArr = Object.values(item);
 
-    return [splitArr];
+    return splitArr;
   };
 
   splitRawObj = type => {
@@ -221,13 +232,13 @@ class Security extends Component {
 
   updateRepository = repoId => {
     const { list, selectedIndex } = this.markSelected(
-      this.props.securityProjectData.projects,
+      this.props.securityProjectData.projectDetail,
       repoId
     );
     const repoDetails = list.map(ele => {
       return {
-        id: ele.repoKey,
-        projectName: ele.repoName
+        id: ele.projId,
+        projectName: ele.projName
       };
     });
 
@@ -236,15 +247,15 @@ class Security extends Component {
     });
 
     this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].projectName);
-    this.updateSecurityData(repoId, selectedIndex);
+    this.props.securityRepoDataDispatch(this.props.projectID, repoId)
+    .then(() => {this.updateSecurityData(repoId, selectedIndex)});
+    
   };
 
   updateSecurityData = (repoId, selectedIndex) => {
 
     const type = this.setRepoObjects(
-        this.props.securityProjectData,
-        this.props.securityProjectData.projects[selectedIndex],
-        repoId
+        this.props.securityRepoData
     );
 
     this.createCharts(this.createChartObject(type));
@@ -275,7 +286,10 @@ class Security extends Component {
   }
 
     render() {
-      
+
+      if (this.state.show) {
+        return <Spinner show="true" />;
+      } else {
         return (
         //  <div style={{ color: "white" }}>security </div>
 
@@ -314,12 +328,13 @@ class Security extends Component {
               </Dropdown>
             </Col>
           </Row>
-          {this.state.charts.length ? (
+          {this.state.charts.length && this.state.componentType === "Product" ? (
            <Sec cardsData = {this.state.charts}/>
           ) : null}
         </React.Fragment>
         );
       }
+    }
 }
 
 //function to map the state received from reducer
@@ -327,7 +342,8 @@ class Security extends Component {
 const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
-    securityProjectData: state.securityData.currentSecurityData.securityProjectDetails,
+    securityProjectData: state.securityData.securityProjectDetails,
+    securityRepoData: state.securityData.securityRepoDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.securityData.currentRepo,
     sprintId: state.productDetails.currentSprint.sprintInfo.id
@@ -338,7 +354,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { securityProjectDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurity },
+    { securityProjectDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurity, securityRepoDataDispatch },
     dispatch
   );
 };
