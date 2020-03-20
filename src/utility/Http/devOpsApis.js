@@ -42,6 +42,24 @@ const getSecurityProjectData = (projectId) => {
   return devovOpsApi.get(
     `/widget/security-insights/product?productId=${projectId}`
   );
+};
+
+const getSecurityRepoData = (projectId, repoId) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/repos?productId=${projectId}&projectId=${repoId}`
+  );
+};
+
+const getSecurityPolicyData = (projectId, repoId) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/policies?productId=${projectId}&projectId=${repoId}`
+  );
+}
+
+const getSecurityAlertData = (projectId, repoId) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/alerts?productId=${projectId}&projectId=${repoId}`
+  );
 }
 
 const getSecurityAlertMetricsData = (execId, projectId) => {
@@ -58,5 +76,8 @@ export default {
   getSprintInsightsData,
   getQualityMetricsData,
   getAllExecutives,
-  getSecurityProjectData
+  getSecurityProjectData,
+  getSecurityRepoData,
+  getSecurityPolicyData,
+  getSecurityAlertData
 };
