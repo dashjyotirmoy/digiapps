@@ -37,11 +37,24 @@
   }
 } */
 
+.library_text{
+    font-family: Helvetica;
+    font-size: 18;
+    font-weight: normal;
+    fill: rgb(255, 255, 255);
+}
+.library_rounde{
+  font-family: Helvetica;
+    font-size: 13;
+    padding: 10px;
+    font-weight: normal;
+    fill: rgb(167, 174, 183);
+}
 .rounde{
     border-radius: 25px;
     border: 2px solid #334154;
     padding: 20px;
-    text-align: center;
+    text-align: left;
     background-color: #334154;
    }
    .bg{

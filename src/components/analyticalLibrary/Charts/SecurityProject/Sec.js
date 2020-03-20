@@ -216,9 +216,9 @@ const Sec = props => {
     <p>Vulnerability Analysis</p>
     <HighchartsReact highcharts={Highcharts} options={options} />
     <p>Library Statistics</p>
-  <p className="rounde">{props.cardsData[3].data[2].vulnerableCount} Vulnerable</p>
-    <p className="rounde">{props.cardsData[3].data[2].vulnerableAndOutdatedCount} Vulnerable & Outdated</p>
-    <p className="rounde">{props.cardsData[3].data[2].outdatedCount} Outdated</p>
+  <p className="rounde"> <span className="library_text">{props.cardsData[3].data[2].vulnerableCount}</span> <span className="library_rounde" style={{fontSize: "13px", color: "#A7AEB7"}}> Vulnerable</span></p>
+    <p className="rounde"><span className="library_text">{props.cardsData[3].data[2].vulnerableAndOutdatedCount}</span> <span className="library_rounde" style={{fontSize: "13px", color: "#A7AEB7"}}>Vulnerable & Outdated</span> </p>
+    <p className="rounde"><span className="library_text"> {props.cardsData[3].data[2].outdatedCount}</span> <span className="library_rounde" style={{fontSize: "13px", color: "#A7AEB7"}}>Outdated</span> </p>
   </Card.Body>
     </Row>
        </Col>
