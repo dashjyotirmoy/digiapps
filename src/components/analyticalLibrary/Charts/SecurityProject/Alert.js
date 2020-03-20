@@ -1,15 +1,7 @@
 import React from "react";
-// import 'react-circular-progressbar/dist/styles.css';
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
 import { Row, Col, Container, Card, Badge, Form,DropdownButton,Dropdown,Button} from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
-import DocumentCancelSvg from './DocumentCancel';
-import InsecureProtectionSvg from './InsecureProtection';
-import LibrarySvg from './LibrarySvg'
 
 const App = props => {
   return (

@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import Grid from "../../Grid-Layout/Grid";
 import { Row, Col } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
-import SecurityAlert from "./SecurityAlert";
+// import SecurityAlert from "./SecurityAlert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { repoDropValDispatchSecurity, securityProjectDataDispatch, securityRepoDataDispatch, securityPolicyDataDispatch } from '../../../../store/actions/securityData';
+import { repoDropValDispatchSecurity, securityProjectDataDispatch, securityRepoDataDispatch, securityPolicyDataDispatch, securityAlertDataDispatch } from '../../../../store/actions/securityData';
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
 import Sec from '../../Charts/SecurityProject/Sec';
+import App from '../../Charts/SecurityProject/Alert'
 import Spinner from "../../Spinner/Spinner";
 import Policy from '../../Charts/SecurityPolicy/Policy';
 
@@ -31,6 +31,7 @@ class Security extends Component {
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
     show: true,
+    showbutton: false,
     selectedRepo: "",
     repoData: [],
     componentType: "Product"
@@ -228,6 +229,9 @@ class Security extends Component {
   };
 
   handleRepoChange = repoID => {
+    this.setState({
+      showbutton: true
+  });
     this.updateRepository(repoID);
   };
 
@@ -284,6 +288,10 @@ class Security extends Component {
   }
 
   setAlertData = (rawData) => {
+    this.setState({
+      charts: rawData,
+      componentType: "Alert"
+    })
     
   }
 
@@ -353,18 +361,24 @@ class Security extends Component {
                 </Row>
               </Dropdown>
             </Col>
-            <Col>
-            <button onClick ={this.setAlert} >Alert</button>
-          </Col>
-          <Col>
-            <button onClick ={this.setPolicy} >Policy</button>
-          </Col>
+
+            {this.state.showbutton ? (
+           <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
+          ) : null}
+
+          {this.state.showbutton ? (
+           <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
+          ) : null}
+            
           </Row>
           {this.state.charts.length && this.state.componentType === "Product" ? (
            <Sec cardsData = {this.state.charts}/>
           ) : null}
           {this.state.charts.length && this.state.componentType === "Policy" ? (
            <Policy cardsData = {this.state.charts}/>
+          ) : null}
+          {this.state.componentType === "Alert" ? (
+           <App cardsData = {this.state.charts}/>
           ) : null}
         </React.Fragment>
         );
@@ -391,7 +405,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { securityProjectDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurity, securityRepoDataDispatch, securityPolicyDataDispatch },
+    { securityProjectDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurity, securityRepoDataDispatch, securityPolicyDataDispatch, securityAlertDataDispatch },
     dispatch
   );
 };

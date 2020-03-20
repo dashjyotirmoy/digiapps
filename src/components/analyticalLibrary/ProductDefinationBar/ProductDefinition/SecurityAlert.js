@@ -1,11 +1,4 @@
 import React, { Component } from "react";
-import Grid from "../../Grid-Layout/Grid";
-import { Row, Col } from "react-bootstrap";
-import Dropdown from "../../Dropdown/Dropdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronDown
-} from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { repoDropValDispatchSecurityAlert, securityAlertDataDispatch } from '../../../../store/actions/securityAlertData';
