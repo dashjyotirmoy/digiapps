@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col,Button} from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
 // import SecurityAlert from "./SecurityAlert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +15,7 @@ import App from '../../Charts/SecurityProject/Alert'
 import Spinner from "../../Spinner/Spinner";
 import Policy from '../../Charts/SecurityPolicy/Policy';
 import SecurityOnProjectSelection from '../../Charts/SecurityDropdown/SecurityOnProjSelection';
+import "../../Charts/SecurityProject/Sec.css"
 
 class Security extends Component {
   state = {
@@ -381,14 +382,19 @@ class Security extends Component {
               </Dropdown>
             </Col>
 
-            {this.state.showbutton ? (
-           <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
+            <div>
+{this.state.showbutton ? (
+              <Button variant="outline-dark" className="Alertbg"  onClick ={this.setAlert}>Alert</Button>
+          //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
           ) : null}
-
-          {this.state.showbutton ? (
-           <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
+</div>
+         
+<div className="ml-3">
+{this.state.showbutton ? (
+             <Button variant="outline-dark" className="Alertbg" onClick ={this.setPolicy}>Policies</Button>
+          //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
           ) : null}
-            
+</div>
           </Row>
           {this.state.charts.length && this.state.componentType === "Product" ? (
            <Sec cardsData = {this.state.charts}/>

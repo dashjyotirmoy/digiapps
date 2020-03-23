@@ -2,7 +2,7 @@ import React from "react";
 // import 'react-circular-progressbar/dist/styles.css';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Row, Col, Container, Card,Badge } from "react-bootstrap";
+import { Row, Col, Container, Card,Badge,ButtonGroup,Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -208,7 +208,29 @@ const Sec = props => {
                      <p>1</p>
                    </Col>
                    <Col sm={3}>
-                     <p>135</p>
+                     <p>
+                     <ButtonGroup
+                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
+                            >
+                              <Button
+                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
+                              >
+                                <span style={{ lineHeight: '' }}>
+                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
+                                </span>
+                              </Button>
+                              <Button
+                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
+                              >
+                                Medium 1
+</Button>
+                              <Button
+                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
+                              >
+                                Low 2
+  </Button>
+                            </ButtonGroup>
+                     </p>
                    </Col>
                    <Col sm={3}>
                      <p>4</p>
