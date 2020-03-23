@@ -17,9 +17,9 @@ function updateFunction() {
 }
 
 const Policy = (props) => {
-
     
     let policyData = props.cardsData;
+    console.log('hhhhhhhhhqqqqqqqqqqq policydata', policyData);
   return (
     <React.Fragment>
       <Card

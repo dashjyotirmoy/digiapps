@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
 
 const App = props => {
+  let alertData = props.cardsData;
+  console.log('dddddddddddxx', alertData);
   return (
     <React.Fragment>
       <Container fluid>
@@ -55,41 +57,46 @@ const App = props => {
                     <p>Top Fix Resolution</p>
                   </Col>
                 </Row>
-
-                <Row className="tabrow f-12">
+                {
+                alertData.perVulnerabilityAlert.map((item, index) => {
+                  return (
+                <Row className="tabrow f-12" key={index}>
+                 
                   <Col sm={1}>
-                    <p>
+                    
                       <Form.Check type="checkbox" style={{ float: "left" }} />
                       <Badge className="sevbadge"></Badge>{" "}
-                    </p>
                   </Col>
                   <Col sm={2}>
-                    <p>Django-1.10.5-py2.py3-none-any.whl</p>
+                  <p>{item.libraryName}</p>
                   </Col>
                   <Col sm={1}>
                     <span>1 project</span>
                     <span className="font-10">details</span>
                   </Col>
                   <Col sm={2}>
-                    <p>CVE-2019-14234</p>
+                  <p>{item.vulnerabilityId}</p>
                   </Col>
                   <Col sm={1}>
-                    <p>9.8</p>
+                    <p>{item.cvss3score}</p>
                   </Col>
                   <Col sm={1}>
-                    <p>7.5</p>
+                    <p>{item.cvss2score}</p>
                   </Col>
                   <Col sm={1}>
-                    <p>09-08-2019</p>
+                  <p>{item.publishedDate}</p>
                   </Col>
                   <Col sm={1}>
-                    <p>Upgrade to version 2.2.4</p>
+                    <p>{item.topFixType}</p>
                   </Col>
 
                   <Col sm={2}>
-                    <p>Top Fix Resolution</p>
+                    <p>{item.topFixResolution}</p>
                   </Col>
                 </Row>
+                )
+              })
+            }
               </Card.Body>
             </Card.Body>
           </Col>
@@ -116,70 +123,57 @@ const App = props => {
               </Row>
               <Card.Body>
                 <Row className="tabhead">
-                  <Col sm={1}>
-                    <p>Severity</p>
-                  </Col>
                   <Col sm={2}>
                     <p>Library</p>
                   </Col>
-                  <Col sm={1}>
-                    <p>Occurences</p>
-                  </Col>
                   <Col sm={2}>
-                    <p>Vulnerability id</p>
+                    <p>Type</p>
                   </Col>
                   <Col sm={1}>
-                    <p>CVSS 3 Score</p>
+                    <p>Description</p>
                   </Col>
                   <Col sm={1}>
-                    <p>CVSS 2 Score</p>
+                    <p>Library Type</p>
                   </Col>
                   <Col sm={1}>
-                    <p>Published</p>
+                    <p>Creation Date</p>
                   </Col>
-
                   <Col sm={1}>
-                    <p>Top Fix type</p>
-                  </Col>
-                  <Col sm={2}>
-                    <p>Top Fix Resolution</p>
+                    <p>Modified Date</p>
                   </Col>
                 </Row>
-
-                <Row className="tabrow f-12">
+                {
+                alertData.perLibraryAlert.map((item, index) => {
+                  return (
+                <Row className="tabrow f-12" key={index}>
                   <Col sm={1}>
-                    <p>
                       <Form.Check type="checkbox" style={{ float: "left" }} />
                       <Badge className="sevbadge"></Badge>{" "}
-                    </p>
-                  </Col>
-                  <Col sm={2}>
-                    <p>Django-1.10.5-py2.py3-none-any.whl</p>
                   </Col>
                   <Col sm={1}>
-                    <span>1 project</span>
-                    <span className="font-10">details</span>
+                  <p>{item.libraryName}</p>
                   </Col>
+                
                   <Col sm={2}>
-                    <p>CVE-2019-14234</p>
+                  <p>{item.vulnerabilityType}</p>
                   </Col>
                   <Col sm={1}>
                     <p>9.8</p>
                   </Col>
                   <Col sm={1}>
-                    <p>7.5</p>
+                  <p>{item.libraryType}</p>
                   </Col>
                   <Col sm={1}>
-                    <p>09-08-2019</p>
+                  <p>{item.creationDate}</p>
                   </Col>
                   <Col sm={1}>
-                    <p>Upgrade to version 2.2.4</p>
+                  <p>{item.modifiedDate}</p>
                   </Col>
 
-                  <Col sm={2}>
-                    <p>Top Fix Resolution</p>
-                  </Col>
                 </Row>
+                 )
+                })
+              }
               </Card.Body>
             </Card.Body>
           </Col>

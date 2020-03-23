@@ -267,9 +267,6 @@ class Security extends Component {
   };
 
   setPolicy = () => {
-    this.setState({
-      charts: []
-    })
     this.props.securityPolicyDataDispatch(this.props.projectID, this.props.currentRepo)
     .then(() => {this.setPolicyData(this.props.securityPolicyData)});
   }
@@ -288,6 +285,7 @@ class Security extends Component {
   }
 
   setAlertData = (rawData) => {
+    console.log('hhhhhhhhhhhhhhhhhhhhhhh', rawData);
     this.setState({
       charts: rawData,
       componentType: "Alert"
