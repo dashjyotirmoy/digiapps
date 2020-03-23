@@ -62,17 +62,11 @@ const getSecurityAlertData = (projectId, repoId) => {
   );
 }
 
-const getSecurityAlertMetricsData = (execId, projectId) => {
-  return devovOpsApi.get(
-    `/widget/security-insights/alerts?productId=${execId}&projectId=${projectId}`
-  );
-}
 
 export default {
   getVelocityData,
   getExecInsightsData,
   getProjectInsightsData,
-  getSecurityAlertMetricsData,
   getSprintInsightsData,
   getQualityMetricsData,
   getAllExecutives,

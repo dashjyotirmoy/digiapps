@@ -28,6 +28,15 @@ const Sec = props => {
         color: "#fff"
    }
     },
+    legend: {
+      enabled: true,
+      symbolRadius: 0,
+      reversed: true,
+      itemStyle: {
+        color: '#C8CED5',
+        fontWeight: 'normal'
+      }
+    },
     pie: {
       shadow: false
     },
@@ -45,18 +54,21 @@ const Sec = props => {
         data: [
           {
             name: "Low",
-            color: "yellow",
-            y: parseInt(props.cardsData[2].data[2].alertMetrics.low)
+            color: "#C2B12C",
+            y: parseInt(props.cardsData[2].data[2].alertMetrics.low),
+            borderColor: '#C2B12C'
           },
           {
             name: "Medium",
-            color: "orange",
-            y: parseInt(props.cardsData[2].data[2].alertMetrics.medium)
+            color: "#C0792A",
+            y: parseInt(props.cardsData[2].data[2].alertMetrics.medium),
+            borderColor: '#C0792A'
           },
           {
             name: "High",
-            color: "red",
-            y: parseInt(props.cardsData[2].data[2].alertMetrics.high)
+            color: "#E75555",
+            y: parseInt(props.cardsData[2].data[2].alertMetrics.high),
+            borderColor: '#E75555'
           }
         ],
         size: "60%",

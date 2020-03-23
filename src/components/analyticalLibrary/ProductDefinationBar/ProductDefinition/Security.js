@@ -14,6 +14,7 @@ import Sec from '../../Charts/SecurityProject/Sec';
 import App from '../../Charts/SecurityProject/Alert'
 import Spinner from "../../Spinner/Spinner";
 import Policy from '../../Charts/SecurityPolicy/Policy';
+import SecurityOnProjectSelection from '../../Charts/SecurityDropdown/SecurityOnProjSelection';
 
 class Security extends Component {
   state = {
@@ -210,6 +211,26 @@ class Security extends Component {
     });
   };
 
+  createRepoCharts = (list, removed) => {
+    // let list_temp = list[0];
+    const updatedList = list.filter((ele, index) => {
+      if (index !== removed) {
+        return Object.assign({}, ele);
+      }
+    });
+    // updatedList.map(ele => {
+    //   ele.component = this.setChart(
+    //     ele.title,
+    //     ele.data[2]
+    //   );
+    // });
+    // let chartList = []; chartList[0] = updatedList;
+    this.setState({
+      charts: updatedList,
+      componentType: "Project"
+    });
+  };
+
   createChartObject = typeObj => {
     const processedData = typeObj.map((item, index) => {
       // return item.map(ele => {
@@ -263,7 +284,7 @@ class Security extends Component {
         this.props.securityRepoData
     );
 
-    this.createCharts(this.createChartObject(type));
+    this.createRepoCharts(this.createChartObject(type));
   };
 
   setPolicy = () => {
@@ -371,6 +392,9 @@ class Security extends Component {
           </Row>
           {this.state.charts.length && this.state.componentType === "Product" ? (
            <Sec cardsData = {this.state.charts}/>
+          ) : null}
+          {this.state.charts.length && this.state.componentType === "Project" ? (
+           <SecurityOnProjectSelection cardsData = {this.state.charts}/>
           ) : null}
           {this.state.charts.length && this.state.componentType === "Policy" ? (
            <Policy cardsData = {this.state.charts}/>
