@@ -2,21 +2,17 @@ import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import { Row, Col } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
-import SecurityAlert from "./SecurityAlert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { repoDropValDispatchSecurity, securityProjectDataDispatch, securityRepoDataDispatch, securityPolicyDataDispatch } from '../../../../store/actions/securityData';
+import { repoDropValDispatchSecurityAlert, securityAlertDataDispatch } from '../../../../store/actions/securityAlertData';
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
-import Sec from '../../Charts/SecurityProject/Sec';
-import Spinner from "../../Spinner/Spinner";
-import Policy from '../../Charts/SecurityPolicy/Policy';
-import SecurityOnProjectSelection from '../../Charts/SecurityDropdown/SecurityOnProjSelection';
+// import Spinner from "../../Spinner/Spinner";
 
-class Security extends Component {
+class SecurityAlert extends Component {
   state = {
     charts: [],
     layout: {
@@ -33,8 +29,7 @@ class Security extends Component {
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
     show: true,
     selectedRepo: "",
-    repoData: [],
-    componentType: "Product"
+    repoData: []
   };
 
   removeChartComponent = (chartIndex) => {
@@ -48,7 +43,7 @@ class Security extends Component {
         charts: []
     });
     this.props
-        .securityProjectDataDispatch(this.props.projectID)
+        .securityAlertDataDispatch(this.props.projectID, this.props.projectID)
         .then(item => {
             if(this.props.securityProjectData.projectDetail.length > 0){
                 this.setRepository(this.props.securityProjectData);
@@ -99,7 +94,7 @@ class Security extends Component {
     const resetList = this.resetSelect(prodList);
     let selectedIndex = 0;
     const selectedParamList = resetList.map((ele, index) => {
-      if (ele.projId === id) {
+      if (ele.repoKey === id) {
         selectedIndex = index;
         return ele;
       }
@@ -146,43 +141,33 @@ class Security extends Component {
     return splitArr;
   }
 
-  setRepoObjects = (rawData) => {
+  setRepoObjects = (rawData, selectedRepoData) => {
     const item = {
         productPolicyViolationsCount: [
-        { name: rawData.projName },
+        { name: selectedRepoData.projectName },
         { title: "Policy Violations" },
-        rawData.policyViolationsCount
+        selectedRepoData.policyViolationsCount
       ],
       productVulnerabilityAlerts: [
-        { name: rawData.projName },
+        { name: selectedRepoData.projectName },
         { title: "Per Vulnerability Alert" },
-        rawData.vulnerabilityAlerts
+        selectedRepoData.vulnerabilityAlerts
       ],
       productLibraryAlerts: [
-        { name: rawData.projName},
+        { name: selectedRepoData.projectName},
         { title: "Per Library Alert" },
-        rawData.libraryAlerts
+        selectedRepoData.libraryAlerts
       ],
       productLibraryStatistics: [
-        { name: rawData.projName },
+        { name: selectedRepoData.projectName },
         { title: "Library Statistics" },
-        rawData.libraryStatistics
-      ],
-      vulnerabilities: [
-        { name: rawData.projName },
-        { title: "Vulnerabilities" },
-        rawData.vulnerabilities 
-      ],
-      libraries: [
-        { name: rawData.projName },
-        { title: "Libraries" },
-        rawData.libraries
+        selectedRepoData.libraryStatistics
       ]
     };
 
     const splitArr = Object.values(item);
 
-    return splitArr;
+    return [splitArr];
   };
 
   splitRawObj = type => {
@@ -205,28 +190,7 @@ class Security extends Component {
     // });
     // let chartList = []; chartList[0] = updatedList;
     this.setState({
-      charts: updatedList,
-      componentType: "Product"
-    });
-  };
-
-  createRepoCharts = (list, removed) => {
-    // let list_temp = list[0];
-    const updatedList = list.filter((ele, index) => {
-      if (index !== removed) {
-        return Object.assign({}, ele);
-      }
-    });
-    // updatedList.map(ele => {
-    //   ele.component = this.setChart(
-    //     ele.title,
-    //     ele.data[2]
-    //   );
-    // });
-    // let chartList = []; chartList[0] = updatedList;
-    this.setState({
-      charts: updatedList,
-      componentType: "Project"
+      charts: updatedList
     });
   };
 
@@ -254,13 +218,13 @@ class Security extends Component {
 
   updateRepository = repoId => {
     const { list, selectedIndex } = this.markSelected(
-      this.props.securityProjectData.projectDetail,
+      this.props.securityProjectData.projects,
       repoId
     );
     const repoDetails = list.map(ele => {
       return {
-        id: ele.projId,
-        projectName: ele.projName
+        id: ele.repoKey,
+        projectName: ele.repoName
       };
     });
 
@@ -269,41 +233,19 @@ class Security extends Component {
     });
 
     this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].projectName);
-    this.props.securityRepoDataDispatch(this.props.projectID, repoId)
-    .then(() => {this.updateSecurityData(repoId, selectedIndex)});
-    
+    this.updateSecurityData(repoId, selectedIndex);
   };
 
   updateSecurityData = (repoId, selectedIndex) => {
 
     const type = this.setRepoObjects(
-        this.props.securityRepoData
+        this.props.securityProjectData,
+        this.props.securityProjectData.projects[selectedIndex],
+        repoId
     );
 
-    this.createRepoCharts(this.createChartObject(type));
+    this.createCharts(this.createChartObject(type));
   };
-
-  setPolicy = () => {
-    this.props.securityPolicyDataDispatch(this.props.projectID, this.props.currentRepo)
-    .then(() => {this.setPolicyData(this.props.securityPolicyData)});
-  }
-
-  setPolicyData = (rawData) => {
-    console.log(rawData);
-    this.setState({
-      charts: rawData.policyViolations,
-      componentType: "Policy"
-    })
-  }
-
-  setAlert = () => {
-    this.props.securityAlertDataDispatch(this.props.projectID, this.props.currentRepo)
-    .then(() => {this.setAlertData(this.props.securityAlertData)});
-  }
-
-  setAlertData = (rawData) => {
-    
-  }
 
   componentDidUpdate() {
     if (this.state.all_data) {
@@ -330,67 +272,15 @@ class Security extends Component {
   }
 
     render() {
-
-      if (this.state.show) {
-        return <Spinner show="true" />;
-      } else {
+      
         return (
         //  <div style={{ color: "white" }}>security </div>
 
         <React.Fragment>
-          <Row className="p-0 px-3 m-0 mt-4">
-            <Col xl={2} lg={3} md={3}>
-              <Dropdown
-                listData={this.state.repoData}
-                direction="down"
-                onSelectDelegate={this.handleRepoChange}
-              >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
-                  <Col
-                    sm={10}
-                    md={10}
-                    lg={10}
-                    xl={10}
-                    className="d-flex align-item-center justify-content-center"
-                  >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
-                      {this.state.selectedRepo
-                        ? this.state.selectedRepo
-                        : "Select Project"}
-                    </p>
-                  </Col>
-                  <Col
-                    sm={2}
-                    md={2}
-                    g={2}
-                    xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
-                  >
-                    <FontAwesomeIcon icon={faChevronDown} />
-                  </Col>
-                </Row>
-              </Dropdown>
-            </Col>
-            <Col>
-            <button onClick ={this.setAlert} >Alert</button>
-          </Col>
-          <Col>
-            <button onClick ={this.setPolicy} >Policy</button>
-          </Col>
-          </Row>
-          {this.state.charts.length && this.state.componentType === "Product" ? (
-           <Sec cardsData = {this.state.charts}/>
-          ) : null}
-          {this.state.charts.length && this.state.componentType === "Project" ? (
-           <SecurityOnProjectSelection cardsData = {this.state.charts}/>
-          ) : null}
-          {this.state.charts.length && this.state.componentType === "Policy" ? (
-           <Policy cardsData = {this.state.charts}/>
-          ) : null}
+          <div>security component view</div>
         </React.Fragment>
         );
       }
-    }
 }
 
 //function to map the state received from reducer
@@ -398,10 +288,7 @@ class Security extends Component {
 const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
-    securityProjectData: state.securityData.securityProjectDetails,
-    securityRepoData: state.securityData.securityRepoDetails,
-    securityPolicyData: state.securityData.securityPolicyDetails,
-    securityAlertData: state.securityData.securityAlertDetails,
+    securityProjectData: state.securityData.currentSecurityData.securityProjectDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.securityData.currentRepo,
     sprintId: state.productDetails.currentSprint.sprintInfo.id
@@ -412,11 +299,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { securityProjectDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurity, securityRepoDataDispatch, securityPolicyDataDispatch },
+    { securityAlertDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurityAlert },
     dispatch
   );
 };
 
 //Connect react component to redux
 
-export default connect(mapStateToProps, mapDispatchToProps)(Security);
+export default connect(mapStateToProps, mapDispatchToProps)(SecurityAlert);
