@@ -7,9 +7,9 @@ import Button from 'react-bootstrap/Button';
 // policyData = PolicyData;
 
 let buttonColorScheme = {
-  "Reject": '#B65355',
-  "Approve": '#5DAB07',
-  "Reassign": '#C6BC38'
+  "REJECT": '#B65355',
+  "APPROVE": '#5DAB07',
+  "REASSIGN": '#C6BC38'
 }
 function updateFunction() {
   console.log("Haaaa you Typed Something.!!!")
