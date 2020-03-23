@@ -1,0 +1,124 @@
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+.rounde{
+    border-radius: 25px;
+    border: 2px solid #334154;
+    padding: 20px;
+    text-align: left;
+    background-color: #334154;
+   }
+   .bg{
+     background-color: #232D3B;
+     color: #fff;
+     border-radius: 10px;
+   }
+   .iconend{
+    display: flex;
+    justify-content: flex-end;
+   }
+   .borderadius{
+    background-color: #232D3B!important;
+    border-radius: 10px!important;
+   }
+   .tabhead{
+     background-color: #1D2632;
+     color:#85888E;
+     padding-top: 1rem;
+   }
+   .tabrow{
+    background-color: #334154;
+   
+    padding-top: 1rem;
+   }
+   .sevbadge{
+    display: block!important;
+    color: rgb(34, 34, 34);
+    background: rgb(182, 83, 85);
+    float: right;
+    padding: 10px;
+    position: absolute;
+    left: 3rem;
+   }
+  .font-10{
+    font-size: 10px;
+    color: #50E3C2;
+    margin-left: 7px;
+  }
+  .f-12{
+    font-size: 12px;
+  }
+  
+  .dropdown-toggle::after{
+    margin-left: 2rem!important;
+  }
+  .btn-primary:hover{
+    background-color: #2E3B4D!important;
+    border-color: #3A485C!important;
+    color: #fff;
+  }
+  .btn-primary{
+    background-color: #2E3B4D!important;
+    border-color: #3A485C!important;
+    color: #fff;
+  }
+  .btn.focus{
+    box-shadow: none;
+  }
+  .btn-secondary.focus{
+    box-shadow: none;
+  }
+  .btnstyle{
+    background-color: #49586C!important;
+    border-color: transparent!important;
+  }
+  .btnstyle:hover{
+    background-color: #49586C!important;
+    border-color: transparent!important;
+    box-shadow: none!important;
+  }
+  .btnstyle:focus{
+    background-color: #49586C!important;
+    border-color: transparent!important;
+    box-shadow: none!important;
+  }
+  .basealign{
+    align-items: baseline;
+    padding-left: 1.5rem;
+  }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import { Row, Col } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
-import SecurityAlert from "./SecurityAlert";
+// import SecurityAlert from "./SecurityAlert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown
