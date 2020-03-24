@@ -208,7 +208,7 @@ const Sec = props => {
                      <p>1</p>
                    </Col>
                    <Col sm={3}>
-                     <p>
+                     {/* <p> */}
                      <ButtonGroup
                               style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                             >
@@ -230,7 +230,7 @@ const Sec = props => {
                                 Low 2
   </Button>
                             </ButtonGroup>
-                     </p>
+                     {/* </p> */}
                    </Col>
                    <Col sm={3}>
                      <p>4</p>

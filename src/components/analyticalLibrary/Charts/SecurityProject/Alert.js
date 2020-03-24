@@ -179,7 +179,7 @@ const App = props => {
                   <p>{item.vulnerabilityType}</p>
                   </Col>
                   <Col sm={2}>
-                    <p>
+                    {/* <p> */}
                     <ButtonGroup
                               style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                             >
@@ -187,21 +187,21 @@ const App = props => {
                                 style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
                               >
                                 <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
+                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> {item.description.high}</span>
                                 </span>
                               </Button>
                               <Button
                                 style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
                               >
-                                Medium 1
-</Button>
+                                Medium {item.description.medium}
+                              </Button>
                               <Button
                                 style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
                               >
-                                Low 2
-  </Button>
+                                Low {item.description.low}
+                              </Button>
                             </ButtonGroup>
-                    </p>
+                    {/* </p> */}
                   </Col>
                   <Col sm={1}>
                   <p>{item.libraryType}</p>
