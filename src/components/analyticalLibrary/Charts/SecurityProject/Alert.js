@@ -19,15 +19,15 @@ const App = props => {
   return (
     <React.Fragment>
       <Container fluid>
-        <Row className="mt-5">
+        <Row className="mt-2">
           <Col>
             <Card.Body className="bg">
-              <p>Per Vulnerability Alert</p>
+              <h5 className="mb-3">Per Vulnerability Alert</h5>
               <Row className="pl-2"> 
-                <Col sm={1}>
+                <Col sm={1} className="pr-0">
                   <p>Vulnerabilities</p>
                 </Col>
-                <Col sm={3}>
+                <Col sm={3} className="pl-0">
                   <Badge style={{ color: "#222222", background: "#B65355" }}>
                     0
                   </Badge>{" "}
@@ -36,7 +36,7 @@ const App = props => {
                   </Badge>{" "}
                 </Col>
               </Row>
-              <Card.Body>
+              <Card.Body className="vscroll">
                 <Row className="tabhead">
                   <Col sm={1}>
                     <p>Severity</p>
@@ -118,7 +118,7 @@ const App = props => {
       <Row className="mt-5">
           <Col>
             <Card.Body className="bg">
-              <p>Per Library Alert</p>
+              <h5 className="mb-3">Per Library Alert</h5>
               <Row className="basealign">
                <p>Alerts</p>
                <Col sm={1}>
@@ -138,9 +138,10 @@ const App = props => {
                 <Button variant="secondary"  className="ml-4 btnstyle">Ignore Selected</Button>{' '}
                 
               </Row>
-              <Card.Body>
+              <Card.Body className="vscroll">
                 <Row className="tabhead">
                   <Col sm={3}>
+                  <Form.Check type="checkbox" style={{ float: "left" }} />
                     <p>Library</p>
                   </Col>
                   <Col sm={2}>
@@ -162,13 +163,14 @@ const App = props => {
                 {
                 alertData.perLibraryAlert.map((item, index) => {
                   return (
-                <Row className="tabrow f-12" key={index}>
+                   
+                <Row className="tabrow f-12" key={index} >
                   <Col sm={3}>
                     <div>
                     <Form.Check type="checkbox" style={{ float: "left" }} />
-                      <Badge className="sevbadge"></Badge>{" "}
+                      <Badge className="sevbadge1"></Badge>{" "}
                     </div>
-                      <div className="margin-5">
+                      <div className="margin-4">
                       <p>{item.libraryName}</p>
                       </div>
                       
@@ -213,6 +215,7 @@ const App = props => {
                   </Col>
 
                 </Row>
+                
                  )
                 })
               }
