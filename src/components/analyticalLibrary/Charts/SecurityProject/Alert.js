@@ -15,7 +15,6 @@ const Styles = styled.div`
 `;
 const App = props => {
   let alertData = props.cardsData;
-  console.log('dddddddddddxx', alertData);
 
   return (
     <React.Fragment>

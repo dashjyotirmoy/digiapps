@@ -294,7 +294,6 @@ class Security extends Component {
   }
 
   setPolicyData = (rawData) => {
-    console.log(rawData);
     this.setState({
       charts: rawData.policyViolations,
       componentType: "Policy"
@@ -307,7 +306,6 @@ class Security extends Component {
   }
 
   setAlertData = (rawData) => {
-    console.log('hhhhhhhhhhhhhhhhhhhhhhh', rawData);
     this.setState({
       charts: rawData,
       componentType: "Alert"

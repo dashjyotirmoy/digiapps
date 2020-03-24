@@ -11,7 +11,6 @@ import DocumentCancelSvg from './DocumentCancel';
 import InsecureProtectionSvg from './InsecureProtection';
 import LibrarySvg from './LibrarySvg'
 const Sec = props => {
-  console.log(props)
   let options = {
     chart: {
       type: "pie",

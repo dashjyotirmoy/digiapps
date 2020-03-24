@@ -1,10 +1,7 @@
 import React from 'react';
 import { Card, Table } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-// import PolicyData from './PolicyTableData';
 
-// var policyData = {};
-// policyData = PolicyData;
 
 let buttonColorScheme = {
   "REJECT": '#B65355',
@@ -17,9 +14,7 @@ function updateFunction() {
 }
 
 const Policy = (props) => {
-    
     let policyData = props.cardsData;
-    console.log('hhhhhhhhhqqqqqqqqqqq policydata', policyData);
   return (
     <React.Fragment>
       <Card

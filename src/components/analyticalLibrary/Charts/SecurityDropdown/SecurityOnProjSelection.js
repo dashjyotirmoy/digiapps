@@ -24,10 +24,6 @@ color: palevioletred;
 `
 
 const SecurityOnProjectSelection = (props) => {
-
-    let policyData = props.cardsData;
-    console.log(policyData)
-
   let options = {
     chart: {
       type: 'pie',
