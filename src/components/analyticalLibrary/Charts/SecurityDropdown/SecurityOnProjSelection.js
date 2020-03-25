@@ -25,13 +25,12 @@ color: palevioletred;
 
 const SecurityOnProjectSelection = (props) => {
 
-    let policyData = props.cardsData;
-    console.log(policyData)
+  let policyData = props.cardsData;
+  console.log(policyData)
 
   let options = {
     chart: {
       type: 'pie',
-      height: 220,
       backgroundColor: '#232D3B'
     },
     title: {
@@ -52,9 +51,9 @@ const SecurityOnProjectSelection = (props) => {
     title: {
       useHTML: true,
       // verticalAlign: "bottom",
-      x: 0,
-      y: 60,
-      text: `<col> <span style='color: #798EA8'>&nbsp;&nbsp; Total</span><br/><span style='font-size:34px'>${props.cardsData[2].data[2].alertMetrics.totalCount}</span></col>`,
+      x: -5,
+      y: 160,
+      text: `<col> <span style='color: #798EA8'>&nbsp;&nbsp; Total</span><br/><span style='font-size:34px'> &nbsp;&nbsp;${props.cardsData[2].data[2].alertMetrics.totalCount}</span></col>`,
       floating: true,
       style: {
         fontSize: '14px',
@@ -92,7 +91,7 @@ const SecurityOnProjectSelection = (props) => {
             borderColor: '#E75555'
           }
         ],
-        size: "100%",
+        size: "75%",
         innerSize: "85%",
         showInLegend: true,
         dataLabels: {
@@ -107,32 +106,6 @@ const SecurityOnProjectSelection = (props) => {
   return (
     <React.Fragment>
       <div className="container-fluid">
-        {/* <Col
-          className="p-3"
-        >
-
-          <Button
-            size="md"
-            style={{ backgroundColor: '', borderColor: '#364D68', color: '#B7BEC5', borderStyle: 'solid', borderWidth: '2px', borderRadius: 0, lineHeight: '1.5rem', minWidth: '7rem', maxWidth: '8rem' }}
-            variant=""
-            onClick=""
-          >
-            Alerts
-          </Button>
-          {' '}&nbsp;{' '}
-          <Button
-            size="md"
-            style={{ backgroundColor: '', borderColor: '#364D68', color: '#B7BEC5', borderStyle: 'solid', borderWidth: '2px', borderRadius: 0, lineHeight: '1.5rem', minWidth: '7rem', maxWidth: '8rem' }}
-            variant=""
-            onClick=""
-          >
-            Policies
-          </Button>
-        </Col> */}
-        <Col>
-          {/* <Policy></Policy> */}
-        </Col>
-
 
 
 
@@ -312,321 +285,6 @@ const SecurityOnProjectSelection = (props) => {
                 </Col>
               </Card>
             </Row>
-            {/* <Row className="d-flex justify-content-around mt-4">
-              <Col
-                sm={6} md={6} lg={6} xl={6}
-              >
-                <Card
-                  style={{ width: '100%', height: '', backgroundColor: '#232D3B', color: '#f5f5f5', borderRadius: '8px' }}
-                >
-                  <Card.Header>
-                    Top Vulnerabilities
-                </Card.Header>
-
-                  <Card.Body>
-                    <Table variant='dark' hover>
-                      <thead
-                        style={{ color: '#A6A8AC', backgroundColor: '#1D2632' }}
-                      >
-                        <tr>
-                          <th>Product</th>
-                          <th>Projects</th>
-                          <th>Library</th>
-                          <th>Vulnerable Libraries</th>
-                          <th>License</th>
-                        </tr>
-                      </thead>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium 1
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low 2
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                          <td>4</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium 1
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low 2
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium 1
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low 2
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                          <td>2</td>
-                        </tr>
-                      </tbody>
-
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>No Vulnerabilities</td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>No Vulnerabilities</td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                    </Table>
-                  </Card.Body>
-                </Card>
-              </Col>
-
-              <Col
-                sm={6} md={6} lg={6} xl={6}
-              >
-                <Card
-                  style={{ width: '100%', height: '', backgroundColor: '#232D3B', color: '#f5f5f5', borderRadius: '8px' }}
-                >
-                  <Card.Header>
-                    Top Libraries
-                </Card.Header>
-
-                  <Card.Body>
-                    <Table variant='dark' hover>
-                      <thead
-                        style={{ color: '#A6A8AC', backgroundColor: '#1D2632' }}
-                      >
-                        <tr>
-                          <th>Product</th>
-                          <th>Projects</th>
-                          <th>Library</th>
-                          <th>Vulnerable Libraries</th>
-                          <th>License</th>
-                        </tr>
-                      </thead>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium 1
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low 2
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                          <td>4</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium 1
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low 2
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium 1
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low 2
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                          <td>2</td>
-                        </tr>
-                      </tbody>
-
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>No Vulnerabilities</td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr>
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>No Vulnerabilities</td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                    </Table>
-                  </Card.Body>
-                </Card>
-              </Col>
-
-
-            </Row> */}
             <Row className="d-flex justify-content-around mt-4">
               <Col
                 sm={6} md={6} lg={6} xl={6}
@@ -655,103 +313,27 @@ const SecurityOnProjectSelection = (props) => {
                       </thead>
 
                       {
-                props.cardsData[4].data[2].map((item, index) => {
-                  return (
+                        props.cardsData[4].data[2].map((item, index) => {
+                          return (
 
-                    <tbody
-                      key={index}
-                      className="font-metric-sub-text"
-                      style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
-                    >
-                      <tr>
-                        <td>{item.name}</td>
-                        <td> {item.type} </td>
-                        <td>{item.severity}</td>
-                        <td>{item.score}</td>
-                        <td>  {item.libraryId === null ? `null` : item.libraryId } </td>
-                      </tr>
-                    </tbody>
+                            <tbody
+                              key={index}
+                              className="font-metric-sub-text"
+                              style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
+                            >
+                              <tr>
+                                <td>{item.name}</td>
+                                <td> {item.type} </td>
+                                <td>{item.severity}</td>
+                                <td>{item.score}</td>
+                                <td>  {item.libraryId === null ? `null` : item.libraryId} </td>
+                              </tr>
+                            </tbody>
 
-                  )
-                })
-              }
+                          )
+                        })
+                      }
 
-                      {/* <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>
-                            Some Scope
-                          </td>
-                          <td>4</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>
-                            Some Scope
-                          </td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>
-                            Some Scope
-                          </td>
-                          <td>2</td>
-                        </tr>
-                      </tbody>
-
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>Other Scope</td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-                          <td>2</td>
-                          <td>135</td>
-                          <td>Other Scope</td>
-                          <td>1</td>
-                        </tr>
-                      </tbody> */}
 
                     </Table>
                   </Card.Body>
@@ -783,178 +365,47 @@ const SecurityOnProjectSelection = (props) => {
                       </thead>
 
                       {
-                props.cardsData[5].data[2].map((item, index) => {
-                  return (
+                        props.cardsData[5].data[2].map((item, index) => {
+                          return (
 
-                    <tbody
-                      key={index}
-                      className="font-metric-sub-text"
-                      style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
-                    >
-                      <tr style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}>
-                        <td>{item.name}</td>
-                        <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
+                            <tbody
+                              key={index}
+                              className="font-metric-sub-text"
+                              style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
                             >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                  <span style={{ fontSize: '' }}> High </span><span style={{ fontSize: '' }}>{item.vulnerabilities.high}</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium {item.vulnerabilities.medium}
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low {item.vulnerabilities.low}
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                        <td>{item.licenseCount}</td>
-                      </tr>
-                    </tbody>
+                              <tr style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}>
+                                <td>{item.name}</td>
+                                <td>
+                                  <ButtonGroup
+                                    style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
+                                  >
+                                    <Button
+                                      style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
+                                    >
+                                      <span style={{ lineHeight: '' }}>
+                                        <span style={{ fontSize: '' }}> High </span><span style={{ fontSize: '' }}>{item.vulnerabilities.high}</span>
+                                      </span>
+                                    </Button>
+                                    <Button
+                                      style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
+                                    >
+                                      Medium {item.vulnerabilities.medium}
+                                    </Button>
+                                    <Button
+                                      style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
+                                    >
+                                      Low {item.vulnerabilities.low}
+                                    </Button>
+                                  </ButtonGroup>
+                                </td>
+                                <td>{item.licenseCount}</td>
+                              </tr>
+                            </tbody>
 
-                  )
-                })
-              }
+                          )
+                        })
+                      }
 
-                      {/* <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-
-                          <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium 1
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low 2
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                          <td>4</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-
-                          <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium 1
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low 2
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-
-                          <td>
-                            <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                              >
-                                Medium 1
-</Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low 2
-  </Button>
-                            </ButtonGroup>
-                          </td>
-                          <td>2</td>
-                        </tr>
-                      </tbody>
-
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-
-                          <td>No Vulnerabilities</td>
-                          <td>1</td>
-                        </tr>
-                      </tbody>
-
-                      <tbody
-                        style={{ color: '#ffffff', backgroundColor: '#334154' }}
-                      >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
-                        >
-                          <td>Lorum Ipsum</td>
-
-                          <td>No Vulnerabilities</td>
-                          <td>1</td>
-                        </tr>
-                      </tbody> */}
 
                     </Table>
                   </Card.Body>
@@ -980,14 +431,9 @@ const SecurityOnProjectSelection = (props) => {
 </Col>
               </Row>
               <Col
-                style={{ height: '50%' }}
+                style={{}}
               >
-                <HighchartsReact
-                  highcharts={Highcharts} options={options}
-                />
-              </Col>
-              <Col className="pl-5 pr-5">
-                <hr style={{ color: '#2A3849', backgroundColor: '#2A3849' }} ></hr>
+                <HighchartsReact highcharts={Highcharts} options={options} />
               </Col>
 
               <Col className="pl-4 pr-4">
@@ -1009,7 +455,7 @@ const SecurityOnProjectSelection = (props) => {
                       style={{ fontSize: '25px', fontWeight: 'bold' }}
                     >
                       {props.cardsData[3].data[2].vulnerableCount}
-                      </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Vulnerability</span>
+                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Vulnerability</span>
                   </Alert>
                 </Col>
                 <Col
@@ -1024,7 +470,7 @@ const SecurityOnProjectSelection = (props) => {
                       style={{ fontSize: '25px', fontWeight: 'bold' }}
                     >
                       {props.cardsData[3].data[2].vulnerableAndOutdatedCount}
-                      </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Vulnerability {'&'} Outdated</span>
+                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Vulnerability {'&'} Outdated</span>
                   </Alert>
                 </Col>
                 <Col
@@ -1038,14 +484,14 @@ const SecurityOnProjectSelection = (props) => {
                       className="pl-3"
                       style={{ fontSize: '25px', fontWeight: 'bold' }}
                     >
-                       {props.cardsData[3].data[2].outdatedCount}
-                      </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Outdated</span>
+                      {props.cardsData[3].data[2].outdatedCount}
+                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Outdated</span>
                   </Alert>
                 </Col>
               </Col>
             </Card>
-          </Col>
 
+          </Col>
         </Row>
 
       </div >
