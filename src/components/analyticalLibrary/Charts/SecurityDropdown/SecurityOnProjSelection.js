@@ -293,7 +293,8 @@ const SecurityOnProjectSelection = (props) => {
                 </Card.Header>
 
                   <Card.Body>
-                    <Table variant='dark' hover>
+                    <Table variant='dark' hover
+                    >
                       <thead
                         style={{ color: '#A6A8AC', backgroundColor: '#1D2632' }}
                       >
@@ -307,29 +308,30 @@ const SecurityOnProjectSelection = (props) => {
                           {/* <th>Library Id</th> */}
                         </tr>
                       </thead>
+                      <tbody
 
-                      {
-                        props.cardsData[4].data[2].map((item, index) => {
-                          return (
+                        className="font-metric-sub-text"
+                        style={{ color: '#ffffff', background: '#334154', border: '#334154', overflowY: 'scroll' }}
+                      >
+                        {
+                          props.cardsData[4].data[2].map((item, index) => {
+                            return (
 
-                            <tbody
-                              key={index}
-                              className="font-metric-sub-text"
-                              style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
-                            >
-                              <tr>
+
+                              <tr
+                                key={index}
+                              >
                                 <td>{item.name}</td>
                                 <td> {item.type} </td>
                                 <td>{item.severity}</td>
                                 <td>{item.score}</td>
                                 {/* <td>  {item.libraryId === null ? `null` : item.libraryId} </td> */}
                               </tr>
-                            </tbody>
 
-                          )
-                        })
-                      }
-
+                            )
+                          })
+                        }
+                      </tbody>
 
                     </Table>
                   </Card.Body>
@@ -348,61 +350,68 @@ const SecurityOnProjectSelection = (props) => {
 
                   <Card.Body>
                     <Table variant='dark' hover>
-                      <thead
-                        style={{ color: '#A6A8AC', backgroundColor: '#1D2632' }}
+
+                      <div
+                        style={{ overflowY: 'scroll', width: '707px', height: '430px' }}
                       >
-                        <tr
-                          style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
+
+                        <thead
+                          style={{ color: '#A6A8AC', backgroundColor: '#1D2632' }}
                         >
-                          <th>Library Name</th>
-                          <th>Vulnerable Library</th>
-                          <th>License</th>
-                        </tr>
-                      </thead>
+                          <tr
+                            style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
+                          >
+                            <th>Library Name</th>
+                            <th>Vulnerable Library</th>
+                            <th>License Count</th>
+                          </tr>
+                        </thead>
 
-                      {
-                        props.cardsData[5].data[2].map((item, index) => {
-                          return (
+                        <tbody
+                          className="font-metric-sub-text"
+                          style={{ color: '#ffffff', background: '#334154', border: '#334154', overfouwY: '' }}
+                        >
+                          {
+                            props.cardsData[5].data[2].map((item, index) => {
+                              return (
 
-                            <tbody
-                              key={index}
-                              className="font-metric-sub-text"
-                              style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
-                            >
-                              <tr style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}>
-                                <td>{item.name}</td>
-                                <td>
-                                  <ButtonGroup
-                                    style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                                  >
-                                    <Button
-                                      style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
+
+                                <tr
+                                  key={index}
+                                // style={{ maxHeight: '2rem', minHeight: '2rem', lineHeight: '2rem' }}
+                                >
+                                  <td>{item.name}</td>
+                                  <td>
+                                    <ButtonGroup
+                                    // style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                                     >
-                                      <span style={{ lineHeight: '' }}>
-                                        <span style={{ fontSize: '' }}> High </span><span style={{ fontSize: '' }}>{item.vulnerabilities.high}</span>
-                                      </span>
-                                    </Button>
-                                    <Button
-                                      style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                                    >
-                                      Medium {item.vulnerabilities.medium}
-                                    </Button>
-                                    <Button
-                                      style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                                    >
-                                      Low {item.vulnerabilities.low}
-                                    </Button>
-                                  </ButtonGroup>
-                                </td>
-                                <td>{item.licenseCount}</td>
-                              </tr>
-                            </tbody>
+                                      <Button
+                                        style={{ borderRadius: '30px 0px 0px 30px', backgroundRowor: '#B65355', border: '0px', color: '#222222' }}
+                                      >
+                                        <span style={{ lineHeight: '' }}>
+                                          <span style={{ fontSize: '' }}> High </span><span style={{ fontSize: '' }}>{item.vulnerabilities.high}</span>
+                                        </span>
+                                      </Button>
+                                      <Button
+                                        style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
+                                      >
+                                        Medium {item.vulnerabilities.medium}
+                                      </Button>
+                                      <Button
+                                        style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
+                                      >
+                                        Low {item.vulnerabilities.low}
+                                      </Button>
+                                    </ButtonGroup>
+                                  </td>
+                                  <td>{item.licenseCount}</td>
+                                </tr>
 
-                          )
-                        })
-                      }
-
-
+                              )
+                            })
+                          }
+                        </tbody>
+                      </div>
                     </Table>
                   </Card.Body>
                 </Card>
