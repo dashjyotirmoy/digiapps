@@ -303,7 +303,7 @@ const SecurityOnProjectSelection = (props) => {
                           <th>Name</th>
                           <th>Type</th>
                           <th>Severity</th>
-                          <th>Scope</th>
+                          <th>Score</th>
                           {/* <th>Library Id</th> */}
                         </tr>
                       </thead>
