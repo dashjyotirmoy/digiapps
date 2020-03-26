@@ -363,7 +363,7 @@ const SecurityOnProjectSelection = (props) => {
                           >
                             <th>Library Name</th>
                             <th>Vulnerable Library</th>
-                            <th>License Count</th>
+                            <th>Licenses</th>
                           </tr>
                         </thead>
 
