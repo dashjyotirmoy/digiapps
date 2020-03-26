@@ -304,7 +304,7 @@ const SecurityOnProjectSelection = (props) => {
                           <th>Type</th>
                           <th>Severity</th>
                           <th>Scope</th>
-                          <th>Library Id</th>
+                          {/* <th>Library Id</th> */}
                         </tr>
                       </thead>
 
@@ -322,7 +322,7 @@ const SecurityOnProjectSelection = (props) => {
                                 <td> {item.type} </td>
                                 <td>{item.severity}</td>
                                 <td>{item.score}</td>
-                                <td>  {item.libraryId === null ? `null` : item.libraryId} </td>
+                                {/* <td>  {item.libraryId === null ? `null` : item.libraryId} </td> */}
                               </tr>
                             </tbody>
 
@@ -356,7 +356,7 @@ const SecurityOnProjectSelection = (props) => {
                         >
                           <th>Library Name</th>
                           <th>Vulnerable Library</th>
-                          <th>License Count</th>
+                          <th>License</th>
                         </tr>
                       </thead>
 
@@ -451,7 +451,7 @@ const SecurityOnProjectSelection = (props) => {
                       style={{ fontSize: '25px', fontWeight: 'bold' }}
                     >
                       {props.cardsData[3].data[2].vulnerableCount}
-                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Vulnerability</span>
+                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Vulnerable</span>
                   </Alert>
                 </Col>
                 <Col
@@ -466,7 +466,7 @@ const SecurityOnProjectSelection = (props) => {
                       style={{ fontSize: '25px', fontWeight: 'bold' }}
                     >
                       {props.cardsData[3].data[2].vulnerableAndOutdatedCount}
-                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Vulnerability {'&'} Outdated</span>
+                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>Vulnerable {'&'} Outdated</span>
                   </Alert>
                 </Col>
                 <Col
