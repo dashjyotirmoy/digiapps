@@ -73,5 +73,10 @@ font-family: Helvetica;
  .Alertbg:focus{
    box-shadow: none;
  }
+ .tabpadding{
+  padding: 10px 0px!important;
+ }
+
+
 
 

@@ -24,10 +24,10 @@
    color:#85888E;
    padding-top: 1rem;
  }
- .tabrow{
-  background-color: #334154;
  
-  padding-top: 1rem;
+ .tabrow:hover{
+  background-color:#424F61!important;
+  border-top: none!important;
  }
  .sevbadge{
   display: block!important;
@@ -36,7 +36,7 @@
   float: right;
   padding: 10px;
   position: absolute;
-  left: 3rem;
+  left: 6rem;
  }
  .sevbadge1{
   display: block!important;
@@ -44,7 +44,7 @@
   background: rgb(182, 83, 85);
   float: right;
   padding: 6px;
-  top: 4px;
+  margin-top: 5px;
   position: absolute;
   left: 3rem;
   border-radius: 50%;
@@ -62,16 +62,7 @@
 .dropdown-toggle::after{
   margin-left: 2rem!important;
 }
-/* .btn-primary:hover{
-  background-color: #2E3B4D!important;
-  border-color: #3A485C!important;
-  color: #fff;
-}
-.btn-primary{
-  background-color: #2E3B4D!important;
-  border-color: #3A485C!important;
-  color: #fff;
-} */
+
 .dropbutton{
 background-color: #2E3B4D!important;
   border-color: #3A485C!important;
@@ -115,3 +106,9 @@ box-shadow: none;
 div#root{
   overflow-y: overlay!important;
 }
+.table tbody+tbody{
+  border: none!important;
+}
+
+
+

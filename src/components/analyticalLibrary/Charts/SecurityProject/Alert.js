@@ -36,78 +36,65 @@ const App = props => {
                   </Badge>{" "}
                 </Col>
               </Row>
-              <Card.Body className="vscroll">
-                <Row className="tabhead">
-                  <Col sm={1}>
-                    <p>Severity</p>
-                  </Col>
-                  <Col sm={2}>
-                    <p>Library</p>
-                  </Col>
-                  <Col sm={1}>
-                    <p>Occurences</p>
-                  </Col>
-                  <Col sm={2}>
-                    <p>Vulnerability id</p>
-                  </Col>
-                  <Col sm={1}>
-                    <p>CVSS 3 Score</p>
-                  </Col>
-                  <Col sm={1}>
-                    <p>CVSS 2 Score</p>
-                  </Col>
-                  <Col sm={1}>
-                    <p>Published</p>
-                  </Col>
-
-                  <Col sm={1}>
-                    <p>Top Fix type</p>
-                  </Col>
-                  <Col sm={2}>
-                    <p>Top Fix Resolution</p>
-                  </Col>
-                </Row>
-                {
+              <Card.Body>
+              <table class="table table-hover table-dark">
+  <thead className="tabhead">
+    <tr>
+      <th scope="col">Severity</th>
+      <th scope="col">Library</th>
+      <th scope="col">Occurences</th>
+      <th scope="col">Vulnerability id</th>
+      <th scope="col">CVSS 3 Score</th>
+      <th scope="col">CVSS 2 Score</th>
+      <th scope="col">Published</th>
+      <th scope="col">Top Fix type</th>
+      <th scope="col">Top Fix Resolution</th>
+    </tr>
+  </thead>
+ 
+  {
                 alertData.perVulnerabilityAlert.map((item, index) => {
-                  return (
-                <Row className="tabrow f-12" key={index}>
-                 
-                  <Col sm={1}>
-                    
-                      <Form.Check type="checkbox" style={{ float: "left" }} />
+                  return (          
+  <tbody >
+   
+    <tr className="tabrow f-12" key={index}>
+      <th scope="row">
+      <Form.Check type="checkbox" style={{ float: "left" }} />
                       <Badge className="sevbadge"></Badge>{" "}
-                  </Col>
-                  <Col sm={2}>
-                  <p>{item.libraryName}</p>
-                  </Col>
-                  <Col sm={1}>
-                    <span>1 project</span>
+      </th>
+      <td>  <p>{item.libraryName}</p></td>
+      <td>
+      <span>1 project</span>
                     <span className="font-10">details</span>
-                  </Col>
-                  <Col sm={2}>
-                  <p>{item.vulnerabilityId}</p>
-                  </Col>
-                  <Col sm={1}>
-                    <p>{item.cvss3score}</p>
-                  </Col>
-                  <Col sm={1}>
-                    <p>{item.cvss2score}</p>
-                  </Col>
-                  <Col sm={1}>
-                  <p>{item.publishedDate}</p>
-                  </Col>
-                  <Col sm={1}>
-                    <p>{item.topFixType}</p>
-                  </Col>
-
-                  <Col sm={2}>
-                    <p>{item.topFixResolution}</p>
-                  </Col>
-                </Row>
-                )
-              })
-            }
-              </Card.Body>
+      </td>
+      <td>
+      <p>{item.vulnerabilityId}</p>
+      </td>
+      <td>
+      <p>{item.cvss3score}</p>
+      </td>
+      <td>
+      <p>{item.cvss2score}</p>
+      </td>
+      <td>
+      <p>{item.publishedDate}</p>
+      </td>
+      <td>
+      <p>{item.topFixType}</p>
+      </td>
+      <td>
+      <p>{item.topFixResolution}</p>
+      </td>
+     
+    </tr>
+    
+  </tbody>
+     )
+    })
+  }
+  
+</table>
+       </Card.Body>
             </Card.Body>
           </Col>
         </Row>
@@ -138,50 +125,52 @@ const App = props => {
                 <Button variant="secondary"  className="ml-4 btnstyle">Ignore Selected</Button>{' '}
                 
               </Row>
-              <Card.Body className="vscroll">
-                <Row className="tabhead">
-                  <Col sm={3}>
-                  <Form.Check type="checkbox" style={{ float: "left" }} />
-                    <p>Library</p>
-                  </Col>
-                  <Col sm={2}>
-                    <p>Type</p>
-                  </Col>
-                  <Col sm={2}>
-                    <p>Description</p>
-                  </Col>
-                  <Col sm={1}>
-                    <p>Library Type</p>
-                  </Col>
-                  <Col sm={2}>
-                    <p>Creation Date</p>
-                  </Col>
-                  <Col sm={2}>
-                    <p>Modified Date</p>
-                  </Col>
-                </Row>
-                {
+              <Card.Body >
+              <table class="table table-hover table-dark">
+  <thead className="tabhead">
+    <tr>
+      <th scope="col">
+      <Form.Check type="checkbox" style={{ float: "left" }} />
+                    Library
+      </th>
+      <th scope="col">
+    Type
+      </th>
+      <th scope="col">
+    Description
+      </th>
+      <th scope="col">
+    Library Type
+      </th>
+      <th scope="col">
+    Creation Date
+      </th>
+      <th scope="col">
+    Modified Date
+      </th>
+     
+    </tr>
+  </thead>
+ 
+  {
                 alertData.perLibraryAlert.map((item, index) => {
-                  return (
-                   
-                <Row className="tabrow f-12" key={index} >
-                  <Col sm={3}>
-                    <div>
+                  return (        
+  <tbody>
+   
+    <tr className="tabrow f-12" key={index}>
+     
+      <td>  <div>
                     <Form.Check type="checkbox" style={{ float: "left" }} />
                       <Badge className="sevbadge1"></Badge>{" "}
                     </div>
                       <div className="margin-4">
                       <p>{item.libraryName}</p>
-                      </div>
-                      
-                  </Col>
-                                
-                  <Col sm={2}>
-                  <p>{item.vulnerabilityType}</p>
-                  </Col>
-                  <Col sm={2}>
-                    {/* <p> */}
-                    <ButtonGroup
+                      </div></td>
+      <td>
+      <p>{item.vulnerabilityType}</p>
+      </td>
+          <td>
+      <ButtonGroup
                               style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                             >
                               <Button
@@ -202,23 +191,24 @@ const App = props => {
                                 Low {item.description.low}
                               </Button>
                             </ButtonGroup>
-                    {/* </p> */}
-                  </Col>
-                  <Col sm={1}>
-                  <p>{item.libraryType}</p>
-                  </Col>
-                  <Col sm={2}>
-                  <p>{item.creationDate}</p>
-                  </Col>
-                  <Col sm={2}>
-                  <p>{item.modifiedDate}</p>
-                  </Col>
-
-                </Row>
-                
-                 )
-                })
-              }
+      </td>
+      <td>
+      <p>{item.libraryType}</p>
+      </td>
+      <td>
+      <p>{item.creationDate}</p>
+      </td>
+      <td>
+      <p>{item.modifiedDate}</p>
+      </td>    
+    </tr>
+    
+  </tbody>
+     )
+    })
+  }
+  
+</table>
               </Card.Body>
             </Card.Body>
           </Col>

@@ -148,6 +148,8 @@ const Sec = props => {
                 </Row>
               </Card.Body>
             </Card></Col>
+
+            
          <Col sm={4}>     
              <Card className="borderadius">
               <Card.Body className="pt-2 bg">
