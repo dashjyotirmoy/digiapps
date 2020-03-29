@@ -689,6 +689,7 @@ const SecurityOnProjectSelection = (props) => {
               <h5 className="mb-3">Top Vulnerabilities</h5>
               
               <Card.Body className="pb-0">
+                <div className="wrap">
               <table class="table table-hover table-dark">
   <thead className="tabhead">
     <tr>
@@ -698,7 +699,10 @@ const SecurityOnProjectSelection = (props) => {
       <th scope="col">Score</th>
         </tr>
   </thead>
-     
+     </table>
+
+<div className="inner_table">
+     <table class="table table-hover table-dark" >
   <tbody >
   {
                           props.cardsData[4].data[2].map((item, index) => {
@@ -716,6 +720,8 @@ const SecurityOnProjectSelection = (props) => {
    
   
 </table>
+</div>
+</div>
        </Card.Body>
             </Card.Body>
           </Col>
@@ -729,8 +735,8 @@ const SecurityOnProjectSelection = (props) => {
               <h5 className="mb-3">Top Libraries</h5>
               
               <Card.Body className="pb-0">
-           
-              <table class="table table-hover table-dark">
+              <div className="wrap">
+              <table class="table table-hover table-dark ">
   <thead className="tabhead">
     <tr>
       <th scope="col">Library Name</th>
@@ -739,6 +745,9 @@ const SecurityOnProjectSelection = (props) => {
    
         </tr>
   </thead>
+  </table>
+  <div className="inner_table">
+     <table class="table table-hover table-dark" >
      
   <tbody >
   {
@@ -779,7 +788,9 @@ const SecurityOnProjectSelection = (props) => {
   </tbody>
   
   
-</table>
+  </table>
+</div>
+</div>
 
        </Card.Body>
             </Card.Body>
@@ -790,6 +801,18 @@ const SecurityOnProjectSelection = (props) => {
 
 </Col>
 
+<Col sm={3}>
+          <Row>
+        <Card.Body className="bg">
+    <p>Vulnerability Analysis</p>
+    <HighchartsReact highcharts={Highcharts} options={options} />
+    <p>Library Statistics</p>
+  <p className="rounde"> <span className="library_text"> {props.cardsData[3].data[2].vulnerableCount}</span> <span className="library_rounde" style={{fontSize: "13px", color: "#A7AEB7"}}> Vulnerable</span></p>
+    <p className="rounde"><span className="library_text">{props.cardsData[3].data[2].vulnerableAndOutdatedCount}</span> <span className="library_rounde" style={{fontSize: "13px", color: "#A7AEB7"}}>Vulnerable & Outdated</span> </p>
+    <p className="rounde"><span className="library_text"> {props.cardsData[3].data[2].outdatedCount}</span> <span className="library_rounde" style={{fontSize: "13px", color: "#A7AEB7"}}>Outdated</span> </p>
+  </Card.Body>
+    </Row>
+       </Col>
 
 
           </Row>

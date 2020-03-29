@@ -185,32 +185,28 @@ const Sec = props => {
            <Col >
            <Card.Body className="bg">
              <p>Top 5 Projects</p>
-             
-               <Card.Body>
-                 <Row className="tabhead">
-                   <Col sm={3}>
-                     <p>Projects</p>
-                   </Col>
-                   <Col sm={3}>
-                     <p>Libraries</p>
-                   </Col>
-                   <Col sm={3}>
-                     <p>Vulnerabilities</p>
-                   </Col>
-                   <Col sm={3}>
-                     <p>Licence</p>
-                   </Col>
-                 </Row>
-                 <Row className="tabrow">
-                   <Col sm={3}>
-                     <p>Lorum Ipsum</p>
-                   </Col>
-                   <Col sm={3}>
-                     <p>1</p>
-                   </Col>
-                   <Col sm={3}>
-                     {/* <p> */}
-                     <ButtonGroup
+             <Card.Body>
+             <div className="wrap">
+              <table class="table table-hover table-dark">
+  <thead className="tabhead">
+    <tr>
+      <th scope="col">Projects</th>
+      <th scope="col">Libraries</th>
+      <th scope="col">Vulnerabilities</th>
+      <th scope="col">Licence</th>
+    </tr>
+    </thead>
+  </table>
+
+<div className="inner_table" style={{height:'370px'}}>
+     <table class="table table-hover table-dark" > 
+  <tbody className="tabrow">
+    <tr>
+      
+      <td>Lorum Ipsum</td>
+      <td>1</td>
+      <td>
+      <ButtonGroup
                               style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                             >
                               <Button
@@ -231,14 +227,15 @@ const Sec = props => {
                                 Low 2
   </Button>
                             </ButtonGroup>
-                     {/* </p> */}
-                   </Col>
-                   <Col sm={3}>
-                     <p>4</p>
-                   </Col>
-                 </Row>
-               </Card.Body>
-             
+      </td>
+      <td>4</td>
+    </tr>
+ 
+    </tbody>
+  </table>
+</div>
+</div>
+</Card.Body>           
            </Card.Body>
            </Col>
          </Row>

@@ -16,3 +16,7 @@
   box-shadow: inset 0 0 5px #212529; 
   border-radius: 25px;
 }
+.bg-secondary1 {
+  background-color: #334154!important;
+  box-shadow: 6px 5px 5px 0px #212529;
+}

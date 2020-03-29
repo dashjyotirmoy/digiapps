@@ -37,6 +37,8 @@ const App = props => {
                 </Col>
               </Row>
               <Card.Body>
+
+                  <div className="wrap">
               <table class="table table-hover table-dark">
   <thead className="tabhead">
     <tr>
@@ -51,17 +53,20 @@ const App = props => {
       <th scope="col">Top Fix Resolution</th>
     </tr>
   </thead>
- 
-  {
-                alertData.perVulnerabilityAlert.map((item, index) => {
-                  return (          
+  </table>
+
+<div className="inner_table">
+     <table class="table table-hover table-dark" >   
   <tbody >
    
+  {
+                alertData.perVulnerabilityAlert.map((item, index) => {
+                  return (  
     <tr className="tabrow f-12" key={index}>
-      <th scope="row">
+      <td scope="row">
       <Form.Check type="checkbox" style={{ float: "left" }} />
                       <Badge className="sevbadge"></Badge>{" "}
-      </th>
+      </td>
       <td>  <p>{item.libraryName}</p></td>
       <td>
       <span>1 project</span>
@@ -87,13 +92,13 @@ const App = props => {
       </td>
      
     </tr>
-    
+        )
+      })
+    }
   </tbody>
-     )
-    })
-  }
-  
-</table>
+  </table>
+</div>
+</div>
        </Card.Body>
             </Card.Body>
           </Col>
@@ -126,6 +131,7 @@ const App = props => {
                 
               </Row>
               <Card.Body >
+              <div className="wrap">
               <table class="table table-hover table-dark">
   <thead className="tabhead">
     <tr>
@@ -151,15 +157,18 @@ const App = props => {
      
     </tr>
   </thead>
- 
-  {
-                alertData.perLibraryAlert.map((item, index) => {
-                  return (        
+  </table>
+
+<div className="inner_table">
+     <table class="table table-hover table-dark" >  
   <tbody>
    
+  {
+                alertData.perLibraryAlert.map((item, index) => {
+                  return (  
     <tr className="tabrow f-12" key={index}>
      
-      <td>  <div>
+      <td>  <div style={{ float: "left" }}>
                     <Form.Check type="checkbox" style={{ float: "left" }} />
                       <Badge className="sevbadge1"></Badge>{" "}
                     </div>
@@ -202,13 +211,13 @@ const App = props => {
       <p>{item.modifiedDate}</p>
       </td>    
     </tr>
-    
-  </tbody>
-     )
-    })
-  }
-  
-</table>
+       )
+      })
+    }
+   </tbody>
+  </table>
+</div>
+</div>
               </Card.Body>
             </Card.Body>
           </Col>
