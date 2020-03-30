@@ -2,14 +2,15 @@ import React from "react";
 // import 'react-circular-progressbar/dist/styles.css';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Row, Col, Container, Card,Badge,ButtonGroup,Button } from "react-bootstrap";
+import { Row, Col, Container, Card, Badge, ButtonGroup, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../SecurityProject/Sec.css";
 import DocumentCancelSvg from '../SecurityDropdown/DocumentCancelSvg';
 import InsecureProtectionSvg from '../SecurityDropdown/InsecureProtectionSvg';
-import LibrarySvg from '../SecurityDropdown/LibrarySvg'
+import LibrarySvg from '../SecurityDropdown/LibrarySvg';
+import Alert from 'react-bootstrap/Alert';
 
 
 // const Title = styled.h1`
@@ -504,320 +505,361 @@ import LibrarySvg from '../SecurityDropdown/LibrarySvg'
 
 const SecurityOnProjectSelection = (props) => {
 
-    let policyData = props.cardsData;
-    console.log(policyData)
-  
-    let options = {
-      chart: {
-        type: 'pie',
-        backgroundColor: '#232D3B'
-      },
-      title: {
-        text: 'Duplication'
-      },
-      credits: {
-        enabled: false
-      },
-      legend: {
-        enabled: true,
-        symbolRadius: 0,
-        reversed: true,
-        itemStyle: {
-          color: '#C8CED5',
-          fontWeight: 'normal'
-        }
-      },
-      title: {
-        useHTML: true,
-        // verticalAlign: "bottom",
-        x: -5,
-        y: 160,
-        text: `<col> <span style='color: #798EA8'>&nbsp;&nbsp; Total</span><br/><span style='font-size:34px'> &nbsp;&nbsp;${props.cardsData[2].data[2].alertMetrics.totalCount}</span></col>`,
-        floating: true,
-        style: {
-          fontSize: '14px',
-          color: '#ffffff'
-        }
-      },
-      pie: {
-        shadow: false
-      },
-      tooltip: {
-        formatter: function () {
-          return "<b>" + this.point.name + "</b>: " + this.y;
-        }
-      },
-      series: [
-        {
-          name: 'Browsers',
-          data: [
-            {
-              name: 'Low',
-              color: '#C2B12C',
-              y: parseInt(props.cardsData[2].data[2].alertMetrics.low),
-              borderColor: '#C2B12C'
-            },
-            {
-              name: 'Medium',
-              color: '#C0792A',
-              y: parseInt(props.cardsData[2].data[2].alertMetrics.medium),
-              borderColor: '#C0792A'
-            },
-            {
-              name: ' High',
-              color: '#E75555',
-              y: parseInt(props.cardsData[2].data[2].alertMetrics.high),
-              borderColor: '#E75555'
-            }
-          ],
-          size: "75%",
-          innerSize: "85%",
-          showInLegend: true,
-          dataLabels: {
-            enabled: false
+  let policyData = props.cardsData;
+  console.log(policyData)
+
+  let options = {
+    chart: {
+      type: 'pie',
+      height: 60 + '%',
+      backgroundColor: '#232D3B'
+    },
+    title: {
+      text: 'Duplication'
+    },
+    credits: {
+      enabled: false
+    },
+    legend: {
+      enabled: true,
+      symbolRadius: 0,
+      reversed: true,
+      itemStyle: {
+        color: '#C8CED5',
+        fontWeight: 'normal'
+      }
+    },
+    title: {
+      align: 'center',
+      verticalAlign: "middle",
+      y: 2,
+      text: `<span style='color: #798EA8; font-size: 14px'>Total</span><br><span style='color: #FFFFFF; font-size: 30px'>${props.cardsData[2].data[2].alertMetrics.totalCount}</span>`,
+      floating: true,
+    },
+    pie: {
+      shadow: false
+    },
+    tooltip: {
+      formatter: function () {
+        return "<b>" + this.point.name + "</b>: " + this.y;
+      }
+    },
+    series: [
+      {
+        name: 'Browsers',
+        data: [
+          {
+            name: 'Low',
+            color: '#C2B12C',
+            y: parseInt(props.cardsData[2].data[2].alertMetrics.low),
+            borderColor: '#C2B12C'
+          },
+          {
+            name: 'Medium',
+            color: '#C0792A',
+            y: parseInt(props.cardsData[2].data[2].alertMetrics.medium),
+            borderColor: '#C0792A'
+          },
+          {
+            name: ' High',
+            color: '#E75555',
+            y: parseInt(props.cardsData[2].data[2].alertMetrics.high),
+            borderColor: '#E75555'
           }
+        ],
+        size: "78%",
+        innerSize: "90%",
+        showInLegend: true,
+        dataLabels: {
+          enabled: false
         }
-      ],
-  
-  
-    }
-    return (
-      <React.Fragment>
-        <Container fluid style={{paddingTop: "10px"}}>
-          <Row>
-<Col sm={9}>
-<Row>
-          <Col sm={4}>
-            <Card className="borderadius">
-              <Card.Body className="pt-2 bg">
-                <Row>
-                  <Col sm={8} className="mb-3">
-                    {" "}
-                    <p>Policy Violations</p>
-                  </Col>
-                  <Col sm={4} className="iconend">
-                    <DocumentCancelSvg/>
-                  </Col>
-                </Row>
-                <Row className="justify-content-center mr-3 mb-3">
-                <h3>{props.cardsData[0].data[2]}</h3>
-                </Row>
-                <Row className="text-center">
-                  <Col sm={11}>
-                  <Badge style={{ color: '#222222', background: '#B65355' }}>0</Badge>{' '}
-                          <Badge style={{ color: '#222222', background: '#C0792A' }}>2</Badge>{' '}
-                          <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '}
-                  </Col>
-                  <Col sm={1}>
-                    <FontAwesomeIcon
-                      icon={faEllipsisV}
-                      color={"#D8D8D8"}
-                    ></FontAwesomeIcon>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        
+      }
+    ],
 
-         <Col sm={4}>      
-            <Card className="borderadius">
-              <Card.Body className="pt-2 bg">
-                <Row>
-                  <Col sm={8} className="mb-3">
-                    {" "}
-                    <p>Per Vulnerability Alert</p>
-                  </Col>
-                  <Col sm={4} className="iconend"> <InsecureProtectionSvg/></Col>
-                </Row>
-                <Row className="justify-content-center mr-3 mb-3">
-  <h3>{props.cardsData[1].data[2].alertMetrics.totalCount}</h3>
-                </Row>
-                <Row className="text-center">
-                  <Col sm={11}>
-                  <Badge style={{ color: '#222222', background: '#B65355' }}>{props.cardsData[1].data[2].alertMetrics.high}</Badge>{' '}
-                          <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
-                          <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
-                  </Col>
-                  <Col sm={1}>
-                    <FontAwesomeIcon
-                      icon={faEllipsisV}
-                      color={"#D8D8D8"}
-                    ></FontAwesomeIcon>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card></Col>
 
-            
-         <Col sm={4}>     
-             <Card className="borderadius">
-              <Card.Body className="pt-2 bg">
-                <Row>
-                  <Col sm={8} className="mb-3">
-                    {" "}
-                    <p>Per Library Alert</p>
-                  </Col>
-                  <Col sm={4} className="iconend"><LibrarySvg/></Col>
-                </Row>
-                <Row className="justify-content-center mr-3 mb-3">
-                  <h3>{props.cardsData[2].data[2].alertMetrics.totalCount}</h3>
-                </Row>
-                <Row className="text-center">
-                  <Col sm={11}>
-                  <Badge style={{ color: '#222222', background: '#B65355' }}>{props.cardsData[2].data[2].alertMetrics.high}</Badge>{' '}
-                          <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
-                          <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
-                  </Col>
-                  <Col sm={1}>
-                    <FontAwesomeIcon
-                      icon={faEllipsisV}
-                      color={"#D8D8D8"}
-                    ></FontAwesomeIcon>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card></Col>
-            </Row>
-            
-{/* code for table */}
-<Row className="mt-4">
-  <Col sm={6}>
-  <Row>
-          <Col>
-            <Card.Body className="bg">
-              <h5 className="mb-3">Top Vulnerabilities</h5>
-              
-              <Card.Body className="pb-0">
-                <div className="wrap">
-              <table className="table table-hover table-dark">
-  <thead className="tabhead">
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Type</th>
-      <th scope="col">Severity</th>
-      <th scope="col">Score</th>
-        </tr>
-  </thead>
-     </table>
-
-<div className="inner_table">
-     <table className="table table-hover table-dark" >
-  <tbody >
-  {
-                          props.cardsData[4].data[2].map((item, index) => {
-                            return (   
-    <tr className="tabrow f-12" key={index}>
-    <td><p>{item.name}</p></td>
-<td> <p>{item.type} </p></td>
- <td><p>{item.severity}</p></td>
- <td><p>{item.score}</p></td>
-    </tr>
-      )
-    })
   }
-  </tbody>
-   
-  
-</table>
-</div>
-</div>
-       </Card.Body>
-            </Card.Body>
+  return (
+    <React.Fragment>
+      <Container fluid style={{ paddingTop: "10px" }}>
+        <Row>
+          <Col sm={9}>
+            <Row>
+              <Col sm={4}>
+                <Card className="borderadius">
+                  <Card.Body className="pt-2 bg">
+                    <Row>
+                      <Col sm={8} className="mb-3">
+                        {" "}
+                        <p>Policy Violations</p>
+                      </Col>
+                      <Col sm={4} className="iconend">
+                        <DocumentCancelSvg />
+                      </Col>
+                    </Row>
+                    <Row className="justify-content-center mr-3 mb-3">
+                      <h3>{props.cardsData[0].data[2]}</h3>
+                    </Row>
+                    <Row className="text-center">
+                      <Col sm={11}>
+                        <Badge style={{ color: '#222222', background: '#B65355' }}>0</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#C0792A' }}>2</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '}
+                      </Col>
+                      <Col sm={1}>
+                        <FontAwesomeIcon
+                          icon={faEllipsisV}
+                          color={"#D8D8D8"}
+                        ></FontAwesomeIcon>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+
+              <Col sm={4}>
+                <Card className="borderadius">
+                  <Card.Body className="pt-2 bg">
+                    <Row>
+                      <Col sm={8} className="mb-3">
+                        {" "}
+                        <p>Per Vulnerability Alert</p>
+                      </Col>
+                      <Col sm={4} className="iconend"> <InsecureProtectionSvg /></Col>
+                    </Row>
+                    <Row className="justify-content-center mr-3 mb-3">
+                      <h3>{props.cardsData[1].data[2].alertMetrics.totalCount}</h3>
+                    </Row>
+                    <Row className="text-center">
+                      <Col sm={11}>
+                        <Badge style={{ color: '#222222', background: '#B65355' }}>{props.cardsData[1].data[2].alertMetrics.high}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
+                      </Col>
+                      <Col sm={1}>
+                        <FontAwesomeIcon
+                          icon={faEllipsisV}
+                          color={"#D8D8D8"}
+                        ></FontAwesomeIcon>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card></Col>
+
+
+              <Col sm={4}>
+                <Card className="borderadius">
+                  <Card.Body className="pt-2 bg">
+                    <Row>
+                      <Col sm={8} className="mb-3">
+                        {" "}
+                        <p>Per Library Alert</p>
+                      </Col>
+                      <Col sm={4} className="iconend"><LibrarySvg /></Col>
+                    </Row>
+                    <Row className="justify-content-center mr-3 mb-3">
+                      <h3>{props.cardsData[2].data[2].alertMetrics.totalCount}</h3>
+                    </Row>
+                    <Row className="text-center">
+                      <Col sm={11}>
+                        <Badge style={{ color: '#222222', background: '#B65355' }}>{props.cardsData[2].data[2].alertMetrics.high}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
+                      </Col>
+                      <Col sm={1}>
+                        <FontAwesomeIcon
+                          icon={faEllipsisV}
+                          color={"#D8D8D8"}
+                        ></FontAwesomeIcon>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card></Col>
+            </Row>
+
+            {/* code for table */}
+            <Row className="mt-4">
+              <Col sm={6}>
+                <Row>
+                  <Col>
+                    <Card.Body className="bg">
+                      <h5 className="mb-3">Top Vulnerabilities</h5>
+
+                      <Card.Body className="pb-0">
+                        <div className="wrap">
+                          <table className="table table-hover table-dark">
+                            <thead className="tabhead">
+                              <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Severity</th>
+                                <th scope="col">Score</th>
+                              </tr>
+                            </thead>
+                          </table>
+
+                          <div className="inner_table">
+                            <table className="table table-hover table-dark" >
+                              <tbody >
+                                {
+                                  props.cardsData[4].data[2].map((item, index) => {
+                                    return (
+                                      <tr className="tabrow f-12" key={index}>
+                                        <td><p>{item.name}</p></td>
+                                        <td> <p>{item.type} </p></td>
+                                        <td><p>{item.severity}</p></td>
+                                        <td><p>{item.score}</p></td>
+                                      </tr>
+                                    )
+                                  })
+                                }
+                              </tbody>
+
+
+                            </table>
+                          </div>
+                        </div>
+                      </Card.Body>
+                    </Card.Body>
+                  </Col>
+                </Row>
+              </Col>
+
+              <Col sm={6}>
+                <Row>
+                  <Col>
+                    <Card.Body className="bg">
+                      <h5 className="mb-3">Top Libraries</h5>
+
+                      <Card.Body className="pb-0">
+                        <div className="wrap">
+                          <table className="table table-hover table-dark ">
+                            <thead className="tabhead">
+                              <tr>
+                                <th scope="col">Library Name</th>
+                                <th scope="col">Vulnerable Library</th>
+                                <th scope="col">License Count</th>
+
+                              </tr>
+                            </thead>
+                          </table>
+                          <div className="inner_table">
+                            <table className="table table-hover table-dark" >
+
+                              <tbody >
+                                {
+                                  props.cardsData[5].data[2].map((item, index) => {
+                                    return (
+                                      <tr className="tabrow f-12" key={index}>
+                                        <td><p>{item.name}</p></td>
+                                        <td className="tabpadding">
+                                          <ButtonGroup
+                                            style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
+                                          >
+                                            <Button
+                                              style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222', padding: '5px' }}
+                                            >
+                                              <span style={{ lineHeight: '' }}>
+                                                <span style={{ fontSize: '', float: "left" }}> High</span><span style={{ fontSize: '', float: "right" }}> {item.vulnerabilities.high}</span>
+                                              </span>
+                                            </Button>
+                                            <Button
+                                              style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222', padding: '5px' }}
+                                            >
+                                              Medium {item.vulnerabilities.medium}
+                                            </Button>
+                                            <Button
+                                              style={{ borderRadius: '0px 30px 30px 0px', padding: '5px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
+                                            >
+                                              Low {item.vulnerabilities.low}
+                                            </Button>
+                                          </ButtonGroup>
+
+                                        </td>
+                                        <td><p>{item.licenseCount}</p></td>
+
+                                      </tr>
+                                    )
+                                  })
+                                }
+                              </tbody>
+
+
+                            </table>
+                          </div>
+                        </div>
+
+                      </Card.Body>
+                    </Card.Body>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+
           </Col>
-        </Row>
-  </Col>
 
-  <Col sm={6}>
-  <Row>
-          <Col>
-            <Card.Body className="bg">
-              <h5 className="mb-3">Top Libraries</h5>
-              
-              <Card.Body className="pb-0">
-              <div className="wrap">
-              <table className="table table-hover table-dark ">
-  <thead className="tabhead">
-    <tr>
-      <th scope="col">Library Name</th>
-      <th scope="col">Vulnerable Library</th>
-      <th scope="col">License Count</th>
-   
-        </tr>
-  </thead>
-  </table>
-  <div className="inner_table">
-     <table className="table table-hover table-dark" >
-     
-  <tbody >
-  {
-                            props.cardsData[5].data[2].map((item, index) => {
-                              return (   
-    <tr className="tabrow f-12" key={index}>
-    <td><p>{item.name}</p></td>
-          <td className="tabpadding">
-          <ButtonGroup
-                              style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                            >
-                              <Button
-                                style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222',padding: '5px' }}
-                              >
-                                <span style={{ lineHeight: '' }}>
-                  <span style={{ fontSize: '',float: "left" }}> High</span><span style={{ fontSize: '' ,float: "right" }}> {item.vulnerabilities.high}</span>
-                                </span>
-                              </Button>
-                              <Button
-                                style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222',padding: '5px' }}
-                              >
-                                Medium {item.vulnerabilities.medium}
-                              </Button>
-                              <Button
-                                style={{ borderRadius: '0px 30px 30px 0px',padding: '5px' , backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                              >
-                                Low {item.vulnerabilities.low}
-                              </Button>
-                            </ButtonGroup>
-         
-                                  </td>
-                            <td><p>{item.licenseCount}</p></td>
+          <Col sm={3}>
+            <Row>
+              <Card.Body className="bg">
+                <p>Vulnerability Analysis</p>
+                <HighchartsReact highcharts={Highcharts} options={options} />
+                <Col
+                  className="p-4"
+                >Library Statistics
+                </Col>
+                <Col>
+                  <Alert
+                    className="pl-4"
+                    style={{ borderRadius: '40px', backgroundColor: '#334154' }}
+                  >
+                    <span
+                      className="pl-3"
+                      style={{ fontSize: '25px', fontWeight: 'bold' }}
+                    >
+                      {props.cardsData[3].data[2].vulnerableCount}
+                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>
+                      Vulnerable
+                      </span>
+                  </Alert>
+                </Col>
+                <Col>
+                  <Alert
+                    className="pl-4"
+                    style={{ borderRadius: '40px', backgroundColor: '#334154' }}
+                  >
+                    <span
+                      className="pl-3"
+                      style={{ fontSize: '25px', fontWeight: 'bold' }}
+                    >
+                      {props.cardsData[3].data[2].vulnerableAndOutdatedCount}
+                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>
+                      Vulnerable {'&'} Outdated
+                      </span>
+                  </Alert>
+                </Col>
+                <Col>
+                  <Alert
+                    className="pl-4"
+                    style={{ borderRadius: '40px', backgroundColor: '#334154' }}
+                  >
+                    <span
+                      className="pl-3"
+                      style={{ fontSize: '25px', fontWeight: 'bold' }}
+                    >
+                      {props.cardsData[3].data[2].outdatedCount}
+                    </span> &nbsp; <span style={{ color: '#A7AEB7' }}>
+                      Outdated</span>
+                  </Alert>
+                </Col>
 
-    </tr>
-       )
-      })
-    }
-  </tbody>
-  
-  
-  </table>
-</div>
-</div>
-
-       </Card.Body>
-            </Card.Body>
+              </Card.Body>
+            </Row>
           </Col>
+
+
         </Row>
-  </Col>
-</Row>
-
-</Col>
-
-<Col sm={3}>
-          <Row>
-        <Card.Body className="bg">
-    <p>Vulnerability Analysis</p>
-    <HighchartsReact highcharts={Highcharts} options={options} />
-    <p>Library Statistics</p>
-  <p className="rounde"> <span className="library_text"> {props.cardsData[3].data[2].vulnerableCount}</span> <span className="library_rounde" style={{fontSize: "13px", color: "#A7AEB7"}}> Vulnerable</span></p>
-    <p className="rounde"><span className="library_text">{props.cardsData[3].data[2].vulnerableAndOutdatedCount}</span> <span className="library_rounde" style={{fontSize: "13px", color: "#A7AEB7"}}>Vulnerable & Outdated</span> </p>
-    <p className="rounde"><span className="library_text"> {props.cardsData[3].data[2].outdatedCount}</span> <span className="library_rounde" style={{fontSize: "13px", color: "#A7AEB7"}}>Outdated</span> </p>
-  </Card.Body>
-    </Row>
-       </Col>
-
-
-          </Row>
-        </Container>
-      </React.Fragment>
-      )
-    }
+      </Container>
+    </React.Fragment>
+  )
+}
 export default SecurityOnProjectSelection;
