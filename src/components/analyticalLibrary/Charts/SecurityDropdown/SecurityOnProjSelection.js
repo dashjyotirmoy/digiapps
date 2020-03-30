@@ -690,7 +690,7 @@ const SecurityOnProjectSelection = (props) => {
               
               <Card.Body className="pb-0">
                 <div className="wrap">
-              <table class="table table-hover table-dark">
+              <table className="table table-hover table-dark">
   <thead className="tabhead">
     <tr>
       <th scope="col">Name</th>
@@ -702,7 +702,7 @@ const SecurityOnProjectSelection = (props) => {
      </table>
 
 <div className="inner_table">
-     <table class="table table-hover table-dark" >
+     <table className="table table-hover table-dark" >
   <tbody >
   {
                           props.cardsData[4].data[2].map((item, index) => {
@@ -736,7 +736,7 @@ const SecurityOnProjectSelection = (props) => {
               
               <Card.Body className="pb-0">
               <div className="wrap">
-              <table class="table table-hover table-dark ">
+              <table className="table table-hover table-dark ">
   <thead className="tabhead">
     <tr>
       <th scope="col">Library Name</th>
@@ -747,7 +747,7 @@ const SecurityOnProjectSelection = (props) => {
   </thead>
   </table>
   <div className="inner_table">
-     <table class="table table-hover table-dark" >
+     <table className="table table-hover table-dark" >
      
   <tbody >
   {

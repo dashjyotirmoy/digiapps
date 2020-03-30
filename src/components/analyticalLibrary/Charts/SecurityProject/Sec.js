@@ -187,7 +187,7 @@ const Sec = props => {
              <p>Top 5 Projects</p>
              <Card.Body>
              <div className="wrap">
-              <table class="table table-hover table-dark">
+              <table className="table table-hover table-dark">
   <thead className="tabhead">
     <tr>
       <th scope="col">Projects</th>
@@ -199,7 +199,7 @@ const Sec = props => {
   </table>
 
 <div className="inner_table" style={{height:'370px'}}>
-     <table class="table table-hover table-dark" > 
+     <table className="table table-hover table-dark" > 
   <tbody className="tabrow">
     <tr>
       

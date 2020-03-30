@@ -39,7 +39,7 @@ const App = props => {
               <Card.Body>
 
                   <div className="wrap">
-              <table class="table table-hover table-dark">
+              <table className="table table-hover table-dark">
   <thead className="tabhead">
     <tr>
       <th scope="col">Severity</th>
@@ -56,7 +56,7 @@ const App = props => {
   </table>
 
 <div className="inner_table">
-     <table class="table table-hover table-dark" >   
+     <table className="table table-hover table-dark" >   
   <tbody >
    
   {
@@ -132,7 +132,7 @@ const App = props => {
               </Row>
               <Card.Body >
               <div className="wrap">
-              <table class="table table-hover table-dark">
+              <table className="table table-hover table-dark">
   <thead className="tabhead">
     <tr>
       <th scope="col">
@@ -160,7 +160,7 @@ const App = props => {
   </table>
 
 <div className="inner_table">
-     <table class="table table-hover table-dark" >  
+     <table className="table table-hover table-dark" >  
   <tbody>
    
   {
