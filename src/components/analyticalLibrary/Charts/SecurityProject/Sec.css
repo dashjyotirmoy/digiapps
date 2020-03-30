@@ -76,4 +76,7 @@ font-family: Helvetica;
  .tabpadding{
   padding: 10px 0px!important;
  }
-
+.text-centr{
+  text-align: center;
+  padding-right: 3rem!important;
+}

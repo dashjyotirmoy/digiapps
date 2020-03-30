@@ -604,9 +604,9 @@ const SecurityOnProjectSelection = (props) => {
                 </Row>
                 <Row className="text-center">
                   <Col sm={11}>
-                  <Badge style={{ color: '#222222', background: '#B65355' }}>0</Badge>{' '}
+                  {/* <Badge style={{ color: '#222222', background: '#B65355' }}>0</Badge>{' '}
                           <Badge style={{ color: '#222222', background: '#C0792A' }}>2</Badge>{' '}
-                          <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '}
+                          <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '} */}
                   </Col>
                   <Col sm={1}>
                     <FontAwesomeIcon
@@ -709,9 +709,9 @@ const SecurityOnProjectSelection = (props) => {
                             return (   
     <tr className="tabrow f-12" key={index}>
     <td><p>{item.name}</p></td>
-<td> <p>{item.type} </p></td>
- <td><p>{item.severity}</p></td>
- <td><p>{item.score}</p></td>
+<td  className="pl-4"> <p>{item.type} </p></td>
+ <td className="pl-4"><p>{item.severity}</p></td>
+ <td className="pl-4"><p>{item.score}</p></td>
     </tr>
       )
     })
@@ -779,7 +779,7 @@ const SecurityOnProjectSelection = (props) => {
                             </ButtonGroup>
          
                                   </td>
-                            <td><p>{item.licenseCount}</p></td>
+                            <td className="text-centr"><p>{item.licenseCount}</p></td>
 
     </tr>
        )

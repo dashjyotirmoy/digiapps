@@ -104,9 +104,9 @@ const Sec = props => {
                 </Row>
                 <Row className="text-center">
                   <Col sm={11}>
-                  <Badge style={{ color: '#222222', background: '#B65355' }}>0</Badge>{' '}
+                  {/* <Badge style={{ color: '#222222', background: '#B65355' }}>0</Badge>{' '}
                           <Badge style={{ color: '#222222', background: '#C0792A' }}>2</Badge>{' '}
-                          <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '}
+                          <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '} */}
                   </Col>
                   <Col sm={1}>
                     <FontAwesomeIcon
