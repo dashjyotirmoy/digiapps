@@ -5,14 +5,17 @@ export const securityProjectDataDispatch = (projectId) =>
   //   sprintId
   async dispatch => {
     try {
-      const response = await api.getSecurityProjectData(projectId);
-      dispatch({
+      if (projectId) {
+        const response = await api.getSecurityProjectData(projectId);
+        dispatch({
         type: actionTypes.SET_SECURITY_PROJECT_DETAILS,
         payload: {
           securityProjectDetails: response.data,
           chartDataReceived: true
         }
       });
+      }
+      
     } catch (error) {
       console.error(error);
     }

@@ -195,6 +195,7 @@ class Security extends Component {
 
   createCharts = (list, removed) => {
     // let list_temp = list[0];
+    // eslint-disable-next-line array-callback-return
     const updatedList = list.filter((ele, index) => {
       if (index !== removed) {
         return Object.assign({}, ele);
@@ -215,6 +216,7 @@ class Security extends Component {
 
   createRepoCharts = (list, removed) => {
     // let list_temp = list[0];
+    // eslint-disable-next-line array-callback-return
     const updatedList = list.filter((ele, index) => {
       if (index !== removed) {
         return Object.assign({}, ele);
