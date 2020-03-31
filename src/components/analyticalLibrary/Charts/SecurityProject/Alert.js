@@ -16,6 +16,10 @@ const Styles = styled.div`
 const App = props => {
   let alertData = props.cardsData;
 
+  let mediumCount = alertData.perVulnerabilityAlert.filter(data => data.severity === 'MEDIUM');
+  let highCount = alertData.perVulnerabilityAlert.filter(data => data.severity === 'HIGH');
+  let lowCount = alertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
+
   return (
     <React.Fragment>
       <Container fluid>
@@ -29,10 +33,13 @@ const App = props => {
                 </Col>
                 <Col sm={3} className="pl-0">
                   <Badge style={{ color: "#222222", background: "#B65355" }}>
-                    0
+                   {highCount.length}
                   </Badge>{" "}
                   <Badge style={{ color: "#222222", background: "#C0792A" }}>
-                    2
+                  {mediumCount.length}
+                  </Badge>{" "}
+                  <Badge style={{ color: '#222222', background: '#C2B12C' }}>
+                    {lowCount.length}
                   </Badge>{" "}
                 </Col>
               </Row>
@@ -65,7 +72,14 @@ const App = props => {
     <tr className="tabrow f-12" key={index}>
       <td scope="row">
       <Form.Check type="checkbox" style={{ float: "left" }} />
-                      <Badge className="sevbadge"></Badge>{" "}
+      {item.severity === 'MEDIUM' ? (
+            <Badge className="sevbadge2"></Badge>
+          ) : null}
+
+      {item.severity === 'HIGH' ? (
+            <Badge className="sevbadge"></Badge>
+          ) : null}    
+                      
       </td>
       <td>  <p>{item.libraryName}</p></td>
       <td>

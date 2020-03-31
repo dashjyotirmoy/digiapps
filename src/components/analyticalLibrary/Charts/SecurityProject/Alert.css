@@ -36,6 +36,15 @@
    padding: 10px;
     left: 6rem;
  }
+
+ .sevbadge2{
+  display: inline-block!important;
+  color: rgb(34, 34, 34);
+  background: rgb(192, 121, 42);
+   padding: 10px;
+    left: 6rem;
+ }
+
  .sevbadge1{
   display: inline-block!important;
   color: rgb(34, 34, 34);
