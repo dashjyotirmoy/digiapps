@@ -36,6 +36,15 @@
    padding: 10px;
     left: 6rem;
  }
+
+ .sevbadge2{
+  display: inline-block!important;
+  color: rgb(34, 34, 34);
+  background: rgb(192, 121, 42);
+   padding: 10px;
+    left: 6rem;
+ }
+
  .sevbadge1{
   display: inline-block!important;
   color: rgb(34, 34, 34);
@@ -113,7 +122,6 @@ div#root{
 .wrap table {
   table-layout: fixed;
   margin-bottom: 0px;
-  table-layout: fixed;
 }
 
 /* table tr td {
@@ -123,6 +131,6 @@ div#root{
 } */
 
 .inner_table {
-  height: 400px;
+  height: 325px;
   overflow-y: auto;
 }
