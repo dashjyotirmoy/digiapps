@@ -559,7 +559,7 @@ class Quality extends Component {
                         {ele.value}
                       </Row>
                       <Row className="d-flex justify-content-end px-3 text-white-50">
-                        <TooltipHoc info="">
+                        {/* <TooltipHoc info=""> */}
                           <FontAwesomeIcon
                             className="show-cursor"
                             onClick={() =>
@@ -567,7 +567,7 @@ class Quality extends Component {
                             }
                             icon={faEllipsisV}
                           />
-                        </TooltipHoc>
+                        {/* </TooltipHoc> */}
                       </Row>
                     </div>
                   );
