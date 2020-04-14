@@ -11,30 +11,30 @@ const getAllExecutives = () => {
 };
 
 const getExecInsightsData = execId => {
-  return devovOpsApi.get(`/executive/${execId}/executiveInsights`);
+  return devovOpsApi.get(`/executive/${execId}/executive-insights`);
 };
 
 const getVelocityData = (execId, projectId, sprintId, teamID) => {
   return devovOpsApi.get(
-    `/widget/velocityAndEfficiencyInsights?executiveId=${execId}&projectId=${projectId}&sprintId=${sprintId}&teamId=${teamID}`
+    `/widget/velocity-efficiency-insights?executiveId=${execId}&projectId=${projectId}&sprintId=${sprintId}&teamId=${teamID}`
   );
 };
 
 const getProjectInsightsData = (projectId, execId) => {
   return devovOpsApi.get(
-    `/project/${projectId}/projectInsights?executiveId=${execId}`
+    `/project/${projectId}/project-insights?executiveId=${execId}`
   );
 };
 
 const getSprintInsightsData = (sprintId, execId, projectId, teamID) => {
   return devovOpsApi.get(
-    `sprint/${sprintId}/sprintInsights?executiveId=${execId}&projectId=${projectId}&teamId=${teamID}`
+    `sprint/${sprintId}/sprint-insights?executiveId=${execId}&projectId=${projectId}&teamId=${teamID}`
   );
 };
 
 const getQualityMetricsData = (execId, projectId) => {
   return devovOpsApi.get(
-    `/widget/qualityInsights?executiveId=${execId}&projectId=${projectId}`
+    `/widget/quality-insights?executiveId=${execId}&projectId=${projectId}`
   );
 };
 
