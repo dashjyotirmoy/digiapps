@@ -2,6 +2,8 @@ import Options from "./optionsModel";
 
 
 let controlChartYAxisMaxLimit = 0;
+let bugsYAxisMaxLimit = 0;
+let userStoryYAxisMaxLimit = 0;
 let controlChartYValues = [];
 
 
@@ -100,7 +102,6 @@ class VelocityGraph {
       rolling_period,
       rollingAvgData_copy = [];
 
-      // controlChartYAxisMaxLimit = 0;
 
     //block to separate user story and bug data from the response
     this.res.data.map(series => {
@@ -252,6 +253,7 @@ class VelocityGraph {
             pointData.url = data.url;
             pointData.id = data.id;
             userStoryPoints.push(pointData);
+            if (userStoryYAxisMaxLimit < pointData.y) userStoryYAxisMaxLimit = pointData.y
           });
         }
       } else {
@@ -264,20 +266,10 @@ class VelocityGraph {
             pointData.url = data.url;
             pointData.id = data.id;
             bugsPoints.push(pointData);
-            // console.log(pointData.y);
-            controlChartYValues.push(pointData.y)
-            
-            // console.log(data);
-            if (controlChartYAxisMaxLimit < pointData.y) {
-              controlChartYAxisMaxLimit = pointData.y
+            if (bugsYAxisMaxLimit < pointData.y) bugsYAxisMaxLimit = pointData.y
+            if (userStoryYAxisMaxLimit || bugsYAxisMaxLimit) {
+              userStoryYAxisMaxLimit > bugsYAxisMaxLimit ? controlChartYAxisMaxLimit = userStoryYAxisMaxLimit : controlChartYAxisMaxLimit = bugs
             }
-
-            
-
-            // console.log(bugsPoints);
-
-
-
           });
         }
       }
@@ -327,7 +319,7 @@ class VelocityGraph {
     };
     options.yAxis = {
       min: -0.5,
-      max: controlChartYAxisMaxLimit + 30,
+      max: controlChartYAxisMaxLimit + 15,
       gridLineColor: "",
       title: {
         text: "Days",

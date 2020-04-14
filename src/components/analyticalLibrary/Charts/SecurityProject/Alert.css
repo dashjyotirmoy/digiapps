@@ -1,0 +1,136 @@
+
+.rounde{
+  border-radius: 25px;
+  border: 2px solid #334154;
+  padding: 20px;
+  text-align: left;
+  background-color: #334154;
+ }
+ .bg{
+   background-color: #232D3B;
+   color: #fff;
+   border-radius: 10px;
+ }
+ .iconend{
+  display: flex;
+  justify-content: flex-end;
+ }
+ .borderadius{
+  background-color: #232D3B!important;
+  border-radius: 10px!important;
+ }
+ .tabhead{
+   background-color: #1D2632;
+   color:#85888E;
+   padding-top: 1rem;
+ }
+ 
+ .tabrow:hover{
+  background-color:#424F61!important;
+  border-top: none!important;
+ }
+ .sevbadge{
+  display: inline-block!important;
+  color: rgb(34, 34, 34);
+  background: rgb(182, 83, 85);
+   padding: 10px;
+    left: 6rem;
+ }
+
+ .sevbadge2{
+  display: inline-block!important;
+  color: rgb(34, 34, 34);
+  background: rgb(192, 121, 42);
+   padding: 10px;
+    left: 6rem;
+ }
+
+ .sevbadge1{
+  display: inline-block!important;
+  color: rgb(34, 34, 34);
+  background: rgb(182, 83, 85);
+   padding: 6px;
+  margin-top: 5px;
+   border-radius: 50%;
+ }
+ 
+.font-10{
+  font-size: 10px;
+  color: #50E3C2;
+  margin-left: 7px;
+}
+.f-12{
+  font-size: 12px;
+}
+
+.dropdown-toggle::after{
+  margin-left: 2rem!important;
+}
+
+.dropbutton{
+background-color: #2E3B4D!important;
+  border-color: #3A485C!important;
+  color: #fff;
+}
+.dropbutton:focus{
+box-shadow: none;
+}
+
+
+.btn.focus{
+  box-shadow: none;
+}
+.btn-secondary.focus{
+  box-shadow: none;
+}
+.btnstyle{
+  background-color: #49586C!important;
+  border-color: transparent!important;
+}
+.btnstyle:hover{
+  background-color: #49586C!important;
+  border-color: transparent!important;
+  box-shadow: none!important;
+}
+.btnstyle:focus{
+  background-color: #49586C!important;
+  border-color: transparent!important;
+  box-shadow: none!important;
+}
+.basealign{
+  align-items: baseline;
+  padding-left: 1.5rem;
+}
+.margin-4{
+  margin-left: 4rem;
+}
+
+div#root{
+  overflow-y: overlay!important;
+}
+.table tbody+tbody{
+  border: none!important;
+}
+
+
+
+/* tables css */
+.wrap {
+  /* width: 352px; */
+}
+
+.wrap table {
+  table-layout: fixed;
+  margin-bottom: 0px;
+}
+
+/* table tr td {
+  padding: 5px;
+   width: 100px;
+  word-wrap: break-word;
+} */
+
+.inner_table {
+  height: 325px;
+  overflow-y: auto;
+}

@@ -2,6 +2,7 @@ import Velocity from "../../components/analyticalLibrary/ProductDefinationBar/Pr
 import Quality from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Quality";
 import Customer from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Customer";
 import Insights from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Insights";
+import Security from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Security";
 
 export const routes = [
   {
@@ -11,6 +12,10 @@ export const routes = [
   {
     path: "/quality",
     component: Quality
+  },
+  {
+    path: "/security",
+    component: Security
   },
   {
     path: "/customer",

@@ -1,0 +1,82 @@
+
+
+.library_text{
+  font-family: Helvetica;
+  font-size: 18;
+  font-weight: normal;
+  fill: rgb(255, 255, 255);
+}
+.library_rounde{
+font-family: Helvetica;
+  font-size: 13;
+  padding: 10px;
+  font-weight: normal;
+  fill: rgb(167, 174, 183);
+}
+.rounde{
+  border-radius: 25px;
+  border: 2px solid #334154;
+  padding: 20px;
+  text-align: left;
+  background-color: #334154;
+ }
+ .bg{
+   background-color: #232D3B;
+   color: #fff;
+   border-radius: 10px;
+ }
+ .iconend{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding: 0px;
+ }
+ .borderadius{
+  background-color: #232D3B!important;
+  border-radius: 10px!important;
+ }
+ .tabhead{
+   background-color: #1D2632;
+   color:#85888E;
+   padding-top: 1rem;
+ }
+ .tabrow{
+  background-color: #334154;
+  border-bottom: 1px solid #38475B;
+  padding-top: 1rem;
+ }
+ /* Alert button */
+ .Alertbg{
+   background-color: #1D2632!important;
+   border-color: #364D68!important;
+   color: #fff;
+   padding: .5rem 3rem;
+ }
+ .Alertbg:hover{
+  background-color: #4A90E2!important;
+  border-color: transparent;
+  color: #333;
+  padding: .5rem 3rem
+ }
+ .Alertbg:active{
+  background-color: #4A90E2!important;
+  border-color: transparent;
+  color: #333;
+  padding: .5rem 3rem
+ }
+ .Alertbg:visited{
+  background-color: #4A90E2!important;
+  border-color: transparent;
+  color: #333;
+  padding: .5rem 3rem
+ }
+ .Alertbg:focus{
+   box-shadow: none;
+ }
+ .tabpadding{
+  padding: 10px 0px!important;
+ }
+.text-centr{
+  text-align: center;
+  padding-right: 3rem!important;
+}
