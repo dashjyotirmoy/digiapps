@@ -13,8 +13,8 @@ import LibrarySvg from './LibrarySvg';
 import Alert from 'react-bootstrap/Alert';;
 
 
-
 const Sec = props => {
+  let topProject = props.cardsData[4].data[2].slice(0, 5);
   let options = {
     chart: {
       type: "pie",
@@ -208,10 +208,12 @@ const Sec = props => {
                       <div className="inner_table">
                         <table className="table table-hover table-dark" >
                           <tbody className="tabrow">
-                            <tr>
-
-                              <td>Lorum Ipsum</td>
-                              <td>1</td>
+                            {
+                topProject.map((item, index) => {
+                  return (  
+                            <tr key={index}>
+                              <td>{item.name}</td>
+                              <td>{item.librariesCount}</td>
                               <td>
                                 <ButtonGroup
                                   style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
@@ -220,24 +222,26 @@ const Sec = props => {
                                     style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
                                   >
                                     <span style={{ lineHeight: '' }}>
-                                      <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> 0</span>
+                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> {item.vulnerableLibraries.high}</span>
                                     </span>
                                   </Button>
                                   <Button
                                     style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
                                   >
-                                    Medium 1
+                                    Medium {item.vulnerableLibraries.medium}
 </Button>
                                   <Button
                                     style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
                                   >
-                                    Low 2
+                                    Low {item.vulnerableLibraries.low}
   </Button>
                                 </ButtonGroup>
                               </td>
-                              <td>4</td>
+                              <td>{item.licenseCount}</td>
                             </tr>
-
+                          )
+                        })
+                      }
                           </tbody>
                         </table>
                       </div>

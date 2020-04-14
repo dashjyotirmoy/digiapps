@@ -142,6 +142,11 @@ class Security extends Component {
         { name: rawData.name },
         { title: "Library Statistics" },
         rawData.libraryStatistics
+      ],
+      topProjects: [
+        { name: rawData.name },
+        { title: "Top 5 Projects" },
+        rawData.topProjects
       ]
     };
     // const splitArr = this.splitRawObj(item);
