@@ -65,6 +65,16 @@ class ProductDefBar extends Component {
                     className="border-0"
                   >
                     <Tab
+                      eventKey="security"
+                      title={
+                        <span className="font-aggegate-sub-text">
+                          {" "}
+                          Security
+                        </span>
+                      }
+                    ></Tab>
+
+                    <Tab
                       eventKey="velocity"
                       title={
                         <span className="font-aggegate-sub-text">
@@ -96,15 +106,7 @@ class ProductDefBar extends Component {
                         </span>
                       }
                     ></Tab>
-                    <Tab
-                      eventKey="security"
-                      title={
-                        <span className="font-aggegate-sub-text">
-                          {" "}
-                          Security
-                        </span>
-                      }
-                    ></Tab>
+
                   </Tabs>
                 ) : null}
               </StyleMainTab>

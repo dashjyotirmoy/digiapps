@@ -191,7 +191,7 @@ const Sec = props => {
             <Row className="mt-5">
               <Col >
                 <Card.Body className="bg">
-                  <p>Top 5 Projects</p>
+                  <p>Vulnerable Projects</p>
                   <Card.Body>
                     <div className="wrap">
                       <table className="table table-hover table-dark">
@@ -209,39 +209,39 @@ const Sec = props => {
                         <table className="table table-hover table-dark" >
                           <tbody className="tabrow">
                             {
-                topProject.map((item, index) => {
-                  return (  
-                            <tr key={index}>
-                              <td>{item.name}</td>
-                              <td>{item.librariesCount}</td>
-                              <td>
-                                <ButtonGroup
-                                  style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                                >
-                                  <Button
-                                    style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                                  >
-                                    <span style={{ lineHeight: '' }}>
-                  <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> {item.vulnerableLibraries.high}</span>
-                                    </span>
-                                  </Button>
-                                  <Button
-                                    style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                                  >
-                                    Medium {item.vulnerableLibraries.medium}
-</Button>
-                                  <Button
-                                    style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                                  >
-                                    Low {item.vulnerableLibraries.low}
-  </Button>
-                                </ButtonGroup>
-                              </td>
-                              <td>{item.licenseCount}</td>
-                            </tr>
-                          )
-                        })
-                      }
+                              topProject.map((item, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td>{item.name}</td>
+                                    <td>{item.librariesCount}</td>
+                                    <td>
+                                      <ButtonGroup
+                                        style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
+                                      >
+                                        <Button
+                                          style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
+                                        >
+                                          <span style={{ lineHeight: '' }}>
+                                            <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> {item.vulnerableLibraries.high}</span>
+                                          </span>
+                                        </Button>
+                                        <Button
+                                          style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
+                                        >
+                                          Medium {item.vulnerableLibraries.medium}
+                                        </Button>
+                                        <Button
+                                          style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
+                                        >
+                                          Low {item.vulnerableLibraries.low}
+                                        </Button>
+                                      </ButtonGroup>
+                                    </td>
+                                    <td>{item.licenseCount}</td>
+                                  </tr>
+                                )
+                              })
+                            }
                           </tbody>
                         </table>
                       </div>
