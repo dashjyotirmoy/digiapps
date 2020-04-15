@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Table } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import moment from 'moment/moment';
 
 
 let buttonColorScheme = {
@@ -84,7 +85,8 @@ const Policy = (props) => {
 
                         </th>
                         <th>{item.creator}</th>
-                        <th>  {item.creationDate} </th>
+                        <th>  { moment(item.creationDate).format("DD-MM-YYYY") } </th>
+                        
                       </tr>
                     </tbody>
 

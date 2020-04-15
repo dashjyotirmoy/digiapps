@@ -1,8 +1,9 @@
 import React from "react";
-import { Row, Col, Container, Card, Badge, Form,DropdownButton,Dropdown,Button,ButtonGroup} from "react-bootstrap";
+import { Row, Col, Container, Card, Badge, Form,Dropdown,Button,ButtonGroup} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
 import styled from "styled-components";
+import moment from 'moment/moment';
 // import { Left } from "react-bootstrap/lib/Media";
 
 const Styles = styled.div`
@@ -96,7 +97,9 @@ const App = props => {
       <p>{item.cvss2score}</p>
       </td>
       <td>
-      <p>{item.publishedDate}</p>
+      {/* <p>{(new Date(item.publishedDate)).toString()}</p> */}
+      <p>{ moment(item.publishedDate).format("DD-MM-YYYY") }</p>
+
       </td>
       <td>
       <p>{item.topFixType}</p>
@@ -219,10 +222,11 @@ const App = props => {
       <p>{item.libraryType}</p>
       </td>
       <td>
-      <p>{item.creationDate}</p>
+      <p>{ moment(item.creationDate).format("DD-MM-YYYY") }</p>
+      
       </td>
       <td>
-      <p>{item.modifiedDate}</p>
+      <p>{ moment(item.modifiedDate).format("DD-MM-YYYY") }</p>
       </td>    
     </tr>
        )
