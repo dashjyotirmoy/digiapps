@@ -199,8 +199,9 @@ const Sec = props => {
                           <tr>
                             <th scope="col">Projects</th>
                             <th scope="col">Libraries</th>
+                            <th scope="col">Vulnerebality Count</th>
                             <th scope="col">Vulnerabilities</th>
-                            <th scope="col">Licence</th>
+                            {/* <th scope="col">Licence</th> */}
                           </tr>
                         </thead>
                       </table>
@@ -214,6 +215,7 @@ const Sec = props => {
                                   <tr key={index}>
                                     <td>{item.name}</td>
                                     <td>{item.librariesCount}</td>
+                                    <td>3</td>
                                     <td>
                                       <ButtonGroup
                                         style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
@@ -237,7 +239,7 @@ const Sec = props => {
                                         </Button>
                                       </ButtonGroup>
                                     </td>
-                                    <td>{item.licenseCount}</td>
+                                    {/* <td>{item.licenseCount}</td> */}
                                   </tr>
                                 )
                               })
