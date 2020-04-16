@@ -73,7 +73,7 @@ const Policy = (props) => {
                       <tr>
                         <th>{item.policyId}</th>
                         <th> {item.policyName} </th>
-                        <th>{item.match}</th>
+                        <th>By {item.match} Group</th>
                         <th>
                           <Button
                             style={{ minWidth: '6rem', lineHeight: '1rem', color: '#222222', background: buttonColorScheme[item.action], border: '#B65355' }}

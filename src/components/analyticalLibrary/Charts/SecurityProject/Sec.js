@@ -15,6 +15,7 @@ import Alert from 'react-bootstrap/Alert';;
 
 const Sec = props => {
   let topProject = props.cardsData[4].data[2].slice(0, 5);
+  props.cardsData[4].data[2].sort((a, b) => b.vulnerableLibraries.totalCount.localeCompare(a.vulnerableLibraries.totalCount));
   let options = {
     chart: {
       type: "pie",
@@ -215,7 +216,7 @@ const Sec = props => {
                                   <tr key={index}>
                                     <td>{item.name}</td>
                                     <td>{item.librariesCount}</td>
-                                    <td>3</td>
+                                <td>{item.vulnerableLibraries.totalCount}</td>
                                     <td>
                                       <ButtonGroup
                                         style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
