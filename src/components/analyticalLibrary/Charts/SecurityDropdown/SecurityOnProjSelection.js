@@ -505,7 +505,7 @@ import Alert from 'react-bootstrap/Alert';
 
 const SecurityOnProjectSelection = (props) => {
  props.cardsData[4].data[2].sort((a, b) => b.score.localeCompare(a.score));
-//  props.cardsData[5].data[2].sort((a, b) => b.vulnerabilities.totalCount.localeCompare(a.vulnerabilities.totalCount));
+ props.cardsData[5].data[2].sort((a, b) => b.vulnerabilities.totalCount.localeCompare(a.vulnerabilities.totalCount));
 
   let options = {
     chart: {
