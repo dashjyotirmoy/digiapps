@@ -45,11 +45,15 @@ class Security extends Component {
   }
 
   fetchSecurityData = (props) => {
-    let type;
     this.setState({
       all_data: false,
       charts: []
     });
+    this.setDefaultData();
+  }
+
+  setDefaultData() {
+    let type;
     this.props
       .securityProjectDataDispatch(this.props.projectID)
       .then(item => {
@@ -89,6 +93,7 @@ class Security extends Component {
         };
       });
 
+      repoDetails.unshift({id: "selectProject", projectName: "select Project"});
       this.setState({
         repoData: repoDetails,
         selectedRepo: ""
@@ -282,8 +287,16 @@ class Security extends Component {
     });
 
     this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].projectName);
-    this.props.securityRepoDataDispatch(this.props.projectID, repoId)
+    if (repoId !== 'selectProject') {
+      this.props.securityRepoDataDispatch(this.props.projectID, repoId)
       .then(() => { this.updateSecurityData(repoId, selectedIndex) });
+    } else {
+      this.setState({
+        showbutton: false
+    });
+    this.setDefaultData();
+    }
+    
 
   };
 

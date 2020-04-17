@@ -84,11 +84,11 @@ class Quality extends Component {
       metricType: ""
     });
   };
-  routeToVelocity = () => {
-    this.props.history.push("/velocity");
+  routeToSecurity = () => {
+    this.props.history.push("/security");
   };
   fetchQualityData = () => {
-    let type;
+    
     this.setState({
       all_data: false,
       charts: [],
@@ -99,9 +99,16 @@ class Quality extends Component {
       this.props.projectID === "" ||
       this.props.projectID === undefined
     ) {
-      this.routeToVelocity();
+      this.routeToSecurity();
     } else {
-      this.props
+      this.setDefaultQualityData();
+    }
+  };
+
+
+  setDefaultQualityData() {
+    let type;
+    this.props
         .qualityDataDispatch(this.props.currentExecId, this.props.projectID)
         .then(item => {
           if (this.props.qualityData.repositories.length > 0) {
@@ -132,8 +139,7 @@ class Quality extends Component {
         .catch(error => {
           console.error(error);
         });
-    }
-  };
+  }
 
   setRawDefaultRepo(rawData, outstandingBugs, averageResolution) {
     const item = rawData.map((item, index) => {
@@ -391,6 +397,7 @@ class Quality extends Component {
         };
       });
 
+      repoDetails.unshift({id: "selectRepository", projectName: "select Repository"});
       this.setState({
         repoData: repoDetails,
         selectedRepo: ""
@@ -448,7 +455,11 @@ class Quality extends Component {
     return defaultList;
   };
   handleRepoChange = repoID => {
-    this.updateRepository(repoID);
+    if (repoID !== 'selectRepository') {
+      this.updateRepository(repoID);
+    } else {
+      this.setDefaultQualityData();
+    }
   };
 
   componentDidUpdate() {
