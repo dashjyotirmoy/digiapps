@@ -93,7 +93,7 @@ class Security extends Component {
         };
       });
 
-      repoDetails.unshift({id: "selectProject", projectName: "select Project"});
+      // repoDetails.unshift({id: "selectProject", projectName: "select Project"});
       this.setState({
         repoData: repoDetails,
         selectedRepo: ""
@@ -290,9 +290,13 @@ class Security extends Component {
     if (repoId !== 'selectProject') {
       this.props.securityRepoDataDispatch(this.props.projectID, repoId)
       .then(() => { this.updateSecurityData(repoId, selectedIndex) });
+      if (this.state.repoData[0].id !== 'selectProject') {
+        this.state.repoData.unshift({id: "selectProject", projectName: "select Project"});
+      }
     } else {
       this.setState({
-        showbutton: false
+        showbutton: false,
+        selectedRepo: ""
     });
     this.setDefaultData();
     }
