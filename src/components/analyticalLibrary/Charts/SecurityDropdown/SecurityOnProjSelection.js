@@ -752,11 +752,15 @@ const SecurityOnProjectSelection = (props) => {
                                       <tr className="tabrow f-12" key={index}>
                                         <td className="w-45"><p>{item.name}</p></td>
                                         <td className="tabpadding w-40">
+                                        {item.vulnerabilities.totalCount == 0 ? (
+                                    <p className="ml-3">No Vulnerabilities</p>
+                                  ) : 
                                         <ProgressBar className="w-200">
   <ProgressBar style={{backgroundColor: '#B65355'}} now={item.vulnerabilities.high}label={`${item.vulnerabilities.high}`} key={1} max={item.vulnerabilities.totalCount}/>
   <ProgressBar style={{backgroundColor: '#C0792A'}} now={item.vulnerabilities.medium} label={`${item.vulnerabilities.medium}`}key={2}max={item.vulnerabilities.totalCount} />
   <ProgressBar style={{backgroundColor: '#C2B12C'}} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`}key={3} max={item.vulnerabilities.totalCount}/>
 </ProgressBar>
+                                  }
                                           {/* <ButtonGroup
                                             style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                                           >
