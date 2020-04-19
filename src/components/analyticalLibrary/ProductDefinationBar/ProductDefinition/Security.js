@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Row, Col,Button} from "react-bootstrap";
+import { Row, Col,Button, Container} from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
 // import SecurityAlert from "./SecurityAlert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faChevronDown
+  faChevronDown,
+  faSquare
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -37,7 +38,9 @@ class Security extends Component {
     showbutton: false,
     selectedRepo: "",
     repoData: [],
-    componentType: "Product"
+    componentType: "Product",
+    alertActive:false,
+    policyActive:false
   };
 
   removeChartComponent = (chartIndex) => {
@@ -314,31 +317,41 @@ class Security extends Component {
   };
 
   setPolicy = () => {
-    this.props.securityPolicyDataDispatch(this.props.projectID, this.props.currentRepo)
-      .then(() => { this.setPolicyData(this.props.securityPolicyData) });
-  }
-
-  setPolicyData = (rawData) => {
-    this.setState({
-      charts: rawData.policyViolations,
-      componentType: "Policy"
-    })
-  }
-
-  setAlert = () => {
-    this.props.securityAlertDataDispatch(this.props.projectID, this.props.currentRepo)
-      .then(() => { this.setAlertData(this.props.securityAlertData) });
-  }
-
-  setAlertData = (rawData) => {
-    this.setState({
-      charts: rawData,
-      componentType: "Alert"
-    })
-    
-
-  }
-
+ 
+    let policyCurrentState =true;
+     let alertCurrentState=false;
+    // const currentState = this.state.active;
+    this.setState({ policyActive: policyCurrentState,alertActive:alertCurrentState});
+     this.props.securityPolicyDataDispatch(this.props.projectID, this.props.currentRepo)
+       .then(() => { this.setPolicyData(this.props.securityPolicyData) });
+   }
+ 
+   setPolicyData = (rawData) => {
+     this.setState({
+       charts: rawData.policyViolations,
+       componentType: "Policy"
+     })
+   }
+ 
+   setAlert = () => {
+ 
+     let alertCurrentState =true;
+      let policyCurrentState=false;
+   
+     this.setState({ alertActive: alertCurrentState,policyActive:policyCurrentState });
+     this.props.securityAlertDataDispatch(this.props.projectID, this.props.currentRepo)
+       .then(() => { this.setAlertData(this.props.securityAlertData) });
+   }
+ 
+   setAlertData = (rawData) => {
+     this.setState({
+       charts: rawData,
+       componentType: "Alert"
+     })
+     
+ 
+   }
+ 
   componentDidUpdate() {
     if (this.state.all_data) {
       this.fetchSecurityData();
@@ -372,8 +385,10 @@ class Security extends Component {
         //  <div style={{ color: "white" }}>security </div>
 
         <React.Fragment>
+         
           <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start">
-            <Col xl={2} lg={3} md={3}>
+     
+            <Col md={2}>
               <Dropdown
                 listData={this.state.repoData}
                 direction="down"
@@ -405,20 +420,39 @@ class Security extends Component {
                 </Row>
               </Dropdown>
             </Col>
-
-            <div>
-{this.state.showbutton ? (
-              <Button variant="outline-dark" className="Alertbg"  onClick ={this.setAlert}>Alert</Button>
+<Col md={8}>
+            <span>
+            {this.state.showbutton ? (
+              <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>Alert</Button>
           //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
           ) : null}
-</div>
+</span>
          
-<div className="ml-3">
+<span className="ml-3">
 {this.state.showbutton ? (
-             <Button variant="outline-dark" className="Alertbg" onClick ={this.setPolicy}>Policies</Button>
+             <Button variant="outline-dark"  className={this.state.policyActive?"bgblue":"Alertbg"} onClick ={this.setPolicy}>Policies</Button>
           //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
           ) : null}
-</div>
+</span>
+</Col>
+<Col md={2} className="pt-3">
+<div>
+  <span className="mr-3">
+  <FontAwesomeIcon  className="highbg" icon={faSquare} />
+  <span style={{color:'#fff'}}>High</span>
+  </span>
+  <span className="mr-3">
+  <FontAwesomeIcon  className="mediumbg" icon={faSquare} />
+  <span style={{color:'#fff'}}>Medium</span>
+  </span>
+  <span className="mr-3">
+  <FontAwesomeIcon  className="lowbg" icon={faSquare} />
+  <span style={{color:'#fff'}}>Low</span>
+  </span>
+  </div>
+  
+  </Col>
+
           </Row>
           {this.state.charts.length && this.state.componentType === "Product" ? (
             <Sec cardsData={this.state.charts} />
@@ -432,6 +466,7 @@ class Security extends Component {
           {this.state.componentType === "Alert" ? (
            <App cardsData = {this.state.charts}/>
           ) : null}
+      
         </React.Fragment>
       );
     }

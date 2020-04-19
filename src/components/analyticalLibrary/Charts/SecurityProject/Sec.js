@@ -2,7 +2,7 @@ import React from "react";
 // import 'react-circular-progressbar/dist/styles.css';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Row, Col, Container, Card, Badge, ButtonGroup, Button } from "react-bootstrap";
+import { Row, Col, Container, Card, Badge, ButtonGroup, Button,ProgressBar } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -60,19 +60,19 @@ const Sec = props => {
         name: "Browsers",
         data: [
           {
-            name: "Low",
+            // name: "Low",
             color: "#C2B12C",
             y: parseInt(props.cardsData[2].data[2].alertMetrics.low),
             borderColor: '#C2B12C'
           },
           {
-            name: "Medium",
+            // name: "Medium",
             color: "#C0792A",
             y: parseInt(props.cardsData[2].data[2].alertMetrics.medium),
             borderColor: '#C0792A'
           },
           {
-            name: "High",
+            // name: "High",
             color: "#E75555",
             y: parseInt(props.cardsData[2].data[2].alertMetrics.high),
             borderColor: '#E75555'
@@ -80,7 +80,7 @@ const Sec = props => {
         ],
         size: "78%",
         innerSize: "90%",
-        showInLegend: true,
+        // showInLegend: true,
         dataLabels: {
           enabled: false
         },
@@ -117,10 +117,6 @@ const Sec = props => {
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '} */}
                       </Col>
                       <Col sm={1}>
-                        <FontAwesomeIcon
-                          icon={faEllipsisV}
-                          color={"#D8D8D8"}
-                        ></FontAwesomeIcon>
                       </Col>
                     </Row>
                   </Card.Body>
@@ -147,12 +143,12 @@ const Sec = props => {
                         <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
-                      <Col sm={1}>
+                      {/* <Col sm={1}>
                         <FontAwesomeIcon
                           icon={faEllipsisV}
                           color={"#D8D8D8"}
                         ></FontAwesomeIcon>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Card.Body>
                 </Card></Col>
@@ -177,12 +173,12 @@ const Sec = props => {
                         <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
-                      <Col sm={1}>
+                      {/* <Col sm={1}>
                         <FontAwesomeIcon
                           icon={faEllipsisV}
                           color={"#D8D8D8"}
                         ></FontAwesomeIcon>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Card.Body>
                 </Card></Col>
@@ -191,7 +187,7 @@ const Sec = props => {
 
             <Row className="mt-5">
               <Col >
-                <Card.Body className="bg">
+                <Card.Body className="bg card-height">
                   <p>Vulnerable Projects</p>
                   <Card.Body>
                     <div className="wrap">
@@ -218,7 +214,12 @@ const Sec = props => {
                                     <td>{item.librariesCount}</td>
                                 <td>{item.vulnerableLibraries.totalCount}</td>
                                     <td>
-                                      <ButtonGroup
+                                    <ProgressBar className="w-200">
+  <ProgressBar style={{backgroundColor: '#B65355'}} now={item.vulnerableLibraries.high} label={`${item.vulnerableLibraries.high}`}key={1} max={item.vulnerableLibraries.totalCount} />
+  <ProgressBar style={{backgroundColor: '#C0792A'}} now={item.vulnerableLibraries.medium} label={`${item.vulnerableLibraries.medium}`}key={2} max={item.vulnerableLibraries.totalCount} />
+  <ProgressBar style={{backgroundColor: '#C2B12C'}} now={item.vulnerableLibraries.low}  label={`${item.vulnerableLibraries.low} `}key={3} max={item.vulnerableLibraries.totalCount} />
+</ProgressBar>
+                                      {/* <ButtonGroup
                                         style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                                       >
                                         <Button
@@ -238,7 +239,7 @@ const Sec = props => {
                                         >
                                           Low {item.vulnerableLibraries.low}
                                         </Button>
-                                      </ButtonGroup>
+                                      </ButtonGroup> */}
                                     </td>
                                     {/* <td>{item.licenseCount}</td> */}
                                   </tr>
