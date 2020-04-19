@@ -112,6 +112,7 @@ class Quality extends Component {
         .qualityDataDispatch(this.props.currentExecId, this.props.projectID)
         .then(item => {
           if (this.props.qualityData.repositories.length > 0) {
+            this.initialData = this.props.qualityData;
             this.setRepository(this.props.qualityData);
             let layout_instance = new Layout(2);
             this.setState({
@@ -397,7 +398,6 @@ class Quality extends Component {
         };
       });
 
-      repoDetails.unshift({id: "selectRepository", projectName: "select Repository"});
       this.setState({
         repoData: repoDetails,
         selectedRepo: ""
@@ -424,7 +424,29 @@ class Quality extends Component {
     });
 
     this.props.repoDropValDispatch(repoDetails[selectedIndex].projectName);
-    this.updateQualityData(repoId, selectedIndex);
+    if (repoId !== 'selectProject') {
+      this.updateQualityData(repoId, selectedIndex);
+      if (this.state.repoData[0].id !== 'selectProject') {
+        this.state.repoData.unshift({id: "selectProject", projectName: "select Project"});
+      }
+    } else {
+      let layout_instance = new Layout(2);
+      this.setState({
+        selectedRepo: "",
+        show: false,
+        layout: layout_instance.layout
+    });
+    let type;
+    type = this.setRawDefaultRepo(
+      this.initialData.repositories,
+      this.initialData.outstandingBugs,
+      this.initialData.averageDefectResolutionTime
+    );
+    this.createCharts(this.createChartObject(type));
+    
+    // this.removeChartComponent(0);
+    // this.removeChartComponent(0);
+    }
   };
 
   updateQualityData = (repoId, selectedIndex) => {
@@ -455,11 +477,11 @@ class Quality extends Component {
     return defaultList;
   };
   handleRepoChange = repoID => {
-    if (repoID !== 'selectRepository') {
+    // if (repoID !== 'selectRepository') {
       this.updateRepository(repoID);
-    } else {
-      this.setDefaultQualityData();
-    }
+    // } else {
+    //   this.setDefaultQualityData();
+    // }
   };
 
   componentDidUpdate() {
