@@ -34,7 +34,7 @@
   color: rgb(34, 34, 34);
   background: rgb(182, 83, 85);
    padding: 10px;
-    left: 6rem;
+   margin-left: 1rem;
  }
 
  .sevbadge2{
@@ -42,7 +42,7 @@
   color: rgb(34, 34, 34);
   background: rgb(192, 121, 42);
    padding: 10px;
-    left: 6rem;
+   margin-left: 1rem;
  }
 
  .sevbadge1{

@@ -2,7 +2,7 @@ import React from "react";
 // import 'react-circular-progressbar/dist/styles.css';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Row, Col, Container, Card, Badge, ButtonGroup, Button } from "react-bootstrap";
+import { Row, Col, Container, Card, Badge, ButtonGroup, Button ,ProgressBar} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -548,19 +548,19 @@ const SecurityOnProjectSelection = (props) => {
         name: 'Browsers',
         data: [
           {
-            name: 'Low',
+            // name: 'Low',
             color: '#C2B12C',
             y: parseInt(props.cardsData[2].data[2].alertMetrics.low),
             borderColor: '#C2B12C'
           },
           {
-            name: 'Medium',
+            // name: 'Medium',
             color: '#C0792A',
             y: parseInt(props.cardsData[2].data[2].alertMetrics.medium),
             borderColor: '#C0792A'
           },
           {
-            name: ' High',
+            // name: ' High',
             color: '#E75555',
             y: parseInt(props.cardsData[2].data[2].alertMetrics.high),
             borderColor: '#E75555'
@@ -568,7 +568,7 @@ const SecurityOnProjectSelection = (props) => {
         ],
         size: "78%",
         innerSize: "90%",
-        showInLegend: true,
+        // showInLegend: true,
         dataLabels: {
           enabled: false
         }
@@ -734,10 +734,10 @@ const SecurityOnProjectSelection = (props) => {
                         <div className="wrap">
                           <table className="table table-hover table-dark ">
                             <thead className="tabhead">
-                              <tr>
-                                <th scope="col">Library Name</th>
-                                <th scope="col">Vulnerable Library</th>
-                                <th scope="col">License Count</th>
+                            <tr>
+                                <th className="w-45">Library Name</th>
+                                <th  >Vulnerable Library</th>
+                                <th className="w-23">License Count</th>
 
                               </tr>
                             </thead>
@@ -750,9 +750,14 @@ const SecurityOnProjectSelection = (props) => {
                                   props.cardsData[5].data[2].map((item, index) => {
                                     return (
                                       <tr className="tabrow f-12" key={index}>
-                                        <td><p>{item.name}</p></td>
-                                        <td className="tabpadding">
-                                          <ButtonGroup
+                                        <td className="w-45"><p>{item.name}</p></td>
+                                        <td className="tabpadding w-40">
+                                        <ProgressBar className="w-200">
+  <ProgressBar style={{backgroundColor: '#B65355'}} now={item.vulnerabilities.high}label={`${item.vulnerabilities.high}`} key={1} max={item.vulnerabilities.totalCount}/>
+  <ProgressBar style={{backgroundColor: '#C0792A'}} now={item.vulnerabilities.medium} label={`${item.vulnerabilities.medium}`}key={2}max={item.vulnerabilities.totalCount} />
+  <ProgressBar style={{backgroundColor: '#C2B12C'}} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`}key={3} max={item.vulnerabilities.totalCount}/>
+</ProgressBar>
+                                          {/* <ButtonGroup
                                             style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                                           >
                                             <Button
@@ -772,10 +777,10 @@ const SecurityOnProjectSelection = (props) => {
                                             >
                                               Low {item.vulnerabilities.low}
                                             </Button>
-                                          </ButtonGroup>
+                                          </ButtonGroup> */}
 
                                         </td>
-                                        <td><p>{item.licenseCount}</p></td>
+                                        <td className="w-10"><p>{item.licenseCount}</p></td>
 
                                       </tr>
                                     )

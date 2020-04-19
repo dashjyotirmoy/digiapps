@@ -1,8 +1,13 @@
 import React from "react";
-import { Row, Col, Container, Card, Badge, Form,Dropdown,Button,ButtonGroup} from "react-bootstrap";
+import { Row, Col, Container, Card, Badge, Form,Dropdown,ProgressBar} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronDown,
+  faSquare
+} from "@fortawesome/free-solid-svg-icons";
 import moment from 'moment/moment';
 // import { Left } from "react-bootstrap/lib/Media";
 
@@ -50,7 +55,7 @@ const App = props => {
                   <table className="table table-hover table-dark">
                     <thead className="tabhead">
                       <tr>
-                        <th scope="col">Severity</th>
+                        <th className="w-8">Severity</th>
                         <th scope="col">Library</th>
                         <th scope="col">Vulnerability Id</th>
                         <th scope="col">CVSS 3 Score</th>
@@ -70,7 +75,7 @@ const App = props => {
                           alertData.perVulnerabilityAlert.map((item, index) => {
                             return (
                               <tr className="tabrow f-12" key={index}>
-                                <td scope="row">
+                                <td scope="row" className="w-8">
                                   {item.severity === 'MEDIUM' ? (
                                     <Badge className="sevbadge2"></Badge>
                                   ) : null}
@@ -124,20 +129,20 @@ const App = props => {
               <Row className="basealign">
                 <p>Alerts</p>
                 <Col sm={1}>
-                  <Dropdown>
+                     <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic" className="dropbutton">
                       All Time
   </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                      <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                      <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                      <Dropdown.Item href="#/action-1">Last Month</Dropdown.Item>
+                      <Dropdown.Item href="#/action-2">Last 3 Month</Dropdown.Item>
+                      <Dropdown.Item href="#/action-3">Last 6 Month</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
-                <Button variant="secondary" className="btnstyle">Apply Preferences</Button>{' '}
-                <Button variant="secondary" className="ml-4 btnstyle">Ignore Selected</Button>{' '}
+                {/* <Button variant="secondary" className="btnstyle">Apply Preferences</Button>{' '}
+                <Button variant="secondary" className="ml-4 btnstyle">Ignore Selected</Button>{' '} */}
 
               </Row>
               <Card.Body >
@@ -187,7 +192,13 @@ const App = props => {
                                   <p>{item.vulnerabilityType}</p>
                                 </td>
                                 <td>
-                                  <ButtonGroup
+                                <ProgressBar className="w-200">
+  <ProgressBar style={{backgroundColor: '#B65355'}} now={item.description.high}label={`${item.description.high}`} key={1} max={item.description.totalCount}/>
+  <ProgressBar style={{backgroundColor: '#C0792A'}} now={item.description.medium} label={`${item.description.medium}`}key={2}max={item.description.totalCount} />
+  <ProgressBar style={{backgroundColor: '#C2B12C'}} now={item.description.low} label={`${item.description.low}`}key={3} max={item.description.totalCount}/>
+</ProgressBar>
+
+                                  {/* <ButtonGroup
                                     style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                                   >
                                     <Button
@@ -207,7 +218,7 @@ const App = props => {
                                     >
                                       Low {item.description.low}
                                     </Button>
-                                  </ButtonGroup>
+                                  </ButtonGroup> */}
                                 </td>
                                 <td>
                                   <p>{item.libraryType}</p>
