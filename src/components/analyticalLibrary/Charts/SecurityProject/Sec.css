@@ -34,6 +34,7 @@ font-family: Helvetica;
  .borderadius{
   background-color: #232D3B!important;
   border-radius: 10px!important;
+ 
  }
  .tabhead{
    background-color: #1D2632;
@@ -111,4 +112,7 @@ width: 45%;
 }
 .card-height{
   max-height: 423px;
+}
+.policy-height{
+  height: 180px;
 }

@@ -96,7 +96,7 @@ const Sec = props => {
           <Col sm={9}>
             <Row>
               <Col sm={4}>
-                <Card className="borderadius">
+                <Card className="borderadius policy-height">
                   <Card.Body className="pt-2 bg">
                     <Row>
                       <Col sm={8} className="mb-3">
