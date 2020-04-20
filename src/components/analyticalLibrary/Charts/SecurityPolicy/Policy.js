@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, Table } from 'react-bootstrap';
+import { Card, Table,Row,Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import moment from 'moment/moment';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter} from "@fortawesome/free-solid-svg-icons";
 
 
 let buttonColorScheme = {
@@ -16,6 +18,7 @@ function updateFunction() {
 
 const Policy = (props) => {
     let policyData = props.cardsData;
+  
   return (
     <React.Fragment>
       <Card
@@ -44,7 +47,19 @@ const Policy = (props) => {
                   <th>Policy Name</th>
                   <th>Match</th>
                   <th>Action
-                    <span className="pl-5">
+                  <FontAwesomeIcon className="ml-2"
+                          icon={faFilter}
+                          color={"#D8D8D8"}
+                        ></FontAwesomeIcon>
+                        <div className="db" >
+                          <Card className="borderadius">
+                            <Card.Body className="pt-3 bg">
+                              <p>REJECT</p>
+                              <p>APPROVE</p>
+                            </Card.Body>
+                          </Card>
+                        </div>
+                    {/* <span className="pl-5">
                       <input
                         className="pl-2"
                         style={{ minHeight: '1rem', maxHeight: '2rem', lineHeight: '2rem', minWidth: '5rem', maxWidth: '8rem', borderRadius: '4px' }}
@@ -53,7 +68,7 @@ const Policy = (props) => {
                         onChange={updateFunction}
                       >
                       </input>
-                    </span>
+                    </span> */}
                   </th>
                   <th>Creator</th>
                   <th>Creation Date</th>

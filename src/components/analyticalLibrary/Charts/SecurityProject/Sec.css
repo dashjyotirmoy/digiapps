@@ -116,3 +116,11 @@ width: 45%;
 .policy-height{
   height: 180px;
 }
+.dn{
+  display: none;
+}
+.db{
+  display: block;
+  position: absolute;
+  margin-left: 4rem;
+}
