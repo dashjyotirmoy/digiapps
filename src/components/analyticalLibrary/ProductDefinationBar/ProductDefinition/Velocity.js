@@ -110,14 +110,14 @@ class Velocity extends Component {
           ele.name === "Velocity Trend"
             ? "VelocityTrends"
             : ele.name === "Project Burndown"
-            ? "ProjectBurnDown"
-            : ele.name === "Sprint Burndown"
-            ? "SprintBurndown"
-            : "ControlChartHigh",
+              ? "ProjectBurnDown"
+              : ele.name === "Sprint Burndown"
+                ? "SprintBurndown"
+                : "ControlChartHigh",
         data:
           ele.name === "Velocity Trend" ||
-          ele.name === "Sprint Burndown" ||
-          ele.name === "Project Burndown"
+            ele.name === "Sprint Burndown" ||
+            ele.name === "Project Burndown"
             ? ele
             : ele.metrics,
         title: ele.name,
