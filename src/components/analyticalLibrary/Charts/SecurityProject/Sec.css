@@ -124,3 +124,6 @@ width: 45%;
   position: absolute;
   margin-left: 4rem;
 }
+.bold{
+  font-weight: normal;
+}

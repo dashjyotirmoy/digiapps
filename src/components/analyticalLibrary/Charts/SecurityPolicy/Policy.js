@@ -18,7 +18,8 @@ function updateFunction() {
 
 const Policy = (props) => {
     let policyData = props.cardsData;
-  
+    const [showResults, setShowResults] = React.useState(false)
+    const onClick = () => setShowResults(true)
   return (
     <React.Fragment>
       <Card
@@ -47,15 +48,15 @@ const Policy = (props) => {
                   <th>Policy Name</th>
                   <th>Match</th>
                   <th>Action
-                  <FontAwesomeIcon className="ml-2"
-                          icon={faFilter}
+                  <FontAwesomeIcon className="ml-2" 
+                          icon={faFilter} onClick={onClick}
                           color={"#D8D8D8"}
-                        ></FontAwesomeIcon>
-                        <div className="db" >
+                      ></FontAwesomeIcon>
+                        <div className= {showResults?"db":"dn"}  >
                           <Card className="borderadius">
                             <Card.Body className="pt-3 bg">
-                              <p>REJECT</p>
-                              <p>APPROVE</p>
+                              <p className="bold">REJECT</p>
+                              <p className="bold">APPROVE</p>
                             </Card.Body>
                           </Card>
                         </div>
