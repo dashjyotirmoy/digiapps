@@ -584,7 +584,7 @@ const SecurityOnProjectSelection = (props) => {
           <Col sm={9}>
             <Row>
               <Col sm={4}>
-                <Card className="borderadius">
+                <Card className="borderadius" style={{ height: "180px" }}>
                   <Card.Body className="pt-2 bg">
                     <Row>
                       <Col sm={8} className="mb-3">
@@ -604,12 +604,12 @@ const SecurityOnProjectSelection = (props) => {
                         <Badge style={{ color: '#222222', background: '#C0792A' }}>2</Badge>{' '}
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '} */}
                       </Col>
-                      <Col sm={1}>
+                      {/* <Col sm={1}>
                         <FontAwesomeIcon
                           icon={faEllipsisV}
                           color={"#D8D8D8"}
                         ></FontAwesomeIcon>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Card.Body>
                 </Card>
@@ -635,12 +635,12 @@ const SecurityOnProjectSelection = (props) => {
                         <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
-                      <Col sm={1}>
+                      {/* <Col sm={1}>
                         <FontAwesomeIcon
                           icon={faEllipsisV}
                           color={"#D8D8D8"}
                         ></FontAwesomeIcon>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Card.Body>
                 </Card></Col>
@@ -665,12 +665,12 @@ const SecurityOnProjectSelection = (props) => {
                         <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
-                      <Col sm={1}>
+                      {/* <Col sm={1}>
                         <FontAwesomeIcon
                           icon={faEllipsisV}
                           color={"#D8D8D8"}
                         ></FontAwesomeIcon>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Card.Body>
                 </Card></Col>
@@ -682,7 +682,7 @@ const SecurityOnProjectSelection = (props) => {
                 <Row>
                   <Col>
                     <Card.Body className="bg">
-                      <h5 className="mb-3">Top Vulnerabilities</h5>
+                      <h5 className="mb-3">Vulnerabilities</h5>
 
                       <Card.Body className="pb-0">
                         <div className="wrap">
@@ -728,7 +728,7 @@ const SecurityOnProjectSelection = (props) => {
                 <Row>
                   <Col>
                     <Card.Body className="bg">
-                      <h5 className="mb-3">Top Libraries</h5>
+                      <h5 className="mb-3">Libraries</h5>
 
                       <Card.Body className="pb-0">
                         <div className="wrap">
