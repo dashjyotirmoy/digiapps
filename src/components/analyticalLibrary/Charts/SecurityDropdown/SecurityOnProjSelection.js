@@ -4,7 +4,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Row, Col, Container, Card, Badge, ButtonGroup, Button ,ProgressBar} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV,} from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../SecurityProject/Sec.css";
 import DocumentCancelSvg from '../SecurityDropdown/DocumentCancelSvg';
