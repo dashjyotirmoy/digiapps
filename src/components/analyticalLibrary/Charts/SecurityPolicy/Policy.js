@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Table,Row,Col } from 'react-bootstrap';
+import { Card, Table,Row,Col,Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import moment from 'moment/moment';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,8 +18,8 @@ function updateFunction() {
 
 const Policy = (props) => {
     let policyData = props.cardsData;
-    const [showResults, setShowResults] = React.useState(false)
-    const onClick = () => setShowResults(true)
+    const [showResults, setShowResults] = React.useState(true)
+    const onClick = () =>  setShowResults(!showResults)
   return (
     <React.Fragment>
       <Card
@@ -52,11 +52,11 @@ const Policy = (props) => {
                           icon={faFilter} onClick={onClick}
                           color={"#D8D8D8"}
                       ></FontAwesomeIcon>
-                        <div className= {showResults?"db":"dn"}  >
+                        <div className= {showResults?"dn":"db"}  >
                           <Card className="borderadius">
                             <Card.Body className="pt-3 bg">
-                              <p className="bold">REJECT</p>
-                              <p className="bold">APPROVE</p>
+                            <div>  <Form.Check type="checkbox" style={{float:'left'}}/><span className="bold">REJECT</span></div>
+                             <div><Form.Check type="checkbox" style={{float:'left'}} /> <span className="bold">APPROVE</span></div>
                             </Card.Body>
                           </Card>
                         </div>
