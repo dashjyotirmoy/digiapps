@@ -11,22 +11,36 @@ let buttonColorScheme = {
   "APPROVE": '#5DAB07',
   "REASSIGN": '#C6BC38'
 }
-function updateFunction() {
-  console.log("Haaaa you Typed Something.!!!")
-  // this function will be used to update the Table contents. based on Action selected
+let results=[];
+
+function update(actionData){
+  debugger;
+  let tempActionData = actionData.map(item => item.action);
+ results = [...new Set(tempActionData)];
+console.log(results);
 }
 
+
 const Policy = (props) => {
+  let actionData = [...props.cardsData];
+     
     let policyData = props.cardsData;
     const [showResults, setShowResults] = React.useState(true)
-    const onClick = () =>  setShowResults(!showResults)
-  return (
+  const [actionResults, setActionResults] = React.useState(actionData);
+  
+    const onClick = () =>  {
+      setShowResults(!showResults);
+      update(actionData);
+          }
+
+   
+     return (
     <React.Fragment>
       <Card
         style={{ color: '#f5f5f5', background: '#232D3B' }}
       >
         <Card.Header
-          style={{ color: '#E6E6E6' }}
+          style={{ color: '#E6E6E6' }} 
         >
           Policy Violation
         </Card.Header>
@@ -48,15 +62,23 @@ const Policy = (props) => {
                   <th>Policy Name</th>
                   <th>Match</th>
                   <th>Action
-                  <FontAwesomeIcon className="ml-2" 
+                  <FontAwesomeIcon className="ml-2 pointer" 
                           icon={faFilter} onClick={onClick}
                           color={"#D8D8D8"}
                       ></FontAwesomeIcon>
                         <div className= {showResults?"dn":"db"}  >
                           <Card className="borderadius">
                             <Card.Body className="pt-3 bg">
-                            <div>  <Form.Check type="checkbox" style={{float:'left'}}/><span className="bold">REJECT</span></div>
-                             <div><Form.Check type="checkbox" style={{float:'left'}} /> <span className="bold">APPROVE</span></div>
+                             
+                             {
+                              results.map((item) =>{
+                               return(
+                               <div>  <Form.Check type="checkbox" style={{float:'left'}} onClick={update}/><span className="bold">{item}</span></div>
+                               )
+                              })
+                            }
+                            
+                             {/* <div><Form.Check type="checkbox" style={{float:'left'}} /> <span className="bold">APPROVE</span></div> */}
                             </Card.Body>
                           </Card>
                         </div>
