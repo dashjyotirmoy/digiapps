@@ -3,7 +3,7 @@ import { Card, Table,Row,Col,Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import moment from 'moment/moment';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter} from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faAmericanSignLanguageInterpreting} from "@fortawesome/free-solid-svg-icons";
 
 
 let buttonColorScheme = {
@@ -12,26 +12,46 @@ let buttonColorScheme = {
   "REASSIGN": '#C6BC38'
 }
 let results=[];
+let isChecked = false;
 
 function update(actionData){
+  
   let tempActionData = actionData.map(item => item.action);
  results = [...new Set(tempActionData)];
-console.log(results);
+console.log(actionData);
 }
+
+ 
 
 
 const Policy = (props) => {
   let actionData = [...props.cardsData];
      
     let policyData = props.cardsData;
-    const [showResults, setShowResults] = React.useState(true)
+       const [showResults, setShowResults] = React.useState(true)
+  const [actionResults, setActionResults] = React.useState(actionData);
   
     const onClick = () =>  {
       setShowResults(!showResults);
-      update(actionData);
+            update(actionData);
           }
 
-   
+          const handleFilter=(e,checkedItem)=>{
+            e.stopPropagation();
+           isChecked=!isChecked;
+          let filterResult = actionData.filter(item=>{
+         if(item.action === checkedItem && isChecked){
+         return item;
+         
+         }
+         })
+        console.log(filterResult);
+        policyData= filterResult;
+           }
+
+
+    
+
      return (
     <React.Fragment>
       <Card
@@ -71,8 +91,7 @@ const Policy = (props) => {
                              {
                               results.map((item, index) =>{
                                return(
-                                 
-                               <div key={index}>  <Form.Check type="checkbox" style={{float:'left'}} onClick={update}/><span className="bold">{item}</span></div>
+                               <div>  <Form.Check type="checkbox" style={{float:'left'}} onChange={ e => handleFilter(e,item)} /><span className="bold">{item}</span></div>
                                )
                               })
                             }
