@@ -1,24 +1,24 @@
 import React from "react";
-import { Row, Col, Container, Card, Badge, Form,Dropdown,ProgressBar} from "react-bootstrap";
+import { Row, Col, Container, Card, Badge, ProgressBar} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
+import { connect } from "react-redux";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronDown,
-  faSquare
-} from "@fortawesome/free-solid-svg-icons";
+import { bindActionCreators } from "redux";
+import { securityMonthAlertDataDispatch } from '../../../../store/actions/securityData';
+
 import moment from 'moment/moment';
-// import { Left } from "react-bootstrap/lib/Media";
 
 const Styles = styled.div`
   .btncolor {
     background-color: #2E3B4D!important;
     border-color: #3A485C!important;
-    color: #fff!important;
-  }
- 
+    color: #fff!important;}
 `;
+
+ const handleChange = (type) => {
+  
+  }
 const App = props => {
   let alertData = props.cardsData;
 
@@ -129,17 +129,13 @@ const App = props => {
               <Row className="basealign">
                 <p>Alerts</p>
                 <Col sm={1}>
-                     <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic" className="dropbutton">
-                      All Time
-  </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item href="#/action-1">Last Month</Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">Last 3 Month</Dropdown.Item>
-                      <Dropdown.Item href="#/action-3">Last 6 Month</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                <select 
+ onChange={handleChange} 
+ >
+    <option value="Orange">Orange</option>
+    <option value="Radish">Radish</option>
+    <option value="Cherry">Cherry</option>
+  </select>
                 </Col>
                 {/* <Button variant="secondary" className="btnstyle">Apply Preferences</Button>{' '}
                 <Button variant="secondary" className="ml-4 btnstyle">Ignore Selected</Button>{' '} */}
@@ -246,4 +242,25 @@ const App = props => {
   );
 };
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    currentExecId: state.execData.executiveId,
+    securityProjectData: state.securityData.securityProjectDetails,
+    securityRepoData: state.securityData.securityRepoDetails,
+    securityPolicyData: state.securityData.securityPolicyDetails,
+    securityAlertData: state.securityData.securityAlertDetails,
+    securityMonthAlertData: state.securityData.securityMonthAlertDetails,
+    projectID: state.productDetails.currentProject.projectDetails.id,
+    currentRepo: state.securityData.currentRepo,
+    sprintId: state.productDetails.currentSprint.sprintInfo.id
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    { securityMonthAlertDataDispatch },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

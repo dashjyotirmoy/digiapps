@@ -52,6 +52,7 @@ export const securityPolicyDataDispatch = (projectId, repoId) =>
       console.error(error);
     }
   }
+  // getSecurityMonthAlertData
 
   export const securityAlertDataDispatch = (projectId, repoId) => 
   async dispatch => {
@@ -61,6 +62,22 @@ export const securityPolicyDataDispatch = (projectId, repoId) =>
         type: actionTypes.SET_SECURITY_ALERT_DETAILS,
         payload: {
           securityAlertDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
+  export const securityMonthAlertDataDispatch = (projectId, repoId, filterType) => 
+  async dispatch => {
+    try {
+      const response = await api.getSecurityMonthAlertData(projectId, repoId, filterType);
+      dispatch({
+        type: actionTypes.SET_SECURITY_MONTH_ALERT_DETAILS,
+        payload: {
+          securityMonthAlertDetails: response.data,
           chartDataReceived: true
         }
       });

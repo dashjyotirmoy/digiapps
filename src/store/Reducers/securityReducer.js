@@ -34,6 +34,11 @@ const securityReducer = (state = initialState, action) => {
             ...state,
               securityAlertDetails: action.payload.securityAlertDetails
           }
+          case actionType.SET_SECURITY_MONTH_ALERT_DETAILS:
+            return {
+              ...state,
+              securityMonthAlertDetails: action.payload.securityMonthAlertDetails
+            }
   
       default:
         return state;
