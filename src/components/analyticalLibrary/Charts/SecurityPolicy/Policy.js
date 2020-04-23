@@ -14,7 +14,6 @@ let buttonColorScheme = {
 let results=[];
 
 function update(actionData){
-  debugger;
   let tempActionData = actionData.map(item => item.action);
  results = [...new Set(tempActionData)];
 console.log(results);
@@ -26,7 +25,6 @@ const Policy = (props) => {
      
     let policyData = props.cardsData;
     const [showResults, setShowResults] = React.useState(true)
-  const [actionResults, setActionResults] = React.useState(actionData);
   
     const onClick = () =>  {
       setShowResults(!showResults);
@@ -71,9 +69,10 @@ const Policy = (props) => {
                             <Card.Body className="pt-3 bg">
                              
                              {
-                              results.map((item) =>{
+                              results.map((item, index) =>{
                                return(
-                               <div>  <Form.Check type="checkbox" style={{float:'left'}} onClick={update}/><span className="bold">{item}</span></div>
+                                 
+                               <div key={index}>  <Form.Check type="checkbox" style={{float:'left'}} onClick={update}/><span className="bold">{item}</span></div>
                                )
                               })
                             }
