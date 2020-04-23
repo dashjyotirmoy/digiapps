@@ -126,6 +126,7 @@ width: 45%;
 }
 .bold{
   font-weight: normal;
- 
-
-}
+ }
+ .pointer{
+   cursor: pointer;
+ }
