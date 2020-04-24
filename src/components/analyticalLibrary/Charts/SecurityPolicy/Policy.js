@@ -3,7 +3,7 @@ import { Card, Table,Row,Col,Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import moment from 'moment/moment';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faAmericanSignLanguageInterpreting} from "@fortawesome/free-solid-svg-icons";
+import { faFilter} from "@fortawesome/free-solid-svg-icons";
 
 
 let buttonColorScheme = {
@@ -12,41 +12,36 @@ let buttonColorScheme = {
   "REASSIGN": '#C6BC38'
 }
 let results=[];
-let isChecked = false;
+// let isChecked = false;
 
 function update(actionData){
-  
   let tempActionData = actionData.map(item => item.action);
  results = [...new Set(tempActionData)];
 console.log(actionData);
 }
 
- 
-
-
 const Policy = (props) => {
   let actionData = [...props.cardsData];
-     
     let policyData = props.cardsData;
        const [showResults, setShowResults] = React.useState(true)
-  const [actionResults, setActionResults] = React.useState(actionData);
+       const [showPolicyData, setPolicyData] = React.useState(props.cardsData)
   
     const onClick = () =>  {
       setShowResults(!showResults);
             update(actionData);
           }
 
-          const handleFilter=(e,checkedItem)=>{
-            e.stopPropagation();
-           isChecked=!isChecked;
-          let filterResult = actionData.filter(item=>{
-         if(item.action === checkedItem && isChecked){
-         return item;
-         
-         }
-         })
-        console.log(filterResult);
-        policyData= filterResult;
+          const handleFilter=(e)=>{
+            if (e.target.checked) {
+              policyData = actionData.filter(item=>{
+                      if(item.action === e.target.value ){
+                      return item;
+                      }
+                      })
+            } else {
+              policyData = actionData;
+            }
+            setPolicyData(policyData);
            }
 
 
@@ -91,7 +86,7 @@ const Policy = (props) => {
                              {
                               results.map((item, index) =>{
                                return(
-                               <div>  <Form.Check type="checkbox" style={{float:'left'}} onChange={ e => handleFilter(e,item)} /><span className="bold">{item}</span></div>
+                               <div key={index}>  <Form.Check id={item} type="checkbox" style={{float:'left'}} value={item} onChange={handleFilter} /><span className="bold">{item}</span></div>
                                )
                               })
                             }
@@ -118,7 +113,7 @@ const Policy = (props) => {
 
 
               {
-                policyData.map((item, index) => {
+                showPolicyData.map((item, index) => {
                   return (
 
                     <tbody

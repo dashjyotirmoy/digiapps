@@ -193,6 +193,7 @@ class Quality extends Component {
   };
 
   setMetricPos = item => {
+    console.log('ddddddddddxxxxxxxxxxxx', item);
     let metricValue;
     if (
       item[0] === "bugs" ||
@@ -226,20 +227,20 @@ class Quality extends Component {
                   ? "critical"
                   : null;
     }
-    if (item[0] === "duplication") {
-      metricValue =
-        item[1].value < 3
-          ? "low"
-          : item[1].value >= 3 && item[1].value <= 5
-            ? "lowest"
-            : item[1].value >= 5 && item[1].value <= 10
-              ? "medium"
-              : item[1].value >= 10 && item[1].value <= 20
-                ? "high"
-                : item[1].value > 20
-                  ? "critical"
-                  : null;
-    }
+    // if (item[0] === "duplication") {
+    //   metricValue =
+    //     item[1].value < 3
+    //       ? "low"
+    //       : item[1].value >= 3 && item[1].value <= 5
+    //         ? "lowest"
+    //         : item[1].value >= 5 && item[1].value <= 10
+    //           ? "medium"
+    //           : item[1].value >= 10 && item[1].value <= 20
+    //             ? "high"
+    //             : item[1].value > 20
+    //               ? "critical"
+    //               : null;
+    // }
     return metricValue;
   };
 
