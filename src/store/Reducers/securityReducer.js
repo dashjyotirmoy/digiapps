@@ -4,6 +4,7 @@ const initialState = {
     currentRepo: "",
     securityProjectDetails: {},
     securityRepoDetails: {},
+    securityMonthAlertDetails: {},
     securityPolicyDetails: {},
     securityAlertDetails: {}
 };

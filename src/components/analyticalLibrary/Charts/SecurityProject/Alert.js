@@ -16,15 +16,23 @@ const Styles = styled.div`
     color: #fff!important;}
 `;
 
- const handleChange = (type) => {
-  
-  }
+ 
 const App = props => {
-  let alertData = props.cardsData;
-
-  let mediumCount = alertData.perVulnerabilityAlert.filter(data => data.severity === 'MEDIUM');
-  let highCount = alertData.perVulnerabilityAlert.filter(data => data.severity === 'HIGH');
-  let lowCount = alertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
+  // let alertData = props.cardsData;
+  const [showAlertData, setAlertData] = React.useState(props.cardsData)
+  const handleChange = (type) => {
+    props.securityMonthAlertDataDispatch(props.projectID, props.currentRepo, type.target.value).then(item => {
+      // setAlertData(props.securityMonthAlertData);
+    });
+  }
+  // if ( props && props.securityMonthAlertData && props.securityMonthAlertData.data.perLibraryAlert !== []) {
+  //   setAlertData(props.securityMonthAlertData);
+  // }
+  // 
+  console.log('ddddddddddwwwwwwwzzzzzzzzzzz', props.securityMonthAlertData);
+  let mediumCount = showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'MEDIUM');
+  let highCount = showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'HIGH');
+  let lowCount = showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
 
   return (
     <React.Fragment>
@@ -72,7 +80,7 @@ const App = props => {
                       <tbody >
 
                         {
-                          alertData.perVulnerabilityAlert.map((item, index) => {
+                          showAlertData.perVulnerabilityAlert.map((item, index) => {
                             return (
                               <tr className="tabrow f-12" key={index}>
                                 <td scope="row" className="w-8">
@@ -129,13 +137,11 @@ const App = props => {
               <Row className="basealign">
                 <p>Alerts</p>
                 <Col sm={1}>
-                <select 
- onChange={handleChange} 
- >
-    <option value="Orange">Orange</option>
-    <option value="Radish">Radish</option>
-    <option value="Cherry">Cherry</option>
-  </select>
+                <select onChange={handleChange}>
+                    <option value="all_time">All Time</option>
+                    <option value="last_1_month">Last Month</option>
+                    <option value="last_6_month">Last 6 Months</option>
+                </select>
                 </Col>
                 {/* <Button variant="secondary" className="btnstyle">Apply Preferences</Button>{' '}
                 <Button variant="secondary" className="ml-4 btnstyle">Ignore Selected</Button>{' '} */}
@@ -174,7 +180,7 @@ const App = props => {
                       <tbody>
 
                         {
-                          alertData.perLibraryAlert.map((item, index) => {
+                          showAlertData.perLibraryAlert.map((item, index) => {
                             return (
                               <tr className="tabrow f-12" key={index}>
 
