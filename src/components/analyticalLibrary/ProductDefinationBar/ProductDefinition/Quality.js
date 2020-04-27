@@ -13,7 +13,7 @@ import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 import StackedBar from "../../Charts/StackedBar/StackedBar";
 import { repoDropValDispatch } from "../../../../store/actions/qualityData";
-import { qualityDataDispatch } from "../../../../store/actions/qualityData";
+import { qualityDataDispatch, qualityDrilledDownDataDispatch } from "../../../../store/actions/qualityData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
@@ -69,13 +69,40 @@ class Quality extends Component {
     qualityMetrics: [],
     show: true,
     selectedRepo: "",
+    selectedRepoKey: "",
     repoData: []
   };
 
   onDisplayMetricsClickHandler = metricType => {
+    // eslint-disable-next-line default-case
+    switch(metricType) {
+      case "Bugs":
+        this.getQualityDrilledDownData('Reliability');
+        break;
+      case "Vulnerabilities":
+        this.getQualityDrilledDownData('Security');
+        break;
+        case "Code Smells":
+          this.getQualityDrilledDownData('Maintainability');
+        break;
+        case "Coverage":
+          this.getQualityDrilledDownData('Coverage');
+        break;
+        case "Duplication":
+          this.getQualityDrilledDownData('Duplications');
+        
+    }
+   
     this.setState({
       displayMetric: true,
       metricType: metricType
+    });
+  };
+
+  getQualityDrilledDownData = (metricType) => {
+    this.props.qualityDrilledDownDataDispatch(this.props.currentExecId, this.props.projectID, this.state.selectedRepoKey, metricType)
+    .then(item => {
+
     });
   };
   onDisplayMetricExitClick = () => {
@@ -193,7 +220,6 @@ class Quality extends Component {
   };
 
   setMetricPos = item => {
-    console.log('ddddddddddxxxxxxxxxxxx', item);
     let metricValue;
     if (
       item[0] === "bugs" ||
@@ -403,7 +429,6 @@ class Quality extends Component {
         repoData: repoDetails,
         selectedRepo: ""
       });
-
       this.props.repoDropValDispatch("");
     }
   };
@@ -421,9 +446,9 @@ class Quality extends Component {
     });
 
     this.setState({
-      selectedRepo: repoDetails[selectedIndex].projectName
+      selectedRepo: repoDetails[selectedIndex].projectName,
+      selectedRepoKey: repoDetails[selectedIndex].id
     });
-
     this.props.repoDropValDispatch(repoDetails[selectedIndex].projectName);
     if (repoId !== 'selectProject') {
       this.updateQualityData(repoId, selectedIndex);
@@ -660,6 +685,7 @@ const mapStateToProps = state => {
     currentExecId: state.execData.executiveId,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
+    // currentRepoKey: state.qualityData.repositories.repoKey,
     currentRepo: state.qualityData.currentRepo,
     sprintId: state.productDetails.currentSprint.sprintInfo.id
   };
@@ -669,7 +695,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { qualityDataDispatch, resetProjectRepoDispatch, repoDropValDispatch },
+    { qualityDataDispatch, resetProjectRepoDispatch, qualityDrilledDownDataDispatch, repoDropValDispatch },
     dispatch
   );
 };

@@ -6,10 +6,29 @@ export const qualityDataDispatch = (projectId, execId) =>
   async dispatch => {
     try {
       const response = await api.getQualityMetricsData(projectId, execId);
+      console.log('ddddddddddddddxxxxxxxxxxxccccccccqqqqqqq', response);
       dispatch({
         type: actionTypes.SET_QUALITY_DETAILS,
         payload: {
           qualityDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  export const qualityDrilledDownDataDispatch = (projectId, execId, repoId, metricsType) =>
+  //   sprintId
+  async dispatch => {
+    try {
+      const response = await api.getQualityMetricsDrilledDownData(projectId, execId, repoId, metricsType);
+      console.log('ddddddddddddwwwwwwwwwwwwwqqqqqqqqqqqq', response);
+      dispatch({
+        type: actionTypes.SET_QUALITY_DRILLED_DOWN_DETAILS,
+        payload: {
+          qualityDrilledDownDetails: response.data,
           chartDataReceived: true
         }
       });

@@ -38,6 +38,14 @@ const getQualityMetricsData = (execId, projectId) => {
   );
 };
 
+const getQualityMetricsDrilledDownData = (execId, projectId, repoId, metricsType) => {
+  return devovOpsApi.get(
+    `/widget/quality-insights/charts?executiveId=${execId} &projectId=${projectId}&repoId=${repoId}&metric=${metricsType}`
+  );
+};
+
+// widget/quality-insights/charts?executiveId={} &projectId={}&repoId={}&metric={}
+
 const getSecurityProjectData = (projectId) => {
   return devovOpsApi.get(
     `/widget/security-insights/product?productId=${projectId}`
@@ -74,6 +82,7 @@ export default {
   getProjectInsightsData,
   getSprintInsightsData,
   getQualityMetricsData,
+  getQualityMetricsDrilledDownData,
   getAllExecutives,
   getSecurityProjectData,
   getSecurityMonthAlertData,
