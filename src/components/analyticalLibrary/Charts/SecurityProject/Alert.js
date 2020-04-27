@@ -1,8 +1,12 @@
 import React from "react";
-import { Row, Col, Container, Card, Badge, ProgressBar} from "react-bootstrap";
+import { Row, Col, Container, Card, Badge, ProgressBar,Dropdown,DropdownButton} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
 import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronDown
+} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { bindActionCreators } from "redux";
 import { securityMonthAlertDataDispatch } from '../../../../store/actions/securityData';
@@ -137,14 +141,26 @@ const App = props => {
               <Row className="basealign">
                 <p>Alerts</p>
                 <Col sm={1}>
-                <select onChange={handleChange}>
+                {/* <select onChange={handleChange} className="drop">
                     <option value="all_time">All Time</option>
                     <option value="last_1_month">Last Month</option>
-                    <option value="last_6_month">Last 6 Months</option>
-                </select>
-                </Col>
-                {/* <Button variant="secondary" className="btnstyle">Apply Preferences</Button>{' '}
-                <Button variant="secondary" className="ml-4 btnstyle">Ignore Selected</Button>{' '} */}
+                    <option value="last_6_month"></option>
+                </select> */}
+                
+                <Dropdown>
+  <Dropdown.Toggle onChange={handleChange} className="drop">
+   All Time
+  </Dropdown.Toggle>
+
+  <Dropdown.Menu className="drop-menu">
+    <Dropdown.Item  href="#/action-1" value="all_time" className="text-white">All Time</Dropdown.Item>
+    <Dropdown.Item  href="#/action-2" value="last_1_month" className="text-white">Last Month</Dropdown.Item>
+    <Dropdown.Item href="#/action-3" value="last_6_month" className="text-white">Last 6 Months</Dropdown.Item>
+  </Dropdown.Menu>
+</Dropdown>
+
+               </Col>
+             
 
               </Row>
               <Card.Body >
