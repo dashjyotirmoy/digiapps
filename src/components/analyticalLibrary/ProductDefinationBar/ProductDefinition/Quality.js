@@ -685,7 +685,6 @@ const mapStateToProps = state => {
     currentExecId: state.execData.executiveId,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
-    // currentRepoKey: state.qualityData.repositories.repoKey,
     currentRepo: state.qualityData.currentRepo,
     sprintId: state.productDetails.currentSprint.sprintInfo.id
   };

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import HighchartsReact from "highcharts-react-official";
 import ChartHOC from "../ChartHOC/ChartHOC";
+import { connect } from "react-redux";
 import { color } from "highcharts";
 class BubbleHigh extends Component {
   state = {
@@ -106,6 +107,7 @@ class BubbleHigh extends Component {
     }
   };
   render() {
+    console.log('ddddddddddddddddddwwwwwwwwwwwwssssssssssss', this.props.qualityDrilledDownData);
     this.state.options.title.text = this.props.title;
     return (
       <React.Fragment>
@@ -114,4 +116,10 @@ class BubbleHigh extends Component {
     );
   }
 }
-export default BubbleHigh;
+const mapStateToProps = state => {
+  return {
+    qualityDrilledDownData: state.qualityData.qualityDrilledDownDetails
+  };
+};
+export default connect(mapStateToProps)(BubbleHigh);
+
