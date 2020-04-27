@@ -12,12 +12,15 @@ let buttonColorScheme = {
   "REASSIGN": '#C6BC38'
 }
 let results=[];
+let checkedPolicy=[];
+let policyUpdate=[];
+
 // let isChecked = false;
 
 function update(actionData){
   let tempActionData = actionData.map(item => item.action);
  results = [...new Set(tempActionData)];
-console.log(actionData);
+console.log(results);
 }
 
 const Policy = (props) => {
@@ -32,19 +35,28 @@ const Policy = (props) => {
           }
 
           const handleFilter=(e)=>{
+           
             if (e.target.checked) {
-              policyData = actionData.filter(item=>{
+             actionData.filter(item=>{
                       if(item.action === e.target.value ){
-                      return item;
-                      }
+                    checkedPolicy.push(item);
+                    setPolicyData(checkedPolicy);
+                    console.log(checkedPolicy);
+                  //   policyData=[];
+                  //  policyData =  checkedPolicy ;
+                  //  console.log(policyData);
+                            }
                       })
-            } else {
-              policyData = actionData;
+            }  
+            else {
+            let tempCheckPolicy = checkedPolicy.filter(item => item.action !== e.target.value)
+              // policyData=tempCheckPolicy;
+              setPolicyData(tempCheckPolicy);
+
             }
-            setPolicyData(policyData);
-           }
-
-
+           
+                    
+          }
     
 
      return (
@@ -114,6 +126,7 @@ const Policy = (props) => {
 
               {
                 showPolicyData.map((item, index) => {
+                  console.log(item);
                   return (
 
                     <tbody

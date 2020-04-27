@@ -268,6 +268,8 @@ class Security extends Component {
 
   handleRepoChange = repoID => {
     this.setState({
+      alertActive:false,
+      policyActive:false,
       showbutton: true
   });
     this.updateRepository(repoID);
