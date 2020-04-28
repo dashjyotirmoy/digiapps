@@ -197,7 +197,6 @@ class BubbleHigh extends Component {
       });
 
 
-      console.log(BubbleChartData);
 
       if (BubbleChartData[0][0].id == 'bugs') {
         this.setBugsData();
@@ -326,9 +325,6 @@ class BubbleHigh extends Component {
 
       else if (BubbleChartData[0][1].id == 'code_smells') {
         this.setCodeSmellsData();
-        // this.filterBugData(codeSmellsData);
-        // this.filterCodeSmellsData(codeSmellsData);
-        console.log(codeSmellsData);
 
         codeSmellsData.map((item, index) => {
           if (item.severity == 1) {
