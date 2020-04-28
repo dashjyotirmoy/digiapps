@@ -453,9 +453,12 @@ class Quality extends Component {
     if (repoId !== 'selectProject') {
       this.updateQualityData(repoId, selectedIndex);
       if (this.state.repoData[0].id !== 'selectProject') {
-        this.state.repoData.unshift({id: "selectProject", projectName: "select Project"});
+        this.state.repoData.unshift({id: "selectProject", projectName: "select Repository"});
       }
     } else {
+      if (this.state.repoData[0].id === 'selectProject') {
+        this.state.repoData.shift();
+      }
       let layout_instance = new Layout(2);
       this.setState({
         selectedRepo: "",

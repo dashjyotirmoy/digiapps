@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import HighchartsReact from "highcharts-react-official";
+// import HighchartsReact from "highcharts-react-official";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import { connect } from "react-redux";
-import { color } from "highcharts";
+// import { color } from "highcharts";
 
 var BubbleChartData;
 var bugsData, vulnearbilityData, codeSmellsData, complexityData, duplicationData;
-var veryLowData = [], lowData = [], mediumData = [], highData = [], criticalData = [];
+// var veryLowData = [], lowData = [], mediumData = [], highData = [], criticalData = [];
 var bd = {}, vd = {}, cd = {};
 var veryLowBug = [], lowBug = [], mediumBug = [], highBug = [], criticalBug = [];
 var veryLowVulnearbility = [], lowVulnearbility = [], mediumVulnearbility = [], highVulnearbility = [], criticalVulnearbility = [];
@@ -198,30 +198,31 @@ class BubbleHigh extends Component {
 
 
 
-      if (BubbleChartData[0][0].id == 'bugs') {
+      if (BubbleChartData[0][0].id === 'bugs') {
         this.setBugsData();
+        // eslint-disable-next-line array-callback-return
         bugsData.map((item, index) => {
-          if (item.severity == 1) {
+          if (item.severity === 1) {
             Object.assign(bd, item);
             veryLowBug.push(bd);
             bd = {};
           }
-          else if (item.severity == 2) {
+          else if (item.severity === 2) {
             Object.assign(bd, item);
             lowBug.push(bd);
             bd = {};
           }
-          else if (item.severity == 3) {
+          else if (item.severity === 3) {
             Object.assign(bd, item);
             mediumBug.push(bd);
             bd = {};
           }
-          else if (item.severity == 4) {
+          else if (item.severity === 4) {
             Object.assign(bd, item);
             highBug.push(bd);
             bd = {};
           }
-          else if (item.severity == 5) {
+          else if (item.severity === 5) {
             Object.assign(bd, item);
             criticalBug.push(bd);
             bd = {};
@@ -257,36 +258,37 @@ class BubbleHigh extends Component {
           }
         ]
 
+        // eslint-disable-next-line react/no-direct-mutation-state
         this.state.options.series = bugsDataSeries;
 
       }
 
-      else if (BubbleChartData[0][0].id == 'security_rating') {
+      else if (BubbleChartData[0][0].id === 'security_rating') {
         this.setVulnerabilityData();
 
         vulnearbilityData.map((item, index) => {
 
-          if (item.severity == 1) {
+          if (item.severity === 1) {
             Object.assign(vd, item);
             veryLowVulnearbility.push(vd);
             vd = {};
           }
-          else if (item.severity == 2) {
+          else if (item.severity === 2) {
             Object.assign(vd, item);
             lowVulnearbility.push(vd);
             vd = {};
           }
-          else if (item.severity == 3) {
+          else if (item.severity === 3) {
             Object.assign(vd, item);
             mediumVulnearbility.push(vd);
             vd = {};
           }
-          else if (item.severity == 4) {
+          else if (item.severity === 4) {
             Object.assign(vd, item);
             highVulnearbility.push(vd);
             vd = {};
           }
-          else if (item.severity == 5) {
+          else if (item.severity === 5) {
             Object.assign(vd, item);
             criticalVulnearbility.push(vd);
             vd = {};
@@ -323,31 +325,31 @@ class BubbleHigh extends Component {
         this.state.options.series = vulnearbilityDataSeries
       }
 
-      else if (BubbleChartData[0][1].id == 'code_smells') {
+      else if (BubbleChartData[0][1].id === 'code_smells') {
         this.setCodeSmellsData();
 
         codeSmellsData.map((item, index) => {
-          if (item.severity == 1) {
+          if (item.severity === 1) {
             Object.assign(cd, item);
             veryLowCodeSmells.push(cd)
             cd = {};
           }
-          else if (item.severity == 2) {
+          else if (item.severity === 2) {
             Object.assign(cd, item);
             lowCodeSmells.push(cd);
             cd = {};
           }
-          else if (item.severity == 3) {
+          else if (item.severity === 3) {
             Object.assign(cd, item);
             mediumCodeSmells.push(cd);
             cd = {};
           }
-          else if (item.severity == 4) {
+          else if (item.severity === 4) {
             Object.assign(cd, item);
             highCodeSmells.push(cd);
             cd = {};
           }
-          else if (item.severity == 5) {
+          else if (item.severity === 5) {
             Object.assign(cd, item);
             criticalCodeSmells.push(cd);
             cd = {};
@@ -387,7 +389,7 @@ class BubbleHigh extends Component {
 
       }
 
-      else if (BubbleChartData[0][1].id == 'complexity') {
+      else if (BubbleChartData[0][1].id === 'complexity') {
         this.setComplexityData();
 
         var complexityDataSeries = [
@@ -402,7 +404,7 @@ class BubbleHigh extends Component {
 
       }
 
-      else if (BubbleChartData[0][1].id == 'duplicated_lines') {
+      else if (BubbleChartData[0][1].id === 'duplicated_lines') {
         this.setDuplicationData();
         var duplicationDataSeries = [
           {
