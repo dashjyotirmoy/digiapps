@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, dispatch } from 'react';
 import { Row, Col, Container, Card, Badge, ProgressBar} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
@@ -15,24 +15,40 @@ const Styles = styled.div`
     border-color: #3A485C!important;
     color: #fff!important;}
 `;
-
  
 const App = props => {
-  // let alertData = props.cardsData;
-  const [showAlertData, setAlertData] = React.useState(props.cardsData)
+  let mediumCount = [];
+  let highCount = [];
+  let lowCount = [];
+
+  const [showAlertData, setAlertData] = React.useState(props.cardsData);
+
   const handleChange = (type) => {
     props.securityMonthAlertDataDispatch(props.projectID, props.currentRepo, type.target.value).then(item => {
-      // setAlertData(props.securityMonthAlertData);
+      filterData();
     });
   }
-  // if ( props && props.securityMonthAlertData && props.securityMonthAlertData.data.perLibraryAlert !== []) {
-  //   setAlertData(props.securityMonthAlertData);
-  // }
-  // 
-  console.log('ddddddddddwwwwwwwzzzzzzzzzzz', props.securityMonthAlertData);
-  let mediumCount = showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'MEDIUM');
-  let highCount = showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'HIGH');
-  let lowCount = showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
+  // let alertData = props.cardsData;
+  
+ const filterData = () => {
+  mediumCount = showAlertData 
+                  && showAlertData.perVulnerabilityAlert
+                  && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'MEDIUM');
+            highCount =showAlertData 
+            && showAlertData.perVulnerabilityAlert
+            && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'HIGH');
+  lowCount = showAlertData 
+  && showAlertData.perVulnerabilityAlert
+  && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
+ }
+
+ useEffect(() => {
+  //  dispatch(props.cardsData);
+  if (props.securityMonthAlertData && props.securityMonthAlertData.perVulnerabilityAlert ){
+    setAlertData(props.securityMonthAlertData)
+  }
+}, [props.securityMonthAlertData, props.cardsData]);
+  
 
   return (
     <React.Fragment>
@@ -78,9 +94,9 @@ const App = props => {
                   <div className="inner_table">
                     <table className="table table-hover table-dark" >
                       <tbody >
-
+                        
                         {
-                          showAlertData.perVulnerabilityAlert.map((item, index) => {
+                          showAlertData && showAlertData.perVulnerabilityAlert && showAlertData.perVulnerabilityAlert.map((item, index) => {
                             return (
                               <tr className="tabrow f-12" key={index}>
                                 <td scope="row" className="w-8">
@@ -180,7 +196,7 @@ const App = props => {
                       <tbody>
 
                         {
-                          showAlertData.perLibraryAlert.map((item, index) => {
+                          showAlertData && showAlertData.perLibraryAlert && showAlertData.perLibraryAlert.map((item, index) => {
                             return (
                               <tr className="tabrow f-12" key={index}>
 
