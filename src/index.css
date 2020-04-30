@@ -26,8 +26,7 @@ a:hover {
   text-decoration: none;
 }
 /* on hover */
-.show-cursor: {
-}
+
 .show-cursor:hover {
   cursor: pointer;
 }
