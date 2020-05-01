@@ -4,9 +4,9 @@ import ChartHOC from "../ChartHOC/ChartHOC";
 import { connect } from "react-redux";
 import { color } from "highcharts";
 import { parse } from "@fortawesome/fontawesome-svg-core";
-import Options from "../../../../utility/GraphOptions/optionsModel";
 
 var BubbleChartData = {};
+var fullBubbleChartData = [];
 var bugsData, vulnearbilityData, codeSmellsData, complexityData, duplicationData;
 var veryLowData = [], lowData = [], mediumData = [], highData = [], criticalData = [];
 var bd = {}, vd = {}, cd = {};
@@ -15,6 +15,7 @@ var veryLowVulnearbility = [], lowVulnearbility = [], mediumVulnearbility = [], 
 var veryLowCodeSmells = [], lowCodeSmells = [], mediumCodeSmells = [], highCodeSmells = [], criticalCodeSmells = [];
 var dataType, type, dt;
 var a = 0, b = 0, c = 0, d = 0;
+var option = {};
 
 class BubbleHigh extends Component {
   state = {
@@ -121,15 +122,6 @@ class BubbleHigh extends Component {
     }
   };
 
-  console.log(type);
-
-  generateOptions = type => {
-    const baseOption = new Options;
-    var updatedOptions = {};
-
-  }
-
-
   setBugsData = () => {
 
     bugsData = BubbleChartData.map(item => {
@@ -153,6 +145,36 @@ class BubbleHigh extends Component {
 
   };
 
+  setBugSeverity = () => {
+    bugsData.map((item, index) => {
+      if (item.severity == 1) {
+        Object.assign(bd, item);
+        veryLowBug.push(bd);
+        bd = {};
+      }
+      else if (item.severity == 2) {
+        Object.assign(bd, item);
+        lowBug.push(bd);
+        bd = {};
+      }
+      else if (item.severity == 3) {
+        Object.assign(bd, item);
+        mediumBug.push(bd);
+        bd = {};
+      }
+      else if (item.severity == 4) {
+        Object.assign(bd, item);
+        highBug.push(bd);
+        bd = {};
+      }
+      else if (item.severity == 5) {
+        Object.assign(bd, item);
+        criticalBug.push(bd);
+        bd = {};
+      }
+    }
+    )
+  }
 
   setVulnerabilityData = () => {
 
@@ -176,6 +198,38 @@ class BubbleHigh extends Component {
     console.log(vulnearbilityData);
   };
 
+  setVulnerabilitySeverity = () => {
+
+    vulnearbilityData.map((item, index) => {
+
+      if (item.severity == 1) {
+        Object.assign(vd, item);
+        veryLowVulnearbility.push(vd);
+        vd = {};
+      }
+      else if (item.severity == 2) {
+        Object.assign(vd, item);
+        lowVulnearbility.push(vd);
+        vd = {};
+      }
+      else if (item.severity == 3) {
+        Object.assign(vd, item);
+        mediumVulnearbility.push(vd);
+        vd = {};
+      }
+      else if (item.severity == 4) {
+        Object.assign(vd, item);
+        highVulnearbility.push(vd);
+        vd = {};
+      }
+      else if (item.severity == 5) {
+        Object.assign(vd, item);
+        criticalVulnearbility.push(vd);
+        vd = {};
+      }
+    })
+  }
+
   setCodeSmellsData = () => {
 
     codeSmellsData = BubbleChartData.map(item => {
@@ -195,6 +249,38 @@ class BubbleHigh extends Component {
         severity: d
       }
     })
+  };
+
+  setCodeSmellsSeverity = () => {
+
+    codeSmellsData.map((item, index) => {
+      if (item.severity == 1) {
+        Object.assign(cd, item);
+        veryLowCodeSmells.push(cd)
+        cd = {};
+      }
+      else if (item.severity == 2) {
+        Object.assign(cd, item);
+        lowCodeSmells.push(cd);
+        cd = {};
+      }
+      else if (item.severity == 3) {
+        Object.assign(cd, item);
+        mediumCodeSmells.push(cd);
+        cd = {};
+      }
+      else if (item.severity == 4) {
+        Object.assign(cd, item);
+        highCodeSmells.push(cd);
+        cd = {};
+      }
+      else if (item.severity == 5) {
+        Object.assign(cd, item);
+        criticalCodeSmells.push(cd);
+        cd = {};
+      }
+    }
+    )
   };
 
   setComplexityData = () => {
@@ -246,6 +332,8 @@ class BubbleHigh extends Component {
       console.log(this.props.qualityDrilledDownData);
 
       console.log('ddddddddddddddddddwwwwwwwwwwwwssssssssssss', this.props.qualityDrilledDownData.components);
+      fullBubbleChartData = this.props.qualityDrilledDownData.components;
+      console.log(fullBubbleChartData);
 
       BubbleChartData = this.props.qualityDrilledDownData.components.map((item, index) => {
         return item.measures.map(ele => {
@@ -254,6 +342,7 @@ class BubbleHigh extends Component {
           var val = keyVal[1];
           var Obj = {};
           Obj[key] = val;
+
           return {
             ...Obj
           };
@@ -298,225 +387,530 @@ class BubbleHigh extends Component {
       if (type == 'bugs') {
         console.log("type is bugs");
 
-        var baseOption = new Options;
-        console.log(baseOption);
-
-
         this.setBugsData();
-        bugsData.map((item, index) => {
-          if (item.severity == 1) {
-            Object.assign(bd, item);
-            veryLowBug.push(bd);
-            bd = {};
-          }
-          else if (item.severity == 2) {
-            Object.assign(bd, item);
-            lowBug.push(bd);
-            bd = {};
-          }
-          else if (item.severity == 3) {
-            Object.assign(bd, item);
-            mediumBug.push(bd);
-            bd = {};
-          }
-          else if (item.severity == 4) {
-            Object.assign(bd, item);
-            highBug.push(bd);
-            bd = {};
-          }
-          else if (item.severity == 5) {
-            Object.assign(bd, item);
-            criticalBug.push(bd);
-            bd = {};
-          }
+
+        this.setBugSeverity();
+
+
+        option = {};
+
+        option = {
+          chart: {
+            type: "bubble",
+            plotBorderWidth: 0,
+            zoomType: "xy",
+            backgroundColor: "#232d3b"
+          },
+          credits: {
+            enabled: false
+          },
+          legend: {
+            symbolHeight: 11,
+            symbolWidth: 11,
+            symbolRadius: 0,
+            align: "left",
+            itemStyle: {
+              color: "#f5f5f5",
+              fontWeight: "normal"
+            }
+          },
+          title: {
+            text: "",
+            align: "left",
+            style: {
+              color: "#f5f5f5",
+              fontWeight: "bold"
+            }
+          },
+          xAxis: {
+            min: 0,
+            gridLineWidth: 0,
+            tickLength: 0,
+            lineWidth: 0,
+            title: {
+              text: "Lines of Code",
+              style: {
+                color: '#f5f5f5'
+              }
+            },
+            labels: {
+              format: "{value}",
+              style: {
+                color: "#f5f5f5"
+              }
+            }
+          },
+          yAxis: {
+            min: 0,
+            startOnTick: false,
+            endOnTick: false,
+            gridLineColor: "#535353",
+            title: {
+              text: "Reliability Remediation Effort",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            labels: {
+              format: "{value} min",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            maxPadding: 0.2
+          },
+          tooltip: {
+            enabled: false
+          },
+          plotOptions: {
+            series: {
+              dataLabels: {
+                enabled: false,
+                format: "{point.name}"
+              }
+            }
+          },
+          series: [
+            {
+              name: "Critical",
+              data: criticalBug,
+              color: '#ff0000'
+            },
+            {
+              name: "High",
+              data: highBug,
+              color: '#ffa500'
+            },
+            {
+              name: 'Medium',
+              data: mediumBug,
+              color: '#ffff00'
+            },
+            {
+              name: 'Low',
+              data: lowBug,
+              color: '#90ee90'
+            },
+            {
+              name: 'Very Low',
+              data: veryLowBug,
+              color: '#056642'
+            }
+          ]
         }
-        )
 
-        var bugsDataSeries = [
-          {
-            name: "Critical",
-            data: criticalBug,
-            color: '#ff0000'
-          },
-          {
-            name: "High",
-            data: highBug,
-            color: '#ffa500'
-          },
-          {
-            name: 'Medium',
-            data: mediumBug,
-            color: '#ffff00'
-          },
-          {
-            name: 'Low',
-            data: lowBug,
-            color: '#90ee90'
-          },
-          {
-            name: 'Very Low',
-            data: veryLowBug,
-            color: '#056642'
-          }
-        ]
 
-        this.state.options.series = bugsDataSeries;
-        bugsDataSeries = [];
+        this.state.options = option;
+
 
       }
 
       else if (type == "vulnerabilities") {
         this.setVulnerabilityData();
-        console.log(vulnearbilityData);
 
-        vulnearbilityData.map((item, index) => {
+        this.setVulnerabilitySeverity();
 
-          if (item.severity == 1) {
-            Object.assign(vd, item);
-            veryLowVulnearbility.push(vd);
-            vd = {};
-          }
-          else if (item.severity == 2) {
-            Object.assign(vd, item);
-            lowVulnearbility.push(vd);
-            vd = {};
-          }
-          else if (item.severity == 3) {
-            Object.assign(vd, item);
-            mediumVulnearbility.push(vd);
-            vd = {};
-          }
-          else if (item.severity == 4) {
-            Object.assign(vd, item);
-            highVulnearbility.push(vd);
-            vd = {};
-          }
-          else if (item.severity == 5) {
-            Object.assign(vd, item);
-            criticalVulnearbility.push(vd);
-            vd = {};
-          }
-        })
+        option = {};
 
-        var vulnearbilityDataSeries = [
-          {
-            name: "Critical",
-            data: criticalVulnearbility,
-            color: '#ff0000'
+        option = {
+          chart: {
+            type: "bubble",
+            plotBorderWidth: 0,
+            zoomType: "xy",
+            backgroundColor: "#232d3b"
           },
-          {
-            name: "High",
-            data: highVulnearbility,
-            color: '#ffa500'
+          credits: {
+            enabled: false
           },
-          {
-            name: "Medium",
-            data: mediumVulnearbility,
-            color: '#ffff00'
+          legend: {
+            symbolHeight: 11,
+            symbolWidth: 11,
+            symbolRadius: 0,
+            align: "left",
+            itemStyle: {
+              color: "#f5f5f5",
+              fontWeight: "normal"
+            }
           },
-          {
-            name: 'Low',
-            data: lowVulnearbility,
-            color: '#90ee90'
+          title: {
+            text: "",
+            align: "left",
+            style: {
+              color: "#f5f5f5",
+              fontWeight: "bold"
+            }
           },
-          {
-            name: 'Very Low',
-            data: veryLowVulnearbility,
-            color: '#056642'
-          }
-        ]
-        this.state.options.series = vulnearbilityDataSeries
+          xAxis: {
+            min: 0,
+            gridLineWidth: 0,
+            tickLength: 0,
+            lineWidth: 0,
+            title: {
+              text: " "
+            },
+            labels: {
+              format: "{value}",
+              style: {
+                color: "#f5f5f5"
+              }
+            }
+          },
+          yAxis: {
+            min: 0,
+            startOnTick: false,
+            endOnTick: false,
+            gridLineColor: "#535353",
+            title: {
+              text: "Reliability Remediation Effort",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            labels: {
+              format: "{value} min",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            maxPadding: 0.2
+          },
+          tooltip: {
+            enabled: false
+          },
+          plotOptions: {
+            series: {
+              dataLabels: {
+                enabled: false,
+                format: "{point.name}"
+              }
+            }
+          },
+          series: [
+            {
+              name: "Critical",
+              data: criticalVulnearbility,
+              color: '#ff0000'
+            },
+            {
+              name: "High",
+              data: highVulnearbility,
+              color: '#ffa500'
+            },
+            {
+              name: "Medium",
+              data: mediumVulnearbility,
+              color: '#ffff00'
+            },
+            {
+              name: 'Low',
+              data: lowVulnearbility,
+              color: '#90ee90'
+            },
+            {
+              name: 'Very Low',
+              data: veryLowVulnearbility,
+              color: '#056642'
+            }
+          ]
+        }
+
+        this.state.options = option;
       }
 
       else if (type == 'code_smells') {
         this.setCodeSmellsData();
+        this.setCodeSmellsSeverity();
 
-        codeSmellsData.map((item, index) => {
-          if (item.severity == 1) {
-            Object.assign(cd, item);
-            veryLowCodeSmells.push(cd)
-            cd = {};
-          }
-          else if (item.severity == 2) {
-            Object.assign(cd, item);
-            lowCodeSmells.push(cd);
-            cd = {};
-          }
-          else if (item.severity == 3) {
-            Object.assign(cd, item);
-            mediumCodeSmells.push(cd);
-            cd = {};
-          }
-          else if (item.severity == 4) {
-            Object.assign(cd, item);
-            highCodeSmells.push(cd);
-            cd = {};
-          }
-          else if (item.severity == 5) {
-            Object.assign(cd, item);
-            criticalCodeSmells.push(cd);
-            cd = {};
-          }
+        option = {};
+
+        option = {
+          chart: {
+            type: "bubble",
+            plotBorderWidth: 0,
+            zoomType: "xy",
+            backgroundColor: "#232d3b"
+          },
+          credits: {
+            enabled: false
+          },
+          legend: {
+            symbolHeight: 11,
+            symbolWidth: 11,
+            symbolRadius: 0,
+            align: "left",
+            itemStyle: {
+              color: "#f5f5f5",
+              fontWeight: "normal"
+            }
+          },
+          title: {
+            text: "",
+            align: "left",
+            style: {
+              color: "#f5f5f5",
+              fontWeight: "bold"
+            }
+          },
+          xAxis: {
+            min: 0,
+            gridLineWidth: 0,
+            tickLength: 0,
+            lineWidth: 0,
+            title: {
+              text: " "
+            },
+            labels: {
+              format: "{value}",
+              style: {
+                color: "#f5f5f5"
+              }
+            }
+          },
+          yAxis: {
+            min: 0,
+            startOnTick: false,
+            endOnTick: false,
+            gridLineColor: "#535353",
+            title: {
+              text: "Reliability Remediation Effort",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            labels: {
+              format: "{value} min",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            maxPadding: 0.2
+          },
+          tooltip: {
+            enabled: false
+          },
+          plotOptions: {
+            series: {
+              dataLabels: {
+                enabled: false,
+                format: "{point.name}"
+              }
+            }
+          },
+          series: [
+            {
+              name: "VeryLow",
+              data: veryLowCodeSmells,
+              color: '#056642'
+            },
+            {
+              name: "Low",
+              data: lowCodeSmells,
+              color: '#90ee90'
+            },
+            {
+              name: "Medium",
+              data: mediumCodeSmells,
+              color: '#ffff00'
+            },
+            {
+              name: "High",
+              data: highCodeSmells,
+              color: '#ffa500'
+            },
+            {
+              name: "Critical",
+              data: criticalCodeSmells,
+              color: '#ff0000'
+            }
+          ]
         }
-        )
 
-        var codeSemllSeries = [
-          {
-            name: "VeryLow",
-            data: veryLowCodeSmells,
-            color: '#056642'
-          },
-          {
-            name: "Low",
-            data: lowCodeSmells,
-            color: '#90ee90'
-          },
-          {
-            name: "Medium",
-            data: mediumCodeSmells,
-            color: '#ffff00'
-          },
-          {
-            name: "High",
-            data: highCodeSmells,
-            color: '#ffa500'
-          },
-          {
-            name: "Critical",
-            data: criticalCodeSmells,
-            color: '#ff0000'
-          }
-        ]
 
-        this.state.options.series = codeSemllSeries
+
+        this.state.options = option;
 
       }
 
       else if (type == 'coverage') {
         this.setComplexityData();
 
-        var complexityDataSeries = [
-          {
-            name: "Coverage",
-            data: complexityData,
-            color: '#4b9fd5'
-          }
-        ]
-        //complexity is coverage
-        this.state.options.series = complexityDataSeries;
+
+        option = {};
+        option = {
+          chart: {
+            type: "bubble",
+            plotBorderWidth: 0,
+            zoomType: "xy",
+            backgroundColor: "#232d3b"
+          },
+          credits: {
+            enabled: false
+          },
+          legend: {
+            symbolHeight: 11,
+            symbolWidth: 11,
+            symbolRadius: 0,
+            align: "left",
+            itemStyle: {
+              color: "#f5f5f5",
+              fontWeight: "normal"
+            }
+          },
+          title: {
+            text: "",
+            align: "left",
+            style: {
+              color: "#f5f5f5",
+              fontWeight: "bold"
+            }
+          },
+          xAxis: {
+            min: 0,
+            gridLineWidth: 0,
+            tickLength: 0,
+            lineWidth: 0,
+            title: {
+              text: " "
+            },
+            labels: {
+              format: "{value}",
+              style: {
+                color: "#f5f5f5"
+              }
+            }
+          },
+          yAxis: {
+            min: 0,
+            startOnTick: false,
+            endOnTick: false,
+            gridLineColor: "#535353",
+            title: {
+              text: "Reliability Remediation Effort",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            labels: {
+              format: "{value} min",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            maxPadding: 0.2
+          },
+          tooltip: {
+            enabled: false
+          },
+          plotOptions: {
+            series: {
+              dataLabels: {
+                enabled: false,
+                format: "{point.name}"
+              }
+            }
+          },
+          series: [
+            {
+              name: "Coverage",
+              data: complexityData,
+              color: '#4b9fd5'
+            }
+          ]
+        };
+
+        this.state.options = option;
 
       }
 
       else if (type == 'duplicated_lines') {
         this.setDuplicationData();
-        var duplicationDataSeries = [
-          {
-            name: "Duplication",
-            data: duplicationData,
-            color: '#4b9fd5'
-          }
-        ]
-        this.state.options.series = duplicationDataSeries;
+
+        option = {};
+        option = {
+          chart: {
+            type: "bubble",
+            plotBorderWidth: 0,
+            zoomType: "xy",
+            backgroundColor: "#232d3b"
+          },
+          credits: {
+            enabled: false
+          },
+          legend: {
+            symbolHeight: 11,
+            symbolWidth: 11,
+            symbolRadius: 0,
+            align: "left",
+            itemStyle: {
+              color: "#f5f5f5",
+              fontWeight: "normal"
+            }
+          },
+          title: {
+            text: "",
+            align: "left",
+            style: {
+              color: "#f5f5f5",
+              fontWeight: "bold"
+            }
+          },
+          xAxis: {
+            min: 0,
+            gridLineWidth: 0,
+            tickLength: 0,
+            lineWidth: 0,
+            title: {
+              text: " "
+            },
+            labels: {
+              format: "{value}",
+              style: {
+                color: "#f5f5f5"
+              }
+            }
+          },
+          yAxis: {
+            min: 0,
+            startOnTick: false,
+            endOnTick: false,
+            gridLineColor: "#535353",
+            title: {
+              text: "Reliability Remediation Effort",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            labels: {
+              format: "{value} min",
+              style: {
+                color: "#f5f5f5"
+              }
+            },
+            maxPadding: 0.2
+          },
+          tooltip: {
+            enabled: false
+          },
+          plotOptions: {
+            series: {
+              dataLabels: {
+                enabled: false,
+                format: "{point.name}"
+              }
+            }
+          },
+          series: [
+            {
+              name: "Duplication",
+              data: duplicationData,
+              color: '#4b9fd5'
+            }
+          ]
+        };
+
+
+
+        this.state.options = option;
       }
 
     }

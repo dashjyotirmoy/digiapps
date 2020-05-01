@@ -371,7 +371,7 @@ class VelocityGraph {
     };
     options.tooltip = {
       xDateFormat: "%Y-%m-%d",
-      shared: true,
+      shared: false,
       useHTML: true,
       style: {
         pointerEvents: "auto"
