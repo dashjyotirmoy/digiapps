@@ -2,16 +2,19 @@ import React, { Component } from "react";
 // import HighchartsReact from "highcharts-react-official";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import { connect } from "react-redux";
-// import { color } from "highcharts";
+import { color } from "highcharts";
+import { parse } from "@fortawesome/fontawesome-svg-core";
+import Options from "../../../../utility/GraphOptions/optionsModel";
 
-var BubbleChartData;
+var BubbleChartData = {};
 var bugsData, vulnearbilityData, codeSmellsData, complexityData, duplicationData;
 // var veryLowData = [], lowData = [], mediumData = [], highData = [], criticalData = [];
 var bd = {}, vd = {}, cd = {};
 var veryLowBug = [], lowBug = [], mediumBug = [], highBug = [], criticalBug = [];
 var veryLowVulnearbility = [], lowVulnearbility = [], mediumVulnearbility = [], highVulnearbility = [], criticalVulnearbility = [];
 var veryLowCodeSmells = [], lowCodeSmells = [], mediumCodeSmells = [], highCodeSmells = [], criticalCodeSmells = [];
-
+var dataType, type, dt;
+var a = 0, b = 0, c = 0, d = 0;
 
 class BubbleHigh extends Component {
   state = {
@@ -118,66 +121,120 @@ class BubbleHigh extends Component {
     }
   };
 
+  // console.log(type);
+
+  generateOptions = type => {
+    const baseOption = new Options;
+    var updatedOptions = {};
+
+  }
+
+
   setBugsData = () => {
 
-    bugsData = BubbleChartData.map((item, index) => {
+    bugsData = BubbleChartData.map(item => {
+      item.map(ele => {
+        var key = [...Object.keys(ele)];
+        var val = [...Object.values(ele)];
+
+        if (key == "bugs") c = parseFloat(val)
+        else if (key == "reliability_remediation_effort") b = parseFloat(val)
+        else if (key == "reliability_rating") d = parseFloat(val)
+        else if (key == "ncloc") a = parseFloat(val)
+      })
       return {
-        x: parseInt(item[3].value),
-        y: parseInt(item[2].value),
-        z: parseInt(item[0].value),
-        severity: parseInt(item[1].value)
+        x: a,
+        y: b,
+        z: c,
+        severity: d
       }
-    }
-    )
+    })
+    console.log(bugsData);
+
   };
+
 
   setVulnerabilityData = () => {
 
-    vulnearbilityData = BubbleChartData.map((item, index) => {
+    vulnearbilityData = BubbleChartData.map(item => {
+      item.map(ele => {
+        var key = [...Object.keys(ele)];
+        var val = [...Object.values(ele)];
+
+        if (key == "security_rating") d = parseFloat(val);
+        else if (key == "vulnerabilities") c = parseFloat(val);
+        else if (key == "ncloc") a = parseFloat(val);
+        else if (key == "security_remediation_effort") b = parseFloat(val);
+      })
       return {
-        x: parseInt(item[3].value),
-        y: parseInt(item[2].value),
-        z: parseInt(item[1].value),
-        severity: parseInt(item[0].value)
+        x: a,
+        y: b,
+        z: c,
+        severity: d
       }
-    }
-    )
+    })
+    console.log(vulnearbilityData);
   };
 
   setCodeSmellsData = () => {
 
-    codeSmellsData = BubbleChartData.map((item, index) => {
+    codeSmellsData = BubbleChartData.map(item => {
+      item.map(ele => {
+        var key = [...Object.keys(ele)];
+        var val = [...Object.values(ele)];
+
+        if (key == "ncloc") a = parseFloat(val);
+        else if (key == "code_smells") c = parseFloat(val);
+        else if (key == "sqale_rating") d = parseFloat(val);
+        else if (key == "sqale_index") b = parseFloat(val);
+      })
       return {
-        x: parseInt(item[0].value),
-        y: parseInt(item[3].value),
-        z: parseInt(item[1].value),
-        severity: parseInt(item[2].value)
+        x: a,
+        y: b,
+        z: c,
+        severity: d
       }
-    }
-    )
+    })
   };
 
   setComplexityData = () => {
 
-    complexityData = BubbleChartData.map((item, index) => {
-      // if (item[0] && item[1] && item[2]) {
+    complexityData = BubbleChartData.map(item => {
+      item.map(ele => {
+        var key = [...Object.keys(ele)];
+        var val = [...Object.values(ele)];
+
+        if (key == "uncovered_lines") c = parseFloat(val);
+        else if (key == "complexity") a = parseFloat(val);
+        else if (key == "coverage") b = parseFloat(val);
+      })
+      console.log(a, b, c);
+
       return {
-        x: item[1] ? parseInt(item[1].value) : 0,
-        y: item[2] ? parseFloat(item[2].value) : 0,
-        z: item[0] ? parseInt(item[0].value) : 0
+        x: a,
+        y: b,
+        z: c
       }
-      // }
-    }
-    )
+    })
+    console.log(complexityData);
+
   };
 
   setDuplicationData = () => {
 
-    duplicationData = BubbleChartData.map((item, index) => {
+    duplicationData = BubbleChartData.map(item => {
+      item.map(ele => {
+        var key = [...Object.keys(ele)];
+        var val = [...Object.values(ele)];
+
+        if (key == "duplicated_blocks") c = parseFloat(val);
+        else if (key == "duplicated_lines") b = parseFloat(val);
+        else if (key == "ncloc") a = parseFloat(val);
+      })
       return {
-        x: parseInt(item[2].value),
-        y: parseInt(item[1].value),
-        z: parseInt(item[0].value)
+        x: a,
+        y: b,
+        z: c
       }
     }
     )
@@ -186,19 +243,65 @@ class BubbleHigh extends Component {
 
   render() {
     if (this.props.qualityDrilledDownData.components) {
+      console.log(this.props.qualityDrilledDownData);
+
       console.log('ddddddddddddddddddwwwwwwwwwwwwssssssssssss', this.props.qualityDrilledDownData.components);
+
       BubbleChartData = this.props.qualityDrilledDownData.components.map((item, index) => {
         return item.measures.map(ele => {
+          var keyVal = Object.values(ele);
+          var key = keyVal[0];
+          var val = keyVal[1];
+          var Obj = {};
+          Obj[key] = val;
           return {
-            id: ele.metric,
-            value: ele.value
+            ...Obj
           };
         });
       });
 
+      console.log(BubbleChartData);
+      var obj = {};
+
+      BubbleChartData[0].map(item => {
+        console.log(item);
+        var dataType = Object.keys(item);
+        // type = dataType[0];
+        console.log(...dataType);
 
 
-      if (BubbleChartData[0][0].id === 'bugs') {
+        if (dataType[0] == "bugs") {
+          type = " ";
+          type = dataType[0];
+        }
+        else if (dataType[0] == "vulnerabilities") {
+          type = " ";
+          type = dataType[0];
+        }
+        else if (dataType[0] == "code_smells") {
+          type = " ";
+          type = dataType[0];
+        }
+        else if (dataType[0] == "coverage") {
+          type = " ";
+          type = dataType[0];
+        }
+        else if (dataType[0] == "duplicated_lines") {
+          type = " ";
+          type = dataType[0];
+        }
+      })
+
+      console.log(type);
+
+
+      if (type == 'bugs') {
+        console.log("type is bugs");
+
+        var baseOption = new Options;
+        console.log(baseOption);
+
+
         this.setBugsData();
         // eslint-disable-next-line array-callback-return
         bugsData.map((item, index) => {
@@ -260,11 +363,13 @@ class BubbleHigh extends Component {
 
         // eslint-disable-next-line react/no-direct-mutation-state
         this.state.options.series = bugsDataSeries;
+        bugsDataSeries = [];
 
       }
 
-      else if (BubbleChartData[0][0].id === 'security_rating') {
+      else if (type == "vulnerabilities") {
         this.setVulnerabilityData();
+        console.log(vulnearbilityData);
 
         vulnearbilityData.map((item, index) => {
 
@@ -325,7 +430,7 @@ class BubbleHigh extends Component {
         this.state.options.series = vulnearbilityDataSeries
       }
 
-      else if (BubbleChartData[0][1].id === 'code_smells') {
+      else if (type == 'code_smells') {
         this.setCodeSmellsData();
 
         codeSmellsData.map((item, index) => {
@@ -389,7 +494,7 @@ class BubbleHigh extends Component {
 
       }
 
-      else if (BubbleChartData[0][1].id === 'complexity') {
+      else if (type == 'coverage') {
         this.setComplexityData();
 
         var complexityDataSeries = [
@@ -404,7 +509,7 @@ class BubbleHigh extends Component {
 
       }
 
-      else if (BubbleChartData[0][1].id === 'duplicated_lines') {
+      else if (type == 'duplicated_lines') {
         this.setDuplicationData();
         var duplicationDataSeries = [
           {
