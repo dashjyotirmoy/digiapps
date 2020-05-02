@@ -16,6 +16,9 @@ var veryLowCodeSmells = [], lowCodeSmells = [], mediumCodeSmells = [], highCodeS
 var dataType, type, dt;
 var a = 0, b = 0, c = 0, d = 0;
 var option = {};
+var name, url;
+var nameUrl = [];
+var veryLowBugUrl = [];
 
 class BubbleHigh extends Component {
   state = {
@@ -133,12 +136,17 @@ class BubbleHigh extends Component {
         else if (key == "reliability_remediation_effort") b = parseFloat(val)
         else if (key == "reliability_rating") d = parseFloat(val)
         else if (key == "ncloc") a = parseFloat(val)
+        else if (key == "name") name = val[0];
+        else if (key == "url") url = val[0];
       })
       return {
         x: a,
         y: b,
         z: c,
-        severity: d
+        severity: d,
+        rating: d == 1 ? 'A' : d == 2 ? 'B' : d == 3 ? 'C' : d == 4 ? 'D' : 'E',
+        name: name,
+        url: url
       }
     })
     console.log(bugsData);
@@ -187,12 +195,16 @@ class BubbleHigh extends Component {
         else if (key == "vulnerabilities") c = parseFloat(val);
         else if (key == "ncloc") a = parseFloat(val);
         else if (key == "security_remediation_effort") b = parseFloat(val);
+        else if (key == "name") name = val[0];
+        else if (key == "url") url = val[0];
       })
       return {
         x: a,
         y: b,
         z: c,
-        severity: d
+        severity: d,
+        name: name,
+        url: url
       }
     })
     console.log(vulnearbilityData);
@@ -241,12 +253,16 @@ class BubbleHigh extends Component {
         else if (key == "code_smells") c = parseFloat(val);
         else if (key == "sqale_rating") d = parseFloat(val);
         else if (key == "sqale_index") b = parseFloat(val);
+        else if (key == "name") name = val[0];
+        else if (key == "url") url = val[0];
       })
       return {
         x: a,
         y: b,
         z: c,
-        severity: d
+        severity: d,
+        name: name,
+        url: url
       }
     })
   };
@@ -254,29 +270,29 @@ class BubbleHigh extends Component {
   setCodeSmellsSeverity = () => {
 
     codeSmellsData.map((item, index) => {
-      if (item.severity == 1) {
+      if (item.severity > 50) {
         Object.assign(cd, item);
-        veryLowCodeSmells.push(cd)
+        criticalCodeSmells.push(cd)
         cd = {};
       }
-      else if (item.severity == 2) {
-        Object.assign(cd, item);
-        lowCodeSmells.push(cd);
-        cd = {};
-      }
-      else if (item.severity == 3) {
-        Object.assign(cd, item);
-        mediumCodeSmells.push(cd);
-        cd = {};
-      }
-      else if (item.severity == 4) {
+      else if (item.severity > 20) {
         Object.assign(cd, item);
         highCodeSmells.push(cd);
         cd = {};
       }
-      else if (item.severity == 5) {
+      else if (item.severity > 10) {
         Object.assign(cd, item);
-        criticalCodeSmells.push(cd);
+        mediumCodeSmells.push(cd);
+        cd = {};
+      }
+      else if (item.severity > 6) {
+        Object.assign(cd, item);
+        lowCodeSmells.push(cd);
+        cd = {};
+      }
+      else if (item.severity <= 5) {
+        Object.assign(cd, item);
+        veryLowCodeSmells.push(cd);
         cd = {};
       }
     }
@@ -293,18 +309,23 @@ class BubbleHigh extends Component {
         if (key == "uncovered_lines") c = parseFloat(val);
         else if (key == "complexity") a = parseFloat(val);
         else if (key == "coverage") b = parseFloat(val);
+        else if (key == "name") name = val[0];
+        else if (key == "url") url = val[0];
       })
-      console.log(a, b, c);
 
       return {
         x: a,
         y: b,
-        z: c
+        z: c,
+        rating: c > 80 ? 'A' : c > 70 ? 'B' : c > 50 ? 'C' : c > 30 ? 'D' : 'E',
+        name: name,
+        url: url
       }
     })
     console.log(complexityData);
 
   };
+
 
   setDuplicationData = () => {
 
@@ -316,14 +337,20 @@ class BubbleHigh extends Component {
         if (key == "duplicated_blocks") c = parseFloat(val);
         else if (key == "duplicated_lines") b = parseFloat(val);
         else if (key == "ncloc") a = parseFloat(val);
+        else if (key == "name") name = val[0];
+        else if (key == "url") url = val[0];
       })
       return {
         x: a,
         y: b,
-        z: c
+        z: c,
+        rating: c > 20 ? 'E' : c > 10 ? 'D' : c > 5 ? 'C' : c >= 3 ? 'B' : 'A',
+        name: name,
+        url: url
       }
     }
     )
+    console.log(duplicationData);
 
   };
 
@@ -336,13 +363,17 @@ class BubbleHigh extends Component {
       console.log(fullBubbleChartData);
 
       BubbleChartData = this.props.qualityDrilledDownData.components.map((item, index) => {
-        return item.measures.map(ele => {
+
+        var name = item.name;
+        var url = item.url;
+        nameUrl.push({ "name": name }, { "url": url });
+        return nameUrl = item.measures.map(ele => {
+
           var keyVal = Object.values(ele);
           var key = keyVal[0];
           var val = keyVal[1];
           var Obj = {};
           Obj[key] = val;
-
           return {
             ...Obj
           };
@@ -381,8 +412,10 @@ class BubbleHigh extends Component {
         }
       })
 
-      console.log(type);
-
+      // External Function that is called inside bubble chart
+      function callExternalFunction(url) {
+        window.open(url, "_blank");
+      }
 
       if (type == 'bugs') {
         console.log("type is bugs");
@@ -460,13 +493,26 @@ class BubbleHigh extends Component {
             maxPadding: 0.2
           },
           tooltip: {
-            enabled: false
+            enabled: true,
+            useHTML: true,
+            headerFormat: '<table>',
+            pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
+              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Reliability Remediation Effort:</td><td>{point.y}min</td></tr>' +
+              '<tr><td>Bugs:</td><td>{point.z}</td></tr>' +
+              '<tr><td>Reliability Rating</td><td>{point.rating}</td></tr>',
+            footerFormat: '</table>',
+            followPointer: true,
           },
+
           plotOptions: {
-            series: {
-              dataLabels: {
-                enabled: false,
-                format: "{point.name}"
+            bubble: {
+              point: {
+                events: {
+                  click: function (oEvent) {
+                    callExternalFunction(oEvent.point.url);
+                  }
+                }
               }
             }
           },
@@ -474,7 +520,7 @@ class BubbleHigh extends Component {
             {
               name: "Critical",
               data: criticalBug,
-              color: '#ff0000'
+              color: '#ff0000',
             },
             {
               name: "High",
@@ -494,13 +540,14 @@ class BubbleHigh extends Component {
             {
               name: 'Very Low',
               data: veryLowBug,
-              color: '#056642'
+              color: '#056642',
             }
           ]
         }
 
 
         this.state.options = option;
+        console.log(veryLowBug);
 
 
       }
@@ -546,7 +593,7 @@ class BubbleHigh extends Component {
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: " "
+              text: "Line of Code"
             },
             labels: {
               format: "{value}",
@@ -575,13 +622,26 @@ class BubbleHigh extends Component {
             maxPadding: 0.2
           },
           tooltip: {
-            enabled: false
+            enabled: true,
+            useHTML: true,
+            headerFormat: '<table>',
+            pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
+              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Security Remediation Effort:</td><td>{point.y}min</td></tr>' +
+              '<tr><td>Vulnerabilities :</td><td>{point.z}</td></tr>' +
+              '<tr><td>Security Rating</td><td>{point.rating}</td></tr>',
+            footerFormat: '</table>',
+            followPointer: true,
           },
+
           plotOptions: {
-            series: {
-              dataLabels: {
-                enabled: false,
-                format: "{point.name}"
+            bubble: {
+              point: {
+                events: {
+                  click: function (oEvent) {
+                    callExternalFunction(oEvent.point.url);
+                  }
+                }
               }
             }
           },
@@ -620,6 +680,7 @@ class BubbleHigh extends Component {
       else if (type == 'code_smells') {
         this.setCodeSmellsData();
         this.setCodeSmellsSeverity();
+        console.log(codeSmellsData);
 
         option = {};
 
@@ -657,7 +718,7 @@ class BubbleHigh extends Component {
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: " "
+              text: "Line of Code"
             },
             labels: {
               format: "{value}",
@@ -672,7 +733,7 @@ class BubbleHigh extends Component {
             endOnTick: false,
             gridLineColor: "#535353",
             title: {
-              text: "Reliability Remediation Effort",
+              text: "Technical Debt",
               style: {
                 color: "#f5f5f5"
               }
@@ -686,13 +747,25 @@ class BubbleHigh extends Component {
             maxPadding: 0.2
           },
           tooltip: {
-            enabled: false
+            enabled: true,
+            useHTML: true,
+            headerFormat: '<table>',
+            pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
+              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Technical Debt:</td><td>{point.y}min</td></tr>' +
+              '<tr><td>Code Semlls:</td><td>{point.z}</td></tr>' +
+              '<tr><td>Maintainability Rating</td><td>{point.rating}</td></tr>',
+            footerFormat: '</table>',
+            followPointer: true,
           },
           plotOptions: {
-            series: {
-              dataLabels: {
-                enabled: false,
-                format: "{point.name}"
+            bubble: {
+              point: {
+                events: {
+                  click: function (oEvent) {
+                    callExternalFunction(oEvent.point.url);
+                  }
+                }
               }
             }
           },
@@ -770,7 +843,7 @@ class BubbleHigh extends Component {
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: " "
+              text: "Cyclomatic Complexity "
             },
             labels: {
               format: "{value}",
@@ -785,13 +858,13 @@ class BubbleHigh extends Component {
             endOnTick: false,
             gridLineColor: "#535353",
             title: {
-              text: "Reliability Remediation Effort",
+              text: "Coverage",
               style: {
                 color: "#f5f5f5"
               }
             },
             labels: {
-              format: "{value} min",
+              format: "{value}%",
               style: {
                 color: "#f5f5f5"
               }
@@ -799,13 +872,24 @@ class BubbleHigh extends Component {
             maxPadding: 0.2
           },
           tooltip: {
-            enabled: false
+            enabled: true,
+            useHTML: true,
+            headerFormat: '<table>',
+            pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
+              '<tr><td>Cyclomatic Complexity:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Coverage:</td><td>{point.y}%</td></tr>' +
+              '<tr><td>Uncovered Lines:</td><td>{point.z}</td></tr>',
+            footerFormat: '</table>',
+            followPointer: true,
           },
           plotOptions: {
-            series: {
-              dataLabels: {
-                enabled: false,
-                format: "{point.name}"
+            bubble: {
+              point: {
+                events: {
+                  click: function (oEvent) {
+                    callExternalFunction(oEvent.point.url);
+                  }
+                }
               }
             }
           },
@@ -860,7 +944,7 @@ class BubbleHigh extends Component {
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: " "
+              text: "Line of Code"
             },
             labels: {
               format: "{value}",
@@ -875,13 +959,13 @@ class BubbleHigh extends Component {
             endOnTick: false,
             gridLineColor: "#535353",
             title: {
-              text: "Reliability Remediation Effort",
+              text: "Duplicated Lines",
               style: {
                 color: "#f5f5f5"
               }
             },
             labels: {
-              format: "{value} min",
+              format: "{value}",
               style: {
                 color: "#f5f5f5"
               }
@@ -889,13 +973,24 @@ class BubbleHigh extends Component {
             maxPadding: 0.2
           },
           tooltip: {
-            enabled: false
+            enabled: true,
+            useHTML: true,
+            headerFormat: '<table>',
+            pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
+              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Duplicated Lines:</td><td>{point.y}min</td></tr>' +
+              '<tr><td>Duplicated Blocks:</td><td>{point.z}</td></tr>',
+            footerFormat: '</table>',
+            followPointer: true,
           },
           plotOptions: {
-            series: {
-              dataLabels: {
-                enabled: false,
-                format: "{point.name}"
+            bubble: {
+              point: {
+                events: {
+                  click: function (oEvent) {
+                    callExternalFunction(oEvent.point.url);
+                  }
+                }
               }
             }
           },
