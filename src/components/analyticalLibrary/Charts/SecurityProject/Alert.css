@@ -141,6 +141,11 @@ div#root{
   background-color: #334154!important;
   color: #fff!important;
   box-shadow: 6px 5px 5px 0px #212529;
+
+}
+select option:checked{
+  background-color: #1D2632!important;
+  color: #fff!important;
 }
 .btn:focus{
   box-shadow: none!important;

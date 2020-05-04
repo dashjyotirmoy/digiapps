@@ -761,27 +761,7 @@ const SecurityOnProjectSelection = (props) => {
   <ProgressBar style={{backgroundColor: '#C2B12C'}} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`}key={3} max={item.vulnerabilities.totalCount}/>
 </ProgressBar>
                                   }
-                                          {/* <ButtonGroup
-                                            style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                                          >
-                                            <Button
-                                              style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222', padding: '5px' }}
-                                            >
-                                              <span style={{ lineHeight: '' }}>
-                                                <span style={{ fontSize: '', float: "left" }}> High</span><span style={{ fontSize: '', float: "right" }}> {item.vulnerabilities.high}</span>
-                                              </span>
-                                            </Button>
-                                            <Button
-                                              style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222', padding: '5px' }}
-                                            >
-                                              Medium {item.vulnerabilities.medium}
-                                            </Button>
-                                            <Button
-                                              style={{ borderRadius: '0px 30px 30px 0px', padding: '5px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                                            >
-                                              Low {item.vulnerabilities.low}
-                                            </Button>
-                                          </ButtonGroup> */}
+                                       
 
                                         </td>
                                         <td className="w-10"><p>{item.licenseCount}</p></td>
