@@ -32,16 +32,19 @@ const Policy = (props) => {
 	}
 
 	const handleFilter = (e) => {
-		console.log('dddddd', e.target);
 		if (e.target.checked) {
-			console.log('ppppp', checkedPolicy);
+			let tempCheckPolicy = [];
 			actionData.forEach((item) => {
 				if (item.action === e.target.value) {
 					checkedPolicy.push(item);
 				}
 			})
-			setPolicyData(checkedPolicy);
-			console.log('ooooo', checkedPolicy)
+			checkedPolicy.forEach((policy) => {
+				tempCheckPolicy.push(policy);
+			})
+			setPolicyData(tempCheckPolicy);
+
+
 		} else {
 			let tempCheckPolicy = [];
 			checkedPolicy.forEach(item => {
