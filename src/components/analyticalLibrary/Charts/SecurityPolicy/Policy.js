@@ -43,8 +43,6 @@ const Policy = (props) => {
 				tempCheckPolicy.push(policy);
 			})
 			setPolicyData(tempCheckPolicy);
-
-
 		} else {
 			let tempCheckPolicy = [];
 			checkedPolicy.forEach(item => {

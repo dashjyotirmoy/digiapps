@@ -2,16 +2,13 @@ import React from "react";
 // import 'react-circular-progressbar/dist/styles.css';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Row, Col, Container, Card, Badge, ButtonGroup, Button,ProgressBar } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { Row, Col, Container, Card, Badge, ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Sec.css";
 import DocumentCancelSvg from './DocumentCancel';
 import InsecureProtectionSvg from './InsecureProtection';
 import LibrarySvg from './LibrarySvg';
 import Alert from 'react-bootstrap/Alert';;
-
 
 const Sec = props => {
   let topProject = props.cardsData[4].data[2].slice(0, 5);
@@ -212,13 +209,13 @@ const Sec = props => {
                                   <tr key={index}>
                                     <td>{item.name}</td>
                                     <td>{item.librariesCount}</td>
-                                <td>{item.vulnerableLibraries.totalCount}</td>
+                                    <td>{item.vulnerableLibraries.totalCount}</td>
                                     <td>
-                                    <ProgressBar className="w-200">
-  <ProgressBar style={{backgroundColor: '#B65355'}} now={item.vulnerableLibraries.high} label={`${item.vulnerableLibraries.high}`}key={1} max={item.vulnerableLibraries.totalCount} />
-  <ProgressBar style={{backgroundColor: '#C0792A'}} now={item.vulnerableLibraries.medium} label={`${item.vulnerableLibraries.medium}`}key={2} max={item.vulnerableLibraries.totalCount} />
-  <ProgressBar style={{backgroundColor: '#C2B12C'}} now={item.vulnerableLibraries.low}  label={`${item.vulnerableLibraries.low} `}key={3} max={item.vulnerableLibraries.totalCount} />
-</ProgressBar>
+                                      <ProgressBar className="w-200">
+                                        <ProgressBar style={{ backgroundColor: '#B65355' }} now={item.vulnerableLibraries.high} label={`${item.vulnerableLibraries.high}`} key={1} max={item.vulnerableLibraries.totalCount} />
+                                        <ProgressBar style={{ backgroundColor: '#C0792A' }} now={item.vulnerableLibraries.medium} label={`${item.vulnerableLibraries.medium}`} key={2} max={item.vulnerableLibraries.totalCount} />
+                                        <ProgressBar style={{ backgroundColor: '#C2B12C' }} now={item.vulnerableLibraries.low} label={`${item.vulnerableLibraries.low} `} key={3} max={item.vulnerableLibraries.totalCount} />
+                                      </ProgressBar>
                                       {/* <ButtonGroup
                                         style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
                                       >
