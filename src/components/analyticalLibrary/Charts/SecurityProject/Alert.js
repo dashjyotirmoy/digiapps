@@ -1,75 +1,53 @@
-import React, { useState, useEffect, dispatch } from 'react';
-import { Row, Col, Container, Card, Badge, ProgressBar,Dropdown} from "react-bootstrap";
+import React, { useEffect } from 'react';
+import { Row, Col, Container, Card, Badge, ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
 
 import { connect } from "react-redux";
-import styled from "styled-components";
 import { bindActionCreators } from "redux";
 import { securityMonthAlertDataDispatch } from '../../../../store/actions/securityData';
 
 import moment from 'moment/moment';
-
-const Styles = styled.div`
-  .btncolor {
-    background-color: #2E3B4D!important;
-    border-color: #3A485C!important;
-    color: #fff!important;}
-`;
- 
 
 const App = props => {
   let mediumCount = [];
   let highCount = [];
   let lowCount = [];
   // let selectItem ="All Time";
-  
+
 
 
   const [showAlertData, setAlertData] = React.useState(props.cardsData);
   // const [repoItem,setrepoItem]=React.useState(selectItem)
-      
-  let dropData =[{id:"1",name:"All Time"},{id:"2",name:"Last Month"},{id:"3",name:"Last 3 Months"}];
-  const handleChange = (type) => {
-    console.log(type);
 
-    // dropData.map( ele => {
-      
-    //   if(type === (ele.id)){
-    //     selectItem = ele.projectName;
-    //     setrepoItem(selectItem);      
-      
-    //     console.log(selectItem);
-  
-        
-  //   }
-    // })
-    props.securityMonthAlertDataDispatch(props.projectID, props.currentRepo, type).then(item => {
+  let dropData = [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_month", name: "Last 3 Months" }];
+  const handleChange = (type) => {
+    props.securityMonthAlertDataDispatch(props.projectID, props.currentRepo, type.target.value).then(item => {
       filterData();
-      
+
     });
   }
   // let alertData = props.cardsData;
-  
- const filterData = () => {
-  mediumCount = showAlertData 
-                  && showAlertData.perVulnerabilityAlert
-                  && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'MEDIUM');
-            highCount =showAlertData 
-            && showAlertData.perVulnerabilityAlert
-            && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'HIGH');
-  lowCount = showAlertData 
-  && showAlertData.perVulnerabilityAlert
-  && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
- }
 
- useEffect(() => {
-  //  dispatch(props.cardsData);
-  if (props.securityMonthAlertData && props.securityMonthAlertData.perVulnerabilityAlert ){
-    setAlertData(props.securityMonthAlertData)
+  const filterData = () => {
+    mediumCount = showAlertData
+      && showAlertData.perVulnerabilityAlert
+      && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'MEDIUM');
+    highCount = showAlertData
+      && showAlertData.perVulnerabilityAlert
+      && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'HIGH');
+    lowCount = showAlertData
+      && showAlertData.perVulnerabilityAlert
+      && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
   }
-}, [props.securityMonthAlertData, props.cardsData]);
-  
+
+  useEffect(() => {
+    //  dispatch(props.cardsData);
+    if (props.securityMonthAlertData && props.securityMonthAlertData.perVulnerabilityAlert) {
+      setAlertData(props.securityMonthAlertData)
+    }
+  }, [props.securityMonthAlertData, props.cardsData]);
+
 
   return (
     <React.Fragment>
@@ -115,12 +93,12 @@ const App = props => {
                   <div className="inner_table">
                     <table className="table table-hover table-dark" >
                       <tbody >
-                        
+
                         {
                           showAlertData && showAlertData.perVulnerabilityAlert && showAlertData.perVulnerabilityAlert.map((item, index) => {
                             return (
                               <tr className="tabrow f-12" key={index}>
-                                <td  className="w-8">
+                                <td className="w-8">
                                   {item.severity === 'MEDIUM' ? (
                                     <Badge className="sevbadge2"></Badge>
                                   ) : null}
@@ -142,7 +120,7 @@ const App = props => {
                                   <p>{item.cvss2score}</p>
                                 </td>
                                 <td>
-                                  <p>{ moment(item.publishedDate).format("DD-MM-YYYY") }</p>
+                                  <p>{moment(item.publishedDate).format("DD-MM-YYYY")}</p>
                                 </td>
                                 <td>
                                   <p>{item.topFixType}</p>
@@ -174,57 +152,17 @@ const App = props => {
               <Row className="basealign">
                 <p>Alerts</p>
                 <Col sm={2}>
-               {/* <select className="drop">
-              
-                 {dropData.map(item =>(
-                   <option value={item.name} className="drop-menu"> {item.name}</option>
-                 ))}
-                  {console.log(dropData)};
-               </select> */}
-          <Dropdown>
-  <Dropdown.Toggle className="drop" >
-    All Time
-  </Dropdown.Toggle>
 
-  <Dropdown.Menu className="drop-menu">
-   {dropData.map(item =>(
-     <Dropdown.Item className="text-white" value={item.name}  onClick={handleChange}>{item.name}</Dropdown.Item>
-   ))}  
-  </Dropdown.Menu>
-</Dropdown>
-             
-             {/* <Dropdown
-                listData={ dropData }
-                direction="down"
-                onSelectDelegate={handleChange}
-              >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
-                  <Col
-                    sm={10}
-                    md={10}
-                    lg={10}
-                    xl={10}
-                    className="d-flex align-item-center justify-content-center"
-                  >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
-                      {repoItem}
-                       
-                    </p>
-                  </Col>
-                  <Col
-                    sm={2}
-                    md={2}
-                    g={2}
-                    xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
-                  >
-                    <FontAwesomeIcon icon={faChevronDown} />
-                  </Col>
-                </Row>
-              </Dropdown> */}
-          
-               </Col>
-             
+                  <select className="drop" onChange={handleChange}>
+                    {dropData.map(function (data, key) {
+                      return (
+                        <option className="text-white" key={key} value={data.id}>{data.name}</option>)
+                    })}
+                  </select>
+
+
+                </Col>
+
 
               </Row>
               <Card.Body >
@@ -259,7 +197,7 @@ const App = props => {
                     <table className="table table-hover table-dark" >
                       <tbody>
 
-                        {
+                        {(showAlertData.perLibraryAlert.length > 0) ?
                           showAlertData && showAlertData.perLibraryAlert && showAlertData.perLibraryAlert.map((item, index) => {
                             return (
                               <tr className="tabrow f-12" key={index}>
@@ -274,46 +212,25 @@ const App = props => {
                                   <p>{item.vulnerabilityType}</p>
                                 </td>
                                 <td>
-                                <ProgressBar className="w-200">
-  <ProgressBar style={{backgroundColor: '#B65355'}} now={item.description.high}label={`${item.description.high}`} key={1} max={item.description.totalCount}/>
-  <ProgressBar style={{backgroundColor: '#C0792A'}} now={item.description.medium} label={`${item.description.medium}`}key={2}max={item.description.totalCount} />
-  <ProgressBar style={{backgroundColor: '#C2B12C'}} now={item.description.low} label={`${item.description.low}`}key={3} max={item.description.totalCount}/>
-</ProgressBar>
+                                  <ProgressBar className="w-200">
+                                    <ProgressBar style={{ backgroundColor: '#B65355' }} now={item.description.high} label={`${item.description.high}`} key={1} max={item.description.totalCount} />
+                                    <ProgressBar style={{ backgroundColor: '#C0792A' }} now={item.description.medium} label={`${item.description.medium}`} key={2} max={item.description.totalCount} />
+                                    <ProgressBar style={{ backgroundColor: '#C2B12C' }} now={item.description.low} label={`${item.description.low}`} key={3} max={item.description.totalCount} />
+                                  </ProgressBar>
 
-                                  {/* <ButtonGroup
-                                    style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                                  >
-                                    <Button
-                                      style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                                    >
-                                      <span style={{ lineHeight: '' }}>
-                                        <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> {item.description.high}</span>
-                                      </span>
-                                    </Button>
-                                    <Button
-                                      style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                                    >
-                                      Medium {item.description.medium}
-                                    </Button>
-                                    <Button
-                                      style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                                    >
-                                      Low {item.description.low}
-                                    </Button>
-                                  </ButtonGroup> */}
                                 </td>
                                 <td>
                                   <p>{item.libraryType}</p>
                                 </td>
                                 <td>
-                                  <p>{ moment(item.creationDate).format("DD-MM-YYYY") }</p>
+                                  <p>{moment(item.creationDate).format("DD-MM-YYYY")}</p>
                                 </td>
                                 <td>
-                                  <p>{ moment(item.modifiedDate).format("DD-MM-YYYY") }</p>
+                                  <p>{moment(item.modifiedDate).format("DD-MM-YYYY")}</p>
                                 </td>
                               </tr>
                             )
-                          })
+                          }) : <tr><td style={{ textAlign: "center" }} colSpan="5">No data found</td></tr>
                         }
                       </tbody>
                     </table>
@@ -326,7 +243,7 @@ const App = props => {
       </Container>
     </React.Fragment>
   );
-};
+};  
 
 const mapStateToProps = state => {
   return {
