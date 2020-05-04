@@ -1,18 +1,15 @@
 import React, { Component } from "react";
-// import HighchartsReact from "highcharts-react-official";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import { connect } from "react-redux";
-import { color } from "highcharts";
-import { parse } from "@fortawesome/fontawesome-svg-core";
 
 var BubbleChartData = {};
-var fullBubbleChartData = [];
+// var fullBubbleChartData = [];
 var bugsData, vulnearbilityData, codeSmellsData, complexityData, duplicationData;
 var bd = {}, vd = {}, cd = {};
 var veryLowBug = [], lowBug = [], mediumBug = [], highBug = [], criticalBug = [];
 var veryLowVulnearbility = [], lowVulnearbility = [], mediumVulnearbility = [], highVulnearbility = [], criticalVulnearbility = [];
 var veryLowCodeSmells = [], lowCodeSmells = [], mediumCodeSmells = [], highCodeSmells = [], criticalCodeSmells = [];
-var dataType, type, dt;
+var type;
 var a = 0, b = 0, c = 0, d = 0;
 var option = {};
 var name, url;
@@ -126,7 +123,7 @@ class BubbleHigh extends Component {
   setBugsData = () => {
 
     bugsData = BubbleChartData.map(item => {
-      item.map(ele => {
+      item.forEach(ele => {
         var keys = [...Object.keys(ele)];
         var val = [...Object.values(ele)];
         var key = keys.toString();
@@ -152,7 +149,7 @@ class BubbleHigh extends Component {
   };
 
   setBugSeverity = () => {
-    bugsData.map((item, index) => {
+    bugsData.forEach((item, index) => {
       if (item.severity === 1) {
         Object.assign(bd, item);
         veryLowBug.push(bd);
@@ -185,7 +182,7 @@ class BubbleHigh extends Component {
   setVulnerabilityData = () => {
 
     vulnearbilityData = BubbleChartData.map(item => {
-      item.map(ele => {
+      item.forEach(ele => {
         var keys = [...Object.keys(ele)];
         var val = [...Object.values(ele)];
         var key = keys.toString();
@@ -195,7 +192,7 @@ class BubbleHigh extends Component {
         else if (key === "ncloc") a = parseFloat(val);
         else if (key === "security_remediation_effort") b = parseFloat(val);
         else if (key === "name") name = val[0];
-        else if (key == "url") url = val[0];
+        else if (key === "url") url = val[0];
       })
       return {
         x: a,
@@ -211,7 +208,7 @@ class BubbleHigh extends Component {
 
   setVulnerabilitySeverity = () => {
 
-    vulnearbilityData.map((item, index) => {
+    vulnearbilityData.forEach((item, index) => {
 
       if (item.severity === 1) {
         Object.assign(vd, item);
@@ -244,7 +241,7 @@ class BubbleHigh extends Component {
   setCodeSmellsData = () => {
 
     codeSmellsData = BubbleChartData.map(item => {
-      item.map(ele => {
+      item.forEach(ele => {
         var keys = [...Object.keys(ele)];
         var val = [...Object.values(ele)];
         var key = keys.toString();
@@ -270,7 +267,7 @@ class BubbleHigh extends Component {
 
   setCodeSmellsSeverity = () => {
 
-    codeSmellsData.map((item, index) => {
+    codeSmellsData.forEach((item, index) => {
       if (item.severity > 50) {
         Object.assign(cd, item);
         criticalCodeSmells.push(cd)
@@ -303,7 +300,7 @@ class BubbleHigh extends Component {
   setComplexityData = () => {
 
     complexityData = BubbleChartData.map(item => {
-      item.map(ele => {
+      item.forEach(ele => {
         var keys = [...Object.keys(ele)];
         var val = [...Object.values(ele)];
         var key = keys.toString();
@@ -331,7 +328,7 @@ class BubbleHigh extends Component {
   setDuplicationData = () => {
 
     duplicationData = BubbleChartData.map(item => {
-      item.map(ele => {
+      item.forEach(ele => {
         var keys = [...Object.keys(ele)];
         var val = [...Object.values(ele)];
         var key = keys.toString();
@@ -357,8 +354,7 @@ class BubbleHigh extends Component {
 
   render() {
     if (this.props.qualityDrilledDownData.components) {
-      console.log('ddddddddddddddddddwwwwwwwwwwwwssssssssssss', this.props.qualityDrilledDownData.components);
-      fullBubbleChartData = this.props.qualityDrilledDownData.components;
+      // fullBubbleChartData = this.props.qualityDrilledDownData.components;
 
       BubbleChartData = this.props.qualityDrilledDownData.components.map((item, index) => {
 
@@ -379,7 +375,7 @@ class BubbleHigh extends Component {
       });
 
 
-      BubbleChartData[0].map(item => {
+      BubbleChartData[0].forEach(item => {
 
         var dataType = Object.keys(item);
         // type = dataType[0];

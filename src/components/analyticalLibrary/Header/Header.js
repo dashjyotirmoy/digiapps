@@ -2,9 +2,6 @@
 
 import React, { Component } from "react";
 import { Nav, Navbar } from "react-bootstrap";
-import Dropdown from "../Dropdown/Dropdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import john from "../../../content/img/johnSmith.png";
 import { execAllDispatch } from "../../../store/actions/executiveInsights";
@@ -66,7 +63,7 @@ class Header extends Component {
                 </div>
                 <div id="user-info-image" className="d-inline-block mr-2">
                   <div className="circle-placeholder overflow-hidden rounded-circle">
-                    <img src={john} className="h-100 w-100" />
+                    <img src={john} alt="" className="h-100 w-100" />
                   </div>
                 </div>
                 <div

@@ -2,9 +2,7 @@ import React from "react";
 // import 'react-circular-progressbar/dist/styles.css';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Row, Col, Container, Card, Badge, ButtonGroup, Button ,ProgressBar} from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV,} from "@fortawesome/free-solid-svg-icons";
+import { Row, Col, Container, Card, Badge, ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../SecurityProject/Sec.css";
 import DocumentCancelSvg from '../SecurityDropdown/DocumentCancelSvg';
@@ -504,8 +502,8 @@ import Alert from 'react-bootstrap/Alert';
 
 
 const SecurityOnProjectSelection = (props) => {
- props.cardsData[4].data[2].sort((a, b) => b.score.localeCompare(a.score));
- props.cardsData[5].data[2].sort((a, b) => b.vulnerabilities.totalCount.localeCompare(a.vulnerabilities.totalCount));
+  props.cardsData[4].data[2].sort((a, b) => b.score.localeCompare(a.score));
+  props.cardsData[5].data[2].sort((a, b) => b.vulnerabilities.totalCount.localeCompare(a.vulnerabilities.totalCount));
 
   let options = {
     chart: {
@@ -528,6 +526,7 @@ const SecurityOnProjectSelection = (props) => {
         fontWeight: 'normal'
       }
     },
+    // eslint-disable-next-line no-dupe-keys
     title: {
       align: 'center',
       verticalAlign: "middle",
@@ -734,7 +733,7 @@ const SecurityOnProjectSelection = (props) => {
                         <div className="wrap">
                           <table className="table table-hover table-dark ">
                             <thead className="tabhead">
-                            <tr>
+                              <tr>
                                 <th className="w-45">Library Name</th>
                                 <th  >Vulnerable Library</th>
                                 <th className="w-23">License Count</th>
@@ -752,16 +751,16 @@ const SecurityOnProjectSelection = (props) => {
                                       <tr className="tabrow f-12" key={index}>
                                         <td className="w-45"><p>{item.name}</p></td>
                                         <td className="tabpadding w-40">
-                                        {item.vulnerabilities.totalCount == 0 ? (
-                                    <p className="ml-3">No Vulnerabilities</p>
-                                  ) : 
-                                        <ProgressBar className="w-200">
-  <ProgressBar style={{backgroundColor: '#B65355'}} now={item.vulnerabilities.high}label={`${item.vulnerabilities.high}`} key={1} max={item.vulnerabilities.totalCount}/>
-  <ProgressBar style={{backgroundColor: '#C0792A'}} now={item.vulnerabilities.medium} label={`${item.vulnerabilities.medium}`}key={2}max={item.vulnerabilities.totalCount} />
-  <ProgressBar style={{backgroundColor: '#C2B12C'}} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`}key={3} max={item.vulnerabilities.totalCount}/>
-</ProgressBar>
-                                  }
-                                       
+                                          {item.vulnerabilities.totalCount === 0 ? (
+                                            <p className="ml-3">No Vulnerabilities</p>
+                                          ) :
+                                            <ProgressBar className="w-200">
+                                              <ProgressBar style={{ backgroundColor: '#B65355' }} now={item.vulnerabilities.high} label={`${item.vulnerabilities.high}`} key={1} max={item.vulnerabilities.totalCount} />
+                                              <ProgressBar style={{ backgroundColor: '#C0792A' }} now={item.vulnerabilities.medium} label={`${item.vulnerabilities.medium}`} key={2} max={item.vulnerabilities.totalCount} />
+                                              <ProgressBar style={{ backgroundColor: '#C2B12C' }} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`} key={3} max={item.vulnerabilities.totalCount} />
+                                            </ProgressBar>
+                                          }
+
 
                                         </td>
                                         <td className="w-10"><p>{item.licenseCount}</p></td>
