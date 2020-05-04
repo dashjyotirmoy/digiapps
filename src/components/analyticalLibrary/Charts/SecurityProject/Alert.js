@@ -1,12 +1,9 @@
 import React, { useState, useEffect, dispatch } from 'react';
-import { Row, Col, Container, Card, Badge, ProgressBar} from "react-bootstrap";
+import { Row, Col, Container, Card, Badge, ProgressBar,Dropdown} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
+
 import { connect } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronDown
-} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { bindActionCreators } from "redux";
 import { securityMonthAlertDataDispatch } from '../../../../store/actions/securityData';
@@ -20,16 +17,36 @@ const Styles = styled.div`
     color: #fff!important;}
 `;
  
+
 const App = props => {
   let mediumCount = [];
   let highCount = [];
   let lowCount = [];
+  // let selectItem ="All Time";
+  
+
 
   const [showAlertData, setAlertData] = React.useState(props.cardsData);
-
+  // const [repoItem,setrepoItem]=React.useState(selectItem)
+      
+  let dropData =[{id:"1",name:"All Time"},{id:"2",name:"Last Month"},{id:"3",name:"Last 3 Months"}];
   const handleChange = (type) => {
-    props.securityMonthAlertDataDispatch(props.projectID, props.currentRepo, type.target.value).then(item => {
+    console.log(type);
+
+    // dropData.map( ele => {
+      
+    //   if(type === (ele.id)){
+    //     selectItem = ele.projectName;
+    //     setrepoItem(selectItem);      
+      
+    //     console.log(selectItem);
+  
+        
+  //   }
+    // })
+    props.securityMonthAlertDataDispatch(props.projectID, props.currentRepo, type).then(item => {
       filterData();
+      
     });
   }
   // let alertData = props.cardsData;
@@ -103,7 +120,7 @@ const App = props => {
                           showAlertData && showAlertData.perVulnerabilityAlert && showAlertData.perVulnerabilityAlert.map((item, index) => {
                             return (
                               <tr className="tabrow f-12" key={index}>
-                                <td scope="row" className="w-8">
+                                <td  className="w-8">
                                   {item.severity === 'MEDIUM' ? (
                                     <Badge className="sevbadge2"></Badge>
                                   ) : null}
@@ -156,25 +173,56 @@ const App = props => {
               <h5 className="mb-3">Per Library Alert</h5>
               <Row className="basealign">
                 <p>Alerts</p>
-                <Col sm={1}>
-                <select onChange={handleChange} className="drop">
-                    <option value="all_time">All Time</option>
-                    <option value="last_1_month">Last Month</option>
-                    <option value="last_6_month">Last 6 Months</option>
-                </select>
-                
-                {/* <Dropdown>
-  <Dropdown.Toggle onChange={handleChange} className="drop">
-   All Time
+                <Col sm={2}>
+               {/* <select className="drop">
+              
+                 {dropData.map(item =>(
+                   <option value={item.name} className="drop-menu"> {item.name}</option>
+                 ))}
+                  {console.log(dropData)};
+               </select> */}
+          <Dropdown>
+  <Dropdown.Toggle className="drop" >
+    All Time
   </Dropdown.Toggle>
 
   <Dropdown.Menu className="drop-menu">
-    <Dropdown.Item  href="#/action-1" value="all_time" className="text-white">All Time</Dropdown.Item>
-    <Dropdown.Item  href="#/action-2" value="last_1_month" className="text-white">Last Month</Dropdown.Item>
-    <Dropdown.Item href="#/action-3" value="last_6_month" className="text-white">Last 6 Months</Dropdown.Item>
+   {dropData.map(item =>(
+     <Dropdown.Item className="text-white" value={item.name}  onClick={handleChange}>{item.name}</Dropdown.Item>
+   ))}  
   </Dropdown.Menu>
-</Dropdown> */}
-
+</Dropdown>
+             
+             {/* <Dropdown
+                listData={ dropData }
+                direction="down"
+                onSelectDelegate={handleChange}
+              >
+                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                  <Col
+                    sm={10}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    className="d-flex align-item-center justify-content-center"
+                  >
+                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                      {repoItem}
+                       
+                    </p>
+                  </Col>
+                  <Col
+                    sm={2}
+                    md={2}
+                    g={2}
+                    xl={2}
+                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </Col>
+                </Row>
+              </Dropdown> */}
+          
                </Col>
              
 

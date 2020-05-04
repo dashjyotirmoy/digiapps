@@ -73,9 +73,9 @@ class Header extends Component {
                   id="user-info-icon"
                   className="vertical-super d-md-inline-block d-lg-inline-block d-xl-inline-block d-none "
                 >
-                  <Dropdown listData={this.state.navListItem}>
+                  {/* <Dropdown listData={this.state.navListItem}>
                     <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
-                  </Dropdown>
+                  </Dropdown> */}
                 </div>
               </Nav.Item>
 
