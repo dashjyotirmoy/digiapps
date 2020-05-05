@@ -177,7 +177,7 @@ class ProductInfoBar extends Component {
           sprintDetails: ele.sprintDetails
         };
       });
-      sprintsfromTeam = teamDetail.forEach(item => {
+      sprintsfromTeam = teamDetail.map(item => {
         if (item.teamId === teamID) {
           return item.sprintDetails;
         }

@@ -197,7 +197,7 @@ const App = props => {
                     <table className="table table-hover table-dark" >
                       <tbody>
 
-                        {(showAlertData.perLibraryAlert.length > 0) ?
+                        {(showAlertData && showAlertData.perLibraryAlert.length > 0) ?
                           showAlertData && showAlertData.perLibraryAlert && showAlertData.perLibraryAlert.map((item, index) => {
                             return (
                               <tr className="tabrow f-12" key={index}>

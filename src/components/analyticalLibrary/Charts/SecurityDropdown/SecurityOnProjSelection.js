@@ -751,7 +751,7 @@ const SecurityOnProjectSelection = (props) => {
                                       <tr className="tabrow f-12" key={index}>
                                         <td className="w-45"><p>{item.name}</p></td>
                                         <td className="tabpadding w-40">
-                                          {item.vulnerabilities.totalCount === 0 ? (
+                                          {item.vulnerabilities.totalCount === "0" ? (
                                             <p className="ml-3">No Vulnerabilities</p>
                                           ) :
                                             <ProgressBar className="w-200">
