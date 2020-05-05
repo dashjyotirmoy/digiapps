@@ -55,7 +55,7 @@ class ProductInfoBar extends Component {
 
   setProject = res => {
     const projects = res.data.projects;
-    const projLength = projects.length;
+    // const projLength = projects.length;
     const { list, selectedIndex } = this.markSelected(projects, projects[0].id);
     const prrojDetail = list.map(ele => {
       return {
@@ -415,7 +415,7 @@ class ProductInfoBar extends Component {
                           md={12}
                           className="m-auto d-flex justify-content-center show-cursor"
                         >
-                          <img src={prodAggViewIcon} />
+                          <img src={prodAggViewIcon} alt=""/>
                         </Col>
                       </TooltipHoc>
                     </Row>
@@ -441,7 +441,6 @@ class ProductInfoBar extends Component {
                           </Col>
                           <Col
                             sm={2}
-                            md={2}
                             md={2}
                             lg={2}
                             xl={2}
@@ -474,7 +473,6 @@ class ProductInfoBar extends Component {
                           </Col>
                           <Col
                             sm={2}
-                            md={2}
                             md={2}
                             lg={2}
                             xl={2}

@@ -34,6 +34,7 @@ font-family: Helvetica;
  .borderadius{
   background-color: #232D3B!important;
   border-radius: 10px!important;
+ 
  }
  .tabhead{
    background-color: #1D2632;
@@ -47,32 +48,28 @@ font-family: Helvetica;
  }
  /* Alert button */
  .Alertbg{
-   background-color: #1D2632!important;
-   border-color: #364D68!important;
-   color: #fff;
-   padding: .5rem 3rem;
- }
- .Alertbg:hover{
-  background-color: #4A90E2!important;
+  background-color: #1D2632!important;
+  border-color: #364D68!important;
+  color: #fff;
+  padding: .5rem 3rem;
+}
+.bgblue{
+ background-color: #4A90E2!important;
+ border-color: transparent;
+ color: #333;
+ padding: .5rem 3rem;
+}
+
+.Alertbg:hover{
+  background-color: #1D2632!important;
   border-color: transparent;
-  color: #333;
-  padding: .5rem 3rem
+  color: #fff!important;
+  padding: .5rem 3rem;
  }
- .Alertbg:active{
-  background-color: #4A90E2!important;
-  border-color: transparent;
-  color: #333;
-  padding: .5rem 3rem
- }
- .Alertbg:visited{
-  background-color: #4A90E2!important;
-  border-color: transparent;
-  color: #333;
-  padding: .5rem 3rem
- }
- .Alertbg:focus{
-   box-shadow: none;
- }
+
+.Alertbg:focus{
+ box-shadow: none;
+}
  .tabpadding{
   padding: 10px 0px!important;
  }
@@ -80,3 +77,56 @@ font-family: Helvetica;
   text-align: center;
   padding-right: 3rem!important;
 }
+
+/* legend color */
+.highbg{
+  color: #B65355;
+  margin-right: 1rem;
+}
+.mediumbg{
+  color: #C0792A;
+  margin-right: 1rem;
+}
+.lowbg{
+  color: #C2B12C;
+  margin-right: 1rem;
+}
+.w-45{
+width: 45%;
+}
+.w-23{
+  width: 23%;
+}
+.w-10{
+  width: 10%;
+}
+.w-40{
+  width: 40%;
+}
+.w-200{
+  width: 200px;
+  background-color: transparent;
+}
+.w-8{
+  width: 8%;
+}
+.card-height{
+  max-height: 423px;
+}
+.policy-height{
+  height: 180px;
+}
+.dn{
+  display: none;
+}
+.db{
+  display: block;
+  position: absolute;
+  margin-left: 4rem;
+}
+.bold{
+  font-weight: normal;
+ }
+ .pointer{
+   cursor: pointer;
+ }

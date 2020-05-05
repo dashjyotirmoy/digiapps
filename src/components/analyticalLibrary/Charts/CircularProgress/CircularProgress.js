@@ -5,7 +5,6 @@ import 'react-circular-progressbar/dist/styles.css';
 function CircularProgress(props) {
   const percentage = props.percentage;
   const color = props.color;
-  const text = props.text
   return (
     <div>
       <div style={{ width: "100%" }}>

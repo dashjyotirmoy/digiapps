@@ -2,9 +2,7 @@ import React from "react";
 // import 'react-circular-progressbar/dist/styles.css';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Row, Col, Container, Card, Badge, ButtonGroup, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { Row, Col, Container, Card, Badge, ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../SecurityProject/Sec.css";
 import DocumentCancelSvg from '../SecurityDropdown/DocumentCancelSvg';
@@ -504,9 +502,8 @@ import Alert from 'react-bootstrap/Alert';
 
 
 const SecurityOnProjectSelection = (props) => {
-
-  let policyData = props.cardsData;
-  console.log(policyData)
+  props.cardsData[4].data[2].sort((a, b) => b.score.localeCompare(a.score));
+  props.cardsData[5].data[2].sort((a, b) => b.vulnerabilities.totalCount.localeCompare(a.vulnerabilities.totalCount));
 
   let options = {
     chart: {
@@ -529,6 +526,7 @@ const SecurityOnProjectSelection = (props) => {
         fontWeight: 'normal'
       }
     },
+    // eslint-disable-next-line no-dupe-keys
     title: {
       align: 'center',
       verticalAlign: "middle",
@@ -549,19 +547,19 @@ const SecurityOnProjectSelection = (props) => {
         name: 'Browsers',
         data: [
           {
-            name: 'Low',
+            // name: 'Low',
             color: '#C2B12C',
             y: parseInt(props.cardsData[2].data[2].alertMetrics.low),
             borderColor: '#C2B12C'
           },
           {
-            name: 'Medium',
+            // name: 'Medium',
             color: '#C0792A',
             y: parseInt(props.cardsData[2].data[2].alertMetrics.medium),
             borderColor: '#C0792A'
           },
           {
-            name: ' High',
+            // name: ' High',
             color: '#E75555',
             y: parseInt(props.cardsData[2].data[2].alertMetrics.high),
             borderColor: '#E75555'
@@ -569,7 +567,7 @@ const SecurityOnProjectSelection = (props) => {
         ],
         size: "78%",
         innerSize: "90%",
-        showInLegend: true,
+        // showInLegend: true,
         dataLabels: {
           enabled: false
         }
@@ -585,7 +583,7 @@ const SecurityOnProjectSelection = (props) => {
           <Col sm={9}>
             <Row>
               <Col sm={4}>
-                <Card className="borderadius">
+                <Card className="borderadius" style={{ height: "180px" }}>
                   <Card.Body className="pt-2 bg">
                     <Row>
                       <Col sm={8} className="mb-3">
@@ -605,12 +603,12 @@ const SecurityOnProjectSelection = (props) => {
                         <Badge style={{ color: '#222222', background: '#C0792A' }}>2</Badge>{' '}
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '} */}
                       </Col>
-                      <Col sm={1}>
+                      {/* <Col sm={1}>
                         <FontAwesomeIcon
                           icon={faEllipsisV}
                           color={"#D8D8D8"}
                         ></FontAwesomeIcon>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Card.Body>
                 </Card>
@@ -636,12 +634,12 @@ const SecurityOnProjectSelection = (props) => {
                         <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
-                      <Col sm={1}>
+                      {/* <Col sm={1}>
                         <FontAwesomeIcon
                           icon={faEllipsisV}
                           color={"#D8D8D8"}
                         ></FontAwesomeIcon>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Card.Body>
                 </Card></Col>
@@ -666,12 +664,12 @@ const SecurityOnProjectSelection = (props) => {
                         <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
-                      <Col sm={1}>
+                      {/* <Col sm={1}>
                         <FontAwesomeIcon
                           icon={faEllipsisV}
                           color={"#D8D8D8"}
                         ></FontAwesomeIcon>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Card.Body>
                 </Card></Col>
@@ -683,7 +681,7 @@ const SecurityOnProjectSelection = (props) => {
                 <Row>
                   <Col>
                     <Card.Body className="bg">
-                      <h5 className="mb-3">Top Vulnerabilities</h5>
+                      <h5 className="mb-3">Vulnerabilities</h5>
 
                       <Card.Body className="pb-0">
                         <div className="wrap">
@@ -729,16 +727,16 @@ const SecurityOnProjectSelection = (props) => {
                 <Row>
                   <Col>
                     <Card.Body className="bg">
-                      <h5 className="mb-3">Top Libraries</h5>
+                      <h5 className="mb-3">Libraries</h5>
 
                       <Card.Body className="pb-0">
                         <div className="wrap">
                           <table className="table table-hover table-dark ">
                             <thead className="tabhead">
                               <tr>
-                                <th scope="col">Library Name</th>
-                                <th scope="col">Vulnerable Library</th>
-                                <th scope="col">License Count</th>
+                                <th className="w-45">Library Name</th>
+                                <th  >Vulnerable Library</th>
+                                <th className="w-23">License Count</th>
 
                               </tr>
                             </thead>
@@ -751,32 +749,21 @@ const SecurityOnProjectSelection = (props) => {
                                   props.cardsData[5].data[2].map((item, index) => {
                                     return (
                                       <tr className="tabrow f-12" key={index}>
-                                        <td><p>{item.name}</p></td>
-                                        <td className="tabpadding">
-                                          <ButtonGroup
-                                            style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                                          >
-                                            <Button
-                                              style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222', padding: '5px' }}
-                                            >
-                                              <span style={{ lineHeight: '' }}>
-                                                <span style={{ fontSize: '', float: "left" }}> High</span><span style={{ fontSize: '', float: "right" }}> {item.vulnerabilities.high}</span>
-                                              </span>
-                                            </Button>
-                                            <Button
-                                              style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222', padding: '5px' }}
-                                            >
-                                              Medium {item.vulnerabilities.medium}
-                                            </Button>
-                                            <Button
-                                              style={{ borderRadius: '0px 30px 30px 0px', padding: '5px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                                            >
-                                              Low {item.vulnerabilities.low}
-                                            </Button>
-                                          </ButtonGroup>
+                                        <td className="w-45"><p>{item.name}</p></td>
+                                        <td className="tabpadding w-40">
+                                          {item.vulnerabilities.totalCount === "0" ? (
+                                            <p className="ml-3">No Vulnerabilities</p>
+                                          ) :
+                                            <ProgressBar className="w-200">
+                                              <ProgressBar style={{ backgroundColor: '#B65355' }} now={item.vulnerabilities.high} label={`${item.vulnerabilities.high}`} key={1} max={item.vulnerabilities.totalCount} />
+                                              <ProgressBar style={{ backgroundColor: '#C0792A' }} now={item.vulnerabilities.medium} label={`${item.vulnerabilities.medium}`} key={2} max={item.vulnerabilities.totalCount} />
+                                              <ProgressBar style={{ backgroundColor: '#C2B12C' }} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`} key={3} max={item.vulnerabilities.totalCount} />
+                                            </ProgressBar>
+                                          }
+
 
                                         </td>
-                                        <td><p>{item.licenseCount}</p></td>
+                                        <td className="w-10"><p>{item.licenseCount}</p></td>
 
                                       </tr>
                                     )

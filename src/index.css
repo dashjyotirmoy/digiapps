@@ -26,8 +26,7 @@ a:hover {
   text-decoration: none;
 }
 /* on hover */
-.show-cursor: {
-}
+
 .show-cursor:hover {
   cursor: pointer;
 }
@@ -253,10 +252,10 @@ a:hover {
   color: #ffff00;
 }
 .Quality .lowest {
-  color: #90ee90;
+  color: #056642;
 }
 .Quality .low {
-  color: #056642;
+  color: #90ee90;
 }
 
 .Quality .metric-legend {

@@ -34,7 +34,7 @@
   color: rgb(34, 34, 34);
   background: rgb(182, 83, 85);
    padding: 10px;
-    left: 6rem;
+   margin-left: 1rem;
  }
 
  .sevbadge2{
@@ -42,7 +42,7 @@
   color: rgb(34, 34, 34);
   background: rgb(192, 121, 42);
    padding: 10px;
-    left: 6rem;
+   margin-left: 1rem;
  }
 
  .sevbadge1{
@@ -115,9 +115,6 @@ div#root{
 
 
 /* tables css */
-.wrap {
-  /* width: 352px; */
-}
 
 .wrap table {
   table-layout: fixed;
@@ -133,4 +130,23 @@ div#root{
 .inner_table {
   height: 325px;
   overflow-y: auto;
+}
+
+.drop{
+  background-color: #1D2632!important;
+    border-color: #364D68!important;
+    color: #fff!important;
+}
+.drop-menu{
+  background-color: #334154!important;
+  color: #fff!important;
+  box-shadow: 6px 5px 5px 0px #212529;
+
+}
+select option:checked{
+  background-color: #1D2632!important;
+  color: #fff!important;
+}
+.btn:focus{
+  box-shadow: none!important;
 }

@@ -13,7 +13,7 @@ import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 import StackedBar from "../../Charts/StackedBar/StackedBar";
 import { repoDropValDispatch } from "../../../../store/actions/qualityData";
-import { qualityDataDispatch } from "../../../../store/actions/qualityData";
+import { qualityDataDispatch, qualityDrilledDownDataDispatch } from "../../../../store/actions/qualityData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
@@ -69,13 +69,40 @@ class Quality extends Component {
     qualityMetrics: [],
     show: true,
     selectedRepo: "",
+    selectedRepoKey: "",
     repoData: []
   };
 
   onDisplayMetricsClickHandler = metricType => {
+    // eslint-disable-next-line default-case
+    switch(metricType) {
+      case "Bugs":
+        this.getQualityDrilledDownData('Reliability');
+        break;
+      case "Vulnerabilities":
+        this.getQualityDrilledDownData('Security');
+        break;
+        case "Code Smells":
+          this.getQualityDrilledDownData('Maintainability');
+        break;
+        case "Coverage":
+          this.getQualityDrilledDownData('Coverage');
+        break;
+        case "Duplication":
+          this.getQualityDrilledDownData('Duplications');
+        
+    }
+   
     this.setState({
       displayMetric: true,
       metricType: metricType
+    });
+  };
+
+  getQualityDrilledDownData = (metricType) => {
+    this.props.qualityDrilledDownDataDispatch(this.props.currentExecId, this.props.projectID, this.state.selectedRepoKey, metricType)
+    .then(item => {
+
     });
   };
   onDisplayMetricExitClick = () => {
@@ -84,11 +111,11 @@ class Quality extends Component {
       metricType: ""
     });
   };
-  routeToVelocity = () => {
-    this.props.history.push("/velocity");
+  routeToSecurity = () => {
+    this.props.history.push("/security");
   };
   fetchQualityData = () => {
-    let type;
+    
     this.setState({
       all_data: false,
       charts: [],
@@ -99,12 +126,20 @@ class Quality extends Component {
       this.props.projectID === "" ||
       this.props.projectID === undefined
     ) {
-      this.routeToVelocity();
+      this.routeToSecurity();
     } else {
-      this.props
+      this.setDefaultQualityData();
+    }
+  };
+
+
+  setDefaultQualityData() {
+    let type;
+    this.props
         .qualityDataDispatch(this.props.currentExecId, this.props.projectID)
         .then(item => {
           if (this.props.qualityData.repositories.length > 0) {
+            this.initialData = this.props.qualityData;
             this.setRepository(this.props.qualityData);
             let layout_instance = new Layout(2);
             this.setState({
@@ -132,8 +167,7 @@ class Quality extends Component {
         .catch(error => {
           console.error(error);
         });
-    }
-  };
+  }
 
   setRawDefaultRepo(rawData, outstandingBugs, averageResolution) {
     const item = rawData.map((item, index) => {
@@ -395,7 +429,6 @@ class Quality extends Component {
         repoData: repoDetails,
         selectedRepo: ""
       });
-
       this.props.repoDropValDispatch("");
     }
   };
@@ -413,11 +446,36 @@ class Quality extends Component {
     });
 
     this.setState({
-      selectedRepo: repoDetails[selectedIndex].projectName
+      selectedRepo: repoDetails[selectedIndex].projectName,
+      selectedRepoKey: repoDetails[selectedIndex].id
     });
-
     this.props.repoDropValDispatch(repoDetails[selectedIndex].projectName);
-    this.updateQualityData(repoId, selectedIndex);
+    if (repoId !== 'selectProject') {
+      this.updateQualityData(repoId, selectedIndex);
+      if (this.state.repoData[0].id !== 'selectProject') {
+        this.state.repoData.unshift({id: "selectProject", projectName: "select Repository"});
+      }
+    } else {
+      if (this.state.repoData[0].id === 'selectProject') {
+        this.state.repoData.shift();
+      }
+      let layout_instance = new Layout(2);
+      this.setState({
+        selectedRepo: "",
+        show: false,
+        layout: layout_instance.layout
+    });
+    let type;
+    type = this.setRawDefaultRepo(
+      this.initialData.repositories,
+      this.initialData.outstandingBugs,
+      this.initialData.averageDefectResolutionTime
+    );
+    this.createCharts(this.createChartObject(type));
+    
+    // this.removeChartComponent(0);
+    // this.removeChartComponent(0);
+    }
   };
 
   updateQualityData = (repoId, selectedIndex) => {
@@ -448,7 +506,11 @@ class Quality extends Component {
     return defaultList;
   };
   handleRepoChange = repoID => {
-    this.updateRepository(repoID);
+    // if (repoID !== 'selectRepository') {
+      this.updateRepository(repoID);
+    // } else {
+    //   this.setDefaultQualityData();
+    // }
   };
 
   componentDidUpdate() {
@@ -635,7 +697,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { qualityDataDispatch, resetProjectRepoDispatch, repoDropValDispatch },
+    { qualityDataDispatch, resetProjectRepoDispatch, qualityDrilledDownDataDispatch, repoDropValDispatch },
     dispatch
   );
 };

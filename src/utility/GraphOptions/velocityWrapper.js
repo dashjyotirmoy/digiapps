@@ -1,11 +1,12 @@
 import Options from "./optionsModel";
+import { faGreaterThanEqual } from "@fortawesome/free-solid-svg-icons";
 
 
 let controlChartYAxisMaxLimit = 0;
 let bugsYAxisMaxLimit = 0;
 let userStoryYAxisMaxLimit = 0;
-let controlChartYValues = [];
-
+let sprintStartBand;
+let sprintEndBand;
 
 class VelocityGraph {
   constructor(props) {
@@ -80,7 +81,11 @@ class VelocityGraph {
 
   //function that Creates data for Control charts
 
+
   generateControlChart(options) {
+    console.log(sprintStartBand);
+    console.log(this.res.data);
+
     let userStory = [],
       combinedURL,
       baseURL =
@@ -111,6 +116,8 @@ class VelocityGraph {
             userStory.push([data.endDate, data.difference]);
           });
         }
+
+
       } else {
         if (series.values.length > 0) {
           series.values.map(data => {
@@ -119,7 +126,7 @@ class VelocityGraph {
         }
       }
     });
-
+    console.log(userStoryPoints);
     if (userStory.length > 0) {
       userStory = userStory.map(issue => {
         rawDate = issue[0].split("T");
@@ -311,6 +318,21 @@ class VelocityGraph {
           color: "#f5f5f5"
         }
       },
+      plotBands: [{
+        color: 'Grey',
+        from: sprintStartBand,
+        to: sprintEndBand
+      }],
+      plotLines: [{
+        color: '#fff27f',
+        width: 5,
+        value: sprintStartBand
+      },
+      {
+        color: '#fff27f',
+        width: 5,
+        value: sprintEndBand
+      }],
       lineWidth: 0,
       tickLength: 0,
       style: {
@@ -349,7 +371,7 @@ class VelocityGraph {
     };
     options.tooltip = {
       xDateFormat: "%Y-%m-%d",
-      shared: true,
+      shared: false,
       useHTML: true,
       style: {
         pointerEvents: "auto"
@@ -435,6 +457,8 @@ class VelocityGraph {
         }
       }
     };
+    console.log(sprintStartBand);
+
     options.series = [
       {
         name: "Rolling Av.",
@@ -490,6 +514,8 @@ class VelocityGraph {
   }
 
   generateVelocityTrends(options) {
+    console.log(this.res);
+
     let planned_Velocity_Percentage = [],
       actual_Velocity_Percentage = [],
       limit_Percentage,
@@ -697,6 +723,8 @@ class VelocityGraph {
   }
 
   generateSprintBurnDown(options) {
+    console.log(this.res);
+
     let remainingHours = [];
     let totalScope = [];
     let sprintBurndown = [];
@@ -738,6 +766,22 @@ class VelocityGraph {
       remaining_hours_object.y = parseInt(data.remainingHours);
       remainingHours.push(remaining_hours_object);
     });
+
+
+    console.log(sprintBurndown[0].x);
+
+    console.log(sprintBurndown[1].x);
+
+    //  function to set sprintStartBand and sprintEndBand values
+    (
+      function () {
+        sprintStartBand = sprintBurndown[0].x;
+        console.log(sprintStartBand);
+        sprintEndBand = sprintBurndown[1].x;
+        console.log(sprintEndBand);
+      }()
+    )
+
 
     options.title = {
       text: `<span style='color:#f5f5f5;'>${
@@ -840,7 +884,14 @@ class VelocityGraph {
         color: "#BA8054"
       }
     ];
+    console.log(remainingHours);
+    console.log(totalScope);
+    console.log(sprintBurndown);
+
+
+    console.log(this.res.data.startDate);
     return options;
+
   }
 
   generateProjectBurnDown(options) {

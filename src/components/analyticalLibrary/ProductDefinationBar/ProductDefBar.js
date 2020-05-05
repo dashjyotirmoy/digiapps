@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import { Container, Row, Col, Tabs, Tab } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFunnelDollar } from "@fortawesome/free-solid-svg-icons";
 import { currentTabDispatch } from "../../../store/actions/chartData";
 import styled from "styled-components";
 import ErrorBoundaries from "../../../components/errorBoundaries";
@@ -65,6 +63,16 @@ class ProductDefBar extends Component {
                     className="border-0"
                   >
                     <Tab
+                      eventKey="security"
+                      title={
+                        <span className="font-aggegate-sub-text">
+                          {" "}
+                          Security
+                        </span>
+                      }
+                    ></Tab>
+
+                    <Tab
                       eventKey="velocity"
                       title={
                         <span className="font-aggegate-sub-text">
@@ -96,15 +104,7 @@ class ProductDefBar extends Component {
                         </span>
                       }
                     ></Tab>
-                    <Tab
-                      eventKey="security"
-                      title={
-                        <span className="font-aggegate-sub-text">
-                          {" "}
-                          Security
-                        </span>
-                      }
-                    ></Tab>
+
                   </Tabs>
                 ) : null}
               </StyleMainTab>
