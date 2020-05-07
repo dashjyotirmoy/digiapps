@@ -1,5 +1,4 @@
-import React, { Component, useState } from "react";
-import DropdownMenu from "react-bootstrap/DropdownMenu";
+import React, { useState } from "react";
 import { FormControl } from "react-bootstrap";
 
 const CustomMenu = React.forwardRef(
@@ -14,6 +13,7 @@ const CustomMenu = React.forwardRef(
           placeholder="Type to filter..."
           onChange={e => setValue(e.target.value)}
           value={value}
+          position="sticky"
         />
         <ul className="list-unstyled m-0 text-white-50">
           <li>

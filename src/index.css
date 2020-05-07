@@ -25,6 +25,12 @@ a:hover {
   color: unset;
   text-decoration: none;
 }
+
+/*Position sticky*/
+.sticky-class{
+  position: static;
+  background-color: #ff0000;
+}
 /* on hover */
 
 .show-cursor:hover {
