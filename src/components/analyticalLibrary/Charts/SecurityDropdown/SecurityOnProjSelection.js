@@ -690,8 +690,8 @@ const SecurityOnProjectSelection = (props) => {
                               <tr>
                                 <th scope="col">Name</th>
                                 <th scope="col">Type</th>
-                                <th scope="col">Severity</th>
-                                <th scope="col">Score</th>
+                                <th scope="col">CVSS 3 Severity</th>
+                                <th scope="col">CVSS 3 Score</th>
                               </tr>
                             </thead>
                           </table>
@@ -735,7 +735,7 @@ const SecurityOnProjectSelection = (props) => {
                             <thead className="tabhead">
                               <tr>
                                 <th className="w-45">Library Name</th>
-                                <th  >Vulnerable Library</th>
+                                <th  >Vulnerable Libraries</th>
                                 <th className="w-23">License Count</th>
 
                               </tr>

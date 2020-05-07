@@ -985,7 +985,7 @@ class BubbleHigh extends Component {
           },
           series: [
             {
-              name: "Duplication",
+              name: "Duplications",
               data: duplicationData,
               color: '#4b9fd5'
             }

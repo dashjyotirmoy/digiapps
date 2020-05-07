@@ -23,13 +23,13 @@ const App = props => {
   let dropData = [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_month", name: "Last 3 Months" }];
   const handleChange = (type) => {
     props.securityMonthAlertDataDispatch(props.projectID, props.currentRepo, type.target.value).then(item => {
-      filterData();
+      // filterData();
 
     });
   }
   // let alertData = props.cardsData;
 
-  const filterData = () => {
+  // const filterData = () => {
     mediumCount = showAlertData
       && showAlertData.perVulnerabilityAlert
       && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'MEDIUM');
@@ -39,7 +39,7 @@ const App = props => {
     lowCount = showAlertData
       && showAlertData.perVulnerabilityAlert
       && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
-  }
+  // }
 
   useEffect(() => {
     //  dispatch(props.cardsData);
@@ -84,7 +84,7 @@ const App = props => {
                         <th scope="col">CVSS 3 Score</th>
                         <th scope="col">CVSS 2 Score</th>
                         <th scope="col">Published Date</th>
-                        <th scope="col">Top Fix type</th>
+                        <th scope="col">Top Fix Type</th>
                         <th scope="col">Top Fix Resolution</th>
                       </tr>
                     </thead>
@@ -114,10 +114,19 @@ const App = props => {
                                   <p>{item.vulnerabilityId}</p>
                                 </td>
                                 <td>
-                                  <p>{item.cvss3score}</p>
+                                  {item.cvss3score === null?(
+                                    <p className="ml-3">-</p>
+                                  ): <p className="ml-3">{item.cvss3score}</p>
+                                }
+                                 
                                 </td>
                                 <td>
-                                  <p>{item.cvss2score}</p>
+                                  {item.cvss2score === null?(
+                                    <p className="ml-3">-</p>
+                                  ):
+                                  <p className="ml-3">{item.cvss2score}</p>
+                                  }
+                                 
                                 </td>
                                 <td>
                                   <p>{moment(item.publishedDate).format("DD-MM-YYYY")}</p>

@@ -89,6 +89,7 @@ const Sec = props => {
   return (
     <React.Fragment>
       <Container fluid style={{ paddingTop: "10px" }}>
+        
         <Row>
           <Col sm={9}>
             <Row>
@@ -193,7 +194,7 @@ const Sec = props => {
                           <tr>
                             <th scope="col">Projects</th>
                             <th scope="col">Libraries</th>
-                            <th scope="col">Vulnerebality Count</th>
+                            <th scope="col">Vulnerability Count</th>
                             <th scope="col">Vulnerabilities</th>
                             {/* <th scope="col">Licence</th> */}
                           </tr>

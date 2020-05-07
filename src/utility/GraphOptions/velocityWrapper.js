@@ -319,7 +319,7 @@ class VelocityGraph {
         }
       },
       plotBands: [{
-        color: 'Grey',
+        color: '#363E48',
         from: sprintStartBand,
         to: sprintEndBand
       }],
@@ -473,6 +473,7 @@ class VelocityGraph {
       {
         name: "Std. Dev.",
         type: "arearange",
+        color:"#15173E",
         data: std_temp,
         pointInterval: 86400000,
         fillOpacity: 0.3,
