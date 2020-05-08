@@ -88,7 +88,7 @@ class Quality extends Component {
         case "Coverage":
           this.getQualityDrilledDownData('Coverage');
         break;
-        case "Duplication":
+        case "Duplications":
           this.getQualityDrilledDownData('Duplications');
         
     }

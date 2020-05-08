@@ -473,14 +473,26 @@ class VelocityGraph {
       {
         name: "Std. Dev.",
         type: "arearange",
-        color:"#15173E",
+        color:"#002060",
         data: std_temp,
         pointInterval: 86400000,
         fillOpacity: 0.3,
         marker: {
           enabled: false
         },
-        enableMouseTracking: false
+        events: {
+          mouseOver: function() {
+            this.update({
+              color: '#002060'
+            });
+          },
+          mouseOut: function() {
+            this.update({
+              color: '#002060'
+            });
+          }
+        },
+        // enableMouseTracking: false
       },
       {
         name: "User Story",

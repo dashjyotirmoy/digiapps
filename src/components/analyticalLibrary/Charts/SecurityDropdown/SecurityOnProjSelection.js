@@ -512,7 +512,7 @@ const SecurityOnProjectSelection = (props) => {
       backgroundColor: '#232D3B'
     },
     title: {
-      text: 'Duplication'
+      text: 'Duplications'
     },
     credits: {
       enabled: false

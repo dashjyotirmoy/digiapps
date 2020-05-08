@@ -19,7 +19,7 @@ export const translations = {
   vulnerabilities: "Vulnerabilities",
   codeSmells: "Code Smells",
   coverage: "Coverage",
-  duplication: "Duplication",
+  duplication: "Duplications",
   MultipleLineHigh: "MultipleLineHigh",
   AreaHigh: "AreaHigh",
   BarHigh: "BarHigh",
