@@ -355,14 +355,11 @@ class BubbleHigh extends Component {
   render() {
     if (this.props.qualityDrilledDownData.components) {
       // fullBubbleChartData = this.props.qualityDrilledDownData.components;
+      console.log(this.props.qualityDrilledDownData.components);
 
       BubbleChartData = this.props.qualityDrilledDownData.components.map((item, index) => {
 
-        var name = item.name;
-        var url = item.url;
-        nameUrl.push({ "name": name }, { "url": url });
-        return nameUrl = item.measures.map(ele => {
-
+        nameUrl = item.measures.map(ele => {
           var keyVal = Object.values(ele);
           var key = keyVal[0];
           var val = keyVal[1];
@@ -372,8 +369,16 @@ class BubbleHigh extends Component {
             ...Obj
           };
         });
+        var name = item.name;
+        var url = item.url;
+        nameUrl.push({ "name": name }, { "url": url })
+        console.log(nameUrl);
+
+        return nameUrl;
+
       });
 
+      console.log(BubbleChartData);
 
       BubbleChartData[0].forEach(item => {
 
@@ -670,6 +675,7 @@ class BubbleHigh extends Component {
       else if (type === 'code_smells') {
         this.setCodeSmellsData();
         this.setCodeSmellsSeverity();
+        console.log(codeSmellsData);
 
         option = {};
 
