@@ -15,9 +15,7 @@ var a = 0, b = 0, c = 0, d = 0;
 var option = {};
 var name, url;
 var nameUrl = [];
-console.log(BubbleChartInfo);
-
-console.log(BubbleChartInfo.Bugs);
+var maxMinBug = [], maxMinVulnerability = [], maxMinCodeSmells = [], maxMinCoverage = [], maxMinDuplication = [];
 
 
 class BubbleHigh extends Component {
@@ -51,7 +49,6 @@ class BubbleHigh extends Component {
         }
       },
       xAxis: {
-        min: 0,
         gridLineWidth: 0,
         tickLength: 0,
         lineWidth: 0,
@@ -66,7 +63,6 @@ class BubbleHigh extends Component {
         }
       },
       yAxis: {
-        min: 0,
         startOnTick: false,
         endOnTick: false,
         gridLineColor: "#535353",
@@ -153,7 +149,13 @@ class BubbleHigh extends Component {
 
   };
 
+
   setBugSeverity = () => {
+    veryLowBug = [];
+    lowBug = [];
+    mediumBug = [];
+    highBug = [];
+    criticalBug = [];
     bugsData.forEach((item, index) => {
       if (item.severity === 1) {
         Object.assign(bd, item);
@@ -212,7 +214,11 @@ class BubbleHigh extends Component {
   };
 
   setVulnerabilitySeverity = () => {
-
+    veryLowVulnearbility = [];
+    lowVulnearbility = [];
+    mediumVulnearbility = [];
+    highVulnearbility = [];
+    criticalVulnearbility = [];
     vulnearbilityData.forEach((item, index) => {
 
       if (item.severity === 1) {
@@ -271,7 +277,11 @@ class BubbleHigh extends Component {
   };
 
   setCodeSmellsSeverity = () => {
-
+    veryLowCodeSmells = [];
+    lowCodeSmells = [];
+    mediumCodeSmells = [];
+    highCodeSmells = [];
+    criticalCodeSmells = [];
     codeSmellsData.forEach((item, index) => {
       if (item.severity > 50) {
         Object.assign(cd, item);
@@ -357,6 +367,25 @@ class BubbleHigh extends Component {
 
   };
 
+  setMaxMinXY = (data) => {
+    var minX = 0, maxX = 0, minY = 0, maxY = 0;
+    data.forEach(item => {
+      if (item.x < minX) {
+        minX = item.x;
+      }
+      if (item.x > maxX) {
+        maxX = item.x;
+      }
+      if (item.y < minY) {
+        minY = item.y;
+      }
+      if (item.y > maxY) {
+        maxY = item.y;
+      }
+    })
+    return [minX, maxX, minY, maxY];
+  }
+
   render() {
     if (this.props.qualityDrilledDownData.components) {
       // fullBubbleChartData = this.props.qualityDrilledDownData.components;
@@ -376,9 +405,7 @@ class BubbleHigh extends Component {
         });
         var name = item.name;
         var url = item.url;
-        nameUrl.push({ "name": name }, { "url": url })
-        console.log(nameUrl);
-
+        nameUrl.push({ "name": name }, { "url": url });
         return nameUrl;
 
       });
@@ -422,9 +449,11 @@ class BubbleHigh extends Component {
       if (type === 'bugs') {
 
         this.setBugsData();
-
+        console.log(bugsData);
         this.setBugSeverity();
 
+        maxMinBug = this.setMaxMinXY(bugsData);
+        console.log(maxMinBug);
 
         option = {};
 
@@ -457,7 +486,8 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinBug[0],
+            max: maxMinBug[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
@@ -475,7 +505,8 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinBug[2],
+            max: maxMinBug[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
@@ -557,6 +588,8 @@ class BubbleHigh extends Component {
 
         this.setVulnerabilitySeverity();
 
+        maxMinVulnerability = this.setMaxMinXY(vulnearbilityData);
+        console.log(maxMinVulnerability);
         option = {};
 
         option = {
@@ -588,7 +621,8 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinVulnerability[0],
+            max: maxMinVulnerability[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
@@ -603,7 +637,8 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinVulnerability[2],
+            max: maxMinVulnerability[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
@@ -681,7 +716,8 @@ class BubbleHigh extends Component {
         this.setCodeSmellsData();
         this.setCodeSmellsSeverity();
         console.log(codeSmellsData);
-
+        maxMinCodeSmells = this.setMaxMinXY(codeSmellsData);
+        console.log(maxMinCodeSmells);
         option = {};
 
         option = {
@@ -713,7 +749,8 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinCodeSmells[0],
+            max: maxMinCodeSmells[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
@@ -731,7 +768,8 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinCodeSmells[2],
+            max: maxMinCodeSmells[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
@@ -809,7 +847,8 @@ class BubbleHigh extends Component {
 
       else if (type === 'coverage') {
         this.setComplexityData();
-
+        maxMinCoverage = this.setMaxMinXY(complexityData);
+        console.log(maxMinCoverage);
 
         option = {};
         option = {
@@ -841,7 +880,8 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinCoverage[0],
+            max: maxMinCoverage[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
@@ -859,7 +899,8 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinCoverage[2],
+            max: maxMinCoverage[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
@@ -914,6 +955,8 @@ class BubbleHigh extends Component {
 
       else if (type === 'duplicated_lines') {
         this.setDuplicationData();
+        maxMinDuplication = this.setMaxMinXY(duplicationData);
+        console.log(maxMinDuplication);
 
         option = {};
         option = {
@@ -945,7 +988,8 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinDuplication[0],
+            max: maxMinDuplication[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
@@ -963,7 +1007,8 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinDuplication[2],
+            max: maxMinDuplication[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
