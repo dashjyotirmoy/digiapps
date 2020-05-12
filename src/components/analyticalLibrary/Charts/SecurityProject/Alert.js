@@ -40,6 +40,7 @@ const App = props => {
       && showAlertData.perVulnerabilityAlert
       && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
   // }
+  // console.log('fffffffssssssssss', mediumCount, highCount, lowCount);
 
   useEffect(() => {
     //  dispatch(props.cardsData);
