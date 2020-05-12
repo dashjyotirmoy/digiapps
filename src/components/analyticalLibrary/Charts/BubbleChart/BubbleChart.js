@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import { connect } from "react-redux";
+import { BubbleChartInfo } from './BubbleChartInfo';
 
 var BubbleChartData = {};
 // var fullBubbleChartData = [];
@@ -14,6 +15,10 @@ var a = 0, b = 0, c = 0, d = 0;
 var option = {};
 var name, url;
 var nameUrl = [];
+console.log(BubbleChartInfo);
+
+console.log(BubbleChartInfo.Bugs);
+
 
 class BubbleHigh extends Component {
   state = {
@@ -490,7 +495,7 @@ class BubbleHigh extends Component {
             useHTML: true,
             headerFormat: '<table>',
             pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
-              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Lines of Code:</td><td>{point.x}</td></tr>' +
               '<tr><td>Reliability Remediation Effort:</td><td>{point.y}min</td></tr>' +
               '<tr><td>Bugs:</td><td>{point.z}</td></tr>' +
               '<tr><td>Reliability Rating</td><td>{point.rating}</td></tr>',
@@ -585,7 +590,7 @@ class BubbleHigh extends Component {
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: "Line of Code"
+              text: "Lines of Code"
             },
             labels: {
               format: "{value}",
@@ -600,7 +605,7 @@ class BubbleHigh extends Component {
             endOnTick: false,
             gridLineColor: "#535353",
             title: {
-              text: "Reliability Remediation Effort",
+              text: "Security Remediation Effort",
               style: {
                 color: "#f5f5f5"
               }
@@ -618,7 +623,7 @@ class BubbleHigh extends Component {
             useHTML: true,
             headerFormat: '<table>',
             pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
-              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Lines of Code:</td><td>{point.x}</td></tr>' +
               '<tr><td>Security Remediation Effort:</td><td>{point.y}min</td></tr>' +
               '<tr><td>Vulnerabilities :</td><td>{point.z}</td></tr>' +
               '<tr><td>Security Rating</td><td>{point.rating}</td></tr>',
@@ -709,7 +714,10 @@ class BubbleHigh extends Component {
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: "Line of Code"
+              text: "Lines of Code",
+              style: {
+                color: "#f5f5f5"
+              }
             },
             labels: {
               format: "{value}",
@@ -742,7 +750,7 @@ class BubbleHigh extends Component {
             useHTML: true,
             headerFormat: '<table>',
             pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
-              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Lines of Code:</td><td>{point.x}</td></tr>' +
               '<tr><td>Technical Debt:</td><td>{point.y}min</td></tr>' +
               '<tr><td>Code Semlls:</td><td>{point.z}</td></tr>' +
               '<tr><td>Maintainability Rating: </td><td>{point.rating}</td></tr>',
@@ -834,7 +842,10 @@ class BubbleHigh extends Component {
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: "Cyclomatic Complexity "
+              text: "Cyclomatic Complexity ",
+              style: {
+                color: "#f5f5f5"
+              }
             },
             labels: {
               format: "{value}",
@@ -935,7 +946,10 @@ class BubbleHigh extends Component {
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: "Line of Code"
+              text: "Lines of Code",
+              style: {
+                color: "#f5f5f5"
+              }
             },
             labels: {
               format: "{value}",
@@ -968,7 +982,7 @@ class BubbleHigh extends Component {
             useHTML: true,
             headerFormat: '<table>',
             pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
-              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Lines of Code:</td><td>{point.x}</td></tr>' +
               '<tr><td>Duplicated Lines:</td><td>{point.y}min</td></tr>' +
               '<tr><td>Duplicated Blocks:</td><td>{point.z}</td></tr>',
             footerFormat: '</table>',
