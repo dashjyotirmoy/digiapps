@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import { connect } from "react-redux";
+import { BubbleChartInfo } from './BubbleChartInfo';
 
 var BubbleChartData = {};
 // var fullBubbleChartData = [];
@@ -14,6 +15,10 @@ var a = 0, b = 0, c = 0, d = 0;
 var option = {};
 var name, url;
 var nameUrl = [];
+console.log(BubbleChartInfo);
+
+console.log(BubbleChartInfo.Bugs);
+
 
 class BubbleHigh extends Component {
   state = {

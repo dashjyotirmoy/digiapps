@@ -25,6 +25,7 @@ import Spinner from "../../Spinner/Spinner";
 import Dropdown from "../../Dropdown/Dropdown";
 import { translations } from "../../Translations/Translations";
 import Layout from "../../../../utility/layoutManager/layoutManager";
+import { BubbleChartInfo } from "../../../analyticalLibrary/Charts/BubbleChart/BubbleChartInfo";
 
 const chartCompList = [
   {
@@ -658,7 +659,7 @@ class Quality extends Component {
                   data-toggle="tooltip"
                   data-placement="top"
                 >
-                  <TooltipHoc info={`${this.state.metricType} Data`}>
+                  <TooltipHoc head={this.state.metricType} info={BubbleChartInfo[this.state.metricType]}>
                     <span className="d-inline-block">
                       <FontAwesomeIcon icon={faInfoCircle} />
                     </span>
