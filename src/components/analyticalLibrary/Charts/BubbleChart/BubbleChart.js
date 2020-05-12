@@ -121,7 +121,7 @@ class BubbleHigh extends Component {
   };
 
   setBugsData = () => {
-
+    bugsData = [];
     bugsData = BubbleChartData.map(item => {
       item.forEach(ele => {
         var keys = [...Object.keys(ele)];
@@ -145,10 +145,15 @@ class BubbleHigh extends Component {
         url: url
       }
     })
-
+    this.setBugSeverity();
   };
 
   setBugSeverity = () => {
+    lowBug = [];
+    veryLowBug = [];
+    mediumBug = [];
+    highBug = [];
+    criticalBug = [];
     bugsData.forEach((item, index) => {
       if (item.severity === 1) {
         Object.assign(bd, item);
@@ -354,9 +359,7 @@ class BubbleHigh extends Component {
 
   render() {
     if (this.props.qualityDrilledDownData.components) {
-      // fullBubbleChartData = this.props.qualityDrilledDownData.components;
-      console.log(this.props.qualityDrilledDownData.components);
-
+      BubbleChartData = [];
       BubbleChartData = this.props.qualityDrilledDownData.components.map((item, index) => {
 
         nameUrl = item.measures.map(ele => {
@@ -372,13 +375,10 @@ class BubbleHigh extends Component {
         var name = item.name;
         var url = item.url;
         nameUrl.push({ "name": name }, { "url": url })
-        console.log(nameUrl);
 
         return nameUrl;
 
       });
-
-      console.log(BubbleChartData);
 
       BubbleChartData[0].forEach(item => {
 
@@ -417,9 +417,6 @@ class BubbleHigh extends Component {
       if (type === 'bugs') {
 
         this.setBugsData();
-
-        this.setBugSeverity();
-
 
         option = {};
 
@@ -675,7 +672,6 @@ class BubbleHigh extends Component {
       else if (type === 'code_smells') {
         this.setCodeSmellsData();
         this.setCodeSmellsSeverity();
-        console.log(codeSmellsData);
 
         option = {};
 
