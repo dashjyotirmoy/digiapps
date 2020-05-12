@@ -16,7 +16,7 @@ trigger:
 variables:
   - group: digital-insight
   - name: registryName
-    value: digitalinsight
+    value: fsdetdevops
   - name: module
     value: digitalops
   - name: component
