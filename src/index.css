@@ -8,6 +8,15 @@
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.example {
+  -ms-overflow-style: none;
+}
 /* setting viewport height */
 html,
 body {
