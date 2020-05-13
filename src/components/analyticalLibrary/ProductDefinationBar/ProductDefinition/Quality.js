@@ -254,7 +254,7 @@ class Quality extends Component {
                   ? "critical"
                   : null;
     }
-    if (item[0] === "duplication") { console.log(item);
+    if (item[0] === "duplication") {
       metricValue =
         item[1].value < 3
           ? "lowest"
@@ -612,7 +612,7 @@ class Quality extends Component {
                         <span>
                           {ele.position ? (
                             <FontAwesomeIcon
-                              className={ele.position}position
+                              className={ele.position}
                               icon={faSquare}
                             />
                           ) : (
