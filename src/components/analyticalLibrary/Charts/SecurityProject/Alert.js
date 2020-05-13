@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Row, Col, Container, Card, Badge, ProgressBar } from "react-bootstrap";
+import { Row, Col, Container, Card, Badge, ProgressBar,Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Alert.css";
 
@@ -163,14 +163,24 @@ const App = props => {
                 <p>Alerts</p>
                 <Col sm={2}>
 
-                  <select className="drop" onChange={handleChange}>
+                  {/* <select className="drop" onChange={handleChange}>
                     {dropData.map(function (data, key) {
                       return (
                         <option className="text-white" key={key} value={data.id}>{data.name}</option>)
                     })}
-                  </select>
+                  </select> */}
 
+{/* <Dropdown>
+  <Dropdown.Toggle className="drop" >
+  Action
+  </Dropdown.Toggle>
 
+  <Dropdown.Menu className="drop" onChange={handleChange}>
+  {dropData.map(function (data, key) {
+    <Dropdown.Item className="text-white" key={key} value={data.id}>{data.name}</Dropdown.Item>
+  })}
+  </Dropdown.Menu>
+</Dropdown> */}
                 </Col>
 
 
