@@ -89,7 +89,7 @@ class Quality extends Component {
       case "Coverage":
         this.getQualityDrilledDownData('Coverage');
         break;
-        case "Duplication":
+        case "Duplications":
           this.getQualityDrilledDownData('Duplications');
         
     }
@@ -229,9 +229,9 @@ class Quality extends Component {
     ) {
       metricValue =
         item[1].rating === "1.0"
-          ? "low"
+          ?  "lowest"
           : item[1].rating === "2.0"
-            ? "lowest"
+            ? "low"
             : item[1].rating === "3.0"
               ? "medium"
               : item[1].rating === "4.0"
@@ -243,9 +243,9 @@ class Quality extends Component {
     if (item[0] === "coverage") {
       metricValue =
         item[1].value >= "80"
-          ? "low"
+          ? "lowest"
           : item[1].value >= "70" && item[1].value <= "80"
-            ? "lowest"
+            ? "low" 
             : item[1].value >= "50" && item[1].value <= "70"
               ? "medium"
               : item[1].value >= "30" && item[1].value <= "50"
@@ -254,7 +254,7 @@ class Quality extends Component {
                   ? "critical"
                   : null;
     }
-    if (item[0] === "duplication") {
+    if (item[0] === "duplication") { console.log(item);
       metricValue =
         item[1].value < 3
           ? "lowest"
@@ -336,6 +336,7 @@ class Quality extends Component {
       qualityMetrics: test,
       charts: chartList
     });
+    
   };
 
   setChart = (title, data) => {
@@ -568,32 +569,33 @@ class Quality extends Component {
           >
             <Row className="metric-legend w-100 text-white">
               <Col
-                xl={2}
-                lg={2}
+                xl={3}
+                lg={3}
                 md={3}
-                className="offset-xl-10 offset-lg-10 offset-md-9"
+                className="offset-xl-9 offset-lg-9 offset-md-9"
               >
+                
                 <Row>
-                  <Col className="font-size-xs pr-0">
-                    <FontAwesomeIcon className="critical" icon={faSquare} />{" "}
+                  <span className="font-size-xs mr-3 ">
+                    <FontAwesomeIcon className="critical ml-3" icon={faSquare} />{" "}
                     Critical{" "}
-                  </Col>
-                  <Col className="font-size-xs pr-0">
-                    <FontAwesomeIcon className="high" icon={faSquare} /> {" "}
+                  </span>
+                  <span className="font-size-xs mr-3">
+                    <FontAwesomeIcon className="high ml-3" icon={faSquare} /> {" "}
                     High
-                  </Col>
-                  <Col className="font-size-xs pr-0">
-                    <FontAwesomeIcon className="medium" icon={faSquare} />{" "}
+                  </span>
+                  <span className="font-size-xs mr-3 ">
+                    <FontAwesomeIcon className="medium ml-3" icon={faSquare} />{" "}
                     Medium
-                  </Col>
-                  <Col className="font-size-xs pr-0">
-                    <FontAwesomeIcon className="low" icon={faSquare} />{" "}
+                  </span>
+                  <span className="font-size-xs mr-3 ">
+                    <FontAwesomeIcon className="low ml-3" icon={faSquare} />{" "}
                     Low
-                  </Col>
-                  <Col className='font-size-xs pr-0'>
-                    <FontAwesomeIcon className="lowest" icon={faSquare} />{" "}
+                  </span>
+                  <span className='font-size-xs mr-3 '>
+                    <FontAwesomeIcon className="lowest ml-3" icon={faSquare} />{" "}
                     Very Low
-                  </Col>
+                  </span>
                 </Row>
               </Col>
             </Row>
@@ -610,7 +612,7 @@ class Quality extends Component {
                         <span>
                           {ele.position ? (
                             <FontAwesomeIcon
-                              className={ele.position}
+                              className={ele.position}position
                               icon={faSquare}
                             />
                           ) : (

@@ -49,7 +49,7 @@ const Sec = props => {
     tooltip: {
       shape: 'callout',
       formatter: function () {
-        return "<b>" + this.point.name + "</b>: " + this.y + "  (" + (this.point.y / totalCount * 100) + "% )";
+        return "<b>" + this.point.name + "</b>: " + this.y + "  (" + Math.round(this.point.y / totalCount * 100) + "% )";
       }
     },
     credits: {
