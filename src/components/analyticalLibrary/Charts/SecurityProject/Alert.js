@@ -163,12 +163,12 @@ const App = props => {
                 <p>Alerts</p>
                 <Col sm={2}>
 
-                  {/* <select className="drop" onChange={handleChange}>
+                  <select className="drop" onChange={handleChange}>
                     {dropData.map(function (data, key) {
                       return (
                         <option className="text-white" key={key} value={data.id}>{data.name}</option>)
                     })}
-                  </select> */}
+                  </select>
 
 {/* <Dropdown>
   <Dropdown.Toggle className="drop" >
