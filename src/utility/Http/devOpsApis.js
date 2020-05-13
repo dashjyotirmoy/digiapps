@@ -1,7 +1,7 @@
 import axios from "axios";
 const fallback = "http://10.170.166.57:8080";
 const mainBase =
-  "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops-service";
+  "https://fsdet-digital.eastus.cloudapp.azure.com/digitalops-service";
 const devovOpsApi = axios.create({
   baseURL: mainBase
 });

@@ -25,6 +25,7 @@ import Spinner from "../../Spinner/Spinner";
 import Dropdown from "../../Dropdown/Dropdown";
 import { translations } from "../../Translations/Translations";
 import Layout from "../../../../utility/layoutManager/layoutManager";
+import { BubbleChartInfo } from "../../../analyticalLibrary/Charts/BubbleChart/BubbleChartInfo";
 
 const chartCompList = [
   {
@@ -75,24 +76,24 @@ class Quality extends Component {
 
   onDisplayMetricsClickHandler = metricType => {
     // eslint-disable-next-line default-case
-    switch(metricType) {
+    switch (metricType) {
       case "Bugs":
         this.getQualityDrilledDownData('Reliability');
         break;
       case "Vulnerabilities":
         this.getQualityDrilledDownData('Security');
         break;
-        case "Code Smells":
-          this.getQualityDrilledDownData('Maintainability');
+      case "Code Smells":
+        this.getQualityDrilledDownData('Maintainability');
         break;
-        case "Coverage":
-          this.getQualityDrilledDownData('Coverage');
+      case "Coverage":
+        this.getQualityDrilledDownData('Coverage');
         break;
-        case "Duplications":
+        case "Duplication":
           this.getQualityDrilledDownData('Duplications');
         
     }
-   
+
     this.setState({
       displayMetric: true,
       metricType: metricType
@@ -101,9 +102,9 @@ class Quality extends Component {
 
   getQualityDrilledDownData = (metricType) => {
     this.props.qualityDrilledDownDataDispatch(this.props.currentExecId, this.props.projectID, this.state.selectedRepoKey, metricType)
-    .then(item => {
+      .then(item => {
 
-    });
+      });
   };
   onDisplayMetricExitClick = () => {
     this.setState({
@@ -115,7 +116,7 @@ class Quality extends Component {
   //   this.props.history.push("/security");
   // };
   fetchQualityData = () => {
-    
+
     this.setState({
       all_data: false,
       charts: [],
@@ -136,37 +137,37 @@ class Quality extends Component {
   setDefaultQualityData() {
     let type;
     this.props
-        .qualityDataDispatch(this.props.currentExecId, this.props.projectID)
-        .then(item => {
-          if (this.props.qualityData.repositories.length > 0) {
-            this.initialData = this.props.qualityData;
-            this.setRepository(this.props.qualityData);
-            let layout_instance = new Layout(2);
-            this.setState({
-              layout: layout_instance.layout
-            })
-            this.setState({
-              show: false
-            });
-            if (this.state.selectedRepo === "") {
-              type = this.setRawDefaultRepo(
-                this.props.qualityData.repositories,
-                this.props.qualityData.outstandingBugs,
-                this.props.qualityData.averageDefectResolutionTime
-              );
-              this.createCharts(this.createChartObject(type));
-            }
-
-            // this.createCharts(this.createChartObject(type));
-          } else {
-            this.props.resetProjectRepoDispatch(
-              this.props.qualityData.repositories
+      .qualityDataDispatch(this.props.currentExecId, this.props.projectID)
+      .then(item => {
+        if (this.props.qualityData.repositories.length > 0) {
+          this.initialData = this.props.qualityData;
+          this.setRepository(this.props.qualityData);
+          let layout_instance = new Layout(2);
+          this.setState({
+            layout: layout_instance.layout
+          })
+          this.setState({
+            show: false
+          });
+          if (this.state.selectedRepo === "") {
+            type = this.setRawDefaultRepo(
+              this.props.qualityData.repositories,
+              this.props.qualityData.outstandingBugs,
+              this.props.qualityData.averageDefectResolutionTime
             );
+            this.createCharts(this.createChartObject(type));
           }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+
+          // this.createCharts(this.createChartObject(type));
+        } else {
+          this.props.resetProjectRepoDispatch(
+            this.props.qualityData.repositories
+          );
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   setRawDefaultRepo(rawData, outstandingBugs, averageResolution) {
@@ -258,7 +259,11 @@ class Quality extends Component {
         item[1].value < 3
           ? "lowest"
           : item[1].value >= 3 && item[1].value <= 5
+<<<<<<< HEAD
             ? "low "
+=======
+            ? "low"
+>>>>>>> 8ef37ba0aa8e32602325760101ab9700075a6ede
             : item[1].value >= 5 && item[1].value <= 10
               ? "medium"
               : item[1].value >= 10 && item[1].value <= 20
@@ -454,7 +459,7 @@ class Quality extends Component {
     if (repoId !== 'selectProject') {
       this.updateQualityData(repoId, selectedIndex);
       if (this.state.repoData[0].id !== 'selectProject') {
-        this.state.repoData.unshift({id: "selectProject", projectName: "select Repository"});
+        this.state.repoData.unshift({ id: "selectProject", projectName: "select Repository" });
       }
     } else {
       if (this.state.repoData[0].id === 'selectProject') {
@@ -465,17 +470,17 @@ class Quality extends Component {
         selectedRepo: "",
         show: false,
         layout: layout_instance.layout
-    });
-    let type;
-    type = this.setRawDefaultRepo(
-      this.initialData.repositories,
-      this.initialData.outstandingBugs,
-      this.initialData.averageDefectResolutionTime
-    );
-    this.createCharts(this.createChartObject(type));
-    
-    // this.removeChartComponent(0);
-    // this.removeChartComponent(0);
+      });
+      let type;
+      type = this.setRawDefaultRepo(
+        this.initialData.repositories,
+        this.initialData.outstandingBugs,
+        this.initialData.averageDefectResolutionTime
+      );
+      this.createCharts(this.createChartObject(type));
+
+      // this.removeChartComponent(0);
+      // this.removeChartComponent(0);
     }
   };
 
@@ -508,7 +513,7 @@ class Quality extends Component {
   };
   handleRepoChange = repoID => {
     // if (repoID !== 'selectRepository') {
-      this.updateRepository(repoID);
+    this.updateRepository(repoID);
     // } else {
     //   this.setDefaultQualityData();
     // }
@@ -624,13 +629,13 @@ class Quality extends Component {
                       </Row>
                       <Row className="d-flex justify-content-end px-3 text-white-50">
                         {/* <TooltipHoc info=""> */}
-                          <FontAwesomeIcon
-                            className="show-cursor"
-                            onClick={() =>
-                              this.onDisplayMetricsClickHandler(ele.type)
-                            }
-                            icon={faEllipsisV}
-                          />
+                        <FontAwesomeIcon
+                          className="show-cursor"
+                          onClick={() =>
+                            this.onDisplayMetricsClickHandler(ele.type)
+                          }
+                          icon={faEllipsisV}
+                        />
                         {/* </TooltipHoc> */}
                       </Row>
                     </div>
@@ -660,7 +665,7 @@ class Quality extends Component {
                   data-toggle="tooltip"
                   data-placement="top"
                 >
-                  <TooltipHoc info={`${this.state.metricType} Data`}>
+                  <TooltipHoc head={this.state.metricType} info={BubbleChartInfo[this.state.metricType]}>
                     <span className="d-inline-block">
                       <FontAwesomeIcon icon={faInfoCircle} />
                     </span>

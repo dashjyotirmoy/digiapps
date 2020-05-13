@@ -295,7 +295,7 @@ class Security extends Component {
       selectedRepo: repoDetails[selectedIndex].projectName
     });
 
-    this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].projectName);
+    this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].id);
     if (repoId !== 'selectProject') {
       this.props.securityRepoDataDispatch(this.props.projectID, repoId)
       .then(() => { this.updateSecurityData(repoId, selectedIndex) });
@@ -343,7 +343,6 @@ class Security extends Component {
  policyLegend =true;
      let alertCurrentState =true;
       let policyCurrentState=false;
-   
      this.setState({ alertActive: alertCurrentState,policyActive:policyCurrentState });
      this.props.securityAlertDataDispatch(this.props.projectID, this.props.currentRepo)
        .then(() => { this.setAlertData(this.props.securityAlertData) });
