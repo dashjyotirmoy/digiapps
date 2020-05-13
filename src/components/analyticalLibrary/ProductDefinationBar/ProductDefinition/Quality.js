@@ -89,7 +89,7 @@ class Quality extends Component {
       case "Coverage":
         this.getQualityDrilledDownData('Coverage');
         break;
-        case "Duplication":
+        case "Duplications":
           this.getQualityDrilledDownData('Duplications');
         
     }
@@ -259,11 +259,7 @@ class Quality extends Component {
         item[1].value < 3
           ? "lowest"
           : item[1].value >= 3 && item[1].value <= 5
-<<<<<<< HEAD
-            ? "low "
-=======
             ? "low"
->>>>>>> 8ef37ba0aa8e32602325760101ab9700075a6ede
             : item[1].value >= 5 && item[1].value <= 10
               ? "medium"
               : item[1].value >= 10 && item[1].value <= 20
