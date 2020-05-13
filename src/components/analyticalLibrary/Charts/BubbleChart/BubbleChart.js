@@ -220,7 +220,6 @@ class BubbleHigh extends Component {
     highVulnearbility = [];
     criticalVulnearbility = [];
     vulnearbilityData.forEach((item, index) => {
-
       if (item.severity === 1) {
         Object.assign(vd, item);
         veryLowVulnearbility.push(vd);
@@ -283,27 +282,27 @@ class BubbleHigh extends Component {
     highCodeSmells = [];
     criticalCodeSmells = [];
     codeSmellsData.forEach((item, index) => {
-      if (item.severity > 50) {
+      if (item.severity === 5 ) {
         Object.assign(cd, item);
         criticalCodeSmells.push(cd)
         cd = {};
       }
-      else if (item.severity > 20) {
+      else if (item.severity === 4 ) {
         Object.assign(cd, item);
         highCodeSmells.push(cd);
         cd = {};
       }
-      else if (item.severity > 10) {
+      else if (item.severity === 3 ) {
         Object.assign(cd, item);
         mediumCodeSmells.push(cd);
         cd = {};
       }
-      else if (item.severity > 6) {
+      else if (item.severity === 2 ) {
         Object.assign(cd, item);
         lowCodeSmells.push(cd);
         cd = {};
       }
-      else if (item.severity <= 5) {
+      else if (item.severity === 1 ) {
         Object.assign(cd, item);
         veryLowCodeSmells.push(cd);
         cd = {};
@@ -446,11 +445,9 @@ class BubbleHigh extends Component {
       if (type === 'bugs') {
 
         this.setBugsData();
-        console.log(bugsData);
         this.setBugSeverity();
 
         maxMinBug = this.setMaxMinXY(bugsData);
-        console.log(maxMinBug);
 
         option = {};
 
@@ -586,7 +583,6 @@ class BubbleHigh extends Component {
         this.setVulnerabilitySeverity();
 
         maxMinVulnerability = this.setMaxMinXY(vulnearbilityData);
-        console.log(maxMinVulnerability);
         option = {};
 
         option = {
@@ -712,9 +708,7 @@ class BubbleHigh extends Component {
       else if (type === 'code_smells') {
         this.setCodeSmellsData();
         this.setCodeSmellsSeverity();
-        console.log(codeSmellsData);
         maxMinCodeSmells = this.setMaxMinXY(codeSmellsData);
-        console.log(maxMinCodeSmells);
         option = {};
 
         option = {
@@ -845,7 +839,6 @@ class BubbleHigh extends Component {
       else if (type === 'coverage') {
         this.setComplexityData();
         maxMinCoverage = this.setMaxMinXY(complexityData);
-        console.log(maxMinCoverage);
 
         option = {};
         option = {
@@ -953,7 +946,6 @@ class BubbleHigh extends Component {
       else if (type === 'duplicated_lines') {
         this.setDuplicationData();
         maxMinDuplication = this.setMaxMinXY(duplicationData);
-        console.log(maxMinDuplication);
 
         option = {};
         option = {
