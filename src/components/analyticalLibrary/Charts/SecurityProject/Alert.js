@@ -219,7 +219,7 @@ const App = props => {
                                     <p>{item.libraryName}</p>
                                   </div></td>
                                 <td>
-                                  <p>{item.vulnerabilityType}</p>
+                                  <p>{item.alertType}</p>
                                 </td>
                                 <td>
                                   <ProgressBar className="w-200">

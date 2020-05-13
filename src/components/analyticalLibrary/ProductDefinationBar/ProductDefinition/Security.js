@@ -469,7 +469,7 @@ class Security extends Component {
           {this.state.charts.length && this.state.componentType === "Project" ? (
             <SecurityOnProjectSelection cardsData={this.state.charts} />
           ) : null}
-          {this.state.charts.length && this.state.componentType === "Policy" ? (
+          { this.state.componentType === "Policy" ? (
             <Policy cardsData={this.state.charts} />
           ) : null}
           {this.state.componentType === "Alert" ? (

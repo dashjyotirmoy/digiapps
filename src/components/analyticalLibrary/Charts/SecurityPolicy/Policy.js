@@ -21,6 +21,7 @@ function update(actionData) {
 }
 
 const Policy = (props) => {
+	console.log('ddddddddsssssssssss', props)
 	let actionData = [...props.cardsData];
 	let policyData = props.cardsData;
 	const [showResults, setShowResults] = React.useState(true)
@@ -125,17 +126,15 @@ const Policy = (props) => {
 								</tr>
 							</thead>
 
-
-							{
+										<tbody
+											
+											// className="font-metric-sub-text"
+											// style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
+										>
+											{(showPolicyData && showPolicyData.length > 0) ?
 								showPolicyData.map((item, index) => {
 									return (
-
-										<tbody
-											key={index}
-											className="font-metric-sub-text"
-											style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
-										>
-											<tr>
+											<tr key={index}>
 												<th>{item.policyId}</th>
 												<th> {item.policyName} </th>
 												<th>By {item.match} Group</th>
@@ -153,12 +152,12 @@ const Policy = (props) => {
 												<th>  {moment(item.creationDate).format("DD-MM-YYYY")} </th>
 
 											</tr>
-										</tbody>
+										
 
 									)
-								})
+								}) : <tr><td style={{ textAlign: "center" }} colSpan="5">No data found</td></tr>
 							}
-
+							</tbody>
 						</Table>
 
 					</Card>
