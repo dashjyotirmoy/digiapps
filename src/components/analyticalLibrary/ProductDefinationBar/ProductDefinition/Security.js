@@ -19,7 +19,9 @@ import SecurityOnProjectSelection from '../../Charts/SecurityDropdown/SecurityOn
 import "../../Charts/SecurityProject/Sec.css"
 // import Button from 'react-bootstrap/Button'
 
+let policyLegend = true;
 class Security extends Component {
+
   state = {
     charts: [],
     layout: {
@@ -40,7 +42,8 @@ class Security extends Component {
     repoData: [],
     componentType: "Product",
     alertActive:false,
-    policyActive:false
+    policyActive:false,
+   
   };
 
   removeChartComponent = (chartIndex) => {
@@ -267,6 +270,7 @@ class Security extends Component {
   };
 
   handleRepoChange = repoID => {
+    policyLegend=true;
     this.setState({
       alertActive:false,
       policyActive:false,
@@ -291,7 +295,7 @@ class Security extends Component {
       selectedRepo: repoDetails[selectedIndex].projectName
     });
 
-    this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].projectName);
+    this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].id);
     if (repoId !== 'selectProject') {
       this.props.securityRepoDataDispatch(this.props.projectID, repoId)
       .then(() => { this.updateSecurityData(repoId, selectedIndex) });
@@ -319,11 +323,11 @@ class Security extends Component {
   };
 
   setPolicy = () => {
- 
+ policyLegend =false;
     let policyCurrentState =true;
      let alertCurrentState=false;
     // const currentState = this.state.active;
-    this.setState({ policyActive: policyCurrentState,alertActive:alertCurrentState});
+    this.setState({policyActive: policyCurrentState,alertActive:alertCurrentState});
      this.props.securityPolicyDataDispatch(this.props.projectID, this.props.currentRepo)
        .then(() => { this.setPolicyData(this.props.securityPolicyData) });
    }
@@ -336,10 +340,9 @@ class Security extends Component {
    }
  
    setAlert = () => {
- 
+ policyLegend =true;
      let alertCurrentState =true;
       let policyCurrentState=false;
-   
      this.setState({ alertActive: alertCurrentState,policyActive:policyCurrentState });
      this.props.securityAlertDataDispatch(this.props.projectID, this.props.currentRepo)
        .then(() => { this.setAlertData(this.props.securityAlertData) });
@@ -425,7 +428,7 @@ class Security extends Component {
 <Col md={8}>
             <span>
             {this.state.showbutton ? (
-              <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>Alert</Button>
+              <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>Alerts</Button>
           //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
           ) : null}
 </span>
@@ -437,23 +440,27 @@ class Security extends Component {
           ) : null}
 </span>
 </Col>
-<Col md={2} className="pt-3">
-<div>
-  <span className="mr-3">
-  <FontAwesomeIcon  className="highbg" icon={faSquare} />
-  <span style={{color:'#fff'}}>High</span>
-  </span>
-  <span className="mr-3">
-  <FontAwesomeIcon  className="mediumbg" icon={faSquare} />
-  <span style={{color:'#fff'}}>Medium</span>
-  </span>
-  <span className="mr-3">
-  <FontAwesomeIcon  className="lowbg" icon={faSquare} />
-  <span style={{color:'#fff'}}>Low</span>
-  </span>
-  </div>
-  
-  </Col>
+{ policyLegend === true?(
+  <Col md={2} className="pt-3">
+  <div>
+    <span className="mr-3">
+    <FontAwesomeIcon  className="highbg" icon={faSquare} />
+    <span style={{color:'#fff'}}>High</span>
+    </span>
+    <span className="mr-3">
+    <FontAwesomeIcon  className="mediumbg" icon={faSquare} />
+    <span style={{color:'#fff'}}>Medium</span>
+    </span>
+    <span className="mr-3">
+    <FontAwesomeIcon  className="lowbg" icon={faSquare} />
+    <span style={{color:'#fff'}}>Low</span>
+    </span>
+    </div>
+    
+    </Col>
+):<div></div>
+}
+
 
           </Row>
           {this.state.charts.length && this.state.componentType === "Product" ? (

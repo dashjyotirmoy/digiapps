@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import { connect } from "react-redux";
+import { BubbleChartInfo } from './BubbleChartInfo';
 
 var BubbleChartData = {};
 // var fullBubbleChartData = [];
@@ -14,6 +15,8 @@ var a = 0, b = 0, c = 0, d = 0;
 var option = {};
 var name, url;
 var nameUrl = [];
+var maxMinBug = [], maxMinVulnerability = [], maxMinCodeSmells = [], maxMinCoverage = [], maxMinDuplication = [];
+
 
 class BubbleHigh extends Component {
   state = {
@@ -46,7 +49,6 @@ class BubbleHigh extends Component {
         }
       },
       xAxis: {
-        min: 0,
         gridLineWidth: 0,
         tickLength: 0,
         lineWidth: 0,
@@ -61,7 +63,6 @@ class BubbleHigh extends Component {
         }
       },
       yAxis: {
-        min: 0,
         startOnTick: false,
         endOnTick: false,
         gridLineColor: "#535353",
@@ -121,7 +122,7 @@ class BubbleHigh extends Component {
   };
 
   setBugsData = () => {
-
+    bugsData = [];
     bugsData = BubbleChartData.map(item => {
       item.forEach(ele => {
         var keys = [...Object.keys(ele)];
@@ -145,10 +146,16 @@ class BubbleHigh extends Component {
         url: url
       }
     })
-
+    this.setBugSeverity();
   };
 
+
   setBugSeverity = () => {
+    lowBug = [];
+    veryLowBug = [];
+    mediumBug = [];
+    highBug = [];
+    criticalBug = [];
     bugsData.forEach((item, index) => {
       if (item.severity === 1) {
         Object.assign(bd, item);
@@ -207,7 +214,11 @@ class BubbleHigh extends Component {
   };
 
   setVulnerabilitySeverity = () => {
-
+    veryLowVulnearbility = [];
+    lowVulnearbility = [];
+    mediumVulnearbility = [];
+    highVulnearbility = [];
+    criticalVulnearbility = [];
     vulnearbilityData.forEach((item, index) => {
 
       if (item.severity === 1) {
@@ -266,7 +277,11 @@ class BubbleHigh extends Component {
   };
 
   setCodeSmellsSeverity = () => {
-
+    veryLowCodeSmells = [];
+    lowCodeSmells = [];
+    mediumCodeSmells = [];
+    highCodeSmells = [];
+    criticalCodeSmells = [];
     codeSmellsData.forEach((item, index) => {
       if (item.severity > 50) {
         Object.assign(cd, item);
@@ -352,17 +367,31 @@ class BubbleHigh extends Component {
 
   };
 
+  setMaxMinXY = (data) => {
+    var minX = 0, maxX = 0, minY = 0, maxY = 0;
+    data.forEach(item => {
+      if (item.x < minX) {
+        minX = item.x;
+      }
+      if (item.x > maxX) {
+        maxX = item.x;
+      }
+      if (item.y < minY) {
+        minY = item.y;
+      }
+      if (item.y > maxY) {
+        maxY = item.y;
+      }
+    })
+    return [minX, maxX, minY, maxY];
+  }
+
   render() {
     if (this.props.qualityDrilledDownData.components) {
-      // fullBubbleChartData = this.props.qualityDrilledDownData.components;
-
+      BubbleChartData = [];
       BubbleChartData = this.props.qualityDrilledDownData.components.map((item, index) => {
 
-        var name = item.name;
-        var url = item.url;
-        nameUrl.push({ "name": name }, { "url": url });
-        return nameUrl = item.measures.map(ele => {
-
+        nameUrl = item.measures.map(ele => {
           var keyVal = Object.values(ele);
           var key = keyVal[0];
           var val = keyVal[1];
@@ -372,8 +401,13 @@ class BubbleHigh extends Component {
             ...Obj
           };
         });
-      });
+        var name = item.name;
+        var url = item.url;
+        nameUrl.push({ "name": name }, { "url": url })
 
+        return nameUrl;
+
+      });
 
       BubbleChartData[0].forEach(item => {
 
@@ -412,9 +446,11 @@ class BubbleHigh extends Component {
       if (type === 'bugs') {
 
         this.setBugsData();
-
+        console.log(bugsData);
         this.setBugSeverity();
 
+        maxMinBug = this.setMaxMinXY(bugsData);
+        console.log(maxMinBug);
 
         option = {};
 
@@ -447,7 +483,8 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinBug[0],
+            max: maxMinBug[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
@@ -465,7 +502,8 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinBug[2],
+            max: maxMinBug[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
@@ -488,7 +526,7 @@ class BubbleHigh extends Component {
             useHTML: true,
             headerFormat: '<table>',
             pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
-              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Lines of Code:</td><td>{point.x}</td></tr>' +
               '<tr><td>Reliability Remediation Effort:</td><td>{point.y}min</td></tr>' +
               '<tr><td>Bugs:</td><td>{point.z}</td></tr>' +
               '<tr><td>Reliability Rating</td><td>{point.rating}</td></tr>',
@@ -547,6 +585,8 @@ class BubbleHigh extends Component {
 
         this.setVulnerabilitySeverity();
 
+        maxMinVulnerability = this.setMaxMinXY(vulnearbilityData);
+        console.log(maxMinVulnerability);
         option = {};
 
         option = {
@@ -578,12 +618,13 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinVulnerability[0],
+            max: maxMinVulnerability[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: "Line of Code"
+              text: "Lines of Code"
             },
             labels: {
               format: "{value}",
@@ -593,12 +634,13 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinVulnerability[2],
+            max: maxMinVulnerability[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
             title: {
-              text: "Reliability Remediation Effort",
+              text: "Security Remediation Effort",
               style: {
                 color: "#f5f5f5"
               }
@@ -616,7 +658,7 @@ class BubbleHigh extends Component {
             useHTML: true,
             headerFormat: '<table>',
             pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
-              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Lines of Code:</td><td>{point.x}</td></tr>' +
               '<tr><td>Security Remediation Effort:</td><td>{point.y}min</td></tr>' +
               '<tr><td>Vulnerabilities :</td><td>{point.z}</td></tr>' +
               '<tr><td>Security Rating</td><td>{point.rating}</td></tr>',
@@ -670,7 +712,9 @@ class BubbleHigh extends Component {
       else if (type === 'code_smells') {
         this.setCodeSmellsData();
         this.setCodeSmellsSeverity();
-
+        console.log(codeSmellsData);
+        maxMinCodeSmells = this.setMaxMinXY(codeSmellsData);
+        console.log(maxMinCodeSmells);
         option = {};
 
         option = {
@@ -702,12 +746,16 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinCodeSmells[0],
+            max: maxMinCodeSmells[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: "Line of Code"
+              text: "Lines of Code",
+              style: {
+                color: "#f5f5f5"
+              }
             },
             labels: {
               format: "{value}",
@@ -717,7 +765,8 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinCodeSmells[2],
+            max: maxMinCodeSmells[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
@@ -740,7 +789,7 @@ class BubbleHigh extends Component {
             useHTML: true,
             headerFormat: '<table>',
             pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
-              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Lines of Code:</td><td>{point.x}</td></tr>' +
               '<tr><td>Technical Debt:</td><td>{point.y}min</td></tr>' +
               '<tr><td>Code Semlls:</td><td>{point.z}</td></tr>' +
               '<tr><td>Maintainability Rating: </td><td>{point.rating}</td></tr>',
@@ -795,7 +844,8 @@ class BubbleHigh extends Component {
 
       else if (type === 'coverage') {
         this.setComplexityData();
-
+        maxMinCoverage = this.setMaxMinXY(complexityData);
+        console.log(maxMinCoverage);
 
         option = {};
         option = {
@@ -827,12 +877,16 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinCoverage[0],
+            max: maxMinCoverage[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: "Cyclomatic Complexity "
+              text: "Cyclomatic Complexity ",
+              style: {
+                color: "#f5f5f5"
+              }
             },
             labels: {
               format: "{value}",
@@ -842,7 +896,8 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinCoverage[2],
+            max: maxMinCoverage[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
@@ -897,6 +952,8 @@ class BubbleHigh extends Component {
 
       else if (type === 'duplicated_lines') {
         this.setDuplicationData();
+        maxMinDuplication = this.setMaxMinXY(duplicationData);
+        console.log(maxMinDuplication);
 
         option = {};
         option = {
@@ -928,12 +985,16 @@ class BubbleHigh extends Component {
             }
           },
           xAxis: {
-            min: 0,
+            min: maxMinDuplication[0],
+            max: maxMinDuplication[1] + 5,
             gridLineWidth: 0,
             tickLength: 0,
             lineWidth: 0,
             title: {
-              text: "Line of Code"
+              text: "Lines of Code",
+              style: {
+                color: "#f5f5f5"
+              }
             },
             labels: {
               format: "{value}",
@@ -943,7 +1004,8 @@ class BubbleHigh extends Component {
             }
           },
           yAxis: {
-            min: 0,
+            min: maxMinDuplication[2],
+            max: maxMinDuplication[3] + 5,
             startOnTick: false,
             endOnTick: false,
             gridLineColor: "#535353",
@@ -966,7 +1028,7 @@ class BubbleHigh extends Component {
             useHTML: true,
             headerFormat: '<table>',
             pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
-              '<tr><td>Line of code:</td><td>{point.x}</td></tr>' +
+              '<tr><td>Lines of Code:</td><td>{point.x}</td></tr>' +
               '<tr><td>Duplicated Lines:</td><td>{point.y}min</td></tr>' +
               '<tr><td>Duplicated Blocks:</td><td>{point.z}</td></tr>',
             footerFormat: '</table>',
@@ -985,7 +1047,7 @@ class BubbleHigh extends Component {
           },
           series: [
             {
-              name: "Duplication",
+              name: "Duplications",
               data: duplicationData,
               color: '#4b9fd5'
             }

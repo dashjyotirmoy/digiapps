@@ -66,11 +66,11 @@ const Policy = (props) => {
 			<Card
 				style={{ color: '#f5f5f5', background: '#232D3B' }}
 			>
-				<Card.Header
+				{/* <Card.Header
 					style={{ color: '#E6E6E6' }}
 				>
 					Policy Violation
-        </Card.Header>
+        </Card.Header> */}
 				<Card.Body>
 					<Card.Title>
 						Policies

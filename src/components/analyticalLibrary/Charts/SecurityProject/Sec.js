@@ -13,6 +13,8 @@ import Alert from 'react-bootstrap/Alert';;
 const Sec = props => {
   let topProject = props.cardsData[4].data[2].slice(0, 5);
   props.cardsData[4].data[2].sort((a, b) => b.vulnerableLibraries.totalCount.localeCompare(a.vulnerableLibraries.totalCount));
+
+  var totalCount = props.cardsData[2].data[2].alertMetrics.totalCount;
   let options = {
     chart: {
       type: "pie",
@@ -45,8 +47,9 @@ const Sec = props => {
       shadow: false
     },
     tooltip: {
+      shape: 'callout',
       formatter: function () {
-        return "<b>" + this.point.name + "</b>: " + this.y;
+        return "<b>" + this.point.name + "</b>: " + this.y + "  (" + (this.point.y / totalCount * 100) + "% )";
       }
     },
     credits: {
@@ -54,22 +57,22 @@ const Sec = props => {
     },
     series: [
       {
-        name: "Browsers",
+        name: "Vulnerability",
         data: [
           {
-            // name: "Low",
+            name: "Low",
             color: "#C2B12C",
             y: parseInt(props.cardsData[2].data[2].alertMetrics.low),
             borderColor: '#C2B12C'
           },
           {
-            // name: "Medium",
+            name: "Medium",
             color: "#C0792A",
             y: parseInt(props.cardsData[2].data[2].alertMetrics.medium),
             borderColor: '#C0792A'
           },
           {
-            // name: "High",
+            name: "High",
             color: "#E75555",
             y: parseInt(props.cardsData[2].data[2].alertMetrics.high),
             borderColor: '#E75555'
@@ -81,7 +84,6 @@ const Sec = props => {
         dataLabels: {
           enabled: false
         },
-
       }
     ]
   };
@@ -89,6 +91,7 @@ const Sec = props => {
   return (
     <React.Fragment>
       <Container fluid style={{ paddingTop: "10px" }}>
+        
         <Row>
           <Col sm={9}>
             <Row>
@@ -193,7 +196,7 @@ const Sec = props => {
                           <tr>
                             <th scope="col">Projects</th>
                             <th scope="col">Libraries</th>
-                            <th scope="col">Vulnerebality Count</th>
+                            <th scope="col">Vulnerability Count</th>
                             <th scope="col">Vulnerabilities</th>
                             {/* <th scope="col">Licence</th> */}
                           </tr>

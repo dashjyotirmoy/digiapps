@@ -8,6 +8,15 @@
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.example {
+  -ms-overflow-style: none;
+}
 /* setting viewport height */
 html,
 body {
@@ -24,6 +33,12 @@ a {
 a:hover {
   color: unset;
   text-decoration: none;
+}
+
+/*Position sticky*/
+.sticky-class{
+  position: static;
+  background-color: #ff0000;
 }
 /* on hover */
 
