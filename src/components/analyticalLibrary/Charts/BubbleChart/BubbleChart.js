@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import ChartHOC from "../ChartHOC/ChartHOC";
 import { connect } from "react-redux";
-import { BubbleChartInfo } from './BubbleChartInfo';
 
 var BubbleChartData = {};
 // var fullBubbleChartData = [];
@@ -220,6 +219,7 @@ class BubbleHigh extends Component {
     highVulnearbility = [];
     criticalVulnearbility = [];
     vulnearbilityData.forEach((item, index) => {
+
       if (item.severity === 1) {
         Object.assign(vd, item);
         veryLowVulnearbility.push(vd);
@@ -282,27 +282,27 @@ class BubbleHigh extends Component {
     highCodeSmells = [];
     criticalCodeSmells = [];
     codeSmellsData.forEach((item, index) => {
-      if (item.severity === 5 ) {
+      if (item.severity === 5) {
         Object.assign(cd, item);
         criticalCodeSmells.push(cd)
         cd = {};
       }
-      else if (item.severity === 4 ) {
+      else if (item.severity === 4) {
         Object.assign(cd, item);
         highCodeSmells.push(cd);
         cd = {};
       }
-      else if (item.severity === 3 ) {
+      else if (item.severity === 3) {
         Object.assign(cd, item);
         mediumCodeSmells.push(cd);
         cd = {};
       }
-      else if (item.severity === 2 ) {
+      else if (item.severity === 2) {
         Object.assign(cd, item);
         lowCodeSmells.push(cd);
         cd = {};
       }
-      else if (item.severity === 1 ) {
+      else if (item.severity === 1) {
         Object.assign(cd, item);
         veryLowCodeSmells.push(cd);
         cd = {};
@@ -445,9 +445,11 @@ class BubbleHigh extends Component {
       if (type === 'bugs') {
 
         this.setBugsData();
+        console.log(bugsData);
         this.setBugSeverity();
 
         maxMinBug = this.setMaxMinXY(bugsData);
+        console.log(maxMinBug);
 
         option = {};
 
@@ -583,6 +585,7 @@ class BubbleHigh extends Component {
         this.setVulnerabilitySeverity();
 
         maxMinVulnerability = this.setMaxMinXY(vulnearbilityData);
+        console.log(maxMinVulnerability);
         option = {};
 
         option = {
@@ -708,7 +711,9 @@ class BubbleHigh extends Component {
       else if (type === 'code_smells') {
         this.setCodeSmellsData();
         this.setCodeSmellsSeverity();
+        console.log(codeSmellsData);
         maxMinCodeSmells = this.setMaxMinXY(codeSmellsData);
+        console.log(maxMinCodeSmells);
         option = {};
 
         option = {
@@ -839,6 +844,7 @@ class BubbleHigh extends Component {
       else if (type === 'coverage') {
         this.setComplexityData();
         maxMinCoverage = this.setMaxMinXY(complexityData);
+        console.log(maxMinCoverage);
 
         option = {};
         option = {
@@ -946,6 +952,7 @@ class BubbleHigh extends Component {
       else if (type === 'duplicated_lines') {
         this.setDuplicationData();
         maxMinDuplication = this.setMaxMinXY(duplicationData);
+        console.log(maxMinDuplication);
 
         option = {};
         option = {
@@ -1021,7 +1028,7 @@ class BubbleHigh extends Component {
             headerFormat: '<table>',
             pointFormat: '<tr><th colspan="2"><h6>{point.name}</h6></th></tr>' +
               '<tr><td>Lines of Code:</td><td>{point.x}</td></tr>' +
-              '<tr><td>Duplicated Lines:</td><td>{point.y}min</td></tr>' +
+              '<tr><td>Duplicated Lines:</td><td>{point.y}</td></tr>' +
               '<tr><td>Duplicated Blocks:</td><td>{point.z}</td></tr>',
             footerFormat: '</table>',
             followPointer: true,
