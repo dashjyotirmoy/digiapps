@@ -128,8 +128,8 @@ const Policy = (props) => {
 
 										<tbody
 											
-											// className="font-metric-sub-text"
-											// style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
+											className="font-metric-sub-text"
+											style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
 										>
 											{(showPolicyData && showPolicyData.length > 0) ?
 								showPolicyData.map((item, index) => {
@@ -155,7 +155,7 @@ const Policy = (props) => {
 										
 
 									)
-								}) : <tr><td style={{ textAlign: "center" }} colSpan="5">No data found</td></tr>
+								}) : <tr><td style={{ textAlign: "center" }} colSpan="6">No data found</td></tr>
 							}
 							</tbody>
 						</Table>
