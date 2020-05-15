@@ -118,6 +118,7 @@ class Quality extends Component {
   fetchQualityData = () => {
 
     this.setState({
+      show: true,
       all_data: false,
       charts: [],
       qualityMetrics: []
@@ -139,7 +140,7 @@ class Quality extends Component {
     this.props
       .qualityDataDispatch(this.props.currentExecId, this.props.projectID)
       .then(item => {
-        if (this.props.qualityData.repositories.length > 0) {
+        // if (this.props.qualityData.repositories.length > 0) {
           this.initialData = this.props.qualityData;
           this.setRepository(this.props.qualityData);
           let layout_instance = new Layout(2);
@@ -159,11 +160,11 @@ class Quality extends Component {
           }
 
           // this.createCharts(this.createChartObject(type));
-        } else {
-          this.props.resetProjectRepoDispatch(
-            this.props.qualityData.repositories
-          );
-        }
+        // } else {
+        //   this.props.resetProjectRepoDispatch(
+        //     this.props.qualityData.repositories
+        //   );
+        // }
       })
       .catch(error => {
         console.error(error);
@@ -171,22 +172,43 @@ class Quality extends Component {
   }
 
   setRawDefaultRepo(rawData, outstandingBugs, averageResolution) {
-    const item = rawData.map((item, index) => {
-      return {
-        outstandingbugs: [
-          { name: item.repoName },
-          { title: "Outstanding Bugs" },
-          outstandingBugs
-        ],
-        AvResolutionTime: [
-          { name: item.repoName },
-          { title: "Average Defect Resolution Time" },
-          averageResolution
-        ]
-      };
-    });
-    const splitArr = this.splitRawObj(item);
-    return splitArr;
+    if (rawData.length > 0) {
+      const item = rawData.map((item, index) => {
+        return {
+          outstandingbugs: [
+            { name: item.repoName },
+            { title: "Outstanding Bugs" },
+            outstandingBugs
+          ],
+          AvResolutionTime: [
+            { name: item.repoName },
+            { title: "Average Defect Resolution Time" },
+            averageResolution
+          ]
+        };
+      });
+      const splitArr = this.splitRawObj(item);
+      return splitArr;
+    } else {
+      const item = [{
+          outstandingbugs: [
+            { name: "" },
+            { title: "Outstanding Bugs" },
+            outstandingBugs
+          ],
+          AvResolutionTime: [
+            { name: "" },
+            { title: "Average Defect Resolution Time" },
+            averageResolution
+          ]
+        }];
+        const splitArr = this.splitRawObj(item);
+        return splitArr;
+    }
+    
+    // console.log('wwwwwwwwwweeeeeeeeeeewwwwwww', item);
+    // const splitArr = this.splitRawObj(item);
+    // return splitArr;
   }
 
   createMetrics = (repoId, arr) => {
@@ -415,7 +437,7 @@ class Quality extends Component {
   };
   setRepository = res => {
     const repositoryData = res.repositories;
-    if (repositoryData !== null) {
+    if (repositoryData.length > 0 && repositoryData !== null) {
       const { list } = this.markSelected(
         repositoryData,
         repositoryData[0].repoKey
@@ -429,6 +451,12 @@ class Quality extends Component {
 
       this.setState({
         repoData: repoDetails,
+        selectedRepo: ""
+      });
+      this.props.repoDropValDispatch("");
+    } else {
+      this.setState({
+        repoData: [],
         selectedRepo: ""
       });
       this.props.repoDropValDispatch("");
