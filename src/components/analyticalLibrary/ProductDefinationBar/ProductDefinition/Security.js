@@ -53,6 +53,7 @@ class Security extends Component {
   fetchSecurityData = (props) => {
     this.setState({
       all_data: false,
+      showbutton: false,
       charts: []
     });
     this.setDefaultData();

@@ -112,9 +112,6 @@ const Sec = props => {
                     </Row>
                     <Row className="text-center">
                       <Col sm={11}>
-                        {/* <Badge style={{ color: '#222222', background: '#B65355' }}>0</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C0792A' }}>2</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '} */}
                       </Col>
                       <Col sm={1}>
                       </Col>
@@ -214,32 +211,15 @@ const Sec = props => {
                                     <td>{item.librariesCount}</td>
                                     <td>{item.vulnerableLibraries.totalCount}</td>
                                     <td>
-                                      <ProgressBar className="w-200">
-                                        <ProgressBar style={{ backgroundColor: '#B65355' }} now={item.vulnerableLibraries.high} label={`${item.vulnerableLibraries.high}`} key={1} max={item.vulnerableLibraries.totalCount} />
-                                        <ProgressBar style={{ backgroundColor: '#C0792A' }} now={item.vulnerableLibraries.medium} label={`${item.vulnerableLibraries.medium}`} key={2} max={item.vulnerableLibraries.totalCount} />
-                                        <ProgressBar style={{ backgroundColor: '#C2B12C' }} now={item.vulnerableLibraries.low} label={`${item.vulnerableLibraries.low} `} key={3} max={item.vulnerableLibraries.totalCount} />
-                                      </ProgressBar>
-                                      {/* <ButtonGroup
-                                        style={{ lineHeight: '1rem', minHeight: '2rem', maxHeight: '2rem' }}
-                                      >
-                                        <Button
-                                          style={{ borderRadius: '30px 0px 0px 30px', backgroundColor: '#B65355', border: '0px', color: '#222222' }}
-                                        >
-                                          <span style={{ lineHeight: '' }}>
-                                            <span style={{ fontSize: '' }}> High</span><span style={{ fontSize: '' }}> {item.vulnerableLibraries.high}</span>
-                                          </span>
-                                        </Button>
-                                        <Button
-                                          style={{ backgroundColor: '#C0792A', border: '0px', color: '#222222' }}
-                                        >
-                                          Medium {item.vulnerableLibraries.medium}
-                                        </Button>
-                                        <Button
-                                          style={{ borderRadius: '0px 30px 30px 0px', backgroundColor: '#C2B12C', border: '0px', color: '#222222' }}
-                                        >
-                                          Low {item.vulnerableLibraries.low}
-                                        </Button>
-                                      </ButtonGroup> */}
+                                    {item.vulnerableLibraries.totalCount === "0" ? (
+                                            <p className="ml-3">No Vulnerabilities</p>
+                                          ) :
+                                          <ProgressBar className="w-200">
+                                          <ProgressBar style={{ backgroundColor: '#B65355' }} now={item.vulnerableLibraries.high} label={`${item.vulnerableLibraries.high}`} key={1} max={item.vulnerableLibraries.totalCount} />
+                                          <ProgressBar style={{ backgroundColor: '#C0792A' }} now={item.vulnerableLibraries.medium} label={`${item.vulnerableLibraries.medium}`} key={2} max={item.vulnerableLibraries.totalCount} />
+                                          <ProgressBar style={{ backgroundColor: '#C2B12C' }} now={item.vulnerableLibraries.low} label={`${item.vulnerableLibraries.low} `} key={3} max={item.vulnerableLibraries.totalCount} />
+                                        </ProgressBar>
+                                          }
                                     </td>
                                     {/* <td>{item.licenseCount}</td> */}
                                   </tr>
