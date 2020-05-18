@@ -1,0 +1,53 @@
+.Buildbg{
+    background-color: #1D2632!important;
+    border-color: #364D68!important;
+    color: #fff!important;
+    padding: .5rem 3rem !important;
+  }
+  .buildBlue{
+   background-color: #4A90E2!important;
+   border-color: transparent;
+   color: #333;
+   padding: .5rem 3rem;
+  }
+  
+  .Buildbg:hover{
+    background-color: #1D2632!important;
+    border-color: transparent;
+    color: #fff!important;
+    padding: .5rem 3rem;
+   }
+  
+  .Buildbg:focus{
+   box-shadow: none;
+  }
+  .bg{
+    background-color: #232D3B;
+    color: #fff;
+    border-radius: 10px;
+  }
+  .tablehead{
+    background-color: #1D2632;
+    color:#85888E;
+    padding-top: 1rem;
+   
+  
+  }
+  .tablerow{
+   background-color: #334154;
+   border-bottom: 1px solid #38475B;
+   padding-top: 1rem;
+  }
+  
+  .w-23{
+    width: 23%;
+  }
+  .w-18{
+    width: 18%;
+  }
+  .card-height{
+    max-height: 423px;
+  }
+  .w-40{
+    width: 40%;
+    }

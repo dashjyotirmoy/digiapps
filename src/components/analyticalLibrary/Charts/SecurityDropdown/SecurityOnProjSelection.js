@@ -206,11 +206,11 @@ const SecurityOnProjectSelection = (props) => {
                                 <th scope="col">CVSS 3 Score</th>
                               </tr>
                             </thead>
-                          </table>
+                          {/* </table>
 
                           <div className="inner_table">
-                            <table className="table table-hover table-dark" >
-                              <tbody >
+                            <table className="table table-hover table-dark" > */}
+                              <tbody className="inner_table" >
                                 {
                                   props.cardsData[4].data[2].map((item, index) => {
                                     return (
@@ -227,7 +227,7 @@ const SecurityOnProjectSelection = (props) => {
 
 
                             </table>
-                          </div>
+                          {/* </div> */}
                         </div>
                       </Card.Body>
                     </Card.Body>

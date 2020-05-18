@@ -185,7 +185,7 @@ const Sec = props => {
             <Row className="mt-5">
               <Col >
                 <Card.Body className="bg card-height">
-                  <p>Vulnerable Projects</p>
+                  <h5>Vulnerable Projects</h5>
                   <Card.Body>
                     <div className="wrap">
                       <table className="table table-hover table-dark">

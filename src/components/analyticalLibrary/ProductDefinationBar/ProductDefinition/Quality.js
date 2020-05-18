@@ -1,19 +1,23 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import classnames from "classnames";
-import { Row, Container, Col } from "react-bootstrap";
+import { Row, Container, Col, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSquare,
   faEllipsisV,
   faInfoCircle,
-  faChevronDown
+  faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
+import "../../QualityBuild/Quality.css"
 import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 import StackedBar from "../../Charts/StackedBar/StackedBar";
 import { repoDropValDispatch } from "../../../../store/actions/qualityData";
-import { qualityDataDispatch, qualityDrilledDownDataDispatch } from "../../../../store/actions/qualityData";
+import {
+  qualityDataDispatch,
+  qualityDrilledDownDataDispatch,
+} from "../../../../store/actions/qualityData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
@@ -26,32 +30,33 @@ import Dropdown from "../../Dropdown/Dropdown";
 import { translations } from "../../Translations/Translations";
 import Layout from "../../../../utility/layoutManager/layoutManager";
 import { BubbleChartInfo } from "../../../analyticalLibrary/Charts/BubbleChart/BubbleChartInfo";
+import QualityBuild from "../../QualityBuild/QualityBuild";
 
 const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
     type: translations.MultipleLineHigh,
     component: LineHigh,
-    repoDependent: true
+    repoDependent: true,
   },
   {
     name: translations.coverage,
     type: translations.AreaHigh,
     component: AreaHigh,
-    repoDependent: true
+    repoDependent: true,
   },
   {
     name: "Outstanding Bugs",
     type: translations.BarHigh,
     component: StackedBar,
-    repoDependent: false
+    repoDependent: false,
   },
   {
     name: "Average Defect Resolution Time",
     type: translations.DefectHigh,
     component: ColumnHigh,
-    repoDependent: false
-  }
+    repoDependent: false,
+  },
 ];
 
 let test = [];
@@ -63,7 +68,7 @@ class Quality extends Component {
     metricType: "",
     layout: {
       lg: [],
-      md: []
+      md: [],
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
@@ -71,57 +76,59 @@ class Quality extends Component {
     show: true,
     selectedRepo: "",
     selectedRepoKey: "",
-    repoData: []
+    repoData: [],
   };
 
-  onDisplayMetricsClickHandler = metricType => {
+  onDisplayMetricsClickHandler = (metricType) => {
     // eslint-disable-next-line default-case
     switch (metricType) {
       case "Bugs":
-        this.getQualityDrilledDownData('Reliability');
+        this.getQualityDrilledDownData("Reliability");
         break;
       case "Vulnerabilities":
-        this.getQualityDrilledDownData('Security');
+        this.getQualityDrilledDownData("Security");
         break;
       case "Code Smells":
-        this.getQualityDrilledDownData('Maintainability');
+        this.getQualityDrilledDownData("Maintainability");
         break;
       case "Coverage":
-        this.getQualityDrilledDownData('Coverage');
+        this.getQualityDrilledDownData("Coverage");
         break;
-        case "Duplications":
-          this.getQualityDrilledDownData('Duplications');
-        
+      case "Duplications":
+        this.getQualityDrilledDownData("Duplications");
     }
 
     this.setState({
       displayMetric: true,
-      metricType: metricType
+      metricType: metricType,
     });
   };
 
   getQualityDrilledDownData = (metricType) => {
-    this.props.qualityDrilledDownDataDispatch(this.props.currentExecId, this.props.projectID, this.state.selectedRepoKey, metricType)
-      .then(item => {
-
-      });
+    this.props
+      .qualityDrilledDownDataDispatch(
+        this.props.currentExecId,
+        this.props.projectID,
+        this.state.selectedRepoKey,
+        metricType
+      )
+      .then((item) => {});
   };
   onDisplayMetricExitClick = () => {
     this.setState({
       displayMetric: false,
-      metricType: ""
+      metricType: "",
     });
   };
   // routeToSecurity = () => {
   //   this.props.history.push("/security");
   // };
   fetchQualityData = () => {
-
     this.setState({
       show: true,
       all_data: false,
       charts: [],
-      qualityMetrics: []
+      qualityMetrics: [],
     });
     if (
       this.props.currentExecId === "" ||
@@ -134,39 +141,38 @@ class Quality extends Component {
     }
   };
 
-
   setDefaultQualityData() {
     let type;
     this.props
       .qualityDataDispatch(this.props.currentExecId, this.props.projectID)
-      .then(item => {
+      .then((item) => {
         // if (this.props.qualityData.repositories.length > 0) {
-          this.initialData = this.props.qualityData;
-          this.setRepository(this.props.qualityData);
-          let layout_instance = new Layout(2);
-          this.setState({
-            layout: layout_instance.layout
-          })
-          this.setState({
-            show: false
-          });
-          if (this.state.selectedRepo === "") {
-            type = this.setRawDefaultRepo(
-              this.props.qualityData.repositories,
-              this.props.qualityData.outstandingBugs,
-              this.props.qualityData.averageDefectResolutionTime
-            );
-            this.createCharts(this.createChartObject(type));
-          }
+        this.initialData = this.props.qualityData;
+        this.setRepository(this.props.qualityData);
+        let layout_instance = new Layout(2);
+        this.setState({
+          layout: layout_instance.layout,
+        });
+        this.setState({
+          show: false,
+        });
+        if (this.state.selectedRepo === "") {
+          type = this.setRawDefaultRepo(
+            this.props.qualityData.repositories,
+            this.props.qualityData.outstandingBugs,
+            this.props.qualityData.averageDefectResolutionTime
+          );
+          this.createCharts(this.createChartObject(type));
+        }
 
-          // this.createCharts(this.createChartObject(type));
+        // this.createCharts(this.createChartObject(type));
         // } else {
         //   this.props.resetProjectRepoDispatch(
         //     this.props.qualityData.repositories
         //   );
         // }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -178,34 +184,36 @@ class Quality extends Component {
           outstandingbugs: [
             { name: item.repoName },
             { title: "Outstanding Bugs" },
-            outstandingBugs
+            outstandingBugs,
           ],
           AvResolutionTime: [
             { name: item.repoName },
             { title: "Average Defect Resolution Time" },
-            averageResolution
-          ]
+            averageResolution,
+          ],
         };
       });
       const splitArr = this.splitRawObj(item);
       return splitArr;
     } else {
-      const item = [{
+      const item = [
+        {
           outstandingbugs: [
             { name: "" },
             { title: "Outstanding Bugs" },
-            outstandingBugs
+            outstandingBugs,
           ],
           AvResolutionTime: [
             { name: "" },
             { title: "Average Defect Resolution Time" },
-            averageResolution
-          ]
-        }];
-        const splitArr = this.splitRawObj(item);
-        return splitArr;
+            averageResolution,
+          ],
+        },
+      ];
+      const splitArr = this.splitRawObj(item);
+      return splitArr;
     }
-    
+
     // console.log('wwwwwwwwwweeeeeeeeeeewwwwwww', item);
     // const splitArr = this.splitRawObj(item);
     // return splitArr;
@@ -223,8 +231,8 @@ class Quality extends Component {
     return this.createMetricObject(metricsData[0].slice(2));
   };
 
-  createMetricObject = mergObj => {
-    return mergObj.map(item => {
+  createMetricObject = (mergObj) => {
+    return mergObj.map((item) => {
       return {
         type: translations[item[0]],
         position: this.setMetricPos(item),
@@ -234,15 +242,15 @@ class Quality extends Component {
               ? `${item[1].value}%`
               : "0.0%"
             : item[0] === "duplication"
-              ? item[1] != null
-                ? `${item[1].value}%`
-                : "0.0%"
-              : item[1].count
+            ? item[1] != null
+              ? `${item[1].value}%`
+              : "0.0%"
+            : item[1].count,
       };
     });
   };
 
-  setMetricPos = item => {
+  setMetricPos = (item) => {
     let metricValue;
     if (
       item[0] === "bugs" ||
@@ -251,44 +259,44 @@ class Quality extends Component {
     ) {
       metricValue =
         item[1].rating === "1.0"
-          ?  "lowest"
+          ? "lowest"
           : item[1].rating === "2.0"
-            ? "low"
-            : item[1].rating === "3.0"
-              ? "medium"
-              : item[1].rating === "4.0"
-                ? "high"
-                : item[1].rating === "5.0"
-                  ? "critical"
-                  : null;
+          ? "low"
+          : item[1].rating === "3.0"
+          ? "medium"
+          : item[1].rating === "4.0"
+          ? "high"
+          : item[1].rating === "5.0"
+          ? "critical"
+          : null;
     }
     if (item[0] === "coverage") {
       metricValue =
         item[1].value >= "80"
           ? "lowest"
           : item[1].value >= "70" && item[1].value <= "80"
-            ? "low" 
-            : item[1].value >= "50" && item[1].value <= "70"
-              ? "medium"
-              : item[1].value >= "30" && item[1].value <= "50"
-                ? "high"
-                : item[1].value < "30"
-                  ? "critical"
-                  : null;
+          ? "low"
+          : item[1].value >= "50" && item[1].value <= "70"
+          ? "medium"
+          : item[1].value >= "30" && item[1].value <= "50"
+          ? "high"
+          : item[1].value < "30"
+          ? "critical"
+          : null;
     }
     if (item[0] === "duplication") {
       metricValue =
         item[1].value < 3
           ? "lowest"
           : item[1].value >= 3 && item[1].value <= 5
-            ? "low"
-            : item[1].value >= 5 && item[1].value <= 10
-              ? "medium"
-              : item[1].value >= 10 && item[1].value <= 20
-                ? "high"
-                : item[1].value > 20
-                  ? "critical"
-                  : null;
+          ? "low"
+          : item[1].value >= 5 && item[1].value <= 10
+          ? "medium"
+          : item[1].value >= 10 && item[1].value <= 20
+          ? "high"
+          : item[1].value > 20
+          ? "critical"
+          : null;
     }
     return metricValue;
   };
@@ -298,23 +306,23 @@ class Quality extends Component {
       bugs_vulnerability_codeSmell: [
         { name: rawData.repoName },
         { title: "Bugs, Vulnerabilities & Code Smells" },
-        rawData
+        rawData,
       ],
       coverage: [
         { name: rawData.repoName },
         { title: "Coverage" },
-        rawData.coverage
+        rawData.coverage,
       ],
       outstandingbugs: [
         { name: rawData.repoName },
         { title: "Outstanding Bugs" },
-        outstandingBugs
+        outstandingBugs,
       ],
       AvResolutionTime: [
         { name: rawData.repoName },
         { title: "Average Defect Resolution Time" },
-        averageResolution
-      ]
+        averageResolution,
+      ],
     };
 
     const splitArr = Object.values(item);
@@ -322,18 +330,18 @@ class Quality extends Component {
     return [splitArr];
   };
 
-  splitRawObj = type => {
-    const splitArr = type.map(obj => Object.values(obj));
+  splitRawObj = (type) => {
+    const splitArr = type.map((obj) => Object.values(obj));
     return splitArr;
   };
 
-  createChartObject = typeObj => {
+  createChartObject = (typeObj) => {
     const processedData = typeObj.map((item, index) => {
-      return item.map(ele => {
+      return item.map((ele) => {
         return {
           name: ele[1].title,
           data: ele,
-          title: ele[1].title
+          title: ele[1].title,
         };
       });
     });
@@ -347,22 +355,19 @@ class Quality extends Component {
         return Object.assign({}, ele);
       }
     });
-    updatedList.map(ele => {
-      ele.component = this.setChart(
-        ele.title,
-        ele.data[2]
-      );
+    updatedList.map((ele) => {
+      ele.component = this.setChart(ele.title, ele.data[2]);
     });
-    let chartList = []; chartList[0] = updatedList;
+    let chartList = [];
+    chartList[0] = updatedList;
     this.setState({
       qualityMetrics: test,
-      charts: chartList
+      charts: chartList,
     });
-    
   };
 
   setChart = (title, data) => {
-    const chartArry = chartCompList.map(item => {
+    const chartArry = chartCompList.map((item) => {
       if (item.name === title) {
         return (
           <item.component
@@ -377,47 +382,47 @@ class Quality extends Component {
     return chartArry;
   };
 
-  removeChartComponent = chartIndex => {
+  removeChartComponent = (chartIndex) => {
     const charts = [...this.state.charts];
     this.createCharts(charts, chartIndex);
     const layouts = {};
-    Object.keys(this.state.layout).map(key => {
+    Object.keys(this.state.layout).map((key) => {
       let copy = [...this.state.layout[key]];
       if (key === "lg") {
         let layout_instance = new Layout(copy.length - 1);
-        copy = layout_instance.layout.lg
-      }
-      else if (key === "md") {
+        copy = layout_instance.layout.lg;
+      } else if (key === "md") {
         let layout_instance = new Layout(copy.length - 1);
-        copy = layout_instance.layout.md
+        copy = layout_instance.layout.md;
       }
-      layouts[key] = copy
+      layouts[key] = copy;
     });
     this.setState({
-      layout: layouts
+      layout: layouts,
     });
   };
 
   componentWillReceiveProps(nextProps) {
-    if (
-      this.props.projectID !== nextProps.projectID
-    ) {
+    if (this.props.projectID !== nextProps.projectID) {
       this.setState({
-        all_data: true
+        all_data: true,
       });
     }
   }
 
   componentDidMount() {
-    if (this.state.selectedRepo === undefined || this.state.selectedRepo === "") {
+    if (
+      this.state.selectedRepo === undefined ||
+      this.state.selectedRepo === ""
+    ) {
       this.setState({
-        all_data: true
+        all_data: true,
       });
     }
     let layout_instance = new Layout(2);
     this.setState({
-      layout: layout_instance.layout
-    })
+      layout: layout_instance.layout,
+    });
   }
 
   markSelected = (prodList, id) => {
@@ -432,68 +437,71 @@ class Quality extends Component {
     });
     return {
       list: selectedParamList,
-      selectedIndex: selectedIndex
+      selectedIndex: selectedIndex,
     };
   };
-  setRepository = res => {
+  setRepository = (res) => {
     const repositoryData = res.repositories;
     if (repositoryData.length > 0 && repositoryData !== null) {
       const { list } = this.markSelected(
         repositoryData,
         repositoryData[0].repoKey
       );
-      const repoDetails = list.map(ele => {
+      const repoDetails = list.map((ele) => {
         return {
           id: ele.repoKey,
-          projectName: ele.repoName
+          projectName: ele.repoName,
         };
       });
 
       this.setState({
         repoData: repoDetails,
-        selectedRepo: ""
+        selectedRepo: "",
       });
       this.props.repoDropValDispatch("");
     } else {
       this.setState({
         repoData: [],
-        selectedRepo: ""
+        selectedRepo: "",
       });
       this.props.repoDropValDispatch("");
     }
   };
 
-  updateRepository = repoId => {
+  updateRepository = (repoId) => {
     const { list, selectedIndex } = this.markSelected(
       this.props.qualityData.repositories,
       repoId
     );
-    const repoDetails = list.map(ele => {
+    const repoDetails = list.map((ele) => {
       return {
         id: ele.repoKey,
-        projectName: ele.repoName
+        projectName: ele.repoName,
       };
     });
 
     this.setState({
       selectedRepo: repoDetails[selectedIndex].projectName,
-      selectedRepoKey: repoDetails[selectedIndex].id
+      selectedRepoKey: repoDetails[selectedIndex].id,
     });
     this.props.repoDropValDispatch(repoDetails[selectedIndex].projectName);
-    if (repoId !== 'selectProject') {
+    if (repoId !== "selectProject") {
       this.updateQualityData(repoId, selectedIndex);
-      if (this.state.repoData[0].id !== 'selectProject') {
-        this.state.repoData.unshift({ id: "selectProject", projectName: "select Repository" });
+      if (this.state.repoData[0].id !== "selectProject") {
+        this.state.repoData.unshift({
+          id: "selectProject",
+          projectName: "select Repository",
+        });
       }
     } else {
-      if (this.state.repoData[0].id === 'selectProject') {
+      if (this.state.repoData[0].id === "selectProject") {
         this.state.repoData.shift();
       }
       let layout_instance = new Layout(2);
       this.setState({
         selectedRepo: "",
         show: false,
-        layout: layout_instance.layout
+        layout: layout_instance.layout,
       });
       let type;
       type = this.setRawDefaultRepo(
@@ -516,8 +524,8 @@ class Quality extends Component {
     test = qualityMetrics;
     let layout_instance = new Layout(chartCompList.length);
     this.setState({
-      layout: layout_instance.layout
-    })
+      layout: layout_instance.layout,
+    });
 
     const type = this.setRawRepoObjects(
       this.props.qualityData.repositories[selectedIndex],
@@ -529,13 +537,13 @@ class Quality extends Component {
     this.createCharts(this.createChartObject(type));
   };
 
-  resetSelect = prodList => {
-    const defaultList = prodList.map(ele => {
+  resetSelect = (prodList) => {
+    const defaultList = prodList.map((ele) => {
       return ele;
     });
     return defaultList;
   };
-  handleRepoChange = repoID => {
+  handleRepoChange = (repoID) => {
     // if (repoID !== 'selectRepository') {
     this.updateRepository(repoID);
     // } else {
@@ -547,6 +555,12 @@ class Quality extends Component {
     if (this.state.all_data) {
       this.fetchQualityData();
     }
+  }
+
+  setBuild =()=>{
+    this.setState({
+      componentType:"QualityBuild",
+    })
   }
 
   render() {
@@ -588,6 +602,19 @@ class Quality extends Component {
                 </Row>
               </Dropdown>
             </Col>
+            <Col md={9}>
+              <span>
+                <Button variant="outline-dark" className="Buildbg" >
+                  Code
+                </Button>
+              </span>
+
+              <span className="ml-3">
+                <Button variant="outline-dark" className="Buildbg" onClick ={this.setBuild}>
+                  Build
+                </Button>
+              </span>
+            </Col>
           </Row>
           <Row
             className={classnames(
@@ -602,14 +629,16 @@ class Quality extends Component {
                 md={3}
                 className="offset-xl-9 offset-lg-9 offset-md-9"
               >
-                
                 <Row>
                   <span className="font-size-xs mr-3 ">
-                    <FontAwesomeIcon className="critical ml-3" icon={faSquare} />{" "}
+                    <FontAwesomeIcon
+                      className="critical ml-3"
+                      icon={faSquare}
+                    />{" "}
                     Critical{" "}
                   </span>
                   <span className="font-size-xs mr-3">
-                    <FontAwesomeIcon className="high ml-3" icon={faSquare} /> {" "}
+                    <FontAwesomeIcon className="high ml-3" icon={faSquare} />{" "}
                     High
                   </span>
                   <span className="font-size-xs mr-3 ">
@@ -617,10 +646,9 @@ class Quality extends Component {
                     Medium
                   </span>
                   <span className="font-size-xs mr-3 ">
-                    <FontAwesomeIcon className="low ml-3" icon={faSquare} />{" "}
-                    Low
+                    <FontAwesomeIcon className="low ml-3" icon={faSquare} /> Low
                   </span>
-                  <span className='font-size-xs mr-3 '>
+                  <span className="font-size-xs mr-3 ">
                     <FontAwesomeIcon className="lowest ml-3" icon={faSquare} />{" "}
                     Very Low
                   </span>
@@ -629,7 +657,7 @@ class Quality extends Component {
             </Row>
             <Container fluid className=" w-100 h-90 d-flex align-item-center">
               <div className="h-100 w-100 d-flex overflow-auto">
-                {this.state.qualityMetrics.map(ele => {
+                {this.state.qualityMetrics.map((ele) => {
                   return (
                     <div
                       key={ele.type}
@@ -644,8 +672,8 @@ class Quality extends Component {
                               icon={faSquare}
                             />
                           ) : (
-                              ""
-                            )}
+                            ""
+                          )}
                         </span>
                       </Row>
                       <Row className="align-items-center d-flex h-75 justify-content-center row text-white metric-value">
@@ -678,6 +706,7 @@ class Quality extends Component {
               columnSize={this.state.gridCol}
             />
           ) : null}
+          
           <ModalBackDrop show={this.state.displayMetric}>
             <div className="chart-title w-50 h-50 grid-graph-comp">
               <div
@@ -689,7 +718,10 @@ class Quality extends Component {
                   data-toggle="tooltip"
                   data-placement="top"
                 >
-                  <TooltipHoc head={this.state.metricType} info={BubbleChartInfo[this.state.metricType]}>
+                  <TooltipHoc
+                    head={this.state.metricType}
+                    info={BubbleChartInfo[this.state.metricType]}
+                  >
                     <span className="d-inline-block">
                       <FontAwesomeIcon icon={faInfoCircle} />
                     </span>
@@ -707,28 +739,38 @@ class Quality extends Component {
               <BubbleHigh title={this.state.metricType} />
             </div>
           </ModalBackDrop>
+          {/* {this.state.componentType === "QualityBuild" ? (
+           <QualityBuild/>
+          ) : null} */}
         </React.Fragment>
       );
     }
   }
 }
+
+
 //function to map the state received from reducer
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     currentExecId: state.execData.executiveId,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.qualityData.currentRepo,
-    sprintId: state.productDetails.currentSprint.sprintInfo.id
+    sprintId: state.productDetails.currentSprint.sprintInfo.id,
   };
 };
 
 //function to dispatch action to the reducer
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { qualityDataDispatch, resetProjectRepoDispatch, qualityDrilledDownDataDispatch, repoDropValDispatch },
+    {
+      qualityDataDispatch,
+      resetProjectRepoDispatch,
+      qualityDrilledDownDataDispatch,
+      repoDropValDispatch,
+    },
     dispatch
   );
 };
