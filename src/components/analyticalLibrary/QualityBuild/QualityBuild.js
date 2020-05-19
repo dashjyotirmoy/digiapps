@@ -1,11 +1,7 @@
 import React from "react";
 import { Container, Col, Row, Card, Button } from "react-bootstrap";
-import "../QualityBuild/Quality.css";
+import BuildLine from "../Charts/LineHigh/BuildLine";
 
-let statusColor = {
-  Passed: "#52901A",
-  Failed: "#BA5054",
-};
 
 const QualityBuild = () => {
   return (
@@ -17,8 +13,10 @@ const QualityBuild = () => {
               <Col>
                 <Card.Body className="bg">
                   <h5 className="mb-3">Build Status</h5>
+                 <BuildLine/>
+                  <Card.Body className="pb-0">
 
-                  <Card.Body className="pb-0">{/* chart viewpart */}</Card.Body>
+                  </Card.Body>
                 </Card.Body>
               </Col>
             </Row>
@@ -29,7 +27,7 @@ const QualityBuild = () => {
                 <Card.Body className="bg">
                   <h5 className="mb-3">Top 10 Most Broken Tests</h5>
 
-                  <Card.Body className="pb-0">
+                  <Card.Body >
                     <div className="wrap">
                       <table className="table table-hover table-dark">
                         <thead className="tablehead">
@@ -39,12 +37,12 @@ const QualityBuild = () => {
                             <th className="w-23">Recent Failed Builds</th>
                           </tr>
                         </thead>
-                      </table>
+                      {/* </table>
 
                       <div className="inner_table">
-                        <table className="table table-hover table-dark">
-                          <tbody>
-                            <tr className="tablerow f-12">
+                        <table className="table table-hover table-dark"> */}
+                          <tbody className="tablerow f-12">
+                            <tr >
                               <td>
                                 <p>Recent Eclipse</p>
                               </td>
@@ -59,7 +57,7 @@ const QualityBuild = () => {
                           </tbody>
                         </table>
                       </div>
-                    </div>
+                    {/* </div> */}
                   </Card.Body>
                 </Card.Body>
               </Col>
@@ -78,13 +76,13 @@ const QualityBuild = () => {
                           <th className="w-40">Packages/Class/Test Method</th>
                           <th>Passed</th>
                           <th>Transistions</th>
-                          <th className="pl-5">9</th>
-                          <th className="pl-5">8</th>
-                          <th className="pl-5">7</th>
-                          <th className="pl-5">6</th>
-                          <th className="pl-5">5</th>
-                          <th className="pl-5">4</th>
-                          <th className="pl-5">3</th>
+                          <th className="text-center">9</th>
+                          <th className="text-center">8</th>
+                          <th className="text-center">7</th>
+                          <th className="text-center">6</th>
+                          <th className="text-center">5</th>
+                          <th className="text-center">4</th>
+                          <th className="text-center">3</th>
                          
                           </tr>
                       </thead>
