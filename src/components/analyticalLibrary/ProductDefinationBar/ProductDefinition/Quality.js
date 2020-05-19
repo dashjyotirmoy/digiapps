@@ -74,6 +74,7 @@ class Quality extends Component {
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
     qualityMetrics: [],
     show: true,
+    componentType: "quality",
     selectedRepo: "",
     selectedRepoKey: "",
     repoData: [],
@@ -481,6 +482,7 @@ class Quality extends Component {
     });
 
     this.setState({
+      componentType: "quality",
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
     });
@@ -655,6 +657,7 @@ class Quality extends Component {
                 </Row>
               </Col>
             </Row>
+            {this.state.componentType === "quality" ? (
             <Container fluid className=" w-100 h-90 d-flex align-item-center">
               <div className="h-100 w-100 d-flex overflow-auto">
                 {this.state.qualityMetrics.map((ele) => {
@@ -695,9 +698,10 @@ class Quality extends Component {
                 })}
               </div>
             </Container>
+            ) : null}
           </Row>
 
-          {this.state.charts.length ? (
+          {this.state.charts.length  && this.state.componentType === "quality" ? (
             <Grid
               chartData={this.state.charts[0]}
               layouts={this.state.layout}
@@ -739,9 +743,9 @@ class Quality extends Component {
               <BubbleHigh title={this.state.metricType} />
             </div>
           </ModalBackDrop>
-          {/* {this.state.componentType === "QualityBuild" ? (
+          {this.state.componentType === "QualityBuild" ? (
            <QualityBuild/>
-          ) : null} */}
+          ) : null}
         </React.Fragment>
       );
     }
