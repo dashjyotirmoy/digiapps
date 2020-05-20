@@ -621,7 +621,7 @@ class Quality extends Component {
           <Row
             className={classnames(
               " Quality quality-metric-area w-100 p-0 m-0",
-              { "d-none": !this.state.selectedRepo }
+              { "d-none": !this.state.selectedRepo || this.state.componentType !== "quality" }
             )}
           >
             <Row className="metric-legend w-100 text-white">
