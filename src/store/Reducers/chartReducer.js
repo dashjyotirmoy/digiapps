@@ -20,6 +20,11 @@ const chartReducer = (state = initialState, action) => {
         ...state,
         chartType: action.payload.chartType
       };
+      case actionType.SET_VELOCITY_PROJECT_DETAILS:
+        return {
+          ...state,
+            velocityProjectDetails: action.payload.velocityProjectDetails
+        };
     case actionType.SET_CHARTS_DETAILS:
       return {
         ...state,

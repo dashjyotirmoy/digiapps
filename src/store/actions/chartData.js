@@ -26,6 +26,26 @@ export const chartDataDispatch = (
   }
 };
 
+export const velocityProjectDataDispatch = (projectId) =>
+  async dispatch => {
+    try {
+      if (projectId) {
+        const response = await api.getVelocityProjectData(projectId);
+        console.log('ddddddsssssssssssssszzzzzzzzzzz', response);
+        dispatch({
+        type: actionTypes.SET_VELOCITY_PROJECT_DETAILS,
+        payload: {
+          velocityProjectDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+      }
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 export const currentTabDispatch = type => dispatch => {
   dispatch({
     type: actionTypes.SET_CURRENT_TAB,

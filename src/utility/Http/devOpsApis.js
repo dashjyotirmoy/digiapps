@@ -52,6 +52,12 @@ const getSecurityProjectData = (projectId) => {
   );
 };
 
+const getVelocityProjectData = (projectId) => {
+  return devovOpsApi.get(
+    `/build/${projectId}/jobs`
+  );
+};
+
 const getSecurityRepoData = (projectId, repoId) => {
   return devovOpsApi.get(
     `/widget/security-insights/repos?productId=${projectId}&projectId=${repoId}`
@@ -78,6 +84,7 @@ const getSecurityMonthAlertData = (projectId, repoId, filtertype) => {
 
 export default {
   getVelocityData,
+  getVelocityProjectData,
   getExecInsightsData,
   getProjectInsightsData,
   getSprintInsightsData,
