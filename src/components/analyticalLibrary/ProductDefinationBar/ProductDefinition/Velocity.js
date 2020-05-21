@@ -12,6 +12,7 @@ import Spinner from "../../Spinner/Spinner";
 import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
 import { translations } from "../../Translations/Translations";
 import Layout from "../../../../utility/layoutManager/layoutManager";
+import VelocityBuild from './VelocityBuild';
 
 class Velocity extends Component {
   state = {
@@ -195,7 +196,8 @@ class Velocity extends Component {
     } else {
       return (
         <React.Fragment>
-          {this.state.charts.length > 0 ? (
+          <VelocityBuild></VelocityBuild>
+          {/* {this.state.charts.length > 0 ? (
             <Grid
               chartData={this.state.charts}
               layouts={this.state.layout}
@@ -203,7 +205,7 @@ class Velocity extends Component {
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
             />
-          ) : null}
+          ) : null} */}
         </React.Fragment>
       );
     }
