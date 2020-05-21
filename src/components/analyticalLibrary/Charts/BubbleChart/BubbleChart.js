@@ -119,6 +119,20 @@ class BubbleHigh extends Component {
       ]
     }
   };
+  // compare function to pass to sort for decending sorting.
+
+  compare = (a, b) => {
+    var zVala = a.z;
+    var zValb = b.z;
+    var comparision = 0;
+    if (zVala < zValb) {
+      comparision = 0;
+    }
+    else if (zVala > zValb) {
+      comparision = -1;
+    }
+    return comparision;
+  }
 
   setBugsData = () => {
     bugsData = [];
@@ -445,11 +459,11 @@ class BubbleHigh extends Component {
       if (type === 'bugs') {
 
         this.setBugsData();
-        console.log(bugsData);
+        bugsData.sort(this.compare);
+
         this.setBugSeverity();
 
         maxMinBug = this.setMaxMinXY(bugsData);
-        console.log(maxMinBug);
 
         option = {};
 
@@ -581,11 +595,10 @@ class BubbleHigh extends Component {
 
       else if (type === "vulnerabilities") {
         this.setVulnerabilityData();
-
+        vulnearbilityData.sort(this.compare);
         this.setVulnerabilitySeverity();
 
         maxMinVulnerability = this.setMaxMinXY(vulnearbilityData);
-        console.log(maxMinVulnerability);
         option = {};
 
         option = {
@@ -711,9 +724,8 @@ class BubbleHigh extends Component {
       else if (type === 'code_smells') {
         this.setCodeSmellsData();
         this.setCodeSmellsSeverity();
-        console.log(codeSmellsData);
+        codeSmellsData.sort(this.compare);
         maxMinCodeSmells = this.setMaxMinXY(codeSmellsData);
-        console.log(maxMinCodeSmells);
         option = {};
 
         option = {
@@ -844,8 +856,7 @@ class BubbleHigh extends Component {
       else if (type === 'coverage') {
         this.setComplexityData();
         maxMinCoverage = this.setMaxMinXY(complexityData);
-        console.log(maxMinCoverage);
-
+        complexityData.sort(this.compare);
         option = {};
         option = {
           chart: {
@@ -952,8 +963,7 @@ class BubbleHigh extends Component {
       else if (type === 'duplicated_lines') {
         this.setDuplicationData();
         maxMinDuplication = this.setMaxMinXY(duplicationData);
-        console.log(maxMinDuplication);
-
+        duplicationData.sort(this.compare);
         option = {};
         option = {
           chart: {
