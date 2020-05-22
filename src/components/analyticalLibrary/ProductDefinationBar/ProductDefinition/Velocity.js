@@ -19,6 +19,7 @@ import { translations } from "../../Translations/Translations";
 import Layout from "../../../../utility/layoutManager/layoutManager";
 import { Row, Col, Button } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
+import VelocityBuild from './VelocityBuild';
 
 class Velocity extends Component {
   state = {
@@ -304,23 +305,7 @@ class Velocity extends Component {
         <React.Fragment>
           <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start">
 
-            <Col md={8}>
-              <span>
-                {this.state.showbutton ? (
-                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>Code</Button>
-                  //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
-                ) : null}
-              </span>
-
-              <span className="ml-3">
-                {this.state.showbutton ? (
-                  <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>Build</Button>
-                  //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
-                ) : null}
-              </span>
-            </Col>
-            {this.state.buildActive ? (
-            <Col md={2}>
+          <Col md={2}>
               <Dropdown
                 listData={this.state.repoData}
                 direction="down"
@@ -352,7 +337,25 @@ class Velocity extends Component {
                 </Row>
               </Dropdown>
             </Col>
-          ) : null}
+
+            <Col md={8}>
+              <span>
+                {this.state.showbutton ? (
+                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>Code</Button>
+                  //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
+                ) : null}
+              </span>
+
+              <span className="ml-3">
+                {this.state.showbutton ? (
+                  <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>Build</Button>
+                  //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
+                ) : null}
+              </span>
+            </Col>
+            {/* {this.state.buildActive ? ( */}
+            
+          {/* ) : null} */}
 
           </Row>
           {this.state.charts.length > 0 ? (
@@ -363,7 +366,8 @@ class Velocity extends Component {
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
             />
-          ) : null}
+          ) : null} */}
+
         </React.Fragment>
       );
     }
