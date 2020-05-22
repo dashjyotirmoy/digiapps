@@ -78,6 +78,8 @@ class Quality extends Component {
     selectedRepo: "",
     selectedRepoKey: "",
     repoData: [],
+    showCode:false,
+    showBuild:false
   };
 
   onDisplayMetricsClickHandler = (metricType) => {
@@ -546,6 +548,9 @@ class Quality extends Component {
     return defaultList;
   };
   handleRepoChange = (repoID) => {
+this.setState({
+  showCode:true,
+});
     // if (repoID !== 'selectRepository') {
     this.updateRepository(repoID);
     // } else {
@@ -561,7 +566,17 @@ class Quality extends Component {
 
   setBuild =()=>{
     this.setState({
+      showBuild:true,
+      showCode:false,
       componentType:"QualityBuild",
+    })
+  }
+
+  setCode =()=>{
+    this.setState({
+      showCode:true,
+     showBuild:false,
+      componentType:"quality",
     })
   }
 
@@ -606,13 +621,13 @@ class Quality extends Component {
             </Col>
             <Col md={9}>
               <span>
-                <Button variant="outline-dark" className="Buildbg" >
+                <Button variant="outline-dark" className={this.state.showCode? "bgblue":"Buildbg"} onClick ={this.setCode}>
                   Code
                 </Button>
-              </span>
+              </span> 
 
               <span className="ml-3">
-                <Button variant="outline-dark" className="Buildbg" onClick ={this.setBuild}>
+                <Button variant="outline-dark" className={this.state.showBuild?"bgblue":"Buildbg"} onClick ={this.setBuild}>
                   Build
                 </Button>
               </span>

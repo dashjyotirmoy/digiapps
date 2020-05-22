@@ -19,7 +19,7 @@ import SecurityOnProjectSelection from '../../Charts/SecurityDropdown/SecurityOn
 import "../../Charts/SecurityProject/Sec.css"
 // import Button from 'react-bootstrap/Button'
 
-let policyLegend = true;
+
 class Security extends Component {
 
   state = {
@@ -271,7 +271,7 @@ class Security extends Component {
   };
 
   handleRepoChange = repoID => {
-    policyLegend=true;
+    
     this.setState({
       alertActive:false,
       policyActive:false,
@@ -324,7 +324,7 @@ class Security extends Component {
   };
 
   setPolicy = () => {
- policyLegend =false;
+ 
     let policyCurrentState =true;
      let alertCurrentState=false;
     // const currentState = this.state.active;
@@ -341,7 +341,7 @@ class Security extends Component {
    }
  
    setAlert = () => {
- policyLegend =true;
+ 
      let alertCurrentState =true;
       let policyCurrentState=false;
      this.setState({ alertActive: alertCurrentState,policyActive:policyCurrentState });
@@ -430,7 +430,7 @@ class Security extends Component {
             <span>
             {this.state.showbutton ? (
               <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>Alerts</Button>
-          //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
+         
           ) : null}
 </span>
          
@@ -441,7 +441,7 @@ class Security extends Component {
           ) : null}
 </span>
 </Col>
-{ policyLegend === true?(
+{ !this.state.policyActive?(
   <Col md={2} className="pt-3">
   <div>
     <span className="mr-3">

@@ -100,7 +100,7 @@ const SecurityOnProjectSelection = (props) => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <p>Policy Violations</p>
+                        <h6>Policy Violations</h6>
                       </Col>
                       <Col sm={4} className="iconend">
                         <DocumentCancelSvg />
@@ -133,7 +133,7 @@ const SecurityOnProjectSelection = (props) => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <p>Per Vulnerability Alert</p>
+                        <h6>Per Vulnerability Alert</h6>
                       </Col>
                       <Col sm={4} className="iconend"> <InsecureProtectionSvg /></Col>
                     </Row>
@@ -146,12 +146,7 @@ const SecurityOnProjectSelection = (props) => {
                         <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
                         <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
-                      {/* <Col sm={1}>
-                        <FontAwesomeIcon
-                          icon={faEllipsisV}
-                          color={"#D8D8D8"}
-                        ></FontAwesomeIcon>
-                      </Col> */}
+                    
                     </Row>
                   </Card.Body>
                 </Card></Col>
@@ -163,7 +158,7 @@ const SecurityOnProjectSelection = (props) => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <p>Per Library Alert</p>
+                        <h6>Per Library Alert</h6>
                       </Col>
                       <Col sm={4} className="iconend"><LibrarySvg /></Col>
                     </Row>
@@ -193,7 +188,7 @@ const SecurityOnProjectSelection = (props) => {
                 <Row>
                   <Col>
                     <Card.Body className="bg">
-                      <h5 className="mb-3">Vulnerabilities</h5>
+                      <h6 className="mb-3">Vulnerabilities</h6>
 
                       <Card.Body className="pb-0">
                         <div className="wrap">
@@ -240,7 +235,7 @@ const SecurityOnProjectSelection = (props) => {
                 <Row>
                   <Col>
                     <Card.Body className="bg">
-                      <h5 className="mb-3">Libraries</h5>
+                      <h6 className="mb-3">Libraries</h6>
 
                       <Card.Body className="pb-0">
                         <div className="wrap">
@@ -301,7 +296,7 @@ const SecurityOnProjectSelection = (props) => {
           <Col sm={3}>
             <Row>
               <Card.Body className="bg">
-                <p>Vulnerability Analysis</p>
+                <h6>Vulnerability Analysis</h6>
                 <HighchartsReact highcharts={Highcharts} options={options} />
                 <Col
                   className="p-4"
