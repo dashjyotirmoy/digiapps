@@ -3,13 +3,14 @@ import { Container, Col, Row, Card, Button } from "react-bootstrap";
 import BuildLine from "../Charts/LineHigh/BuildLine";
 
 
-const QualityBuild = () => {
+const QualityBuild = props => {
+
   return (
     <React.Fragment>
       <Container fluid>
         <Row>
           <Col md={6} sm={12}>
-            <Row>
+            <Row>    
               <Col>
                 <Card.Body className="bg">
                   <h5 className="mb-3">Build Status</h5>

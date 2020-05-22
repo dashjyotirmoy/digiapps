@@ -16,6 +16,7 @@ import StackedBar from "../../Charts/StackedBar/StackedBar";
 import { repoDropValDispatch } from "../../../../store/actions/qualityData";
 import {
   qualityDataDispatch,
+  qualityBuildDataDispatch,
   qualityDrilledDownDataDispatch,
 } from "../../../../store/actions/qualityData";
 import { connect } from "react-redux";
@@ -214,10 +215,6 @@ class Quality extends Component {
       const splitArr = this.splitRawObj(item);
       return splitArr;
     }
-
-    // console.log('wwwwwwwwwweeeeeeeeeeewwwwwww', item);
-    // const splitArr = this.splitRawObj(item);
-    // return splitArr;
   }
 
   createMetrics = (repoId, arr) => {
@@ -560,8 +557,17 @@ class Quality extends Component {
   }
 
   setBuild =()=>{
+    this.props.qualityBuildDataDispatch(this.props.projectID, this.props.currentRepo)
+       .then(() => { this.setQualityBuildData(this.props.qualityBuildData) });
+    // this.setState({
+    //   componentType:"QualityBuild",
+    // })
+  }
+
+  setQualityBuildData = (rawData) => {
     this.setState({
-      componentType:"QualityBuild",
+      charts: rawData,
+      componentType: "QualityBuild"
     })
   }
 
@@ -744,7 +750,7 @@ class Quality extends Component {
             </div>
           </ModalBackDrop>
           {this.state.componentType === "QualityBuild" ? (
-           <QualityBuild/>
+           <QualityBuild cardsData={this.state.charts}/>
           ) : null}
         </React.Fragment>
       );
@@ -761,6 +767,7 @@ const mapStateToProps = (state) => {
     qualityData: state.qualityData.currentQualityData.qualityDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.qualityData.currentRepo,
+    qualityBuildData: state.qualityData.qualityBuildDetails,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
   };
 };
@@ -771,6 +778,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       qualityDataDispatch,
+      qualityBuildDataDispatch,
       resetProjectRepoDispatch,
       qualityDrilledDownDataDispatch,
       repoDropValDispatch,
