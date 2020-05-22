@@ -8,12 +8,12 @@ const QualityBuild = props => {
   return (
     <React.Fragment>
       <Container fluid>
-        <Row>
+        <Row className="mt-2"> 
           <Col md={6} sm={12}>
             <Row>    
               <Col>
                 <Card.Body className="bg">
-                  <h5 className="mb-3">Build Status</h5>
+                  <h6 className="mb-3">Build Status</h6>
                  <BuildLine/>
                   <Card.Body className="pb-0">
 
@@ -26,7 +26,7 @@ const QualityBuild = props => {
             <Row>
               <Col>
                 <Card.Body className="bg">
-                  <h5 className="mb-3">Top 10 Most Broken Tests</h5>
+                  <h6 className="mb-3">Top Most Broken Tests</h6>
 
                   <Card.Body >
                     <div className="wrap">
@@ -68,7 +68,7 @@ const QualityBuild = props => {
           <Row className="mt-5">
             <Col>
               <Card.Body className="bg card-height">
-                <p>Top 10 Most Broken Tests</p>
+              <h6>Test Overview</h6>
                 <Card.Body>
                   <div className="wrap">
                     <table className="table table-hover table-dark">

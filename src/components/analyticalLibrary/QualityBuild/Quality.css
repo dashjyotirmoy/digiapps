@@ -30,9 +30,15 @@
     background-color: #1D2632;
     color:#85888E;
     padding-top: 1rem;
-   
-  
   }
+  
+    .bgblue{
+      background-color: #4A90E2!important;
+      border-color: transparent;
+      color: #333;
+      padding: .5rem 3rem;
+     }
+  
   .tablerow{
    background-color: #334154;
    border-bottom: 1px solid #38475B;
