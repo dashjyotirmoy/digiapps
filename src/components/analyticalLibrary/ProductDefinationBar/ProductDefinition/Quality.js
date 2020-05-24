@@ -573,6 +573,7 @@ this.setState({
     this.setState({
       showBuild:true,
       showCode:false,
+      charts: rawData,
       componentType:"QualityBuild",
     })
   }
