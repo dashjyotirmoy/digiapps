@@ -65,6 +65,7 @@ let test = [];
 class Quality extends Component {
   state = {
     charts: [],
+    qualityBuildCharts: [],
     displayMetric: false,
     metricType: "",
     layout: {
@@ -547,6 +548,7 @@ class Quality extends Component {
   handleRepoChange = (repoID) => {
 this.setState({
   showCode:true,
+  showBuild:false,
 });
     // if (repoID !== 'selectRepository') {
     this.updateRepository(repoID);
@@ -564,16 +566,13 @@ this.setState({
   setBuild =()=>{
     this.props.qualityBuildDataDispatch(this.props.projectID, this.props.currentRepo)
        .then(() => { this.setQualityBuildData(this.props.qualityBuildData) });
-    // this.setState({
-    //   componentType:"QualityBuild",
-    // })
   }
 
   setQualityBuildData = (rawData) => {
     this.setState({
       showBuild:true,
       showCode:false,
-      charts: rawData,
+      qualityBuildCharts: rawData,
       componentType:"QualityBuild",
     })
   }
@@ -765,7 +764,7 @@ this.setState({
             </div>
           </ModalBackDrop>
           {this.state.componentType === "QualityBuild" ? (
-           <QualityBuild cardsData={this.state.charts}/>
+           <QualityBuild cardsData={this.state.qualityBuildCharts}/>
           ) : null}
         </React.Fragment>
       );

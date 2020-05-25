@@ -3,13 +3,12 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
-import { chartDataDispatch, velocityProjectDataDispatch } from "../../../../store/actions/chartData";
+import { chartDataDispatch, velocityProjectDataDispatch, velocityBuildDataDispatch, velocityRepoDropValDispatch } from "../../../../store/actions/chartData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faChevronDown,
-  faSquare
+  faChevronDown
 } from "@fortawesome/free-solid-svg-icons";
 import VelocityTrend from "../../Charts/VelocityTrends/VelocityTrend";
 import SprintBurndown from "../../Charts/SprintBurnDown/SprintBurnDown";
@@ -24,7 +23,7 @@ import VelocityBuild from './VelocityBuild';
 class Velocity extends Component {
   state = {
     charts: [],
-    showbutton: true,
+    showbutton: false,
     layout: {
       lg: [],
       md: []
@@ -36,6 +35,7 @@ class Velocity extends Component {
     selectedRepo: "",
     codeActive: true,
     buildActive: false,
+    componentType: "velocity",
     repoData: []
   };
 
@@ -205,7 +205,7 @@ class Velocity extends Component {
     const resetList = this.resetSelect(prodList);
     let selectedIndex = 0;
     const selectedParamList = resetList.map((ele, index) => {
-      if (ele.projId === id) {
+      if (ele.jobId === id) {
         selectedIndex = index;
         return ele;
       }
@@ -244,7 +244,13 @@ class Velocity extends Component {
         selectedRepo: ""
       });
 
-      // this.props.repoDropValDispatchSecurity("");
+      this.props.velocityRepoDropValDispatch("");
+    }  else {
+      this.setState({
+        repoData: [],
+        selectedRepo: "",
+      });
+      this.props.velocityRepoDropValDispatch("");
     }
   };
 
@@ -279,7 +285,45 @@ class Velocity extends Component {
   };
 
   handleRepoChange = repoID => {
+    this.updateRepository(repoID);
+  };
 
+  updateRepository = (repoId) => {
+    const { list, selectedIndex } = this.markSelected(
+      this.props.velocityProjectData.jobDetailDtoList,
+      repoId
+    );
+    const repoDetails = list.map((ele) => {
+      return {
+        id: ele.jobId,
+        projectName: ele.jobName,
+      };
+    });
+    this.setState({
+      showbutton: true,
+      selectedRepo: repoDetails[selectedIndex].projectName,
+      selectedRepoKey: repoDetails[selectedIndex].id,
+    });
+    this.props.velocityRepoDropValDispatch(repoDetails[selectedIndex].projectName);
+    if (repoId !== "selectProject") {
+      // this.updateQualityData(repoId, selectedIndex);
+      if (this.state.repoData[0].id !== "selectProject") {
+        this.state.repoData.unshift({
+          id: "selectProject",
+          projectName: "select Repository",
+        });
+      }
+    } else {
+      if (this.state.repoData[0].id === "selectProject") {
+        this.state.repoData.shift();
+      }
+      // let layout_instance = new Layout(2);
+      this.setState({
+        selectedRepo: "",
+        showbutton: false
+      });
+      this.props.velocityRepoDropValDispatch("");
+    }
   };
 
   setCode = () => {
@@ -290,10 +334,19 @@ class Velocity extends Component {
   }
 
   setBuild = () => {
+    this.props.velocityBuildDataDispatch(this.props.projId, this.props.currentRepo)
+       .then(() => { this.setVelocityBuildData(this.props.velocityBuildData) });
       this.setState({
         buildActive: true,
+        componentType:"VelocityBuild",
         codeActive: false
       });
+  }
+
+  setVelocityBuildData = (rawData) => {
+    this.setState({
+      charts: rawData,
+    })
   }
 
 
@@ -358,7 +411,7 @@ class Velocity extends Component {
           {/* ) : null} */}
 
           </Row>
-          {this.state.charts.length > 0 ? (
+          {this.state.charts.length > 0 && this.state.componentType === "velocity"? (
             <Grid
               chartData={this.state.charts}
               layouts={this.state.layout}
@@ -367,7 +420,9 @@ class Velocity extends Component {
               columnSize={this.state.gridCol}
             />
           ) : null} */}
-
+          {this.state.componentType === "VelocityBuild"? (
+            <VelocityBuild cardsData={this.state.charts}/>
+            ) : null}
         </React.Fragment>
       );
     }
@@ -383,6 +438,8 @@ const mapStateToProps = state => {
     projId: state.productDetails.currentProject.projectDetails.id,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
     teamId: state.productDetails.currentSprint.teamId,
+    currentRepo: state.chartData.currentRepo,
+    velocityBuildData: state.chartData.velocityBuildDetails,
     velocityProjectData: state.chartData.velocityProjectDetails,
     organization: state.productDetails.currentProject.projectDetails.organization
   };
@@ -391,7 +448,7 @@ const mapStateToProps = state => {
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ chartDataDispatch, velocityProjectDataDispatch }, dispatch);
+  return bindActionCreators({ chartDataDispatch, velocityProjectDataDispatch, velocityBuildDataDispatch, velocityRepoDropValDispatch }, dispatch);
 };
 
 //Connect react component to redux

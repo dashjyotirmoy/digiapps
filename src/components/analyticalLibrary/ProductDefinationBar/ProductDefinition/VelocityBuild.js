@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import BuildTreds from '../../Charts/LineHigh/BuildTrendsLineHigh';
 
-function VelocityBuild() {
+const VelocityBuild = props => {
+  console.log('eeeeeeeeeewwwwwwwwwwwsssssssssssss', props);
   return (
     <React.Fragment>
       <Container fluid className="p-3">

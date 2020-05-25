@@ -31,7 +31,6 @@ export const velocityProjectDataDispatch = (projectId) =>
     try {
       if (projectId) {
         const response = await api.getVelocityProjectData(projectId);
-        console.log('ddddddsssssssssssssszzzzzzzzzzz', response);
         dispatch({
         type: actionTypes.SET_VELOCITY_PROJECT_DETAILS,
         payload: {
@@ -46,11 +45,37 @@ export const velocityProjectDataDispatch = (projectId) =>
     }
   };
 
+  export const velocityBuildDataDispatch = (projectId, repoId) => 
+  async dispatch => {
+    try {
+      const response = await api.getVelocityBuildData(projectId, repoId);
+      dispatch({
+        type: actionTypes.SET_VELOCITY_BUILD_DETAILS,
+        payload: {
+          velocityBuildDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
 export const currentTabDispatch = type => dispatch => {
   dispatch({
     type: actionTypes.SET_CURRENT_TAB,
     payload: {
       currentTab: type
+    }
+  });
+};
+
+export const velocityRepoDropValDispatch = type => dispatch => {
+  console.log('ddddddddddddddddxxxxxxxxxxiiiiii', type);
+  dispatch({
+    type: actionTypes.SET_CURRENT_REPO,
+    payload: {
+      currentRepo: type
     }
   });
 };
