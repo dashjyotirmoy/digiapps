@@ -67,6 +67,7 @@ class Quality extends Component {
     charts: [],
     qualityBuildCharts: [],
     displayMetric: false,
+    showbutton: false,
     metricType: "",
     layout: {
       lg: [],
@@ -502,6 +503,7 @@ class Quality extends Component {
       let layout_instance = new Layout(2);
       this.setState({
         selectedRepo: "",
+        showbutton: false,
         show: false,
         layout: layout_instance.layout,
       });
@@ -548,6 +550,7 @@ class Quality extends Component {
   handleRepoChange = (repoID) => {
 this.setState({
   showCode:true,
+  showbutton: true,
   showBuild:false,
 });
     // if (repoID !== 'selectRepository') {
@@ -626,15 +629,19 @@ this.setState({
             </Col>
             <Col md={9}>
               <span>
+              {this.state.showbutton ? (
                 <Button variant="outline-dark" className={this.state.showCode? "bgblue":"Buildbg"} onClick ={this.setCode}>
                   Code
                 </Button>
+                ) : null} 
               </span> 
 
               <span className="ml-3">
+              {this.state.showbutton ? (
                 <Button variant="outline-dark" className={this.state.showBuild?"bgblue":"Buildbg"} onClick ={this.setBuild}>
                   Build
                 </Button>
+               ) : null}  
               </span>
             </Col>
           </Row>
