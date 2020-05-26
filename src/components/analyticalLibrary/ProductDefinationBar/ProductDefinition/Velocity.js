@@ -23,7 +23,9 @@ import VelocityBuild from './VelocityBuild';
 class Velocity extends Component {
   state = {
     charts: [],
-    showbutton: false,
+    velocityBuildData: [],
+    showbutton: true,
+    showDropdown: false,
     layout: {
       lg: [],
       md: []
@@ -300,12 +302,13 @@ class Velocity extends Component {
       };
     });
     this.setState({
-      showbutton: true,
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
     });
     this.props.velocityRepoDropValDispatch(repoDetails[selectedIndex].projectName);
     if (repoId !== "selectProject") {
+      this.props.velocityBuildDataDispatch(this.props.projId, repoId)
+      .then(() => { this.setVelocityBuildData(this.props.velocityBuildData) });
       // this.updateQualityData(repoId, selectedIndex);
       if (this.state.repoData[0].id !== "selectProject") {
         this.state.repoData.unshift({
@@ -320,7 +323,6 @@ class Velocity extends Component {
       // let layout_instance = new Layout(2);
       this.setState({
         selectedRepo: "",
-        showbutton: false
       });
       this.props.velocityRepoDropValDispatch("");
     }
@@ -328,16 +330,17 @@ class Velocity extends Component {
 
   setCode = () => {
     this.setState({
+      componentType: "velocity",
       buildActive: false,
+      showDropdown: false,
       codeActive: true
     });
   }
 
   setBuild = () => {
-    this.props.velocityBuildDataDispatch(this.props.projId, this.props.currentRepo)
-       .then(() => { this.setVelocityBuildData(this.props.velocityBuildData) });
       this.setState({
         buildActive: true,
+        showDropdown: true,
         componentType:"VelocityBuild",
         codeActive: false
       });
@@ -345,7 +348,7 @@ class Velocity extends Component {
 
   setVelocityBuildData = (rawData) => {
     this.setState({
-      charts: rawData,
+      velocityBuildData: rawData,
     })
   }
 
@@ -357,7 +360,7 @@ class Velocity extends Component {
       return (
         <React.Fragment>
           <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start">
-
+          {this.state.showDropdown ? (
           <Col md={2}>
               <Dropdown
                 listData={this.state.repoData}
@@ -390,7 +393,7 @@ class Velocity extends Component {
                 </Row>
               </Dropdown>
             </Col>
-
+               ) : null}
             <Col md={8}>
               <span>
                 {this.state.showbutton ? (
@@ -421,7 +424,7 @@ class Velocity extends Component {
             />
           ) : null} */}
           {this.state.componentType === "VelocityBuild"? (
-            <VelocityBuild cardsData={this.state.charts}/>
+            <VelocityBuild cardsData={this.state.velocityBuildData}/>
             ) : null}
         </React.Fragment>
       );
