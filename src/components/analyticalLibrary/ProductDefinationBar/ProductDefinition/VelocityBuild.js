@@ -3,9 +3,8 @@ import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import BuildTreds from '../../Charts/LineHigh/BuildTrendsLineHigh';
-
+var chartData = {};
 const VelocityBuild = props => {
-  console.log('eeeeeeeeeewwwwwwwwwwwsssssssssssss', props);
   return (
     <React.Fragment>
       <Container fluid className="p-3">
@@ -28,7 +27,7 @@ const VelocityBuild = props => {
           </Col>
         </Row>
         <Row>
-          <BuildTreds />
+          <BuildTreds buildTrendsData={props} />
         </Row>
       </Container>
     </React.Fragment>
