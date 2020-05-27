@@ -1,11 +1,74 @@
 import React from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import ChartHOC from '../ChartHOC/ChartHOC';
 
+var passedData = [], failedData = [], skippedData = [], totalTest = [];
 
+function setPassedData(data) {
+    passedData = data.map(item => {
+        var buildId = parseInt(item.buildId);
+        var passCount = parseInt(item.passCount);
+        return (
+            {
+                x: buildId,
+                y: passCount
+            }
+        )
+    })
+};
+
+function setFailedData(data) {
+    failedData = data.map(item => {
+        var buildId = parseInt(item.buildId);
+        var failCount = parseInt(item.failCount);
+        return (
+            {
+                x: buildId,
+                y: failCount
+            }
+        )
+    })
+};
+
+function setSkippedData(data) {
+    skippedData = data.map(item => {
+        var buildId = parseInt(item.buildId);
+        var skipCount = parseInt(item.skipCount);
+        return (
+            {
+                x: buildId,
+                y: skipCount
+            }
+        )
+    })
+};
+
+function setTotalTestData(data) {
+    totalTest = data.map(item => {
+        var buildId = parseInt(item.buildId);
+        var totalTest = parseInt(item.totalCount);
+        return (
+            {
+                x: buildId,
+                y: totalTest
+            }
+        )
+    })
+};
 
 const BuildLine = (props) => {
 
+
+    setPassedData(props.chartData.cardsData.buildStatusDTOList);
+
+    setFailedData(props.chartData.cardsData.buildStatusDTOList);
+
+    setSkippedData(props.chartData.cardsData.buildStatusDTOList);
+
+    setTotalTestData(props.chartData.cardsData.buildStatusDTOList);
+    console.log(props.chartData.cardsData.buildStatusDTOList);
+    console.log(passedData);
     console.log(props);
 
 
@@ -24,8 +87,6 @@ const BuildLine = (props) => {
         },
         yAxis: {
             lineWidth: 0,
-            min: 5,
-            max: 25,
             gridLineColor: "#313B49",
             lineColor: "green",
             tickLength: 5,
@@ -47,9 +108,10 @@ const BuildLine = (props) => {
                     color: "#f5f5f5"
                 }
             },
-            accessibility: {
-                rangeDescription: 'Range: 3 to 9'
-            }, labels: {
+            // accessibility: {
+            //     rangeDescription: 'Range: 3 to 9'
+            // },
+            labels: {
                 style: {
                     color: "#f5f5f5"
                 }
@@ -67,61 +129,39 @@ const BuildLine = (props) => {
                 color: "#fff"
             },
         },
-        plotOptions: {
-            series: [{
-                label: {
-                    connectorAllowed: false
-                },
-                line: {
-                    dashStyles: 'Solid'
-                },
-                pointStart: 3,
-            }]
-        },
         series: [{
             name: 'Passed',
-            data: [25, 25, 0, 0, 0, 22, 25],
+            data: passedData,
             color: "#4E8B15",
-            borderWidth: 0,
-            dashStyle: "Solid"
+            // borderWidth: 0,
+            dashStyle: "Solid",
         }, {
             name: 'Failed',
-            data: [5, 9, 20, 12, 8, 0, 5],
+            data: failedData,
             color: "#B64A4E",
-            borderWidth: 0,
+            // borderWidth: 0,
             dashStyle: "Solid"
         }, {
             name: 'Skipped',
-            // data: [10,20,15,12,10,17,5],
+            data: skippedData,
             color: "#BBCA0E",
-            borderWidth: 0,
+            // borderWidth: 0,
             dashStyle: "Solid"
         }, {
             name: 'Total Tests',
-            // data: [2,4,10,14,17,23,15],
+            data: totalTest,
             color: "#3D60CD",
-            borderWidth: 0,
+            // borderWidth: 0,
             dashStyle: "Solid"
         }],
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: 500
-                },
-                chartOptions: {
-                    legend: {
-                        layout: 'horizontal',
-                        align: 'center',
-                        verticalAlign: 'bottom'
-                    }
-                }
-            }]
-        }
-    };
 
+    };
+    console.log(options);
 
     return (
-        <HighchartsReact highcharts={Highcharts} options={options}></HighchartsReact>
+        <React.Fragment>
+            <ChartHOC options={options} />
+        </React.Fragment>
     )
 }
 
