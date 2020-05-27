@@ -103,7 +103,7 @@ function setUnstableData(data) {
 
 
 const BuildTreds = props => {
-  
+
   if (Object.keys(props.buildTrendsData.cardsData).length > 0) {
     console.log(typeof (props.buildTrendsData.cardsData));
     console.log(props.buildTrendsData.cardsData.buildTrendDTOList);
@@ -129,185 +129,188 @@ const BuildTreds = props => {
     setUnstableData(props.buildTrendsData.cardsData.buildTrendDTOList);
     console.log(unstableData);
 
-    
-  // const [count, setCount] = useState(options);
-  console.log(props);
-  // if (Object.keys(props.buildTrendsData.cardsData).length > 0) {
+
+    // const [count, setCount] = useState(options);
+    console.log(props);
+    // if (Object.keys(props.buildTrendsData.cardsData).length > 0) {
     var options = {};
-   options = {
-    title: {
-      text: '',
-      align: 'left'
-    },
-    xAxis: {
-      type: "datetime",
-      labels: {
+    options = {
+      title: {
+        text: '',
+        align: 'left'
+      },
+      xAxis: {
+        type: "datetime",
+        labels: {
+          style: {
+            color: '#f5f5f5'
+          }
+        },
+        dateTimeLabelFormats: {
+          day: "%b %e"
+        },
+
+        lineWidth: 0,
+        tickLength: 0,
         style: {
           color: '#f5f5f5'
+        },
+        //data: [1591436474, 1592300474, 1590927894, 1591359894, 1592569494]
+      },
+      yAxis: [
+        {
+          gridLineWidth: 0.1,
+          labels: {
+            format: '{value}(s)',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          title: {
+            text: 'Average Duration Time',
+            style: {
+              color: '#f5f5f5'
+            }
+          }
+        },
+        {
+          gridLineWidth: 0,
+          labels: {
+            format: '{value}(s)',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          title: {
+            text: 'Total Duration Time',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          opposite: true
+        },
+        {
+          gridLineWidth: 0,
+          labels: {
+            format: '{value}',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          title: {
+            text: 'Count',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          opposite: true
+        },
+      ],
+      tooltip: {
+        shared: true
+      },
+      legend: {
+        align: 'right',
+        verticalAlign: 'top',
+        itemStyle: {
+          color: '#f5f5f5',
+          fontWeight: 'normal'
         }
       },
-      dateTimeLabelFormats: {
-        day: "%b %e"
-      },
-  
-      lineWidth: 0,
-      tickLength: 0,
-      style: {
-        color: '#f5f5f5'
-      },
-      //data: [1591436474, 1592300474, 1590927894, 1591359894, 1592569494]
-    },
-    yAxis: [
-      {
-        gridLineWidth: 0.1,
-        labels: {
-          format: '{value}(s)',
-          style: {
-            color: '#f5f5f5'
-          }
+      series: [{
+        name: 'Average Duration Time',
+        type: 'line',
+        color: '#fff',
+        yAxis: 1,
+        data: avgDurationData,
+        tooltip: {
+          valueSuffix: ''
         },
-        title: {
-          text: 'Average Duration Time',
-          style: {
-            color: '#f5f5f5'
-          }
-        }
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
       },
       {
-        gridLineWidth: 0,
-        labels: {
-          format: '{value}(s)',
-          style: {
-            color: '#f5f5f5'
-          }
+        name: 'Total Duration Time',
+        type: 'line',
+        data: totalDurationData,
+        color: '#bcb000',
+        yAxis: 2,
+        tooltip: {
+          valueSuffix: ''
         },
-        title: {
-          text: 'Total Duration Time',
-          style: {
-            color: '#f5f5f5'
-          }
-        },
-        opposite: true
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
       },
       {
-        gridLineWidth: 0,
-        labels: {
-          format: '{value}',
-          style: {
-            color: '#f5f5f5'
-          }
+        name: 'Not Built',
+        type: 'line',
+        // data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+        data: notBuiltData,
+        color: '#a142f4',
+        tooltip: {
+          valueSuffix: ''
         },
-        title: {
-          text: 'Count',
-          style: {
-            color: '#f5f5f5'
-          }
-        },
-        opposite: true
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
       },
-    ],
-    tooltip: {
-      shared: true
-    },
-    legend: {
-      align: 'right',
-      verticalAlign: 'top',
-      itemStyle: {
-        color: '#f5f5f5',
-        fontWeight: 'normal'
+      {
+        name: 'Failure',
+        type: 'line',
+        data: failureData,
+        yAxis: 2,
+        color: '#ff6e6e',
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
+      },
+      {
+        name: 'Aborted',
+        type: 'line',
+        data: abortedData,
+        yAxis: 2,
+        color: '#429ef4',
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
+      },
+      {
+        name: 'Unstable',
+        type: 'line',
+        data: unstableData,
+        yAxis: 2,
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
+      },
+      {
+        name: 'Success',
+        type: 'line',
+        data: successData,
+        yAxis: 2,
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
       }
-    },
-    series: [{
-      name: 'Average Duration Time',
-      type: 'line',
-      color: 'red',
-      yAxis: 1,
-      data: avgDurationData,
-      tooltip: {
-        valueSuffix: ''
+      ],
+      credits: {
+        enabled: false
       },
-      dashStyle: 'dash',
-      pointStart: 1588032000000,
-      pointInterval: 24 * 3600 * 1000
-    },
-    {
-      name: 'Total Duration Time',
-      type: 'line',
-      data: totalDurationData,
-      yAxis: 2,
-      tooltip: {
-        valueSuffix: ''
-      },
-      dashStyle: 'dash',
-      pointStart: 1588032000000,
-      pointInterval: 24 * 3600 * 1000
-    },
-    {
-      name: 'Not Built',
-      type: 'line',
-      // data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-      data: notBuiltData,
-      tooltip: {
-        valueSuffix: ''
-      },
-      pointStart: 1588032000000,
-      pointInterval: 24 * 3600 * 1000
-    },
-    {
-      name: 'Failure',
-      type: 'line',
-      data: failureData,
-      yAxis: 2,
-      tooltip: {
-        valueSuffix: ''
-      },
-      dashStyle: 'dash',
-      pointStart: 1588032000000,
-      pointInterval: 24 * 3600 * 1000
-    },
-    {
-      name: 'Aborted',
-      type: 'line',
-      data: abortedData,
-      yAxis: 2,
-      tooltip: {
-        valueSuffix: ''
-      },
-      dashStyle: 'dash',
-      pointStart: 1588032000000,
-      pointInterval: 24 * 3600 * 1000
-    },
-    {
-      name: 'Unstable',
-      type: 'line',
-      data: unstableData,
-      yAxis: 2,
-      tooltip: {
-        valueSuffix: ''
-      },
-      dashStyle: 'dash',
-      pointStart: 1588032000000,
-      pointInterval: 24 * 3600 * 1000
-    },
-    {
-      name: 'Success',
-      type: 'line',
-      data: successData,
-      yAxis: 2,
-      tooltip: {
-        valueSuffix: ''
-      },
-      dashStyle: 'dash',
-      pointStart: 1588032000000,
-      pointInterval: 24 * 3600 * 1000
-    }
-    ],
-    credits: {
-      enabled: false
-    },
-  
-  }
 
+    }
 
   }
   console.log('ffffffffffffddddddddddddd', options)
