@@ -1,128 +1,321 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ChartHOC from '../ChartHOC/ChartHOC';
 
+let avgDurationData = [], totalDurationData = [], notBuiltData = [], failureData = [], abortedData = [], successData = [], unstableData = [];
 
-var options = {
-  title: {
-    text: '',
-    align: 'left'
-  },
-  xAxis: {
-    type: "datetime",
-    labels: {
-      style: {
-        color: '#f5f5f5'
+function setAbortedData(data) {
+  abortedData = [];
+  abortedData = data.map(item => {
+    var d = new Date(item.date);
+    var date = d.getTime();
+    return (
+      {
+        x: date,
+        y: parseInt(item.aborted)
       }
-    },
-    dateTimeLabelFormats: {
-      day: "%b %e"
-    },
+    )
+  })
+};
 
-    lineWidth: 0,
-    tickLength: 0,
-    style: {
-      color: '#f5f5f5'
-    },
-    data: [1590063894, 1590409494, 1590927894, 1591359894, 1592569494]
-  },
-  yAxis: [
-    {
-      gridLineWidth: 0.1,
-      labels: {
-        format: '{value}(s)',
-        style: {
-          color: '#f5f5f5'
-        }
-      },
-      title: {
-        text: 'Average Duration Time',
-        style: {
-          color: '#f5f5f5'
-        }
+function setAvgDurationData(data) {
+  console.log(typeof (data));
+  avgDurationData = [];
+  avgDurationData = data.map(item => {
+    var d = new Date(item.date);
+    var date = d.getTime();
+    return (
+      {
+        x: date,
+        y: parseInt(item.avgBuildTime)
       }
-    },
-    {
-      gridLineWidth: 0,
-      labels: {
-        format: '{value}(s)',
-        style: {
-          color: '#f5f5f5'
-        }
-      },
+    )
+  })
+  console.log(typeof (avgDurationData));
+
+};
+
+function setTotalDuration(data) {
+  totalDurationData = [];
+  totalDurationData = data.map(item => {
+    var d = new Date(item.date);
+    var date = d.getTime();
+    return (
+      {
+        x: date,
+        y: parseInt(item.totalBuildTime)
+      }
+    )
+  })
+};
+
+function setFailureData(data) {
+  failureData = data.map(item => {
+    var d = new Date(item.date);
+    var date = d.getTime();
+    return (
+      {
+        x: date,
+        y: parseInt(item.failure)
+      }
+    )
+  })
+};
+
+function setNotBuiltData(data) {
+  notBuiltData = data.map(item => {
+    var d = new Date(item.date);
+    var date = d.getTime();
+    return (
+      {
+        x: date,
+        y: parseInt(item.notBuilt)
+      }
+    )
+  })
+};
+
+function setSuccessData(data) {
+  successData = data.map(item => {
+    var d = new Date(item.date);
+    var date = d.getTime();
+    return (
+      {
+        x: date,
+        y: parseInt(item.success)
+      }
+    )
+  })
+};
+
+function setUnstableData(data) {
+  unstableData = data.map(item => {
+    var d = new Date(item.date);
+    var date = d.getTime();
+    return (
+      {
+        x: date,
+        y: parseInt(item.unstable)
+      }
+    )
+  })
+};
+
+
+
+const BuildTreds = props => {
+
+  if (Object.keys(props.buildTrendsData.cardsData).length > 0) {
+    console.log(typeof (props.buildTrendsData.cardsData));
+    console.log(props.buildTrendsData.cardsData.buildTrendDTOList);
+
+    setAvgDurationData(props.buildTrendsData.cardsData.buildTrendDTOList);
+    console.log([...avgDurationData]);
+    // below line number failureData, notBuildData, totalDurationData, successData, abortedData, and unstableData shoul be array of objects
+    setTotalDuration(props.buildTrendsData.cardsData.buildTrendDTOList);
+    console.log(totalDurationData);
+
+    setFailureData(props.buildTrendsData.cardsData.buildTrendDTOList);
+    console.log(failureData);
+
+    setNotBuiltData(props.buildTrendsData.cardsData.buildTrendDTOList);
+    console.log(notBuiltData);
+
+    setSuccessData(props.buildTrendsData.cardsData.buildTrendDTOList);
+    console.log(successData);
+
+    setAbortedData(props.buildTrendsData.cardsData.buildTrendDTOList);
+    console.log(abortedData);
+
+    setUnstableData(props.buildTrendsData.cardsData.buildTrendDTOList);
+    console.log(unstableData);
+
+
+    // const [count, setCount] = useState(options);
+    console.log(props);
+    // if (Object.keys(props.buildTrendsData.cardsData).length > 0) {
+    var options = {};
+    options = {
       title: {
-        text: 'Total Duration Time',
+        text: '',
+        align: 'left'
+      },
+      xAxis: {
+        type: "datetime",
+        labels: {
+          style: {
+            color: '#f5f5f5'
+          }
+        },
+        dateTimeLabelFormats: {
+          day: "%b %e"
+        },
+
+        lineWidth: 0,
+        tickLength: 0,
         style: {
           color: '#f5f5f5'
+        },
+        //data: [1591436474, 1592300474, 1590927894, 1591359894, 1592569494]
+      },
+      yAxis: [
+        {
+          gridLineWidth: 0.1,
+          labels: {
+            format: '{value}(s)',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          title: {
+            text: 'Average Duration Time',
+            style: {
+              color: '#f5f5f5'
+            }
+          }
+        },
+        {
+          gridLineWidth: 0,
+          labels: {
+            format: '{value}(s)',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          title: {
+            text: 'Total Duration Time',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          opposite: true
+        },
+        {
+          gridLineWidth: 0,
+          labels: {
+            format: '{value}',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          title: {
+            text: 'Count',
+            style: {
+              color: '#f5f5f5'
+            }
+          },
+          opposite: true
+        },
+      ],
+      tooltip: {
+        shared: true
+      },
+      legend: {
+        align: 'right',
+        verticalAlign: 'top',
+        itemStyle: {
+          color: '#f5f5f5',
+          fontWeight: 'normal'
         }
       },
-      opposite: true
-    },
-    {
-      gridLineWidth: 0,
-      labels: {
-        format: '{value}',
-        style: {
-          color: '#f5f5f5'
-        }
+      series: [{
+        name: 'Average Duration Time',
+        type: 'line',
+        color: '#fff',
+        yAxis: 1,
+        data: avgDurationData,
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
       },
-      title: {
-        text: 'Count',
-        style: {
-          color: '#f5f5f5'
-        }
+      {
+        name: 'Total Duration Time',
+        type: 'line',
+        data: totalDurationData,
+        color: '#bcb000',
+        yAxis: 2,
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
       },
-      opposite: true
-    },
-  ],
-  tooltip: {
-    shared: true
-  },
-  legend: {
-    align: 'right',
-    verticalAlign: 'top',
-    itemStyle: {
-      color: '#f5f5f5',
-      fontWeight: 'normal'
+      {
+        name: 'Not Built',
+        type: 'line',
+        // data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+        data: notBuiltData,
+        color: '#a142f4',
+        tooltip: {
+          valueSuffix: ''
+        },
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
+      },
+      {
+        name: 'Failure',
+        type: 'line',
+        data: failureData,
+        yAxis: 2,
+        color: '#ff6e6e',
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
+      },
+      {
+        name: 'Aborted',
+        type: 'line',
+        data: abortedData,
+        yAxis: 2,
+        color: '#429ef4',
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
+      },
+      {
+        name: 'Unstable',
+        type: 'line',
+        data: unstableData,
+        yAxis: 2,
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
+      },
+      {
+        name: 'Success',
+        type: 'line',
+        data: successData,
+        yAxis: 2,
+        tooltip: {
+          valueSuffix: ''
+        },
+        dashStyle: 'dash',
+        pointStart: 1588032000000,
+        pointInterval: 24 * 3600 * 1000
+      }
+      ],
+      credits: {
+        enabled: false
+      },
+
     }
-  },
-  series: [{
-    name: 'Average Duration Time',
-    type: 'line',
-    yAxis: 1,
-    data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-    tooltip: {
-      valueSuffix: ''
-    },
-    dashStyle: 'dash',
-    pointInterval: 24 * 3600 * 1000
-  },
-  {
-    name: 'Total Duratopn Time',
-    type: 'line',
-    data: [1016, 1016, 1015.9, 1015.5, 1012.3, 1009.5, 1009.6, 1010.2, 1013.1, 1016.9, 1018.2, 1016.7],
-    yAxis: 2,
-    tooltip: {
-      valueSuffix: ''
-    },
-    dashStyle: 'dash',
-    pointInterval: 24 * 3600 * 1000
-  },
-  {
-    name: 'Count',
-    type: 'line',
-    data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-    tooltip: {
-      valueSuffix: ''
-    },
-    pointInterval: 24 * 3600 * 1000
-  }],
-  credits: {
-    enabled: false
-  },
 
-}
-
-function BuildTreds() {
+  }
+  console.log('ffffffffffffddddddddddddd', options)
+  console.log(typeof (props.buildTrendsData.cardsData));
+  console.log(Object.keys(props.buildTrendsData.cardsData).length);
   return (
     <React.Fragment>
       <ChartHOC options={options} height={'700px'} />
