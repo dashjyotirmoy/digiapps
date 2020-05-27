@@ -150,7 +150,7 @@ console.log(buildStatus);
         console.log(passCount);
         setStatusData({
             labels : buildId,
-            datasets: [{
+            series: [{
                 name: 'Passed',
                 data: passCount,
                 color: "#4E8B15",

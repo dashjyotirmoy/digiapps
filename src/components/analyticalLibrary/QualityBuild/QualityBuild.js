@@ -3,8 +3,16 @@ import { Container, Col, Row, Card, Button } from "react-bootstrap";
 import BuildLine from "../Charts/LineHigh/BuildLine";
 
 
-const QualityBuild = props => {
 
+let StatusColor = {
+	"PASSED": '#52901A',
+	"FAILED": '#BA5054',
+	"N/A": '#515D6D'
+}
+
+
+const QualityBuild = props => {
+let QualityData = props.cardsData;
   return (
     <React.Fragment>
       <Container fluid>
@@ -42,19 +50,26 @@ const QualityBuild = props => {
 
                       <div className="inner_table">
                         <table className="table table-hover table-dark"> */}
-                          <tbody className="tablerow f-12">
-                            <tr >
+                          <tbody className="tablerow f-12"> 
+                          {  (QualityData && QualityData.brokenTestDetailDTOList.length > 0) ?
+                          QualityData && QualityData.brokenTestDetailDTOList.map((item,index)=>{
+                            return(
+                              <tr key = {index} >
                               <td>
-                                <p>Recent Eclipse</p>
+                                <p>{item.testName}</p>
                               </td>
                               <td>
-                                {" "}
-                                <p>1</p>
+                                
+                                <p>{item.failedCount}</p>
                               </td>
                               <td>
-                                <p>8</p>
+                                <p>{item.recentFailedBuilds}</p>
                               </td>
                             </tr>
+                            )
+                          }):<tr><td style={{ textAlign: "center" }} colSpan="3">No data found</td></tr>
+                        }
+                           
                           </tbody>
                         </table>
                       </div>
@@ -77,117 +92,53 @@ const QualityBuild = props => {
                           <th className="w-40">Packages/Class/Test Method</th>
                           <th>Passed</th>
                           <th>Transistions</th>
-                          <th className="text-center">9</th>
-                          <th className="text-center">8</th>
-                          <th className="text-center">7</th>
-                          <th className="text-center">6</th>
-                          <th className="text-center">5</th>
-                          <th className="text-center">4</th>
-                          <th className="text-center">3</th>
+                          {
+                            QualityData.testOverviewDTO.buildIds.map((item,index)=>{
+                              return(
+                                <th key = {index} className="text-center">{item}</th>
+                              )
+                            })
+                          }
+                                                  
                          
                           </tr>
                       </thead>
                            <tbody className="tablerow">
-                          <tr>
-                            <td>
-                              <p>om.ey.digitalops.service.testoml.ey.digital</p>
-                            </td>
-                            <td>100%(100%)</td>
-                            <td>0</td>
-                        
-                            <td>
-                              <Button
-                                style={{
-                                  minWidth: "4rem",
-                                  lineHeight: "1rem",
-                                  color: "#222222",
-                                  background: "#52901A",
-                                  border: "#B65355",
-                                }}
-                              >
-                                Passed
-                              </Button>
-                            </td>
-                            <td>
-                              <Button
-                                style={{
-                                  minWidth: "4rem",
-                                  lineHeight: "1rem",
-                                  color: "#222222",
-                                  background: "#52901A",
-                                  border: "#B65355",
-                                }}
-                              >
-                                Passed
-                              </Button>
-                            </td>
-                            <td>
-                              <Button
-                                style={{
-                                  minWidth: "4rem",
-                                  lineHeight: "1rem",
-                                  color: "#222222",
-                                  background: "#52901A",
-                                  border: "#B65355",
-                                }}
-                              >
-                                Passed
-                              </Button>
-                            </td>
-                            <td>
-                              <Button
-                                style={{
-                                  minWidth: "4rem",
-                                  lineHeight: "1rem",
-                                  color: "#222222",
-                                  background: "#52901A",
-                                  border: "#B65355",
-                                }}
-                              >
-                                Passed
-                              </Button>
-                            </td>
-                            <td>
-                              <Button
-                                style={{
-                                  minWidth: "4rem",
-                                  lineHeight: "1rem",
-                                  color: "#222222",
-                                  background: "#52901A",
-                                  border: "#B65355",
-                                }}
-                              >
-                                Passed
-                              </Button>
-                            </td>
-                            <td>
-                              <Button
-                                style={{
-                                  minWidth: "4rem",
-                                  lineHeight: "1rem",
-                                  color: "#222222",
-                                  background: "#52901A",
-                                  border: "#B65355",
-                                }}
-                              >
-                                Passed
-                              </Button>
-                            </td>
-                            <td>
-                              <Button
-                                style={{
-                                  minWidth: "4rem",
-                                  lineHeight: "1rem",
-                                  color: "#222222",
-                                  background: "#52901A",
-                                  border: "#B65355",
-                                }}
-                              >
-                                Passed
-                              </Button>
-                            </td>
-                            
-                          </tr>
+
+                             { 
+                             QualityData && QualityData.testDetailDTOList.map((item,index)=>{
+                               return(
+                                <tr>
+                                <td>
+                                  <p>{item.packageName}</p>
+                                </td>
+                                <td>{item.passedPercentage}%</td>
+                                <td>{item.transitionCount}</td>
+                            {item.testStatus.map((item,index)=>{
+                              return(
+                                <td>
+                                <Button
+                                  style={{
+                                    minWidth: "4rem",
+                                    lineHeight: "1rem",
+                                    color: "#222222",
+                                    background: StatusColor[item] ,
+                                    border: StatusColor[item],
+                                  }}
+                                >
+                                  {item}
+                                </Button>
+                              </td>
+                              )
+                            })}
+                             
+                                
+                                
+                              </tr>
+                               )
+                             })
+                            }
+                         
                           
                         </tbody>
                       </table>
