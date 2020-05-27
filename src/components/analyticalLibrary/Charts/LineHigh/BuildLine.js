@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
@@ -82,31 +82,31 @@ const options={
             }]
         },
     
-        series: [{
-            name: 'Passed',
-            data: [25,25,0,0,0,22,25],
-            color: "#4E8B15",
-            borderWidth: 0, 
-            dashStyle: "Solid"   
-        }, {
-            name: 'Failed',
-            data: [5,9,20,12,8,0,5],
-            color: "#B64A4E",
-            borderWidth: 0, 
-            dashStyle: "Solid"
-        }, {
-            name: 'Skipped',
-            // data: [10,20,15,12,10,17,5],
-            color: "#BBCA0E",
-            borderWidth: 0, 
-            dashStyle: "Solid"
-        }, {
-            name: 'Total Tests',
-            // data: [2,4,10,14,17,23,15],
-            color: "#3D60CD",
-            borderWidth: 0,
-            dashStyle: "Solid"
-        }],
+        // series: [{
+        //     name: 'Passed',
+        //     data: [25,25,0,0,0,22,25],
+        //     color: "#4E8B15",
+        //     borderWidth: 0, 
+        //     dashStyle: "Solid"   
+        // }, {
+        //     name: 'Failed',
+        //     data: [5,9,20,12,8,0,5],
+        //     color: "#B64A4E",
+        //     borderWidth: 0, 
+        //     dashStyle: "Solid"
+        // }, {
+        //     name: 'Skipped',
+        //     // data: [10,20,15,12,10,17,5],
+        //     color: "#BBCA0E",
+        //     borderWidth: 0, 
+        //     dashStyle: "Solid"
+        // }, {
+        //     name: 'Total Tests',
+        //     // data: [2,4,10,14,17,23,15],
+        //     color: "#3D60CD",
+        //     borderWidth: 0,
+        //     dashStyle: "Solid"
+        // }],
     
         responsive: {
             rules: [{
@@ -126,9 +126,64 @@ const options={
     
 };
 
-const BuildLine =() =>{
+const BuildLine =(props) =>{
+
+    let buildStatus = props.data;
+console.log(buildStatus);
+    const [statusData,setStatusData] = useState({});
+   
+    const chart = () =>{ 
+        let passCount =[];
+        let failCount = [];
+        let skipCount =[];
+        let totalCount =[];
+        let buildId = [];
+
+
+        for(const dataObj of buildStatus.cardsData.buildStatusDTOList){
+            passCount.push(parseInt(dataObj.passCount))
+            failCount.push(parseInt(dataObj.failCount))
+            skipCount.push(parseInt(dataObj.skipCount))
+            totalCount.push(parseInt(dataObj.totalCount))
+            buildId.push(parseInt(dataObj.buildId))
+        }
+        console.log(passCount);
+        setStatusData({
+            labels : buildId,
+            datasets: [{
+                name: 'Passed',
+                data: passCount,
+                color: "#4E8B15",
+                borderWidth: 0, 
+                dashStyle: "Solid"   
+            }, {
+                name: 'Failed',
+                data: failCount,
+                color: "#B64A4E",
+                borderWidth: 0, 
+                dashStyle: "Solid"
+            }, {
+                name: 'Skipped',
+                data: skipCount,
+                color: "#BBCA0E",
+                borderWidth: 0, 
+                dashStyle: "Solid"
+            }, {
+                name: 'Total Tests',
+                data: totalCount,
+                color: "#3D60CD",
+                borderWidth: 0,
+                dashStyle: "Solid"
+            }],
+        })
+    }
+
+    useEffect(()=>{
+        chart()
+    },[])
     return(
-        <HighchartsReact highcharts ={Highcharts} options={options}></HighchartsReact>
+        
+        <HighchartsReact highcharts ={Highcharts} data ={statusData} options={options}></HighchartsReact>
     )
 }
 

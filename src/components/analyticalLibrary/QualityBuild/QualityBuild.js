@@ -14,7 +14,7 @@ const QualityBuild = props => {
               <Col>
                 <Card.Body className="bg">
                   <h6 className="mb-3">Build Status</h6>
-                 <BuildLine/>
+                 <BuildLine data={props}/>
                   <Card.Body className="pb-0">
 
                   </Card.Body>
