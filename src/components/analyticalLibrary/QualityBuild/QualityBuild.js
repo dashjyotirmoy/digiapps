@@ -106,9 +106,9 @@ let QualityData = props.cardsData;
                            <tbody className="tablerow">
 
                              { 
-                             QualityData && QualityData.testDetailDTOList.map((item,index)=>{
+                             QualityData && QualityData.testOverviewDTO.testDetailDTOList.map((item,index)=>{
                                return(
-                                <tr>
+                                <tr key ={index}>
                                 <td>
                                   <p>{item.packageName}</p>
                                 </td>
@@ -116,7 +116,7 @@ let QualityData = props.cardsData;
                                 <td>{item.transitionCount}</td>
                             {item.testStatus.map((item,index)=>{
                               return(
-                                <td>
+                                <td key = {index}>
                                 <Button
                                   style={{
                                     minWidth: "4rem",
