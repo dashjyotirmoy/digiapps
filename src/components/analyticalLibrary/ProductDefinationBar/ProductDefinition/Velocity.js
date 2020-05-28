@@ -380,7 +380,7 @@ class Velocity extends Component {
             <Col md={8}>
               <span>
                 {this.state.showbutton ? (
-                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>Code</Button>
+                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>Overview</Button>
                   //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
                 ) : null}
               </span>

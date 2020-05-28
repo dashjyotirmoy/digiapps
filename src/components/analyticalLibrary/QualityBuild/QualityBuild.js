@@ -13,6 +13,7 @@ let StatusColor = {
 
 const QualityBuild = props => {
 let QualityData = props.cardsData;
+QualityData.testOverviewDTO.buildIds.sort((a, b) => b.localeCompare(a));
   return (
     <React.Fragment>
       <Container fluid>
@@ -42,7 +43,7 @@ let QualityData = props.cardsData;
                         <thead className="tablehead">
                           <tr>
                             <th>Test Name</th>
-                            <th className="w-18">Time Failed</th>
+                            <th className="w-18">Times Failed</th>
                             <th className="w-23">Recent Failed Builds</th>
                           </tr>
                         </thead>
@@ -91,7 +92,7 @@ let QualityData = props.cardsData;
                         <tr>
                           <th className="w-40">Packages/Class/Test Method</th>
                           <th>Passed</th>
-                          <th>Transistions</th>
+                          <th>Transitions</th>
                           {
                             QualityData.testOverviewDTO.buildIds.map((item,index)=>{
                               return(

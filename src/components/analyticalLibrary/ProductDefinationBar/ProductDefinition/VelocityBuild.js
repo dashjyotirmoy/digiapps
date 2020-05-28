@@ -31,7 +31,7 @@ const VelocityBuild = props => {
           <BuildTreds buildTrendsData={props} />
         </Row>
       </Container>
-      ) : <div style={{ color: "#ffffff", fontSize: "20px", textAlign: "center" }}>please select the dropdown to see the Chart Data</div>}
+      ) : <div style={{ color: "#ffffff", fontSize: "20px", textAlign: "center" }}>Please select the dropdown for Chart Data</div>}
     </React.Fragment>
   )
 }
