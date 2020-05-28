@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ChartHOC from '../ChartHOC/ChartHOC';
 
 let avgDurationData = [], totalDurationData = [], notBuiltData = [], failureData = [], abortedData = [], successData = [], unstableData = [];
@@ -105,7 +105,7 @@ const BuildTreds = props => {
   if (Object.keys(props.buildTrendsData.cardsData).length > 0) {
 
     setAvgDurationData(props.buildTrendsData.cardsData.buildTrendDTOList);
-    // below line number failureData, notBuildData, totalDurationData, successData, abortedData, and unstableData shoul be array of objects
+
     setTotalDuration(props.buildTrendsData.cardsData.buildTrendDTOList);
 
     setFailureData(props.buildTrendsData.cardsData.buildTrendDTOList);
@@ -121,8 +121,11 @@ const BuildTreds = props => {
     var options = {};
     options = {
       title: {
-        text: '',
-        align: 'left'
+        text: 'Build Trend',
+        align: 'left',
+        style: {
+          color: '#f5f5f5'
+        }
       },
       xAxis: {
         type: "datetime",
@@ -140,34 +143,35 @@ const BuildTreds = props => {
         style: {
           color: '#f5f5f5'
         },
-        //data: [1591436474, 1592300474, 1590927894, 1591359894, 1592569494]
       },
       yAxis: [
         {
+          //Primary Axis
           gridLineWidth: 0.1,
           labels: {
-            format: '{value}(s)',
+            format: '{value}',
             style: {
               color: '#f5f5f5'
             }
           },
           title: {
-            text: 'Average Duration Time',
+            text: 'Average Duration Time (s)',
             style: {
               color: '#f5f5f5'
             }
           }
         },
         {
+          // Secondary Axis
           gridLineWidth: 0,
           labels: {
-            format: '{value}(s)',
+            format: '{value}',
             style: {
               color: '#f5f5f5'
             }
           },
           title: {
-            text: 'Total Duration Time',
+            text: 'Total Duration Time (s)',
             style: {
               color: '#f5f5f5'
             }
@@ -175,6 +179,7 @@ const BuildTreds = props => {
           opposite: true
         },
         {
+          // Ternary Axis
           gridLineWidth: 0,
           labels: {
             format: '{value}',
@@ -188,7 +193,9 @@ const BuildTreds = props => {
               color: '#f5f5f5'
             }
           },
-          opposite: true
+          opposite: true,
+          min: 0,
+          tickInterval: 0.5
         },
       ],
       tooltip: {
@@ -200,31 +207,33 @@ const BuildTreds = props => {
         itemStyle: {
           color: '#f5f5f5',
           fontWeight: 'normal'
+        },
+        itemHoverStyle: {
+          color: '#cccccc'
         }
       },
       series: [{
-        name: 'Average Duration Time',
+        name: 'Average Build Time (s)',
         type: 'line',
         color: '#fff',
-        yAxis: 1,
         data: avgDurationData,
         tooltip: {
           valueSuffix: ''
         },
-        dashStyle: 'dash',
+        //dashStyle: 'dash',
         pointStart: 1588032000000,
         pointInterval: 24 * 3600 * 1000
       },
       {
-        name: 'Total Duration Time',
+        name: 'Total Build Time (s)',
         type: 'line',
         data: totalDurationData,
         color: '#bcb000',
-        yAxis: 2,
+        yAxis: 1,
         tooltip: {
           valueSuffix: ''
         },
-        dashStyle: 'dash',
+        // dashStyle: 'dash',
         pointStart: 1588032000000,
         pointInterval: 24 * 3600 * 1000
       },
@@ -233,6 +242,7 @@ const BuildTreds = props => {
         type: 'line',
         // data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
         data: notBuiltData,
+        yAxis: 2,
         color: '#a142f4',
         tooltip: {
           valueSuffix: ''
@@ -258,7 +268,7 @@ const BuildTreds = props => {
         type: 'line',
         data: abortedData,
         yAxis: 2,
-        color: '#429ef4',
+        color: '#CC8A8A',
         tooltip: {
           valueSuffix: ''
         },
@@ -282,6 +292,7 @@ const BuildTreds = props => {
         name: 'Success',
         type: 'line',
         data: successData,
+        color: 'green',
         yAxis: 2,
         tooltip: {
           valueSuffix: ''
