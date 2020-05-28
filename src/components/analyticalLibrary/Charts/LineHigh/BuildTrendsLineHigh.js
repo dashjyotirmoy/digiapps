@@ -18,7 +18,6 @@ function setAbortedData(data) {
 };
 
 function setAvgDurationData(data) {
-  console.log(typeof (data));
   avgDurationData = [];
   avgDurationData = data.map(item => {
     var d = new Date(item.date);
@@ -105,34 +104,21 @@ function setUnstableData(data) {
 const BuildTreds = props => {
 
   if (Object.keys(props.buildTrendsData.cardsData).length > 0) {
-    console.log(typeof (props.buildTrendsData.cardsData));
-    console.log(props.buildTrendsData.cardsData.buildTrendDTOList);
 
     setAvgDurationData(props.buildTrendsData.cardsData.buildTrendDTOList);
-    console.log([...avgDurationData]);
     // below line number failureData, notBuildData, totalDurationData, successData, abortedData, and unstableData shoul be array of objects
     setTotalDuration(props.buildTrendsData.cardsData.buildTrendDTOList);
-    console.log(totalDurationData);
 
     setFailureData(props.buildTrendsData.cardsData.buildTrendDTOList);
-    console.log(failureData);
 
     setNotBuiltData(props.buildTrendsData.cardsData.buildTrendDTOList);
-    console.log(notBuiltData);
 
     setSuccessData(props.buildTrendsData.cardsData.buildTrendDTOList);
-    console.log(successData);
 
     setAbortedData(props.buildTrendsData.cardsData.buildTrendDTOList);
-    console.log(abortedData);
 
     setUnstableData(props.buildTrendsData.cardsData.buildTrendDTOList);
-    console.log(unstableData);
 
-
-    // const [count, setCount] = useState(options);
-    console.log(props);
-    // if (Object.keys(props.buildTrendsData.cardsData).length > 0) {
     var options = {};
     options = {
       title: {
@@ -313,9 +299,6 @@ const BuildTreds = props => {
     }
 
   }
-  console.log('ffffffffffffddddddddddddd', options)
-  console.log(typeof (props.buildTrendsData.cardsData));
-  console.log(Object.keys(props.buildTrendsData.cardsData).length);
   return (
     <React.Fragment>
       <ChartHOC options={options} height={'700px'} />

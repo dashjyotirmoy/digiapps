@@ -306,26 +306,9 @@ class Velocity extends Component {
       selectedRepoKey: repoDetails[selectedIndex].id,
     });
     this.props.velocityRepoDropValDispatch(repoDetails[selectedIndex].projectName);
-    if (repoId !== "selectProject") {
+    // if (repoId !== "selectProject") {
       this.props.velocityBuildDataDispatch(this.props.projId, repoId)
       .then(() => { this.setVelocityBuildData(this.props.velocityBuildData) });
-      // this.updateQualityData(repoId, selectedIndex);
-      if (this.state.repoData[0].id !== "selectProject") {
-        this.state.repoData.unshift({
-          id: "selectProject",
-          projectName: "select Repository",
-        });
-      }
-    } else {
-      if (this.state.repoData[0].id === "selectProject") {
-        this.state.repoData.shift();
-      }
-      // let layout_instance = new Layout(2);
-      this.setState({
-        selectedRepo: "",
-      });
-      this.props.velocityRepoDropValDispatch("");
-    }
   };
 
   setCode = () => {

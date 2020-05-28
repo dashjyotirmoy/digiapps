@@ -7,6 +7,7 @@ var chartData = {};
 const VelocityBuild = props => {
   return (
     <React.Fragment>
+       {props && props.cardsData.jobId ? (
       <Container fluid className="p-3">
         <Row>
           <Col xl={6} lg={6} md={6}>
@@ -30,6 +31,7 @@ const VelocityBuild = props => {
           <BuildTreds buildTrendsData={props} />
         </Row>
       </Container>
+      ) : <div style={{ color: "#ffffff", fontSize: "20px", textAlign: "center" }}>please select the dropdown to see the Chart Data</div>}
     </React.Fragment>
   )
 }
