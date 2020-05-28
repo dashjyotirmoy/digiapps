@@ -29,7 +29,6 @@ function setAvgDurationData(data) {
       }
     )
   })
-  console.log(typeof (avgDurationData));
 
 };
 

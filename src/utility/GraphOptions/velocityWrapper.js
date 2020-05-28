@@ -83,8 +83,6 @@ class VelocityGraph {
 
 
   generateControlChart(options) {
-    console.log(sprintStartBand);
-    console.log(this.res.data);
 
     let userStory = [],
       combinedURL,
@@ -126,7 +124,6 @@ class VelocityGraph {
         }
       }
     });
-    console.log(userStoryPoints);
     if (userStory.length > 0) {
       userStory = userStory.map(issue => {
         rawDate = issue[0].split("T");
@@ -457,7 +454,6 @@ class VelocityGraph {
         }
       }
     };
-    console.log(sprintStartBand);
 
     options.series = [
       {
@@ -527,8 +523,6 @@ class VelocityGraph {
   }
 
   generateVelocityTrends(options) {
-    console.log(this.res);
-
     let planned_Velocity_Percentage = [],
       actual_Velocity_Percentage = [],
       limit_Percentage,
@@ -736,8 +730,6 @@ class VelocityGraph {
   }
 
   generateSprintBurnDown(options) {
-    console.log(this.res);
-
     let remainingHours = [];
     let totalScope = [];
     let sprintBurndown = [];
@@ -780,18 +772,11 @@ class VelocityGraph {
       remainingHours.push(remaining_hours_object);
     });
 
-
-    console.log(sprintBurndown[0].x);
-
-    console.log(sprintBurndown[1].x);
-
     //  function to set sprintStartBand and sprintEndBand values
     (
       function () {
         sprintStartBand = sprintBurndown[0].x;
-        console.log(sprintStartBand);
         sprintEndBand = sprintBurndown[1].x;
-        console.log(sprintEndBand);
       }()
     )
 
@@ -897,12 +882,6 @@ class VelocityGraph {
         color: "#BA8054"
       }
     ];
-    console.log(remainingHours);
-    console.log(totalScope);
-    console.log(sprintBurndown);
-
-
-    console.log(this.res.data.startDate);
     return options;
 
   }

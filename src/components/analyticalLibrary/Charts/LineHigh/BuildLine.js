@@ -67,9 +67,6 @@ const BuildLine = (props) => {
     setSkippedData(props.chartData.cardsData.buildStatusDTOList);
 
     setTotalTestData(props.chartData.cardsData.buildStatusDTOList);
-    console.log(props.chartData.cardsData.buildStatusDTOList);
-    console.log(passedData);
-    console.log(props);
 
 
     var options = {}
@@ -156,7 +153,6 @@ const BuildLine = (props) => {
         }],
 
     };
-    console.log(options);
 
     return (
         <React.Fragment>

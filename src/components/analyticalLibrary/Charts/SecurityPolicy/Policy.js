@@ -55,8 +55,6 @@ const Policy = (props) => {
 			if (!tempCheckPolicy.length) {
 				tempCheckPolicy = actionData;
 			}
-			console.log('iii', tempCheckPolicy)
-			// policyData=tempCheckPolicy;
 			setPolicyData(tempCheckPolicy);
 		}
 	}

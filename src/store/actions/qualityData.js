@@ -39,7 +39,6 @@ export const qualityDataDispatch = (projectId, execId) =>
   async dispatch => {
     try {
       const response = await api.getQualityMetricsDrilledDownData(projectId, execId, repoId, metricsType);
-      // console.log('ddddddddddddwwwwwwwwwwwwwqqqqqqqqqqqq', response);
       dispatch({
         type: actionTypes.SET_QUALITY_DRILLED_DOWN_DETAILS,
         payload: {

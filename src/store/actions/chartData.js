@@ -71,7 +71,6 @@ export const currentTabDispatch = type => dispatch => {
 };
 
 export const velocityRepoDropValDispatch = type => dispatch => {
-  console.log('ddddddddddddddddxxxxxxxxxxiiiiii', type);
   dispatch({
     type: actionTypes.SET_CURRENT_REPO,
     payload: {
