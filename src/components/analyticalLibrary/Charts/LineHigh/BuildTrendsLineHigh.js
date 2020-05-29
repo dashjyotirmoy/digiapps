@@ -129,6 +129,7 @@ const BuildTreds = props => {
       },
       xAxis: {
         type: "datetime",
+        // crosshair: true,
         labels: {
           style: {
             color: '#f5f5f5'
@@ -247,6 +248,7 @@ const BuildTreds = props => {
         tooltip: {
           valueSuffix: ''
         },
+        dashStyle: 'dash',
         pointStart: 1588032000000,
         pointInterval: 24 * 3600 * 1000
       },
@@ -311,7 +313,7 @@ const BuildTreds = props => {
   }
   return (
     <React.Fragment>
-      <ChartHOC options={options} height={'700px'} />
+      <ChartHOC options={options} height={'700px'} width={'100%'} />
     </React.Fragment>
   )
 }

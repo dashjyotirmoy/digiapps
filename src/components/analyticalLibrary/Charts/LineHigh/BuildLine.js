@@ -1,6 +1,5 @@
-import React, { useState,useEffect } from "react";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+
+import React from 'react';
 import ChartHOC from '../ChartHOC/ChartHOC';
 
 var passedData = [], failedData = [], skippedData = [], totalTest = [];
@@ -88,7 +87,8 @@ const BuildLine = (props) => {
             lineColor: "green",
             tickLength: 5,
             title: {
-                text: '',
+                text: 'No. of tests',
+                style: { color: '#f5f5f5' }
             },
             labels: {
                 style: {
@@ -97,22 +97,24 @@ const BuildLine = (props) => {
             }
         },
         xAxis: {
-            lineWidth: 0,
             title: {
-                text: 'Builds',
+                text: 'Build No.',
                 margin: 20,
                 style: {
                     color: "#f5f5f5"
                 }
             },
-            // accessibility: {
-            //     rangeDescription: 'Range: 3 to 9'
-            // },
+            // min: 0,
             labels: {
                 style: {
                     color: "#f5f5f5"
                 }
-            }
+            },
+            tickInterval: 2
+        },
+        tooltip: {
+            shared: true,
+            // followTouchMove: true
         },
         legend: {
             layout: 'horizontal',
@@ -131,7 +133,7 @@ const BuildLine = (props) => {
             data: passedData,
             color: "#4E8B15",
             // borderWidth: 0,
-            dashStyle: "Solid",
+            dashStyle: "Solid"
         }, {
             name: 'Failed',
             data: failedData,

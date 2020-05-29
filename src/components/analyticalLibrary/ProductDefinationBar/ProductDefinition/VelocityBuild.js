@@ -27,7 +27,7 @@ const VelocityBuild = props => {
               </Row>
             </Col>
           </Row>
-          <Row>
+          <Row style={{ width: '100%' }}>
             <BuildTreds buildTrendsData={props} />
           </Row>
         </Container>
