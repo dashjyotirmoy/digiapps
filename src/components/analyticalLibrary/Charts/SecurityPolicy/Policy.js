@@ -21,7 +21,7 @@ function update(actionData) {
 }
 
 const Policy = (props) => {
-	console.log('ddddddddsssssssssss', props)
+
 	let actionData = [...props.cardsData];
 	let policyData = props.cardsData;
 	const [showResults, setShowResults] = React.useState(true)
@@ -55,8 +55,6 @@ const Policy = (props) => {
 			if (!tempCheckPolicy.length) {
 				tempCheckPolicy = actionData;
 			}
-			console.log('iii', tempCheckPolicy)
-			// policyData=tempCheckPolicy;
 			setPolicyData(tempCheckPolicy);
 		}
 	}
@@ -66,13 +64,7 @@ const Policy = (props) => {
 		<React.Fragment>
 			<Card
 				style={{ color: '#f5f5f5', background: '#232D3B' }}
-			>
-				{/* <Card.Header
-					style={{ color: '#E6E6E6' }}
-				>
-					Policy Violation
-        </Card.Header> */}
-				<Card.Body>
+			>				<Card.Body>
 					<Card.Title>
 						Policies
           </Card.Title>

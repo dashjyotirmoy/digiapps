@@ -101,7 +101,7 @@ const Sec = props => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <p>Policy Violations</p>
+                        <h6>Policy Violations</h6>
                       </Col>
                       <Col sm={4} className="iconend">
                         <DocumentCancelSvg />
@@ -127,7 +127,7 @@ const Sec = props => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <p>Per Vulnerability Alert</p>
+                        <h6>Per Vulnerability Alert</h6>
                       </Col>
                       <Col sm={4} className="iconend"> <InsecureProtectionSvg /></Col>
                     </Row>
@@ -157,7 +157,7 @@ const Sec = props => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <p>Per Library Alert</p>
+                        <h6>Per Library Alert</h6>
                       </Col>
                       <Col sm={4} className="iconend"><LibrarySvg /></Col>
                     </Row>
@@ -185,7 +185,7 @@ const Sec = props => {
             <Row className="mt-5">
               <Col >
                 <Card.Body className="bg card-height">
-                  <p>Vulnerable Projects</p>
+                  <h6>Vulnerable Projects</h6>
                   <Card.Body>
                     <div className="wrap">
                       <table className="table table-hover table-dark">

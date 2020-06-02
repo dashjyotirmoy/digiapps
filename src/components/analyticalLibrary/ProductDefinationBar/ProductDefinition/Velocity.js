@@ -3,26 +3,42 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
-import { chartDataDispatch } from "../../../../store/actions/chartData";
+import { chartDataDispatch, velocityProjectDataDispatch, velocityBuildDataDispatch, velocityRepoDropValDispatch } from "../../../../store/actions/chartData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronDown
+} from "@fortawesome/free-solid-svg-icons";
 import VelocityTrend from "../../Charts/VelocityTrends/VelocityTrend";
 import SprintBurndown from "../../Charts/SprintBurnDown/SprintBurnDown";
 import Spinner from "../../Spinner/Spinner";
 import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
 import { translations } from "../../Translations/Translations";
 import Layout from "../../../../utility/layoutManager/layoutManager";
+import { Row, Col, Button } from "react-bootstrap";
+import Dropdown from "../../Dropdown/Dropdown";
+import VelocityBuild from './VelocityBuild';
 
 class Velocity extends Component {
   state = {
     charts: [],
+    velocityBuildData: [],
+    showbutton: true,
+    showDropdown: false,
     layout: {
       lg: [],
       md: []
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+    // dropData: [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_month", name: "Last 3 Months" }],
     gridBreakpoints: { lg: 1200, md: 768, sm: 576, xs: 480, xxs: 0 },
-    show: true
+    show: true,
+    selectedRepo: "",
+    codeActive: true,
+    buildActive: false,
+    componentType: "velocity",
+    repoData: []
   };
 
   //function to remove a chart component from the grid layout
@@ -156,8 +172,89 @@ class Velocity extends Component {
   componentDidUpdate() {
     if (this.state.all_data) {
       this.fetchChartsData();
+      this.setDefaultData();
     }
   }
+
+  setDefaultData() {
+    // let type;
+    this.props
+      .velocityProjectDataDispatch(this.props.projId)
+      .then(item => {
+        if (this.props.velocityProjectData.jobDetailDtoList.length > 0) {
+          this.setRepository(this.props.velocityProjectData);
+
+          this.setState({
+            show: false
+          });
+          // if (this.state.selectedRepo === "") {
+          //   type = this.setRawObjects(this.props.velocityProjectData);
+          //   this.createCharts(this.createChartObject(type));
+          // }
+        }
+        else {
+          this.props.resetProjectRepoDispatch(
+            // this.props.securityProjectData.projects
+          );
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  markSelected = (prodList, id) => {
+    const resetList = this.resetSelect(prodList);
+    let selectedIndex = 0;
+    const selectedParamList = resetList.map((ele, index) => {
+      if (ele.jobId === id) {
+        selectedIndex = index;
+        return ele;
+      }
+      return ele;
+    });
+    return {
+      list: selectedParamList,
+      selectedIndex: selectedIndex
+    };
+  };
+
+  resetSelect = prodList => {
+    const defaultList = prodList.map(ele => {
+      return ele;
+    });
+    return defaultList;
+  };
+
+  setRepository = res => {
+    const repositoryData = res.jobDetailDtoList;
+    if (repositoryData !== null) {
+      const { list } = this.markSelected(
+        repositoryData,
+        repositoryData[0].jobId
+      );
+      const repoDetails = list.map(ele => {
+        return {
+          id: ele.jobId,
+          projectName: ele.jobName
+        };
+      });
+
+      // repoDetails.unshift({id: "selectProject", projectName: "select Project"});
+      this.setState({
+        repoData: repoDetails,
+        selectedRepo: ""
+      });
+
+      this.props.velocityRepoDropValDispatch("");
+    }  else {
+      this.setState({
+        repoData: [],
+        selectedRepo: "",
+      });
+      this.props.velocityRepoDropValDispatch("");
+    }
+  };
 
   //function to fetch charts data
 
@@ -189,13 +286,118 @@ class Velocity extends Component {
       });
   };
 
+  handleRepoChange = repoID => {
+    this.updateRepository(repoID);
+  };
+
+  updateRepository = (repoId) => {
+    const { list, selectedIndex } = this.markSelected(
+      this.props.velocityProjectData.jobDetailDtoList,
+      repoId
+    );
+    const repoDetails = list.map((ele) => {
+      return {
+        id: ele.jobId,
+        projectName: ele.jobName,
+      };
+    });
+    this.setState({
+      selectedRepo: repoDetails[selectedIndex].projectName,
+      selectedRepoKey: repoDetails[selectedIndex].id,
+    });
+    this.props.velocityRepoDropValDispatch(repoDetails[selectedIndex].projectName);
+    // if (repoId !== "selectProject") {
+      this.props.velocityBuildDataDispatch(this.props.projId, repoId)
+      .then(() => { this.setVelocityBuildData(this.props.velocityBuildData) });
+  };
+
+  setCode = () => {
+    this.setState({
+      componentType: "velocity",
+      buildActive: false,
+      showDropdown: false,
+      codeActive: true
+    });
+  }
+
+  setBuild = () => {
+      this.setState({
+        buildActive: true,
+        showDropdown: true,
+        componentType:"VelocityBuild",
+        codeActive: false
+      });
+  }
+
+  setVelocityBuildData = (rawData) => {
+    this.setState({
+      velocityBuildData: rawData,
+    })
+  }
+
+
   render() {
     if (this.state.show) {
       return <Spinner show="true" />;
     } else {
       return (
         <React.Fragment>
-          {this.state.charts.length > 0 ? (
+          <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start">
+          {this.state.showDropdown ? (
+          <Col md={2}>
+              <Dropdown
+                listData={this.state.repoData}
+                direction="down"
+                onSelectDelegate={this.handleRepoChange}
+              >
+                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                  <Col
+                    sm={10}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    className="d-flex align-item-center justify-content-center"
+                  >
+                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                      {this.state.selectedRepo
+                        ? this.state.selectedRepo
+                        : "Select Project"}
+                    </p>
+                  </Col>
+                  <Col
+                    sm={2}
+                    md={2}
+                    g={2}
+                    xl={2}
+                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </Col>
+                </Row>
+              </Dropdown>
+            </Col>
+               ) : null}
+            <Col md={8}>
+              <span>
+                {this.state.showbutton ? (
+                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>Overview</Button>
+                  //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
+                ) : null}
+              </span>
+
+              <span className="ml-3">
+                {this.state.showbutton ? (
+                  <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>Build</Button>
+                  //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
+                ) : null}
+              </span>
+            </Col>
+            {/* {this.state.buildActive ? ( */}
+            
+          {/* ) : null} */}
+
+          </Row>
+          {this.state.charts.length > 0 && this.state.componentType === "velocity"? (
             <Grid
               chartData={this.state.charts}
               layouts={this.state.layout}
@@ -203,7 +405,10 @@ class Velocity extends Component {
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
             />
-          ) : null}
+          ) : null} */}
+          {this.state.componentType === "VelocityBuild"? (
+            <VelocityBuild cardsData={this.state.velocityBuildData}/>
+            ) : null}
         </React.Fragment>
       );
     }
@@ -219,15 +424,17 @@ const mapStateToProps = state => {
     projId: state.productDetails.currentProject.projectDetails.id,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
     teamId: state.productDetails.currentSprint.teamId,
-    organization:
-      state.productDetails.currentProject.projectDetails.organization
+    currentRepo: state.chartData.currentRepo,
+    velocityBuildData: state.chartData.velocityBuildDetails,
+    velocityProjectData: state.chartData.velocityProjectDetails,
+    organization: state.productDetails.currentProject.projectDetails.organization
   };
 };
 
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ chartDataDispatch }, dispatch);
+  return bindActionCreators({ chartDataDispatch, velocityProjectDataDispatch, velocityBuildDataDispatch, velocityRepoDropValDispatch }, dispatch);
 };
 
 //Connect react component to redux

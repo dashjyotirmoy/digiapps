@@ -3,6 +3,7 @@ import * as actionType from "../actions/actionTypes";
 const initialState = {
   currentTab: "",
   chartType: "",
+  currentRepo: "",
   currentChartData: {
     chartDetails: {},
     chartDataReceived: false
@@ -19,6 +20,21 @@ const chartReducer = (state = initialState, action) => {
       return {
         ...state,
         chartType: action.payload.chartType
+      };
+      case actionType.SET_CURRENT_REPO:
+        return {
+          ...state,
+          currentRepo: action.payload.currentRepo
+        };
+    case actionType.SET_VELOCITY_BUILD_DETAILS:
+      return {
+        ...state,
+        velocityBuildDetails: action.payload.velocityBuildDetails
+      };
+    case actionType.SET_VELOCITY_PROJECT_DETAILS:
+      return {
+        ...state,
+        velocityProjectDetails: action.payload.velocityProjectDetails
       };
     case actionType.SET_CHARTS_DETAILS:
       return {

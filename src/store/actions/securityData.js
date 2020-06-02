@@ -74,7 +74,6 @@ export const securityPolicyDataDispatch = (projectId, repoId) =>
   async dispatch => {
     try {
       const response = await api.getSecurityMonthAlertData(projectId, repoId, filterType);
-      console.log('eeeeeeeeedddddddddddccccccccc', response);
       dispatch({
         type: actionTypes.SET_SECURITY_MONTH_ALERT_DETAILS,
         payload: {

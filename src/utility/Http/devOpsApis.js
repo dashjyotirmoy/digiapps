@@ -52,6 +52,12 @@ const getSecurityProjectData = (projectId) => {
   );
 };
 
+const getVelocityProjectData = (projectId) => {
+  return devovOpsApi.get(
+    `/build/${projectId}/jobs`
+  );
+};
+
 const getSecurityRepoData = (projectId, repoId) => {
   return devovOpsApi.get(
     `/widget/security-insights/repos?productId=${projectId}&projectId=${repoId}`
@@ -70,6 +76,18 @@ const getSecurityAlertData = (projectId, repoId) => {
   );
 }
 
+const getVelocityBuildData = (projectId, repoId) => {
+  return devovOpsApi.get(
+    `/build/${projectId}/build-trend?projectId=${repoId}`
+  );
+}
+
+const getQualityBuildData = (projectId, repoId) => {
+  return devovOpsApi.get(
+    `/build/${projectId}/build-metrics?projectId=${repoId}`
+  );
+}
+
 const getSecurityMonthAlertData = (projectId, repoId, filtertype) => {
   return devovOpsApi.get(
     `/widget/security-insights/alerts?productId=${projectId}&projectId=${repoId}&filter=${filtertype}`
@@ -78,6 +96,9 @@ const getSecurityMonthAlertData = (projectId, repoId, filtertype) => {
 
 export default {
   getVelocityData,
+  getQualityBuildData,
+  getVelocityBuildData,
+  getVelocityProjectData,
   getExecInsightsData,
   getProjectInsightsData,
   getSprintInsightsData,

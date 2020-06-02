@@ -39,8 +39,7 @@ const App = props => {
     lowCount = showAlertData
       && showAlertData.perVulnerabilityAlert
       && showAlertData.perVulnerabilityAlert.filter(data => data.severity === 'LOW');
-  // }
-  // console.log('fffffffssssssssss', mediumCount, highCount, lowCount);
+  
 
   useEffect(() => {
     //  dispatch(props.cardsData);
@@ -63,13 +62,13 @@ const App = props => {
                 </Col>
                 <Col sm={3} className="pl-0">
                   <Badge style={{ color: "#222222", background: "#B65355" }}>
-                    {highCount.length}
+                    {highCount && highCount.length}
                   </Badge>{" "}
                   <Badge style={{ color: "#222222", background: "#C0792A" }}>
-                    {mediumCount.length}
+                    {mediumCount && mediumCount.length}
                   </Badge>{" "}
                   <Badge style={{ color: '#222222', background: '#C2B12C' }}>
-                    {lowCount.length}
+                    {lowCount && lowCount.length}
                   </Badge>{" "}
                 </Col>
               </Row>

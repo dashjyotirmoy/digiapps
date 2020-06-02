@@ -403,6 +403,8 @@ class QualityGraph {
     return options;
   }
 
+
+
   //function that creates data for Bar chart
   generateBar(options) {
     let critical_value = [],
