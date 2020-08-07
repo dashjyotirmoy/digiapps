@@ -3,7 +3,7 @@
   "jest": {
     "verbose": true
   },
-  "homepage": "https://digital-insight-dev.eastus.cloudapp.azure.com/digitalops/",
+  "homepage": "https://fsdet-digitalctp.eastus.cloudapp.azure.com/digitalops/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
