@@ -127,7 +127,7 @@ const Sec = props => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <h6>Per Vulnerability Alert</h6>
+                        <h6>Unique Vulnerabilities</h6>
                       </Col>
                       <Col sm={4} className="iconend"> <InsecureProtectionSvg /></Col>
                     </Row>
@@ -157,7 +157,7 @@ const Sec = props => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <h6>Per Library Alert</h6>
+                        <h6>Actionable Libraries</h6>
                       </Col>
                       <Col sm={4} className="iconend"><LibrarySvg /></Col>
                     </Row>

@@ -381,45 +381,26 @@ class ProductInfoBar extends Component {
           >
             <Row className="h-100  p-0 m-0">
               <Col
-                xl={1}
-                lg={1}
+                xl={2}
+                lg={2}
                 md={2}
                 className="d-flex justify-content-center align-items-center p-0"
               >
                 <div className="w-100">
-                  <p className=" m-0 text-center text-white m-0 font-title">
+                  <p className=" m-0 text-start text-white m-0 font-title">
                     {this.props.execDataReceived
                       ? this.props.projectList.name
                       : ""}
                   </p>
-                  <p className="font-aggegate-sub-text m-0 text-center text-white-50 m-0 width-fit-content">
+                  <p className="font-aggegate-sub-text m-0 text-start text-white-50 m-0 width-fit-content">
                     {this.props.execDataReceived
                       ? this.props.projectList.designation
                       : ""}
                   </p>
                 </div>
               </Col>
-              <Col className="h-100 pl-0" sm={12} md={5} lg={4} xl={7}>
+              <Col className="h-100 pl-0" sm={12} md={5} lg={4} xl={5}>
                 <Row className="h-100">
-                  <Col sm={2} md={2} className="prodAgg p-0 col-lg-1 col-xl-1">
-                    <Row className="h-100">
-                      <TooltipHoc
-                        info={
-                          this.state.prodAggView
-                            ? translations.prodAggViewEnable
-                            : translations.prodAggViewDisable
-                        }
-                      >
-                        <Col
-                          onClick={this.onProdAggViewClickHandler}
-                          md={12}
-                          className="m-auto d-flex justify-content-center show-cursor"
-                        >
-                          <img src={prodAggViewIcon} alt=""/>
-                        </Col>
-                      </TooltipHoc>
-                    </Row>
-                  </Col>
                   <Col
                     sm={4}
                     md={4}
@@ -518,7 +499,7 @@ class ProductInfoBar extends Component {
                   </Col>
                 </Row>
               </Col>
-              <Col sm={12} md={5} lg={7} xl={4} className="h-100">
+              <Col sm={12} md={5} lg={6} xl={5} className="h-100">
                 <Row className="h-100">
                   <Col md={7} lg={8} xl={7} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
