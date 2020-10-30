@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
-import john from "../../../content/img/johnSmith.png";
+import john from "../../../content/img/user-default.png";
 import { execAllDispatch } from "../../../store/actions/executiveInsights";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -53,7 +53,7 @@ class Header extends Component {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
               <Nav.Item>
-                <div id="user-info" className="d-inline-block mr-2">
+                {/* <div id="user-info" className="d-inline-block mr-2">
                   <p className="font-size-smaller m-0 text-left text-lg-right text-md-left text-sm-left text-xl-right">
                     <small>{this.state.userName}</small>
                   </p>
@@ -70,9 +70,17 @@ class Header extends Component {
                   id="user-info-icon"
                   className="vertical-super d-md-inline-block d-lg-inline-block d-xl-inline-block d-none "
                 >
-                  {/* <Dropdown listData={this.state.navListItem}>
+                  <Dropdown listData={this.state.navListItem}>
                     <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
-                  </Dropdown> */}
+                  </Dropdown> 
+                </div> */}
+                <div id="user-info-image" className="d-flex mr-2">
+                <p className="align-middle font-size-xs m-0 mr-2 mt-1 text-left text-lg-right text-md-right text-sm-left text-xl-right text-white-50" style={{fontWeight: 'bold'}}>
+                    {this.state.designation}
+                  </p>
+                  <div className="circle-placeholder overflow-hidden rounded-circle">
+                    <img src={john} alt="" className="h-100 w-100" />
+                  </div>
                 </div>
               </Nav.Item>
 

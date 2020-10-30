@@ -17,7 +17,22 @@ export const qualityDataDispatch = (projectId, execId) =>
       console.error(error);
     }
   };
-
+  export const qualityReleaseDataDispatch = (branchName,execId, projectId,releaseName, repoName) =>
+  //   sprintId
+  async dispatch => {
+    try {
+      const response = await api.getQualityReleaseMetricsData(branchName,execId, projectId,releaseName, repoName);
+      dispatch({
+        type: actionTypes.SET_QUALITY_RELEASE_DETAILS,
+        payload: {
+          qualityBuildReleaseDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   export const qualityBuildDataDispatch = (projectId, repoId) => 
   async dispatch => {
     try {
@@ -33,12 +48,11 @@ export const qualityDataDispatch = (projectId, execId) =>
       console.error(error);
     }
   }
-
-  export const qualityDrilledDownDataDispatch = (projectId, execId, repoId, metricsType) =>
+  export const qualityDrilledDownDataDispatch = (execId,metricsType,repoId, projectId) =>
   //   sprintId
   async dispatch => {
     try {
-      const response = await api.getQualityMetricsDrilledDownData(projectId, execId, repoId, metricsType);
+      const response = await api.getQualityMetricsDrilledDownData(execId,metricsType,repoId,projectId);
       dispatch({
         type: actionTypes.SET_QUALITY_DRILLED_DOWN_DETAILS,
         payload: {
@@ -50,12 +64,45 @@ export const qualityDataDispatch = (projectId, execId) =>
       console.error(error);
     }
   };
-
-export const repoDropValDispatch = type => dispatch => {
+  export const qualityDrilledDownDataFilterDispatch = (branchName,execId,metricsType, projectId,releaseName, repoId,repoName) =>
+  //   sprintId
+  async dispatch => {
+    try {
+      const response = await api.getQualityMetricsDrilledFilterDownData(branchName,execId,metricsType, projectId,releaseName, repoId,repoName);
+      dispatch({
+        type: actionTypes.SET_QUALITY_DRILLED_DOWN_FILTER_DETAILS,
+        payload: {
+          qualityDrilledDownFilterDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  export const repoDropValDispatch = type => dispatch => {
   dispatch({
     type: actionTypes.SET_CURRENT_REPO,
     payload: {
       currentRepo: type
     }
   });
+};
+export const insightsQuality = (
+  branchName, executiveId, projectId, repoName
+) => async dispatch => {
+  api
+    .getQualityInsightsData(branchName, executiveId, projectId, repoName)
+    .then(response => {
+      dispatch({
+        type: actionTypes.LOAD_QUALITY_DETAILS,
+        payload: {
+          qualityDetails: response.data,
+          sprintReceived: true
+        }
+      });
+    })
+    .catch(error => {
+      console.log(error.message);
+    });
 };

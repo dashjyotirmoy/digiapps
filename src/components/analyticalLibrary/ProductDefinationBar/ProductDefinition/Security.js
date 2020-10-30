@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Row, Col,Button, Container} from "react-bootstrap";
+import { Row, Col,Button, Card } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
-// import SecurityAlert from "./SecurityAlert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
@@ -9,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { repoDropValDispatchSecurity, securityProjectDataDispatch, securityRepoDataDispatch, securityPolicyDataDispatch, securityAlertDataDispatch } from '../../../../store/actions/securityData';
+import {vulnerabilityDataDispatch,repoDropValDispatchSecurity, securityProjectDataDispatch,securityReleaseDataDispatch, securityRepoDataDispatch, securityPolicyDataDispatch,securityReleasePolicyDataDispatch, securityAlertDataDispatch,securityReleaseAlertDataDispatch } from '../../../../store/actions/securityData';
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
 import Sec from '../../Charts/SecurityProject/Sec';
 import App from '../../Charts/SecurityProject/Alert'
@@ -17,7 +16,10 @@ import Spinner from "../../Spinner/Spinner";
 import Policy from '../../Charts/SecurityPolicy/Policy';
 import SecurityOnProjectSelection from '../../Charts/SecurityDropdown/SecurityOnProjSelection';
 import "../../Charts/SecurityProject/Sec.css"
-// import Button from 'react-bootstrap/Button'
+import api from "../../../../utility/Http/devOpsApis";
+import SideNavbar from "../../SideNavBar/SideNavbar";
+import {insightsSecurity} from "../../../../store/actions/securityData";
+import CardChartSecurity from "../../CardChart/CardChartSecurity";
 
 
 class Security extends Component {
@@ -40,10 +42,16 @@ class Security extends Component {
     showbutton: false,
     selectedRepo: "",
     repoData: [],
+    branchDropData:[],
+    releaseDropData:[],
+    selectedBranch:"",
+    selectedRelease:"",
     componentType: "Product",
     alertActive:false,
     policyActive:false,
-   
+    selectedRepoId: '',
+    showInsights:false,
+    filterStatus: 'Project',   
   };
 
   removeChartComponent = (chartIndex) => {
@@ -54,37 +62,40 @@ class Security extends Component {
     this.setState({
       all_data: false,
       showbutton: false,
-      charts: []
+      //charts: [],
+      showInsights:false
     });
     this.setDefaultData();
   }
 
-  setDefaultData() {
-    let type;
-    this.props
-      .securityProjectDataDispatch(this.props.projectID)
-      .then(item => {
-        if (this.props.securityProjectData.projectDetail.length > 0) {
-          this.setRepository(this.props.securityProjectData);
+    setDefaultData() {
+      let type;
+      this.props.vulnerabilityDataDispatch(this.props.projectID)
 
-          this.setState({
-            show: false
-          });
-          if (this.state.selectedRepo === "") {
-            type = this.setRawObjects(this.props.securityProjectData);
-            this.createCharts(this.createChartObject(type));
+      this.props
+        .securityProjectDataDispatch(this.props.projectID)
+        .then(item => {
+          if (this.props.securityProjectData.projectDetail.length > 0) {
+            this.setRepository(this.props.securityProjectData);
+
+            this.setState({
+              show: false,
+            });
+            if (this.state.selectedRepo === "") {
+              type = this.setRawObjects(this.props.securityProjectData);
+              this.createCharts(this.createChartObject(type));
+            }
           }
-        }
-        else {
-          this.props.resetProjectRepoDispatch(
-            this.props.securityProjectData.projects
-          );
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
+          else {
+            this.props.resetProjectRepoDispatch(
+              this.props.securityProjectData.projects
+            );
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
 
   setRepository = res => {
     const repositoryData = res.projectDetail;
@@ -103,18 +114,113 @@ class Security extends Component {
       // repoDetails.unshift({id: "selectProject", projectName: "select Project"});
       this.setState({
         repoData: repoDetails,
-        selectedRepo: ""
+        selectedRepo: "",
+        selectedRelease:"",
+        selectedBranch:"",
       });
 
       this.props.repoDropValDispatchSecurity("");
     }
   };
-
+  releaseOnSelectHandler= (relaseId, evtKey) => {
+   this.updateRelease(relaseId);
+  };
+  branchOnSelectHandler= (branchId, evtKey) => {
+    this.updateBranch(branchId);
+  };
+  setBranch = (res) => {
+    const branch = res.data;
+    const { list } = this.markSelectedbranch(branch, branch.id);
+    const branchDetail = list.map(ele => {
+      return {
+        id: ele.id,
+        projectName: ele.branchName
+      };
+    });
+    this.setState({
+     branchDropData: branchDetail,
+      // selectedBranch: branchDetail[selectedIndex].projectName
+      selectedBranch: '',
+      selectedRelease:'',
+      releaseDropData:[],
+      showInsights:false
+    });
+   };
+  updateBranch = branchId => {
+    const branchList = [...this.state.branchDropData];
+    const { list, selectedIndex } = this.markSelectedbranch(branchList, branchId);
+    const branchDetail = list.map(ele => {
+      return {
+        id: ele.id,
+        projectName: ele.projectName
+      };
+    });
+    this.setState({
+      branchDropData: branchDetail,
+      selectedBranch: branchDetail[selectedIndex].projectName,
+      showInsights:true
+    });
+    this.getReleaseDetails(branchDetail[selectedIndex].projectName,this.props.projectID, this.state.selectedRepo);
+    this.props.insightsSecurity(branchDetail[selectedIndex].projectName, this.props.projectID,this.state.selectedRepo);
+    
+  };
+  setRelease = (res) => {
+    const release = res.data;
+    
+      const { list} = this.markSelectedbranch(release, release.id);
+      const releaseDetail = list.map(ele => {
+        return {
+          id: ele.id,
+          projectName: ele.releaseNumber
+        };
+      });
+      if(release.length!==0){
+      this.setState({
+       releaseDropData: releaseDetail,
+        // selectedRelease: releaseDetail[selectedIndex].projectName
+        selectedRelease:'',
+        filterStatus: "Release"
+      });
+    }
+    else{
+      this.setState({
+        releaseDropData: [],
+        selectedRelease: ''
+       });
+    }
+   };
+   updateRelease = releaseId => {debugger
+    const releaseList = [...this.state.releaseDropData];
+    const { list, selectedIndex } = this.markSelectedbranch(releaseList, releaseId);
+    const releaseDetail = list.map(ele => {
+      return {
+        id: ele.id,
+        projectName: ele.projectName
+      };
+    });
+    this.setState({
+      releaseDropData: releaseDetail,
+      selectedRelease: releaseDetail[selectedIndex].projectName,
+      filterStatus: "Release",
+      alertActive:false,
+      policyActive:false,
+    });
+    this.props.securityReleaseDataDispatch(this.state.selectedBranch,this.props.projectID, this.state.selectedRepoId,releaseDetail[selectedIndex].projectName, this.state.selectedRepo) 
+      .then(() => { this.updateReleaseSecurityData(releaseId, selectedIndex) });  
+  };
+  getReleaseDetails = (branchName,projectID, projName) => {
+    api
+      .getReleaseDropdownInsight(branchName,projectID, projName)
+      .then(this.setRelease)
+      .catch(error => {
+        console.error(error);
+      });
+  };
   markSelected = (prodList, id) => {
     const resetList = this.resetSelect(prodList);
     let selectedIndex = 0;
     const selectedParamList = resetList.map((ele, index) => {
-      if (ele.projId === id) {
+      if (ele.projId == id) {
         selectedIndex = index;
         return ele;
       }
@@ -125,7 +231,20 @@ class Security extends Component {
       selectedIndex: selectedIndex
     };
   };
-
+  markSelectedbranch = (prodList, id) => {
+    const resetList = this.resetSelect(prodList);
+    var selectedIndex = 0;
+    const selectedParamList = resetList.map((ele, index) => {
+      if (ele.id === Number(id)) {
+        selectedIndex = index;
+      }
+      return ele;
+    });
+    return {
+      list: selectedParamList,
+      selectedIndex: selectedIndex
+    };
+  };
   resetSelect = prodList => {
     const defaultList = prodList.map(ele => {
       return ele;
@@ -138,7 +257,9 @@ class Security extends Component {
       productPolicyViolationsCount: [
         { name: rawData.name },
         { title: "Policy Violations" },
-        rawData.policyViolationsCount
+        rawData.policyViolationsCount,
+        rawData.policyViolationMajorCount,
+        rawData.policyViolationMinorCount
       ],
       productVulnerabilityAlerts: [
         { name: rawData.name },
@@ -171,7 +292,9 @@ class Security extends Component {
       productPolicyViolationsCount: [
         { name: rawData.projName },
         { title: "Policy Violations" },
-        rawData.policyViolationsCount
+        rawData.policyViolationsCount,
+        rawData.policyViolationMajorCount,
+        rawData.policyViolationMinorCount
       ],
       productVulnerabilityAlerts: [
         { name: rawData.projName },
@@ -271,7 +394,6 @@ class Security extends Component {
   };
 
   handleRepoChange = repoID => {
-    
     this.setState({
       alertActive:false,
       policyActive:false,
@@ -279,7 +401,14 @@ class Security extends Component {
   });
     this.updateRepository(repoID);
   };
-
+  getBranchDetails = (projectID, projName) => {
+    api
+      .getBranchDropdownInsight(projectID, projName)
+      .then(this.setBranch)
+      .catch(error => {
+        console.error(error);
+      });
+  };
   updateRepository = repoId => {
     const { list, selectedIndex } = this.markSelected(
       this.props.securityProjectData.projectDetail,
@@ -293,7 +422,9 @@ class Security extends Component {
     });
 
     this.setState({
-      selectedRepo: repoDetails[selectedIndex].projectName
+      selectedRepo: repoDetails[selectedIndex].projectName,
+      selectedRepoId:repoDetails[selectedIndex].id,
+      filterStatus: "Repository"
     });
 
     this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].id);
@@ -301,17 +432,18 @@ class Security extends Component {
       this.props.securityRepoDataDispatch(this.props.projectID, repoId)
       .then(() => { this.updateSecurityData(repoId, selectedIndex) });
       if (this.state.repoData[0].id !== 'selectProject') {
-        this.state.repoData.unshift({id: "selectProject", projectName: "select Project"});
+        this.state.repoData.unshift({id: "selectProject", projectName: "Select Repository"});
       }
     } else {
       this.setState({
         showbutton: false,
-        selectedRepo: ""
+        selectedRepo: "",
+        filterStatus: "Project"
     });
     this.setDefaultData();
     }
     
-
+    this.getBranchDetails(this.props.projectID, repoDetails[selectedIndex].projectName);
   };
 
   updateSecurityData = (repoId, selectedIndex) => {
@@ -322,20 +454,35 @@ class Security extends Component {
 
     this.createRepoCharts(this.createChartObject(type));
   };
+  
+  updateReleaseSecurityData = (releaseId, selectedIndex) => {
+
+    const type = this.setRepoObjects(
+      this.props.securityReleaseData
+    );
+
+    this.createRepoCharts(this.createChartObject(type));
+  };
 
   setPolicy = () => {
  
     let policyCurrentState =true;
      let alertCurrentState=false;
     // const currentState = this.state.active;
+    
     this.setState({policyActive: policyCurrentState,alertActive:alertCurrentState});
+    if(this.state.selectedRepo !== '' && this.state.selectedBranch !== '' && this.state.selectedRelease !== ''){
+      this.props.securityReleasePolicyDataDispatch(this.state.selectedBranch,this.props.projectID, this.props.currentRepo,this.state.selectedRelease,this.state.selectedRepo)
+      .then(() => { this.setPolicyData(this.props.securityReleasePolicyData) });
+     }else{
      this.props.securityPolicyDataDispatch(this.props.projectID, this.props.currentRepo)
        .then(() => { this.setPolicyData(this.props.securityPolicyData) });
+     }
    }
  
    setPolicyData = (rawData) => {
      this.setState({
-       charts: rawData.policyViolations,
+       charts: rawData,
        componentType: "Policy"
      })
    }
@@ -345,8 +492,14 @@ class Security extends Component {
      let alertCurrentState =true;
       let policyCurrentState=false;
      this.setState({ alertActive: alertCurrentState,policyActive:policyCurrentState });
+     //(branchName,filterID,projectId,repoId,releaseName,repoName)
+     if(this.state.selectedRepo !== '' && this.state.selectedBranch !== '' && this.state.selectedRelease !== ''){
+      this.props.securityReleaseAlertDataDispatch(this.state.selectedBranch,"all_time",this.props.projectID, this.props.currentRepo,this.state.selectedRelease,this.state.selectedRepo)
+      .then(() => { this.setAlertData(this.props.securityReleaseAlertData) });
+     }else{
      this.props.securityAlertDataDispatch(this.props.projectID, this.props.currentRepo)
        .then(() => { this.setAlertData(this.props.securityAlertData) });
+     }
    }
  
    setAlertData = (rawData) => {
@@ -362,6 +515,7 @@ class Security extends Component {
     if (this.state.all_data) {
       this.fetchSecurityData();
     }
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -383,7 +537,7 @@ class Security extends Component {
   }
 
   render() {
-
+    let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" />
     if (this.state.show) {
       return <Spinner show="true" />;
     } else {
@@ -391,7 +545,7 @@ class Security extends Component {
         //  <div style={{ color: "white" }}>security </div>
 
         <React.Fragment>
-         
+         {this.props.securityDetails &&  this.state.showInsights?<SideNavbar  card={securityNav}/>:''}
           <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start">
      
             <Col md={2}>
@@ -399,6 +553,7 @@ class Security extends Component {
                 listData={this.state.repoData}
                 direction="down"
                 onSelectDelegate={this.handleRepoChange}
+                dropsLable="Repository"
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
                   <Col
@@ -426,44 +581,121 @@ class Security extends Component {
                 </Row>
               </Dropdown>
             </Col>
-<Col md={7}>
-            <span>
-            {this.state.showbutton ? (
-              <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>Alerts</Button>
-         
-          ) : null}
-</span>
-         
-<span className="ml-3">
-{this.state.showbutton ? (
-             <Button variant="outline-dark"  className={this.state.policyActive?"bgblue":"Alertbg"} onClick ={this.setPolicy}>Policies</Button>
-          //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
-          ) : null}
-</span>
-</Col>
-{ !this.state.policyActive?(
-  <Col md={3} className="mt-auto text-right">
-  <div>
-    <span className="mr-3">
-    <FontAwesomeIcon  className="highbg" icon={faSquare} />
-    <span style={{color:'#fff'}}>High</span>
-    </span>
-    <span className="mr-3">
-    <FontAwesomeIcon  className="mediumbg" icon={faSquare} />
-    <span style={{color:'#fff'}}>Medium</span>
-    </span>
-    <span className="mr-3">
-    <FontAwesomeIcon  className="lowbg" icon={faSquare} />
-    <span style={{color:'#fff'}}>Low</span>
-    </span>
-    </div>
-    
-    </Col>
-):<div></div>
-}
-
-
+            {this.state.selectedRepo &&
+            <Col md={2} className="pr-3">
+             <Dropdown
+                listData={this.state.branchDropData}
+                direction="down"
+                dropsLable="Branch"
+                onSelectDelegate={this.branchOnSelectHandler}
+              >
+                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                  <Col
+                    sm={10}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    className="d-flex align-item-center justify-content-center"
+                  >
+                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                      {this.state.selectedBranch? <span className=' font-weight-bold'>{this.state.selectedBranch}</span>
+                        : "Select Branch"}
+                    </p>
+                  </Col>
+                  <Col
+                    sm={2}
+                    md={2}
+                    g={2}
+                    xl={2}
+                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </Col>
+                </Row>
+              </Dropdown>
+            </Col>
+            }
+            {this.state.selectedBranch &&
+            <Col md={2} className="pr-3">
+            <Dropdown
+                listData={this.state.releaseDropData}
+                direction="down"
+                dropsLable="Release"
+                onSelectDelegate={this.releaseOnSelectHandler}
+              >
+                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                  <Col
+                    sm={10}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    className="d-flex align-item-center justify-content-center"
+                  >
+                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                      {this.state.selectedRelease? <span className=' font-weight-bold'>{this.state.selectedRelease}</span>
+                        : "Select Release"}
+                    </p>
+                  </Col>
+                  <Col
+                    sm={2}
+                    md={2}
+                    g={2}
+                    xl={2}
+                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </Col>
+                </Row>
+              </Dropdown>
+            </Col>
+              }
+              <Col md={3} className="mt-auto">
+              <p className="font-size-small m-0 text-white" >You are viewing data at <b>{this.state.filterStatus}</b> level</p></Col>
           </Row>
+          <Row className="my-2 no-gutters px-3">
+            <Col>
+              <span>
+              {this.state.showbutton ? (
+                <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>Alerts</Button>
+          
+                      ) : null}
+              </span>
+                      
+              <span className="ml-3">
+              {this.state.showbutton ? (
+                          <Button variant="outline-dark"  className={this.state.policyActive?"bgblue":"Alertbg"} onClick ={this.setPolicy}>Policies</Button>
+                        //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
+                        ) : null}
+              </span>
+            </Col>
+            { !this.state.policyActive?(
+              <div className="text-right">               
+              <span className="font-size-small mr-2">
+                <FontAwesomeIcon  className="major" icon={faSquare} />
+                <span className='text-white'>Major</span>
+                </span>
+                <span className="font-size-small mr-3">
+                <FontAwesomeIcon  className="minor" icon={faSquare} />
+                <span className='text-white'>Minor</span>
+                </span>
+                <span className="font-size-small mr-2">
+                <FontAwesomeIcon  className="highbg" icon={faSquare} />
+                <span className='text-white'>High</span>
+                </span>
+                <span className="font-size-small mr-2">
+                <FontAwesomeIcon  className="mediumbg" icon={faSquare} />
+                <span className='text-white'>Medium</span>
+                </span>
+                <span className="font-size-small mr-2i">
+                <FontAwesomeIcon  className="lowbg" icon={faSquare} />
+                <span className='text-white'>Low</span>
+                </span>                  
+                </div>
+            ):<div></div>
+            }
+          </Row>
+
+
           {this.state.charts.length && this.state.componentType === "Product" ? (
             <Sec cardsData={this.state.charts} />
           ) : null}
@@ -490,11 +722,16 @@ const mapStateToProps = state => {
     currentExecId: state.execData.executiveId,
     securityProjectData: state.securityData.securityProjectDetails,
     securityRepoData: state.securityData.securityRepoDetails,
+    securityReleaseData: state.securityData.securityReleaseDetails,
     securityPolicyData: state.securityData.securityPolicyDetails,
+    securityReleasePolicyData: state.securityData.securityReleasePolicyDetails,
     securityAlertData: state.securityData.securityAlertDetails,
+    securityReleaseAlertData: state.securityData.securityReleaseAlertDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.securityData.currentRepo,
-    sprintId: state.productDetails.currentSprint.sprintInfo.id
+   // sprintId: state.productDetails.currentSprint.sprintInfo.id,
+    securityDetails: state.securityData.securityDetails,
+    vulnerabilitytDetails:state.securityData.vulnerabilitytDetails
   };
 };
 
@@ -502,7 +739,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { securityProjectDataDispatch, resetProjectRepoDispatch, repoDropValDispatchSecurity, securityRepoDataDispatch, securityPolicyDataDispatch, securityAlertDataDispatch },
+    { vulnerabilityDataDispatch,securityProjectDataDispatch, resetProjectRepoDispatch,securityReleaseDataDispatch, repoDropValDispatchSecurity, securityRepoDataDispatch, insightsSecurity,securityPolicyDataDispatch,securityReleasePolicyDataDispatch, securityAlertDataDispatch,securityReleaseAlertDataDispatch },
     dispatch
   );
 };

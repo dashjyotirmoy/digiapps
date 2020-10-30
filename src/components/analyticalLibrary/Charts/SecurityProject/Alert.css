@@ -32,7 +32,7 @@
  .sevbadge{
   display: inline-block!important;
   color: rgb(34, 34, 34);
-  background: rgb(182, 83, 85);
+  background: #FF4136;
    padding: 10px;
    margin-left: 1rem;
  }
@@ -40,16 +40,23 @@
  .sevbadge2{
   display: inline-block!important;
   color: rgb(34, 34, 34);
-  background: rgb(192, 121, 42);
+  background: #FF9831;
    padding: 10px;
    margin-left: 1rem;
  }
-
  .sevbadge1{
   display: inline-block!important;
   color: rgb(34, 34, 34);
-  background: rgb(182, 83, 85);
-   padding: 6px;
+  background: #C981B2;
+  padding: 6px;
+  margin-top: 5px;
+   border-radius: 50%;
+ }
+ .sevbadge-minor{
+  display: inline-block!important;
+  color: rgb(34, 34, 34);
+  background: #42C9C2;
+  padding: 6px;
   margin-top: 5px;
    border-radius: 50%;
  }

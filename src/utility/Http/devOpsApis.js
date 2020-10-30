@@ -63,10 +63,19 @@ const getSecurityRepoData = (projectId, repoId) => {
     `/widget/security-insights/repos?productId=${projectId}&projectId=${repoId}`
   );
 };
-
+const getSecurityReleaseData = (branchName,projectId, repoId, releaseName, repoName) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/repos?branchName=${branchName}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
+  );
+};
 const getSecurityPolicyData = (projectId, repoId) => {
   return devovOpsApi.get(
     `/widget/security-insights/policies?productId=${projectId}&projectId=${repoId}`
+  );
+}
+const getSecurityReleasePolicyData = (branchName,projectId,repoId,releaseName,repoName) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/policies?branchName=${branchName}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
   );
 }
 
@@ -75,7 +84,11 @@ const getSecurityAlertData = (projectId, repoId) => {
     `/widget/security-insights/alerts?productId=${projectId}&projectId=${repoId}`
   );
 }
-
+const getSecurityReleaseAlertData = (branchName,filterID,projectId,repoId,releaseName,repoName) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/alerts?branchName=${branchName}&filter=${filterID}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
+  );
+}
 const getVelocityBuildData = (projectId, repoId) => {
   return devovOpsApi.get(
     `/build/${projectId}/build-trend?projectId=${repoId}`
@@ -108,6 +121,9 @@ const getProjectDropdownInsight = (projectId) => {
 const getBranchDropdownInsight = (projectId,repoName) => {
   return devovOpsApi.get(`/common/dropdown/branch?productId=${projectId}&repositoryName=${repoName}`);
 }
+const getReleaseDropdownInsight = (branchName,projectId,repoName) => {
+  return devovOpsApi.get(`/common/dropdown/release?branchName=${branchName}&productId=${projectId}&repositoryName=${repoName}`);
+};
 const getSummaryData = (execId) => {
   return devovOpsApi.get(
     `/summary/velocity?executiveId=${execId}`
@@ -135,5 +151,9 @@ export default {
   getQualityInsightsData,
   getProjectDropdownInsight,
   getBranchDropdownInsight,
-  getSummaryData
+  getReleaseDropdownInsight,
+  getSummaryData,
+  getSecurityReleaseData,
+  getSecurityReleaseAlertData,
+  getSecurityReleasePolicyData
 };
