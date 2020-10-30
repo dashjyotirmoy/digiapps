@@ -426,7 +426,7 @@ class Security extends Component {
                 </Row>
               </Dropdown>
             </Col>
-<Col md={8}>
+<Col md={7}>
             <span>
             {this.state.showbutton ? (
               <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>Alerts</Button>
@@ -442,7 +442,7 @@ class Security extends Component {
 </span>
 </Col>
 { !this.state.policyActive?(
-  <Col md={2} className="pt-3">
+  <Col md={3} className="mt-auto text-right">
   <div>
     <span className="mr-3">
     <FontAwesomeIcon  className="highbg" icon={faSquare} />

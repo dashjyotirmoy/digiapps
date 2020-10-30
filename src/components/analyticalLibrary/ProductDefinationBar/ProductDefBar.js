@@ -63,6 +63,15 @@ class ProductDefBar extends Component {
                     className="border-0"
                   >
                     <Tab
+                      eventKey="overview"
+                      title={
+                        <span className="font-aggegate-sub-text font-aggegate-sub-text-clr">
+                          {" "}
+                          Overview
+                        </span>
+                      }
+                    ></Tab>
+                    <Tab
                       eventKey="security"
                       title={
                         <span className="font-aggegate-sub-text">

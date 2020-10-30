@@ -3,6 +3,9 @@ import Quality from "../../components/analyticalLibrary/ProductDefinationBar/Pro
 import Customer from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Customer";
 import Insights from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Insights";
 import Security from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Security";
+import Overview from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Overview";
+
+
 
 export const routes = [
   {
@@ -24,5 +27,9 @@ export const routes = [
   {
     path: "/insights",
     component: Insights
-  }
+  },
+  {
+    path: "/overview",
+    component: Overview
+  },
 ];
