@@ -21,6 +21,9 @@ import { qualityDataDispatch } from "../../../store/actions/qualityData";
 import Spinner from "../../analyticalLibrary/Spinner/Spinner";
 import { execInsightsDispatch } from "../../../store/actions/executiveInsights";
 import { repoDropValDispatch } from "../../../store/actions/qualityData";
+import {
+  insightsVelocity
+} from "../../../store/actions/sprintInsights";
 let productMetrics;
 class ProductInfoBar extends Component {
   state = {
@@ -137,6 +140,7 @@ class ProductInfoBar extends Component {
       selectedTeamId: teamDetails[teamData.selectedIndex].id,
       show: false
     });
+    this.props.insightsVelocity(this.props.executiveId, this.props.projectID, teamDetails[teamData.selectedIndex].id);
     this.setSprint(
       teams,
       teamDetails[teamData.selectedIndex].id,
@@ -161,6 +165,7 @@ class ProductInfoBar extends Component {
       selectedTeam: teamDetail[selectedIndex].projectName
     });
     this.setSprint(teams, teams[selectedIndex].id, selectedIndex, true);
+    this.props.insightsVelocity(this.props.executiveId, this.props.projectID, teams[selectedIndex].id);
   };
 
   //method to set current sprint value and set sprint details
@@ -374,6 +379,7 @@ class ProductInfoBar extends Component {
       return <Spinner show={this.state.show} />;
     } else {
       return (
+        <>{!window.location.href.includes("/overview") ?
         <div className="h-10 summary-view">
           <Container
             fluid
@@ -434,10 +440,10 @@ class ProductInfoBar extends Component {
                     ) : null}
                   </Col>
                   <Col
-                    sm={3}
-                    md={3}
-                    lg={3}
-                    xl={3}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                    xl={4}
                     className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
                   >
                     {this.props.projectListReceived ? (
@@ -499,7 +505,7 @@ class ProductInfoBar extends Component {
                   </Col>
                 </Row>
               </Col>
-              <Col sm={12} md={5} lg={6} xl={5} className="h-100">
+              <Col sm={12} md={5} lg={6} xl={5} className="h-100 p-0">
                 <Row className="h-100">
                   <Col md={7} lg={8} xl={7} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
@@ -512,12 +518,12 @@ class ProductInfoBar extends Component {
                         flex-column h-100 justify-content-center max-w-18 px-1 
                         py-0  w-auto "
                             >
-                              <p className="font-metric-main-text m-0 text-left text-black m-0">
+                              <p className="font-metric-main-text m-0 text-center text-black m-0">
                                 <span className="text-white">
                                   {item.value}{" "}
                                 </span>
                               </p>
-                              <p className="font-metric-sub-text m-0 text-left text-white-50 m-0">
+                              <p className="font-metric-sub-text m-0 text-center text-white-50 m-0">
                                 {item.name}
                               </p>
                             </div>
@@ -609,7 +615,7 @@ class ProductInfoBar extends Component {
               </Col>
             </Row>
           </Container>
-        </div>
+          </div>: null }</>
       );
     }
   }
@@ -636,7 +642,8 @@ const mapStateToProps = state => {
     selectedTab: state.chartData.currentTab,
     resetTab: state.qualityData.resetTab,
     execDataReceived: state.execData.currentExecutiveInfo.executiveDataReceived,
-    metricsData: state.execData.currentExecutiveInfo.executiveData
+    metricsData: state.execData.currentExecutiveInfo.executiveData,
+    velocityCharts: state.chartData.currentChartData.chartDetails,
   };
 };
 
@@ -650,7 +657,8 @@ const mapDispatchToProps = dispatch => {
       repoDropValDispatch,
       resetProjectRepoDispatch,
       qualityDataDispatch,
-      execInsightsDispatch
+      execInsightsDispatch,
+      insightsVelocity
     },
     dispatch
   );

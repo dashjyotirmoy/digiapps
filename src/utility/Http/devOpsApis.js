@@ -93,6 +93,26 @@ const getSecurityMonthAlertData = (projectId, repoId, filtertype) => {
     `/widget/security-insights/alerts?productId=${projectId}&projectId=${repoId}&filter=${filtertype}`
   );
 }
+const getSecurityInsightsData = (branchName,projectId,repoName) => {
+  return devovOpsApi.get(`/insights/security?branchName=${branchName}&productId=${projectId}&repositoryName=${repoName}`);
+}
+const getVelocityInsightsData = (execId,projectId,teamID) => {
+  return devovOpsApi.get(`/insights/velocity?executiveId=${execId}&productId=${projectId}&teamId=${teamID}`);
+}
+const getQualityInsightsData = (branchName,execId,projectId,repoName) => {
+  return devovOpsApi.get(`/insights/quality?branchName=${branchName}&executiveId=${execId}&productId=${projectId}&repositoryName=${repoName}`);
+}
+const getProjectDropdownInsight = (projectId) => {
+  return devovOpsApi.get(`/common/dropdown/repository?productId=${projectId}`);
+}
+const getBranchDropdownInsight = (projectId,repoName) => {
+  return devovOpsApi.get(`/common/dropdown/branch?productId=${projectId}&repositoryName=${repoName}`);
+}
+const getSummaryData = (execId) => {
+  return devovOpsApi.get(
+    `/summary/velocity?executiveId=${execId}`
+  );
+}
 
 export default {
   getVelocityData,
@@ -109,5 +129,11 @@ export default {
   getSecurityMonthAlertData,
   getSecurityRepoData,
   getSecurityPolicyData,
-  getSecurityAlertData
+  getSecurityAlertData,
+  getSecurityInsightsData,
+  getVelocityInsightsData,
+  getQualityInsightsData,
+  getProjectDropdownInsight,
+  getBranchDropdownInsight,
+  getSummaryData
 };

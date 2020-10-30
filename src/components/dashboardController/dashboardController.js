@@ -56,7 +56,8 @@ const DashboardController = props => {
       {componentArray}
       <Switch>
         <Route path={"/:productSelected"} component={DefinitionLoader} />
-        <Redirect exact from={"/"} to={`/security`} />
+        {/* <Redirect exact from={"/"} to={`/security`} /> */}
+        <Route  path="*" render={()=>(<Redirect to="/overview"/>)} /> 
       </Switch>
     </BrowserRouter>
   );
