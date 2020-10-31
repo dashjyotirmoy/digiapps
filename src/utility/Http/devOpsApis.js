@@ -37,10 +37,19 @@ const getQualityMetricsData = (execId, projectId) => {
     `/widget/quality-insights?executiveId=${execId}&projectId=${projectId}`
   );
 };
-
-const getQualityMetricsDrilledDownData = (execId, projectId, repoId, metricsType) => {
+const getQualityReleaseMetricsData = (branchName,execId, projectId,releaseName, repoName) => {
   return devovOpsApi.get(
-    `/widget/quality-insights/charts?executiveId=${execId} &projectId=${projectId}&repoId=${repoId}&metric=${metricsType}`
+    `/widget/quality-insights?branchName=${branchName}&executiveId=${execId}&projectId=${projectId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
+  );
+};
+const getQualityMetricsDrilledDownData = (execId,metricsType,repoId, projectId) => {
+  return devovOpsApi.get(
+    `/widget/quality-insights/charts?executiveId=${execId}&metric=${metricsType}&repoId=${repoId}&projectId=${projectId}`
+  );
+};
+const getQualityMetricsDrilledFilterDownData = (branchName,execId,metricsType,projectId,releaseName,repoId,repoName) => {
+  return devovOpsApi.get(
+    `/widget/quality-insights/charts?branchName=${branchName}&executiveId=${execId}&metric=${metricsType}&projectId=${projectId}&releaseNumber=${releaseName}&repoId=${repoId}&repositoryName=${repoName}`
   );
 };
 
@@ -155,5 +164,7 @@ export default {
   getSummaryData,
   getSecurityReleaseData,
   getSecurityReleaseAlertData,
-  getSecurityReleasePolicyData
+  getSecurityReleasePolicyData,
+  getQualityMetricsDrilledFilterDownData,
+  getQualityReleaseMetricsData
 };

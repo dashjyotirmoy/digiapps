@@ -28,7 +28,7 @@ const BuildSingleLineSec = (props) => {
             symbolRadius: 0,
             itemStyle: {
                 color: "#ffffff",
-                fontWeight: "bold"
+                fontWeight: "normal"
             },
             itemHoverStyle: {
                 color: "#ffffff"
@@ -73,7 +73,7 @@ const BuildSingleLineSec = (props) => {
       },
       style: {
         color: "#ffffff",
-        fontWeight: 'bold',
+        fontWeight: 'normal',
       }
       },
      maxPadding: 0.2

@@ -291,7 +291,12 @@ a:hover {
   background-color: #232d3b !important;
   color: #fff !important;
 }
-
+.show{
+  display: block;
+}
+.hide{
+  display: none;
+}
 .bg-fSquare {
   color: #708aac !important;
   font-size: 0.6rem;

@@ -24,7 +24,7 @@ const BuildSingleLine = (props) => {
       symbolRadius: 0,
       itemStyle: {
         color: "#ffffff",
-        fontWeight: "bold"
+        fontWeight: "normal"
       },
       itemHoverStyle: {
         color: "#ffffff"
@@ -67,7 +67,7 @@ const BuildSingleLine = (props) => {
         format: '{value}',
         style: {
           color: "#ffffff",
-          fontWeight: 'bold',
+          fontWeight: 'normal',
         }
       },
 

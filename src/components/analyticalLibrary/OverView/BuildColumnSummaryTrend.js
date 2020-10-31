@@ -198,7 +198,7 @@ const BuildColumnSummaryTrend = (props) => {
       itemWidth: 93,
       itemStyle: {
         color: "#ffffff",
-        fontSize: '12px'
+        fontWeight: "normal"
       },
       itemHoverStyle: {
         color: "#ffffff"

@@ -754,11 +754,11 @@ class Quality extends Component {
     return defaultList;
   };
   handleRepoChange = (repoID) => {
-this.setState({
-  showCode:true,
-  showbutton: true,
-  showBuild:false,
-});
+    this.setState({
+      showCode:true,
+      showbutton: true,
+      showBuild:false,
+    });
     // if (repoID !== 'selectRepository') {
     this.updateRepository(repoID);
     // } else {
@@ -911,25 +911,25 @@ this.setState({
               " Quality w-100 p-0 m-0 mt-3",
               { "d-none": !this.state.selectedRepo || this.state.componentType !== "quality" }
             )} style={{justifyContent:'flex-end'}}>
-                  <span className="font-size-small  ">
+                  <span className="font-size-small text-white">
                     <FontAwesomeIcon
                       className="critical ml-3 "
                       icon={faSquare}
                     />{" "}
                     Critical{" "}
                   </span>
-                  <span className="font-size-small">
+                  <span className="font-size-small text-white">
                     <FontAwesomeIcon className="high ml-3" icon={faSquare} />{" "}
                     High
                   </span>
-                  <span className="font-size-small">
+                  <span className="font-size-small text-white">
                     <FontAwesomeIcon className="medium ml-3" icon={faSquare} />{" "}
                     Medium
                   </span>
-                  <span className="font-size-small">
+                  <span className="font-size-small text-white">
                     <FontAwesomeIcon className="low ml-3" icon={faSquare} /> Low
                   </span>
-                  <span className="font-size-small ">
+                  <span className="font-size-small text-white">
                     <FontAwesomeIcon className="lowest ml-3" icon={faSquare} />{" "}
                     Very Low
                   </span>
@@ -1016,7 +1016,7 @@ this.setState({
           ) : null}
           
           <ModalBackDrop show={this.state.displayMetric}>
-            <div className="chart-title w-50 h-50 grid-graph-comp">
+            <div className="chart-title w-50 h-55 grid-graph-comp">
               <div
                 className="position-absolute px-2 text-right text-white w-50"
                 style={{ zIndex: "100" }}
