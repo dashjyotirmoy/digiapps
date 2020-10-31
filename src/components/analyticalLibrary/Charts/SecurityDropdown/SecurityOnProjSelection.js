@@ -60,15 +60,15 @@ const SecurityOnProjectSelection = (props) => {
         data: [
           {
             name: 'Low',
-            color: '#C2B12C',
+            color: '#20c997',
             y: parseInt(props.cardsData[2].data[2].alertMetrics.low),
-            borderColor: '#C2B12C'
+            borderColor: '#20c997'
           },
           {
             name: 'Medium',
-            color: '#C0792A',
+            color: '#ffc107',
             y: parseInt(props.cardsData[2].data[2].alertMetrics.medium),
-            borderColor: '#C0792A'
+            borderColor: '#ffc107'
           },
           {
             name: ' High',
@@ -111,9 +111,9 @@ const SecurityOnProjectSelection = (props) => {
                     </Row>
                     <Row className="text-center">
                       <Col sm={11}>
-                        {/* <Badge style={{ color: '#222222', background: '#B65355' }}>0</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C0792A' }}>2</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C2B12C' }}>10</Badge>{' '} */}
+                        {/* <Badge style={{ color: '#222222', background: '#ec5050' }}>0</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#ffc107' }}>2</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#20c997' }}>10</Badge>{' '} */}
                       </Col>
                       {/* <Col sm={1}>
                         <FontAwesomeIcon
@@ -142,9 +142,9 @@ const SecurityOnProjectSelection = (props) => {
                     </Row>
                     <Row className="text-center">
                       <Col sm={11}>
-                        <Badge style={{ color: '#222222', background: '#B65355' }}>{props.cardsData[1].data[2].alertMetrics.high}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#ec5050' }}>{props.cardsData[1].data[2].alertMetrics.high}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#ffc107' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#20c997' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
                     
                     </Row>
@@ -167,9 +167,9 @@ const SecurityOnProjectSelection = (props) => {
                     </Row>
                     <Row className="text-center">
                       <Col sm={11}>
-                        <Badge style={{ color: '#222222', background: '#B65355' }}>{props.cardsData[2].data[2].alertMetrics.high}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#ec5050' }}>{props.cardsData[2].data[2].alertMetrics.high}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#ffc107' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#20c997' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
                       {/* <Col sm={1}>
                         <FontAwesomeIcon
@@ -263,9 +263,9 @@ const SecurityOnProjectSelection = (props) => {
                                             <p className="ml-3">No Vulnerabilities</p>
                                           ) :
                                             <ProgressBar className="w-200">
-                                              <ProgressBar style={{ backgroundColor: '#B65355' }} now={item.vulnerabilities.high} label={`${item.vulnerabilities.high}`} key={1} max={item.vulnerabilities.totalCount} />
-                                              <ProgressBar style={{ backgroundColor: '#C0792A' }} now={item.vulnerabilities.medium} label={`${item.vulnerabilities.medium}`} key={2} max={item.vulnerabilities.totalCount} />
-                                              <ProgressBar style={{ backgroundColor: '#C2B12C' }} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`} key={3} max={item.vulnerabilities.totalCount} />
+                                              <ProgressBar style={{ backgroundColor: '#ec5050' }} now={item.vulnerabilities.high} label={`${item.vulnerabilities.high}`} key={1} max={item.vulnerabilities.totalCount} />
+                                              <ProgressBar style={{ backgroundColor: '#ffc107' }} now={item.vulnerabilities.medium} label={`${item.vulnerabilities.medium}`} key={2} max={item.vulnerabilities.totalCount} />
+                                              <ProgressBar style={{ backgroundColor: '#20c997' }} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`} key={3} max={item.vulnerabilities.totalCount} />
                                             </ProgressBar>
                                           }
 

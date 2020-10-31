@@ -61,15 +61,15 @@ const Sec = props => {
         data: [
           {
             name: "Low",
-            color: "#C2B12C",
+            color: "#20c997",
             y: parseInt(props.cardsData[2].data[2].alertMetrics.low),
-            borderColor: '#C2B12C'
+            borderColor: '#20c997'
           },
           {
             name: "Medium",
-            color: "#C0792A",
+            color: "#ffc107",
             y: parseInt(props.cardsData[2].data[2].alertMetrics.medium),
-            borderColor: '#C0792A'
+            borderColor: '#ffc107'
           },
           {
             name: "High",
@@ -112,8 +112,10 @@ const Sec = props => {
                     </Row>
                     <Row className="text-center">
                       <Col sm={11}>
-                      </Col>
-                      <Col sm={1}>
+                      {/* <Col>
+                        <Badge style={{ color: '#ffffff', background: '#C981B2' }}>{props.cardsData[0].data[3]}</Badge>{' '}
+                        <Badge style={{ color: '#ffffff', background: '#42C9C2' }}>{props.cardsData[0].data[4]}</Badge>{' '}
+                      </Col> */}
                       </Col>
                     </Row>
                   </Card.Body>
@@ -136,9 +138,9 @@ const Sec = props => {
                     </Row>
                     <Row className="text-center">
                       <Col sm={11}>
-                        <Badge style={{ color: '#222222', background: '#B65355' }}>{props.cardsData[1].data[2].alertMetrics.high}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#ec5050' }}>{props.cardsData[1].data[2].alertMetrics.high}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#ffc107' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#20c997' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
                       {/* <Col sm={1}>
                         <FontAwesomeIcon
@@ -166,9 +168,9 @@ const Sec = props => {
                     </Row>
                     <Row className="text-center">
                       <Col sm={11}>
-                        <Badge style={{ color: '#222222', background: '#B65355' }}>{props.cardsData[2].data[2].alertMetrics.high}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C0792A' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#C2B12C' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#ec5050' }}>{props.cardsData[2].data[2].alertMetrics.high}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#ffc107' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#20c997' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
                       </Col>
                       {/* <Col sm={1}>
                         <FontAwesomeIcon
@@ -185,7 +187,7 @@ const Sec = props => {
             <Row className="mt-5">
               <Col >
                 <Card.Body className="bg card-height">
-                  <h6>Vulnerable Projects</h6>
+                  <h6>Vulnerable Repositories</h6>
                   <Card.Body>
                     <div className="wrap">
                       <table className="table table-hover table-dark">
@@ -215,9 +217,9 @@ const Sec = props => {
                                             <p className="ml-3">No Vulnerabilities</p>
                                           ) :
                                           <ProgressBar className="w-200">
-                                          <ProgressBar style={{ backgroundColor: '#B65355' }} now={item.vulnerableLibraries.high} label={`${item.vulnerableLibraries.high}`} key={1} max={item.vulnerableLibraries.totalCount} />
-                                          <ProgressBar style={{ backgroundColor: '#C0792A' }} now={item.vulnerableLibraries.medium} label={`${item.vulnerableLibraries.medium}`} key={2} max={item.vulnerableLibraries.totalCount} />
-                                          <ProgressBar style={{ backgroundColor: '#C2B12C' }} now={item.vulnerableLibraries.low} label={`${item.vulnerableLibraries.low} `} key={3} max={item.vulnerableLibraries.totalCount} />
+                                          <ProgressBar style={{ backgroundColor: '#ec5050' }} now={item.vulnerableLibraries.high} label={`${item.vulnerableLibraries.high}`} key={1} max={item.vulnerableLibraries.totalCount} />
+                                          <ProgressBar style={{ backgroundColor: '#ffc107' }} now={item.vulnerableLibraries.medium} label={`${item.vulnerableLibraries.medium}`} key={2} max={item.vulnerableLibraries.totalCount} />
+                                          <ProgressBar style={{ backgroundColor: '#20c997' }} now={item.vulnerableLibraries.low} label={`${item.vulnerableLibraries.low} `} key={3} max={item.vulnerableLibraries.totalCount} />
                                         </ProgressBar>
                                           }
                                     </td>

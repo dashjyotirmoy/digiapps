@@ -490,7 +490,7 @@ class QualityGraph {
       {
         name: "Medium",
         data: medium_value,
-        color: "#c0792a"
+        color: "#ffc107"
       },
       {
         name: "High",

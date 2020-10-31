@@ -163,7 +163,7 @@ else{
       itemStyle: {
         // width: "50px",
         color: "#ffffff",
-        fontSize: '12px'
+        fontWeight: "normal"
     },
     itemHoverStyle: {
         color: "#ffffff"

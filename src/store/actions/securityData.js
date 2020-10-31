@@ -20,7 +20,25 @@ export const securityProjectDataDispatch = (projectId) =>
       console.error(error);
     }
   };
-
+  export const vulnerabilityDataDispatch = (projectId) =>
+  async dispatch => {
+    try {
+      if (projectId) {
+        const response = await api.getVulnerabilityData(projectId);
+        dispatch({
+        type: actionTypes.SET_VULNERABILITY_DETAILS,
+        payload: {
+          vulnerabilitytDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+      }
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 export const securityRepoDataDispatch = (projectId, repoId) => 
   async dispatch => {
     try {
@@ -36,7 +54,22 @@ export const securityRepoDataDispatch = (projectId, repoId) =>
       console.error(error);
     }
   }
-
+  export const securityReleaseDataDispatch = (branchName,projectId, repoId, releaseId, repoName) => 
+  async dispatch => {
+    try {
+      const response = await api.getSecurityReleaseData(branchName,projectId, repoId, releaseId,repoName);
+      dispatch({
+        type: actionTypes.SET_SECURITY_RELEASE_DETAILS,
+        payload: {
+          securityReleaseDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+    } catch(error) {
+      console.error(error);
+    }
+  }
+  
 export const securityPolicyDataDispatch = (projectId, repoId) => 
   async dispatch => {
     try {
@@ -45,6 +78,21 @@ export const securityPolicyDataDispatch = (projectId, repoId) =>
         type: actionTypes.SET_SECURITY_POLICY_DETAILS,
         payload: {
           securityPolicyDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+    } catch(error) {
+      console.error(error);
+    }
+  }
+  export const securityReleasePolicyDataDispatch = (branchName,projectId,repoId,releaseName,repoName) => 
+  async dispatch => {
+    try {
+      const response = await api.getSecurityReleasePolicyData(branchName,projectId,repoId,releaseName,repoName);
+      dispatch({
+        type: actionTypes.SET_SECURITY_RELEASE_POLICY_DETAILS,
+        payload: {
+          securityReleasePolicyDetails: response.data,
           chartDataReceived: true
         }
       });
@@ -69,7 +117,22 @@ export const securityPolicyDataDispatch = (projectId, repoId) =>
       console.error(error);
     }
   }
-
+// get alert data from release label
+  export const securityReleaseAlertDataDispatch = (branchName,filterID,projectId,repoId,releaseName,repoName) => 
+  async dispatch => {
+    try {
+      const response = await api.getSecurityReleaseAlertData(branchName,filterID,projectId,repoId,releaseName,repoName);
+      dispatch({
+        type: actionTypes.SET_SECURITY_RELEASE_ALERT_DETAILS,
+        payload: {
+          securityReleaseAlertDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+    } catch(error) {
+      console.error(error);
+    }
+  }
   export const securityMonthAlertDataDispatch = (projectId, repoId, filterType) => 
   async dispatch => {
     try {
@@ -94,4 +157,22 @@ export const repoDropValDispatchSecurity = type => dispatch => {
       currentRepo: type
     }
   });
+};
+export const insightsSecurity = (
+  branchName, projectId, repoName
+) => async dispatch => {
+  api
+    .getSecurityInsightsData(branchName, projectId, repoName)
+    .then(response => {
+      dispatch({
+        type: actionTypes.LOAD_SECURITY_DETAILS,
+        payload: {
+          securityDetails: response.data,
+          sprintReceived: true
+        }
+      });
+    })
+    .catch(error => {
+      console.log(error.message);
+    });
 };

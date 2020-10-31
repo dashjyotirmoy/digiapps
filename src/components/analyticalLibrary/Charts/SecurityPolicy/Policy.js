@@ -1,15 +1,17 @@
 import React from 'react';
-import { Card, Table, Form } from 'react-bootstrap';
+import { Card, Badge, Form,Container,Row , Col} from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import moment from 'moment/moment';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
+import "../SecurityProject/Alert.css";
+
 
 let buttonColorScheme = {
-	"REJECT": '#B65355',
-	"APPROVE": '#5DAB07',
-	"REASSIGN": '#C6BC38'
+	"REJECT": '#ec5050',
+	"APPROVE": '#20c997',
+	"REASSIGN": '#ffc107'
 }
 let results = [];
 let checkedPolicy = [];
@@ -21,9 +23,8 @@ function update(actionData) {
 }
 
 const Policy = (props) => {
-
-	let actionData = [...props.cardsData];
-	let policyData = props.cardsData;
+	let dataItem = props.cardsData;
+	let actionData = [...dataItem.policyAlerts];
 	const [showResults, setShowResults] = React.useState(true)
 	const [showPolicyData, setPolicyData] = React.useState(props.cardsData)
 
@@ -62,22 +63,66 @@ const Policy = (props) => {
 
 	return (
 		<React.Fragment>
-			<Card
-				style={{ color: '#f5f5f5', background: '#232D3B' }}
-			>				<Card.Body>
-					<Card.Title>
-						Policies
-          </Card.Title>
-					<Card
-						style={{ color: '', background: '#232D3B', border: '#232D3B' }}
-					>
-						<Table variant="dark"
-							style={{ borderColor: 'red' }}
-						>
-							<thead
-								style={{ color: '#A6A8AC', background: '#1D2632', border: '#1D2632', minHeight: '1rem', maxHeight: '2rem', lineHeight: '2rem' }}
-							>
-								<tr>
+			 <Container fluid>
+			 <Row className="mt-3">
+			<Col>
+			<Card.Body className="bg">
+                  <h6 className="cardHeader m-0 font-weight-bold">Policy Violations</h6>
+				  <Card.Body>
+				  <div className="wrap">
+                  <table className="table table-hover table-dark">
+                    <thead className="tabhead">
+								<tr >
+									<th className="pl-1">Library</th>
+									<th>Description</th>
+									<th>Library Type</th>									
+									<th>Creation Date</th>
+									<th>Modified Date</th>
+								</tr>
+								</thead>
+                  </table>
+
+                  <div className="inner_table">
+                    <table className="table table-hover table-dark" >
+                      <tbody >
+											{(showPolicyData && showPolicyData.policyViolations.length > 0) ?
+								showPolicyData && showPolicyData.policyViolations.map((item, index) => {
+									return (
+										<tr className="tabrow f-12" key={index}>
+												<td className="w-2">
+													{item.alertLevel === 'MAJOR' ? (
+														<Badge className="sevbadge1"></Badge>
+													) : <Badge className="sevbadge-minor"></Badge>}
+
+													</td>
+												<td>{item.libraryName}</td>
+												<td> {item.description} </td>
+												<td> {item.libraryType}</td>
+												<td>  {item.creationDate ? moment(item.creationDate).format("DD-MM-YYYY"): null} </td>
+												<td>  {item.modifiedDate ? moment(item.modifiedDate).format("DD-MM-YYYY"): null} </td>
+
+											</tr>
+										
+
+									)
+								}) : <tr><td style={{ textAlign: "center" }} colSpan="6">No data found</td></tr>
+							}
+							</tbody>
+							</table>
+                  </div>
+                </div>
+</Card.Body></Card.Body>
+
+			</Col></Row>
+        <Row className="py-3">
+			<Col>
+			<Card.Body className="bg">
+                  <h6 className="cardHeader m-0 font-weight-bold">Policies</h6>
+				  <Card.Body>
+				  <div className="wrap">
+                  <table className="table table-hover table-dark">
+                    <thead className="tabhead">
+								<tr >
 									<th>Policy ID</th>
 									<th>Policy Name</th>
 									<th>Match</th>
@@ -116,32 +161,31 @@ const Policy = (props) => {
 									<th>Creator</th>
 									<th>Creation Date</th>
 								</tr>
-							</thead>
+								</thead>
+                  </table>
 
-										<tbody
-											
-											className="font-metric-sub-text"
-											style={{ color: '#ffffff', background: '#334154', border: '#334154' }}
-										>
-											{(showPolicyData && showPolicyData.length > 0) ?
-								showPolicyData.map((item, index) => {
+                  <div className="inner_table">
+                    <table className="table table-hover table-dark" >
+                      <tbody >
+											{(showPolicyData && showPolicyData.policyAlerts.length > 0) ?
+								showPolicyData && showPolicyData.policyAlerts.map((item, index) => {
 									return (
-											<tr key={index}>
-												<th>{item.policyId}</th>
-												<th> {item.policyName} </th>
-												<th>By {item.match} Group</th>
-												<th>
-													<Button
+										<tr className="tabrow f-12" key={index}>
+												<td>{item.policyId}</td>
+												<td> {item.policyName} </td>
+												<td style={{wordBreak:"break-all"}}>By {item.match} Group</td>
+												<td>
+													<span className="badge"
 														style={{ minWidth: '6rem', lineHeight: '1rem', color: '#222222', background: buttonColorScheme[item.action], border: '#B65355' }}
 													>
 														{item.action}
 
 
-													</Button>
+													</span>
 
-												</th>
-												<th>{item.creator}</th>
-												<th>  {moment(item.creationDate).format("DD-MM-YYYY")} </th>
+												</td>
+												<td style={{wordBreak:"break-all"}}>{item.creator}</td>
+												<td>  {moment(item.creationDate).format("DD-MM-YYYY")} </td>
 
 											</tr>
 										
@@ -150,12 +194,12 @@ const Policy = (props) => {
 								}) : <tr><td style={{ textAlign: "center" }} colSpan="6">No data found</td></tr>
 							}
 							</tbody>
-						</Table>
+							</table>
+                  </div>
+                </div>
+</Card.Body></Card.Body>
 
-					</Card>
-				</Card.Body>
-
-			</Card>
+			</Col></Row></Container>
 		</React.Fragment >
 	)
 }

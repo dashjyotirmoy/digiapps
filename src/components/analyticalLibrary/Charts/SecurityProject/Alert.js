@@ -61,13 +61,13 @@ const App = props => {
                   <p>Vulnerabilities</p>
                 </Col>
                 <Col sm={3} className="pl-0">
-                  <Badge style={{ color: "#222222", background: "#B65355" }}>
+                  <Badge style={{ color: "#222222", background: "#ec5050" }}>
                     {highCount && highCount.length}
                   </Badge>{" "}
-                  <Badge style={{ color: "#222222", background: "#C0792A" }}>
+                  <Badge style={{ color: "#222222", background: "#ffc107" }}>
                     {mediumCount && mediumCount.length}
                   </Badge>{" "}
-                  <Badge style={{ color: '#222222', background: '#C2B12C' }}>
+                  <Badge style={{ color: '#222222', background: '#20c997' }}>
                     {lowCount && lowCount.length}
                   </Badge>{" "}
                 </Col>
@@ -232,9 +232,9 @@ const App = props => {
                                 </td>
                                 <td>
                                   <ProgressBar className="w-200">
-                                    <ProgressBar style={{ backgroundColor: '#B65355' }} now={item.description.high} label={`${item.description.high}`} key={1} max={item.description.totalCount} />
-                                    <ProgressBar style={{ backgroundColor: '#C0792A' }} now={item.description.medium} label={`${item.description.medium}`} key={2} max={item.description.totalCount} />
-                                    <ProgressBar style={{ backgroundColor: '#C2B12C' }} now={item.description.low} label={`${item.description.low}`} key={3} max={item.description.totalCount} />
+                                    <ProgressBar style={{ backgroundColor: '#ec5050' }} now={item.description.high} label={`${item.description.high}`} key={1} max={item.description.totalCount} />
+                                    <ProgressBar style={{ backgroundColor: '#ffc107' }} now={item.description.medium} label={`${item.description.medium}`} key={2} max={item.description.totalCount} />
+                                    <ProgressBar style={{ backgroundColor: '#20c997' }} now={item.description.low} label={`${item.description.low}`} key={3} max={item.description.totalCount} />
                                   </ProgressBar>
 
                                 </td>

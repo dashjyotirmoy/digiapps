@@ -3,7 +3,9 @@ import * as actionType from "../actions/actionTypes";
 const initialState = {
   currentRepo: "",
   qualityDrilledDownDetails: {},
+  qualityDrilledDownFilterDetails:{},
   qualityBuildDetails: {},
+  qualityBuildReleaseDetails:{},
   currentQualityData: {
     qualityDetails: {}
   }
@@ -14,6 +16,11 @@ const qualityReducer = (state = initialState, action) => {
       return {
         ...state,
         qualityDrilledDownDetails: action.payload.qualityDrilledDownDetails
+      };
+      case actionType.SET_QUALITY_DRILLED_DOWN_FILTER_DETAILS:
+      return {
+        ...state,
+        qualityDrilledDownFilterDetails: action.payload.qualityDrilledDownFilterDetails
       };
       // eslint-disable-next-line no-duplicate-case
       case actionType.SET_CURRENT_REPO:
@@ -27,6 +34,11 @@ const qualityReducer = (state = initialState, action) => {
           ...state,
           qualityBuildDetails: action.payload.qualityBuildDetails
         };
+      case actionType.SET_QUALITY_RELEASE_DETAILS:
+        return {
+          ...state,
+          qualityBuildReleaseDetails: action.payload.qualityBuildReleaseDetails
+        };
     case actionType.SET_QUALITY_DETAILS:
       return {
         ...state,
@@ -34,6 +46,11 @@ const qualityReducer = (state = initialState, action) => {
           qualityDetails: action.payload.qualityDetails
         }
       };
+      case actionType.LOAD_QUALITY_DETAILS:
+        return {
+          ...state,
+          qualityDetails: action.payload.qualityDetails
+        };
       // eslint-disable-next-line no-duplicate-case
 
     default:

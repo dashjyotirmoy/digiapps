@@ -1,0 +1,26 @@
+.sidenav {
+  min-height: 16rem;
+  max-height: 28rem;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  overflow-x: hidden;
+}
+.btnAlign {
+ position: fixed;
+ right: 0;
+ top:0;
+ margin-top: 10rem;
+ z-index: 1;
+ padding-left:'5px';
+ color:#000000 !important;
+ background-color:#ffffff !important;
+ border-top-left-radius:'5px';
+ border-bottom-left-radius:'5px'
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 0px;}
+  .sidenav a {font-size: 18px;}
+}

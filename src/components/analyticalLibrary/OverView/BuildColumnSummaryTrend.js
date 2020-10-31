@@ -198,7 +198,7 @@ const BuildColumnSummaryTrend = (props) => {
       itemWidth: 93,
       itemStyle: {
         color: "#ffffff",
-        fontSize: '12px'
+        fontWeight: "normal"
       },
       itemHoverStyle: {
         color: "#ffffff"
@@ -223,6 +223,7 @@ const BuildColumnSummaryTrend = (props) => {
       },
       series: {
         groupPadding: 0.2,
+        pointWidth: 60,
         stacking: props.type !== 'qualityColumnReverse'?'normal':'',
         dataLabels: {
           formatter: function() {

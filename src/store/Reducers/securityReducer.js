@@ -6,7 +6,10 @@ const initialState = {
     securityRepoDetails: {},
     securityMonthAlertDetails: {},
     securityPolicyDetails: {},
-    securityAlertDetails: {}
+    securityReleasePolicyDetails:{},
+    securityAlertDetails: {},
+    securityReleaseAlertDetails:{},
+    vulnerabilitytDetails:{}
 };
 const securityReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -25,22 +28,46 @@ const securityReducer = (state = initialState, action) => {
             ...state,
               securityRepoDetails: action.payload.securityRepoDetails
           }
+          case actionType.SET_SECURITY_RELEASE_DETAILS:
+            return {
+              ...state,
+              securityReleaseDetails: action.payload.securityReleaseDetails
+            }
           case actionType.SET_SECURITY_POLICY_DETAILS:
           return {
             ...state,
               securityPolicyDetails: action.payload.securityPolicyDetails
+          }
+          case actionType.SET_SECURITY_RELEASE_POLICY_DETAILS:
+          return {
+            ...state,
+              securityReleasePolicyDetails: action.payload.securityReleasePolicyDetails
           }
           case actionType.SET_SECURITY_ALERT_DETAILS:
           return {
             ...state,
               securityAlertDetails: action.payload.securityAlertDetails
           }
+          case actionType.SET_SECURITY_RELEASE_ALERT_DETAILS:
+          return {
+            ...state,
+            securityReleaseAlertDetails: action.payload.securityReleaseAlertDetails
+          }
           case actionType.SET_SECURITY_MONTH_ALERT_DETAILS:
             return {
               ...state,
               securityMonthAlertDetails: action.payload.securityMonthAlertDetails
             }
-  
+            case actionType.LOAD_SECURITY_DETAILS:
+              return {
+                ...state,
+                securityDetails: action.payload.securityDetails
+              };
+          case actionType.SET_VULNERABILITY_DETAILS:
+              return {
+                ...state,
+                vulnerabilitytDetails: action.payload.vulnerabilitytDetails
+              };  
       default:
         return state;
     }

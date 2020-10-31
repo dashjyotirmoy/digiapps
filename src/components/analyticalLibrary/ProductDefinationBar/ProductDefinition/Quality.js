@@ -14,10 +14,15 @@ import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 import StackedBar from "../../Charts/StackedBar/StackedBar";
 import { repoDropValDispatch } from "../../../../store/actions/qualityData";
+
+
+import CardChartQuality from "../../CardChart/CardChartQuality";
 import {
   qualityDataDispatch,
   qualityBuildDataDispatch,
   qualityDrilledDownDataDispatch,
+  qualityDrilledDownDataFilterDispatch,
+  qualityReleaseDataDispatch
 } from "../../../../store/actions/qualityData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -32,7 +37,11 @@ import { translations } from "../../Translations/Translations";
 import Layout from "../../../../utility/layoutManager/layoutManager";
 import { BubbleChartInfo } from "../../../analyticalLibrary/Charts/BubbleChart/BubbleChartInfo";
 import QualityBuild from "../../QualityBuild/QualityBuild";
-
+import api from "../../../../utility/Http/devOpsApis";
+import SideNavbar from "../../SideNavBar/SideNavbar";
+import {
+  insightsQuality
+}from "../../../../store/actions/qualityData";
 const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
@@ -79,12 +88,18 @@ class Quality extends Component {
     show: true,
     componentType: "quality",
     selectedRepo: "",
+    branchDropData:[],
+    releaseDropData:[],
+    selectedBranch:"",
+    selectedRelease:"",
     selectedRepoKey: "",
     repoData: [],
     showCode:false,
-    showBuild:false
+    showBuild:false,
+    showInsights:false,
+    filterStatus: 'Project',
+    marginCard: ''
   };
-
   onDisplayMetricsClickHandler = (metricType) => {
     // eslint-disable-next-line default-case
     switch (metricType) {
@@ -95,6 +110,9 @@ class Quality extends Component {
         this.getQualityDrilledDownData("Security");
         break;
       case "Code Smells":
+        this.setState({
+          marginCard: 'ml-3'
+        });
         this.getQualityDrilledDownData("Maintainability");
         break;
       case "Coverage":
@@ -103,22 +121,34 @@ class Quality extends Component {
       case "Duplications":
         this.getQualityDrilledDownData("Duplications");
     }
-
     this.setState({
       displayMetric: true,
       metricType: metricType,
     });
   };
-
   getQualityDrilledDownData = (metricType) => {
+    if(this.state.selectedRepo !== '' && this.state.selectedBranch !== '' && this.state.selectedRelease !== ''){
+    this.props.qualityDrilledDownDataFilterDispatch(
+      this.state.selectedBranch,
+      this.props.currentExecId,
+      metricType,
+      this.props.projectID,
+      this.state.selectedRelease,
+      this.state.selectedRepoKey,
+      this.state.selectedRepo 
+    )
+    .then((item) => {});
+    }else{
     this.props
       .qualityDrilledDownDataDispatch(
         this.props.currentExecId,
-        this.props.projectID,
+        metricType,
         this.state.selectedRepoKey,
-        metricType
+        this.props.projectID 
       )
       .then((item) => {});
+      }
+      
   };
   onDisplayMetricExitClick = () => {
     this.setState({
@@ -161,6 +191,7 @@ class Quality extends Component {
         });
         this.setState({
           show: false,
+          showbutton: false,
         });
         if (this.state.selectedRepo === "") {
           type = this.setRawDefaultRepo(
@@ -232,7 +263,17 @@ class Quality extends Component {
     metricsData = metricsData.splice(selectedIndex, 1);
     return this.createMetricObject(metricsData[0].slice(2));
   };
-
+  createReleaseMetrics = (repoId, arr) => {
+    let selectedIndex;
+    let metricsData = arr.map((obj, index) => {
+     // if (repoId === obj.repoKey) {
+        selectedIndex = index;
+        return Object.entries(obj);
+     // }
+    });
+    metricsData = metricsData.splice(selectedIndex, 1);
+    return this.createMetricObject(metricsData[0].slice(2));
+  };
   createMetricObject = (mergObj) => {
     return mergObj.map((item) => {
       return {
@@ -274,15 +315,15 @@ class Quality extends Component {
     }
     if (item[0] === "coverage") {
       metricValue =
-        item[1].value >= "80"
+        item[1].value >= 80
           ? "lowest"
-          : item[1].value >= "70" && item[1].value <= "80"
+          : item[1].value >= 70 && item[1].value < 80
           ? "low"
-          : item[1].value >= "50" && item[1].value <= "70"
+          : item[1].value >= 50 && item[1].value < 70
           ? "medium"
-          : item[1].value >= "30" && item[1].value <= "50"
+          : item[1].value >= 30 && item[1].value < 50
           ? "high"
-          : item[1].value < "30"
+          : item[1].value < 30
           ? "critical"
           : null;
     }
@@ -292,9 +333,9 @@ class Quality extends Component {
           ? "lowest"
           : item[1].value >= 3 && item[1].value <= 5
           ? "low"
-          : item[1].value >= 5 && item[1].value <= 10
+          : item[1].value >= 5 && item[1].value < 10
           ? "medium"
-          : item[1].value >= 10 && item[1].value <= 20
+          : item[1].value >= 10 && item[1].value < 20
           ? "high"
           : item[1].value > 20
           ? "critical"
@@ -377,6 +418,8 @@ class Quality extends Component {
             type={item.type}
             title={title}
             data={data}
+            projID={this.props.projId}
+            organization={this.props.organization}
           />
         );
       }
@@ -426,12 +469,153 @@ class Quality extends Component {
       layout: layout_instance.layout,
     });
   }
+  branchOnSelectHandler= (branchId, evtKey) => {
+    this.updateBranch(branchId);
+  };
+  releaseOnSelectHandler = (releaseId, evtKey) => {
+    this.updateRelease(releaseId);
+  };
+  setBranch = (res) => {
+    const branch = res.data;
+    if(branch.length!==0){
+      const { list, selectedIndex } = this.markSelectedbranch(branch, branch.id);
+      const branchDetail = list.map(ele => {
+        return {
+          id: ele.id,
+          projectName: ele.branchName
+        };
+      });
+      this.setState({
+       branchDropData: branchDetail,
+       selectedBranch: '',
+       selectedRelease:'', showInsights:false,
+       releaseDropData:[]
+      });
+    }
+    else{
+      this.setState({
+        branchDropData: [],
+         selectedBranch: '',
+         selectedRelease:'',
+         releaseDropData:[],
+         showInsights:false,
+       });
+    }
+   };
+   setRelease = (res) => {
+    const release = res.data;
+    
+      const { list, selectedIndex } = this.markSelectedbranch(release, release.id);
+      const releaseDetail = list.map(ele => {
+        return {
+          id: ele.id,
+          projectName: ele.releaseNumber
+        };
+      });
+      if(release.length!==0){
+      this.setState({
+       releaseDropData: releaseDetail,
+        selectedRelease: '',
+        filterStatus: "Release"
+      });
+    }
+    else{
+      this.setState({
+        releaseDropData: [],
+        selectedRelease: ''
+       });
+    }
+    this.props.insightsQuality(this.state.selectedBranch,this.props.currentExecId, this.props.projectID,this.state.selectedRepo);
+   };
+   getReleaseDetails = (branchName,projectID, projName) => {
+    api
+      .getReleaseDropdownInsight(branchName,projectID, projName)
+      .then(this.setRelease)
+      .catch(error => {
+        console.error(error);
+      });
+  };
+  updateBranch = branchId => {
+    const branchList = [...this.state.branchDropData];
+    const { list, selectedIndex } = this.markSelectedbranch(branchList, branchId);
+    const branchDetail = list.map(ele => {
+      return {
+        id: ele.id,
+        projectName: ele.projectName
+      };
+    });
+    this.setState({
+      branchDropData: branchDetail,
+      selectedBranch: branchDetail[selectedIndex].projectName,
+      showInsights:true
+    });
+    this.getReleaseDetails(branchDetail[selectedIndex].projectName,this.props.projectID,this.state.selectedRepo )
+    
+  };
+  updateRelease = releaseId => {
+    const releaseList = [...this.state.releaseDropData];
+    const { list, selectedIndex } = this.markSelectedbranch(releaseList, releaseId);
+    const releaseDetail = list.map(ele => {
+      return {
+        id: ele.id,
+        projectName: ele.projectName
+      };
+    });
+    this.setState({
+      releaseDropData: releaseDetail,
+      selectedRelease: releaseDetail[selectedIndex].projectName,
+      filterStatus: 'Release',
+      showCode:true,
+      showBuild:false,
+    });
+    this.setReleaseData(this.state.selectedBranch,this.props.currentExecId, this.props.projectID,releaseDetail[selectedIndex].projectName,this.state.selectedRepo,releaseId,selectedIndex);    
+  };
+  updateReleaseQualityData = (repoId) => {
+    const qualityMetrics = this.createReleaseMetrics(
+      repoId,
+      this.props.qualityBuildReleaseDetails.repositories
+    );
+    test = qualityMetrics;
+    let layout_instance = new Layout(chartCompList.length);
+    this.setState({
+      componentType: "quality",
+      layout: layout_instance.layout,
+    });
+    const type = this.setRawRepoObjects(
+      this.props.qualityBuildReleaseDetails.repositories[0],
+      this.props.qualityBuildReleaseDetails.outstandingBugs,
+      this.props.qualityBuildReleaseDetails.averageDefectResolutionTime,
+      repoId
+    );
 
+    this.createCharts(this.createChartObject(type));
+  };
+  setReleaseData(selectedBranch,currentExecId,projectID,selectedRelease,selectedRepo,releaseId,selectedIndex) {
+    let type;
+    this.props.qualityReleaseDataDispatch(selectedBranch,currentExecId,projectID,selectedRelease,selectedRepo)
+      .then((item) => {
+        // if (this.props.qualityData.repositories.length > 0) {
+        this.initialData = this.props.qualityBuildReleaseDetails;
+        this.updateReleaseQualityData(releaseId,selectedIndex);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  getBranchDetails = (projectID, projName) => {
+    api
+      .getBranchDropdownInsight(projectID, projName)
+      .then(this.setBranch)
+      .catch(error => {
+        console.error(error);
+      });
+  };
+ 
   markSelected = (prodList, id) => {
     const resetList = this.resetSelect(prodList);
     let selectedIndex = 0;
     const selectedParamList = resetList.map((ele, index) => {
-      if (ele.repoKey === id) {
+      if (ele.repoKey == id) {
         selectedIndex = index;
         return ele;
       }
@@ -440,6 +624,20 @@ class Quality extends Component {
     return {
       list: selectedParamList,
       selectedIndex: selectedIndex,
+    };
+  };
+  markSelectedbranch = (prodList, id) => {
+    const resetList = this.resetSelect(prodList);
+    var selectedIndex = 0;
+    const selectedParamList = resetList.map((ele, index) => {
+      if (ele.id === Number(id)) {
+        selectedIndex = index;
+      }
+      return ele;
+    });
+    return {
+      list: selectedParamList,
+      selectedIndex: selectedIndex
     };
   };
   setRepository = (res) => {
@@ -459,12 +657,18 @@ class Quality extends Component {
       this.setState({
         repoData: repoDetails,
         selectedRepo: "",
+        selectedBranch:"",
+        selectedRelease:"",
+        showInsights:false
       });
       this.props.repoDropValDispatch("");
     } else {
       this.setState({
         repoData: [],
         selectedRepo: "",
+        selectedBranch:"",
+        selectedRelease:"",
+        showInsights:false
       });
       this.props.repoDropValDispatch("");
     }
@@ -486,6 +690,7 @@ class Quality extends Component {
       componentType: "quality",
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
+      filterStatus: "Repository"
     });
     this.props.repoDropValDispatch(repoDetails[selectedIndex].projectName);
     if (repoId !== "selectProject") {
@@ -493,7 +698,7 @@ class Quality extends Component {
       if (this.state.repoData[0].id !== "selectProject") {
         this.state.repoData.unshift({
           id: "selectProject",
-          projectName: "select Repository",
+          projectName: "Select Repository",
         });
       }
     } else {
@@ -506,6 +711,7 @@ class Quality extends Component {
         showbutton: false,
         show: false,
         layout: layout_instance.layout,
+        filterStatus: "Project"
       });
       let type;
       type = this.setRawDefaultRepo(
@@ -518,6 +724,7 @@ class Quality extends Component {
       // this.removeChartComponent(0);
       // this.removeChartComponent(0);
     }
+    this.getBranchDetails(this.props.projectID, repoDetails[selectedIndex].projectName);
   };
 
   updateQualityData = (repoId, selectedIndex) => {
@@ -530,7 +737,6 @@ class Quality extends Component {
     this.setState({
       layout: layout_instance.layout,
     });
-
     const type = this.setRawRepoObjects(
       this.props.qualityData.repositories[selectedIndex],
       this.props.qualityData.outstandingBugs,
@@ -548,11 +754,11 @@ class Quality extends Component {
     return defaultList;
   };
   handleRepoChange = (repoID) => {
-this.setState({
-  showCode:true,
-  showbutton: true,
-  showBuild:false,
-});
+    this.setState({
+      showCode:true,
+      showbutton: true,
+      showBuild:false,
+    });
     // if (repoID !== 'selectRepository') {
     this.updateRepository(repoID);
     // } else {
@@ -583,17 +789,19 @@ this.setState({
   setCode =()=>{
     this.setState({
       showCode:true,
-     showBuild:false,
+      showBuild:false,
       componentType:"quality",
     })
   }
-
   render() {
+    let qualityNav=<CardChartQuality showChart="true" insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" />
+   
     if (this.state.show) {
       return <Spinner show="true" />;
     } else {
       return (
         <React.Fragment>
+          {this.props.qualityDetails && this.state.showInsights? <SideNavbar card={qualityNav}/>:''}
           <Row className="p-0 px-3 m-0 mt-4">
             <Col xl={2} lg={3} md={3}>
               <Dropdown
@@ -627,7 +835,109 @@ this.setState({
                 </Row>
               </Dropdown>
             </Col>
-            <Col md={9}>
+            {this.state.selectedRepo && 
+            <Col xl={2} lg={3} md={3} className="p-0">
+            <Dropdown
+                listData={this.state.branchDropData}
+                direction="down"
+                dropsLable="Branch"
+                onSelectDelegate={this.branchOnSelectHandler}
+              >
+                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                  <Col
+                    sm={10}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    className="d-flex align-item-center justify-content-center"
+                  >
+                   <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                    {this.state.selectedBranch? <span className=' font-weight-bold'>{this.state.selectedBranch}</span>
+                        : "Select Branch"}
+                    </p>
+                  </Col>
+                  <Col
+                    sm={2}
+                    md={2}
+                    g={2}
+                    xl={2}
+                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </Col>
+                </Row>
+              </Dropdown>
+            </Col>}
+             {this.state.selectedBranch &&
+            <Col  xl={2} lg={3} md={3}>
+              <Dropdown
+                listData={this.state.releaseDropData}
+                direction="down"
+                dropsLable="Release"
+                onSelectDelegate={this.releaseOnSelectHandler}
+              >
+                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                  <Col
+                    sm={10}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    className="d-flex align-item-center justify-content-center"
+                  >
+                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+            {this.state.selectedRelease? <span className=' font-weight-bold'>{this.state.selectedRelease}</span>
+                        : "Select Release"}
+                    </p>
+
+                  </Col>
+                  <Col
+                    sm={2}
+                    md={2}
+                    g={2}
+                    xl={2}
+                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </Col>
+                </Row>
+              </Dropdown>
+            </Col>
+            }<span className='mt-auto'><p className="font-size-small m-0 text-left text-white">You are viewing data at <b>{this.state.filterStatus}</b> level</p></span>
+            <Col
+                
+                className="ml-auto align-self-end"
+              >
+                <Row className={classnames(
+              " Quality w-100 p-0 m-0 mt-3",
+              { "d-none": !this.state.selectedRepo || this.state.componentType !== "quality" }
+            )} style={{justifyContent:'flex-end'}}>
+                  <span className="font-size-small text-white">
+                    <FontAwesomeIcon
+                      className="critical ml-3 "
+                      icon={faSquare}
+                    />{" "}
+                    Critical{" "}
+                  </span>
+                  <span className="font-size-small text-white">
+                    <FontAwesomeIcon className="high ml-3" icon={faSquare} />{" "}
+                    High
+                  </span>
+                  <span className="font-size-small text-white">
+                    <FontAwesomeIcon className="medium ml-3" icon={faSquare} />{" "}
+                    Medium
+                  </span>
+                  <span className="font-size-small text-white">
+                    <FontAwesomeIcon className="low ml-3" icon={faSquare} /> Low
+                  </span>
+                  <span className="font-size-small text-white">
+                    <FontAwesomeIcon className="lowest ml-3" icon={faSquare} />{" "}
+                    Very Low
+                  </span>
+                </Row>
+              </Col>
+              </Row>
+          <Row className="p-0 px-3 m-0 mt-2">
+          <Col md={3}>
               <span>
               {this.state.showbutton ? (
                 <Button variant="outline-dark" className={this.state.showCode? "bgblue":"Buildbg"} onClick ={this.setCode}>
@@ -643,47 +953,14 @@ this.setState({
                 </Button>
                ) : null}  
               </span>
-            </Col>
+              </Col>
           </Row>
           <Row
             className={classnames(
-              " Quality quality-metric-area w-100 p-0 m-0",
+              " Quality  w-100 p-0 m-0 mt-3",
               { "d-none": !this.state.selectedRepo || this.state.componentType !== "quality" }
             )}
           >
-            <Row className="metric-legend w-100 text-white">
-              <Col
-                xl={3}
-                lg={3}
-                md={3}
-                className="offset-xl-9 offset-lg-9 offset-md-9"
-              >
-                <Row>
-                  <span className="font-size-xs mr-3 ">
-                    <FontAwesomeIcon
-                      className="critical ml-3"
-                      icon={faSquare}
-                    />{" "}
-                    Critical{" "}
-                  </span>
-                  <span className="font-size-xs mr-3">
-                    <FontAwesomeIcon className="high ml-3" icon={faSquare} />{" "}
-                    High
-                  </span>
-                  <span className="font-size-xs mr-3 ">
-                    <FontAwesomeIcon className="medium ml-3" icon={faSquare} />{" "}
-                    Medium
-                  </span>
-                  <span className="font-size-xs mr-3 ">
-                    <FontAwesomeIcon className="low ml-3" icon={faSquare} /> Low
-                  </span>
-                  <span className="font-size-xs mr-3 ">
-                    <FontAwesomeIcon className="lowest ml-3" icon={faSquare} />{" "}
-                    Very Low
-                  </span>
-                </Row>
-              </Col>
-            </Row>
             {this.state.componentType === "quality" ? (
             <Container fluid className=" w-100 h-90 d-flex align-item-center">
               <div className="h-100 w-100 d-flex overflow-auto">
@@ -739,7 +1016,7 @@ this.setState({
           ) : null}
           
           <ModalBackDrop show={this.state.displayMetric}>
-            <div className="chart-title w-50 h-50 grid-graph-comp">
+            <div className="chart-title w-50 h-55 grid-graph-comp">
               <div
                 className="position-absolute px-2 text-right text-white w-50"
                 style={{ zIndex: "100" }}
@@ -790,6 +1067,10 @@ const mapStateToProps = (state) => {
     currentRepo: state.qualityData.currentRepo,
     qualityBuildData: state.qualityData.qualityBuildDetails,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
+    qualityDetails: state.qualityData.qualityDetails,
+    organization: state.productDetails.currentProject.projectDetails.organization,
+    projId: state.productDetails.currentProject.projectDetails.id,
+    qualityBuildReleaseDetails: state.qualityData.qualityBuildReleaseDetails
   };
 };
 
@@ -797,12 +1078,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    {
+    {  insightsQuality,
       qualityDataDispatch,
       qualityBuildDataDispatch,
       resetProjectRepoDispatch,
       qualityDrilledDownDataDispatch,
       repoDropValDispatch,
+      qualityReleaseDataDispatch,
+      qualityDrilledDownDataFilterDispatch
     },
     dispatch
   );

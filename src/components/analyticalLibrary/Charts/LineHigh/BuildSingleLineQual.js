@@ -26,7 +26,7 @@ const BuildSingleLineQual = (props) => {
             symbolRadius: 0,
             itemStyle: {
                 color: "#ffffff",
-                fontWeight: "bold"
+                fontWeight: "normal"
             },
             itemHoverStyle: {
                 color: "#ffffff"
@@ -71,7 +71,7 @@ const BuildSingleLineQual = (props) => {
       },
       style: {
         color: "#ffffff",
-        fontWeight: 'bold',
+        fontWeight: 'normal',
       }
       },
       maxPadding: 0.2

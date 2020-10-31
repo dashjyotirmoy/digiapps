@@ -34,6 +34,9 @@ class BubbleHigh extends Component {
         symbolWidth: 11,
         symbolRadius: 0,
         align: "left",
+        itemHoverStyle: {
+          color: "#ffffff"
+        },
         itemStyle: {
           color: "#f5f5f5",
           fontWeight: "normal"
@@ -482,6 +485,9 @@ class BubbleHigh extends Component {
             symbolWidth: 11,
             symbolRadius: 0,
             align: "left",
+            itemHoverStyle: {
+              color: "#ffffff"
+            },
             itemStyle: {
               color: "#f5f5f5",
               fontWeight: "normal"
@@ -616,6 +622,9 @@ class BubbleHigh extends Component {
             symbolWidth: 11,
             symbolRadius: 0,
             align: "left",
+            itemHoverStyle: {
+              color: "#ffffff"
+            },
             itemStyle: {
               color: "#f5f5f5",
               fontWeight: "normal"
@@ -743,6 +752,9 @@ class BubbleHigh extends Component {
             symbolWidth: 11,
             symbolRadius: 0,
             align: "left",
+            itemHoverStyle: {
+              color: "#ffffff"
+            },
             itemStyle: {
               color: "#f5f5f5",
               fontWeight: "normal"
@@ -873,6 +885,9 @@ class BubbleHigh extends Component {
             symbolWidth: 11,
             symbolRadius: 0,
             align: "left",
+            itemHoverStyle: {
+              color: "#ffffff"
+            },
             itemStyle: {
               color: "#f5f5f5",
               fontWeight: "normal"
@@ -980,6 +995,9 @@ class BubbleHigh extends Component {
             symbolWidth: 11,
             symbolRadius: 0,
             align: "left",
+            itemHoverStyle: {
+              color: "#ffffff"
+            },
             itemStyle: {
               color: "#f5f5f5",
               fontWeight: "normal"
