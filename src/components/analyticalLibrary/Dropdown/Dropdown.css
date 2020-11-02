@@ -1,20 +1,17 @@
 .dropdown-h100-scroll{
-  max-height: 220px;
+  max-height: 190px;
   overflow: auto;
 }
 
-::-webkit-scrollbar {
-  width: 15px;
+.dropdown-h100-scroll::-webkit-scrollbar {
+  width: 9px;
+  display: block;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #334154;
+.dropdown-h100-scroll::-webkit-scrollbar-thumb {
+  background-color: #515e70;
   border-radius: 25px;
   height: 35%;
-}
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px #212529; 
-  border-radius: 25px;
 }
 .bg-secondary1 {
   background-color: #334154!important;
