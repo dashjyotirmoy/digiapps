@@ -375,3 +375,34 @@ a:hover {
   left: 13px;
   top: 45px;
 }
+.inner_table {
+  height: auto;
+  max-height: 200px;
+  overflow: auto;
+}
+.inner_table_overview {
+  height: auto;
+  max-height: 377px;
+  overflow: auto;
+}
+.wrap2 {
+  display: block;
+  overflow-x: auto;
+  max-height: 359px; 
+}
+.wrap2 thead th{
+position: sticky;
+top: 0;
+white-space: nowrap;
+background-color: #E1E7F0;
+}
+.inner_table::-webkit-scrollbar, .inner_table_overview::-webkit-scrollbar,.wrap2::-webkit-scrollbar {
+  width: 9px;
+  display: block;
+}
+
+.inner_table::-webkit-scrollbar-thumb, .inner_table_overview::-webkit-scrollbar-thumb,.wrap2::-webkit-scrollbar-thumb {
+  background-color: #515e70;
+  border-radius: 25px;
+  height: 35%;
+}
