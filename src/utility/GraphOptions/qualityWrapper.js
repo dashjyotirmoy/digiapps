@@ -408,24 +408,31 @@ class QualityGraph {
   //function that creates data for Bar chart
   generateBar(options) {
     let critical_value = [],
+    combinedURL,
+    baseURL = "https://dev.azure.com/organization_name/project_id/_queries/query/?wiql=SELECT [System.Id]%2C[System.WorkItemType]%2C[System.Title] FROM WorkItems WHERE [System.Id] IN (work_item_ids)&name=Cycle time work items",
       high_value = [],
       medium_value = [],
+      IDsData=this.res.data,
+      //IDs = this.res.data.mediumBugs.ids,
+      projID = this.res.projID,
+      newURL,
+      organization = this.res.organization,
       low_value = [];
-    critical_value.push(parseInt(this.res.data.critical));
-    high_value.push(parseInt(this.res.data.high));
-    medium_value.push(parseInt(this.res.data.medium));
-    low_value.push(parseInt(this.res.data.low));
+    critical_value.push(parseInt(this.res.data.criticalBugs.totalCount));
+    high_value.push(parseInt(this.res.data.highBugs.totalCount));
+    medium_value.push(parseInt(this.res.data.mediumBugs.totalCount));
+    low_value.push(parseInt(this.res.data.lowBugs.totalCount));
     options.chart = {
       type: "bar",
-      height: 0,
+      height: 300,
       backgroundColor: ""
     };
     options.title = {
-      text: "Outstanding Defects",
+      text: 'Outstanding Defects',
+      align: "left",
       style: {
-        color: "#f5f5f5"
-      },
-      align: "left"
+        color: "#f5f5f5",
+      }
     };
     options.yAxis = {
       min: -1,
@@ -445,21 +452,48 @@ class QualityGraph {
 
     options.legend = {
       enabled: true,
+      reversed: true,    
+      backgroundColor: "transparent",
+      floating: true,
+      verticalAlign: 'top',
+      align: 'right',
+      x: -30,
+      y: 48,
       itemStyle: {
         color: "#f5f5f5",
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#D3D3D3",
-        fontWeight: ""
+        color: "#d3d3d3"
       },
-      align: "right",
-      verticalAlign: "top",
-      y: -30
     };
 
     options.tooltip = {
-      formatter: function () {
+      headerFormat: '',
+      pointFormatter: function (t) {
+        combinedURL = baseURL;
+        let x = this.x;
+        let y = this.y;
+        //let points = this.series.chart.series[2].points;
+        
+        // IDs.push(IDs.mediumBugs.ids);
+        let IDs = this.series.name === 'Medium' ? IDsData.mediumBugs.ids: this.series.name=== 'Critical'? IDsData.criticalBugs.ids:this.series.name=== 'High'? IDsData.highBugs.ids:IDsData.lowBugs.ids;
+        let newIDs = "(";
+        let idCount = 0;
+        IDs.map(ele => {
+          let id = ele.toString();
+          newIDs += id;
+          idCount++;
+          if (idCount > 0) {
+            newIDs += ",";
+          }
+        });
+        newIDs.slice(0, -1);
+        newIDs = newIDs.substring(0, newIDs.length - 1);
+        newIDs += ")";
+        newURL = baseURL.replace("(work_item_ids)", newIDs);
+        newURL = newURL.replace("project_id", projID);
+        newURL = newURL.replace("organization_name", organization);
         return this.series.name + " " + this.y;
       }
     };
@@ -469,10 +503,25 @@ class QualityGraph {
         pointWidth: 40,
         dataLabels: {
           enabled: true,
+          formatter: function() {
+            if(this.y){
+              return this.y;
+            }
+          },
           y: -50,
           style: {
-            fontWeight: "normal",
-            fontSize: "1rem"
+            textOutline: false,
+            fontWeight: 'normal',
+            color: '#2E2E38',
+            fontSize: '14px'
+          }, 
+        },
+        cursor: "pointer",
+        point: {
+          events: {
+            click: function () {
+              if(this.y !== 0){ window.open(newURL, "_blank")};
+            }
           }
         }
       },
@@ -485,7 +534,7 @@ class QualityGraph {
       {
         name: "Low",
         data: low_value,
-        color: "#2BA67E"
+        color: "#20c997"
       },
       {
         name: "Medium",
@@ -495,12 +544,12 @@ class QualityGraph {
       {
         name: "High",
         data: high_value,
-        color: "#B65354"
+        color: "#ec5050"
       },
       {
         name: "Critical",
         data: critical_value,
-        color: "#A42829"
+        color: "#a21220"
       }
     ];
     return options;

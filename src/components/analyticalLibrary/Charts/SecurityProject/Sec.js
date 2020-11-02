@@ -112,10 +112,10 @@ const Sec = props => {
                     </Row>
                     <Row className="text-center">
                       <Col sm={11}>
-                      {/* <Col>
-                        <Badge style={{ color: '#ffffff', background: '#C981B2' }}>{props.cardsData[0].data[3]}</Badge>{' '}
-                        <Badge style={{ color: '#ffffff', background: '#42C9C2' }}>{props.cardsData[0].data[4]}</Badge>{' '}
-                      </Col> */}
+                      <Col>
+                        <Badge style={{ color: '#222222', background: '#C981B2' }}>{props.cardsData[0].data[3]}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#42C9C2' }}>{props.cardsData[0].data[4]}</Badge>{' '}
+                      </Col>
                       </Col>
                     </Row>
                   </Card.Body>
@@ -193,7 +193,7 @@ const Sec = props => {
                       <table className="table table-hover table-dark">
                         <thead className="tabhead">
                           <tr>
-                            <th scope="col">Projects</th>
+                            <th scope="col">Repositories</th>
                             <th scope="col">Libraries</th>
                             <th scope="col">Vulnerability Count</th>
                             <th scope="col">Vulnerabilities</th>
@@ -217,9 +217,9 @@ const Sec = props => {
                                             <p className="ml-3">No Vulnerabilities</p>
                                           ) :
                                           <ProgressBar className="w-200">
-                                          <ProgressBar style={{ backgroundColor: '#ec5050' }} now={item.vulnerableLibraries.high} label={`${item.vulnerableLibraries.high}`} key={1} max={item.vulnerableLibraries.totalCount} />
-                                          <ProgressBar style={{ backgroundColor: '#ffc107' }} now={item.vulnerableLibraries.medium} label={`${item.vulnerableLibraries.medium}`} key={2} max={item.vulnerableLibraries.totalCount} />
-                                          <ProgressBar style={{ backgroundColor: '#20c997' }} now={item.vulnerableLibraries.low} label={`${item.vulnerableLibraries.low} `} key={3} max={item.vulnerableLibraries.totalCount} />
+                                          <ProgressBar style={{ backgroundColor: '#ec5050',color:'#333333',fontWeight:'bold' }} now={item.vulnerableLibraries.high} label={`${item.vulnerableLibraries.high}`} key={1} max={item.vulnerableLibraries.totalCount} />
+                                          <ProgressBar style={{ backgroundColor: '#ffc107',color:'#333333',fontWeight:'bold' }} now={item.vulnerableLibraries.medium} label={`${item.vulnerableLibraries.medium}`} key={2} max={item.vulnerableLibraries.totalCount} />
+                                          <ProgressBar style={{ backgroundColor: '#20c997',color:'#333333',fontWeight:'bold' }} now={item.vulnerableLibraries.low} label={`${item.vulnerableLibraries.low} `} key={3} max={item.vulnerableLibraries.totalCount} />
                                         </ProgressBar>
                                           }
                                     </td>

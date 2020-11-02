@@ -2,6 +2,92 @@
   "widgets": [
     {
       "Id": "1",
+      "name": "ProductDefBar",
+      "title": "EY DevOps",
+      "description": "EY DevOps",
+      "basePath": "../analyticalLibrary/",
+      "compPath": "ProductDefinationBar/ProductDefBar",
+      "position": 1,
+      "render": {
+        "licenseKey": "lic-ex-sprint-summaryv01-22453135",
+        "graphPath": "/dev/dashboard/sprint/",
+        "group": ["Default", "All"],
+        "securityRoles": ["Admins"]
+      },
+      "executor": {
+        "apiURI": "/dev/dashboard/v1/sprint/{id}",
+        "licenseKey": "lic-ex-sprint-summaryv01-22453135"
+      },
+      "attributes": [
+        {
+          "name": "Sprint",
+          "value": "1"
+        },
+        {
+          "name": "StartDate",
+          "value": ""
+        },
+        {
+          "name": "EndDate",
+          "value": ""
+        },
+        {
+          "name": "Stories",
+          "value": "4"
+        }
+      ],
+      "dimensions": [
+        {
+          "name": "Project Status",
+          "title": "Overview",
+          "compPath": "",
+          "description": "Current Project Status",
+          "priority": 1,
+          "uri": "/dimensions/{name}",
+          "graph": {
+            "type": "pie",
+            "expression": "value",
+            "datamodel": "schema"
+          }
+        },
+        {
+          "name": "GoLive",
+          "title": "GoLive Data",
+          "compPath": "",
+          "description": "Go Live",
+          "priority": 2,
+          "uri": "/dimensions/{Golive}",
+          "graph": {
+            "type": "line",
+            "expression": "value",
+            "datamodel": "schema"
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "name": "burndown",
+          "title": "burndown",
+          "description": "burndown",
+          "uri": "/metric/{name}",
+          "mapping": {
+            "dimensions": ["Project Status", "GoLive"],
+            "attributes": ["Sprint"]
+          },
+          "expression": "value",
+          "data": ""
+        }
+      ],
+      "dragPosition": [
+        {
+          "currPos": 1,
+          "defPos": 2,
+          "role": "Admin"
+        }
+      ]
+    },
+    {
+      "Id": "2",
       "name": "ProductInfoBar",
       "title": "EY DevOps",
       "description": "EY DevOps",
@@ -79,92 +165,6 @@
         }
       ],
       "route": {},
-      "dragPosition": [
-        {
-          "currPos": 1,
-          "defPos": 2,
-          "role": "Admin"
-        }
-      ]
-    },
-    {
-      "Id": "2",
-      "name": "ProductDefBar",
-      "title": "EY DevOps",
-      "description": "EY DevOps",
-      "basePath": "../analyticalLibrary/",
-      "compPath": "ProductDefinationBar/ProductDefBar",
-      "position": 1,
-      "render": {
-        "licenseKey": "lic-ex-sprint-summaryv01-22453135",
-        "graphPath": "/dev/dashboard/sprint/",
-        "group": ["Default", "All"],
-        "securityRoles": ["Admins"]
-      },
-      "executor": {
-        "apiURI": "/dev/dashboard/v1/sprint/{id}",
-        "licenseKey": "lic-ex-sprint-summaryv01-22453135"
-      },
-      "attributes": [
-        {
-          "name": "Sprint",
-          "value": "1"
-        },
-        {
-          "name": "StartDate",
-          "value": ""
-        },
-        {
-          "name": "EndDate",
-          "value": ""
-        },
-        {
-          "name": "Stories",
-          "value": "4"
-        }
-      ],
-      "dimensions": [
-        {
-          "name": "Project Status",
-          "title": "Overview",
-          "compPath": "",
-          "description": "Current Project Status",
-          "priority": 1,
-          "uri": "/dimensions/{name}",
-          "graph": {
-            "type": "pie",
-            "expression": "value",
-            "datamodel": "schema"
-          }
-        },
-        {
-          "name": "GoLive",
-          "title": "GoLive Data",
-          "compPath": "",
-          "description": "Go Live",
-          "priority": 2,
-          "uri": "/dimensions/{Golive}",
-          "graph": {
-            "type": "line",
-            "expression": "value",
-            "datamodel": "schema"
-          }
-        }
-      ],
-      "metrics": [
-        {
-          "name": "burndown",
-          "title": "burndown",
-          "description": "burndown",
-          "uri": "/metric/{name}",
-          "mapping": {
-            "dimensions": ["Project Status", "GoLive"],
-            "attributes": ["Sprint"]
-          },
-          "expression": "value",
-          "data": ""
-        }
-      ],
       "dragPosition": [
         {
           "currPos": 1,

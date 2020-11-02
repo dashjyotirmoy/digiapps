@@ -55,7 +55,7 @@ const App = props => {
         <Row className="mt-2">
           <Col>
             <Card.Body className="bg">
-              <h5 className="mb-3">Per Vulnerability Alert</h5>
+              <h5 className="mb-3">Unique Vulnerabilities</h5>
               <Row className="pl-2">
                 <Col sm={1} className="pr-0">
                   <p>Vulnerabilities</p>
@@ -157,7 +157,7 @@ const App = props => {
         <Row className="mt-5">
           <Col>
             <Card.Body className="bg">
-              <h5 className="mb-3">Per Library Alert</h5>
+              <h5 className="mb-3">Actionable Libraries</h5>
               <Row className="basealign">
                 <p>Alerts</p>
                 <Col sm={2}>
@@ -193,7 +193,7 @@ const App = props => {
                           Library
       </th>
                         <th scope="col">
-                          Type
+                        Alert Type
       </th>
                         <th scope="col">
                           Description
@@ -224,7 +224,7 @@ const App = props => {
                                 <td>  <div style={{ float: "left" }}>
                                   <Badge className="sevbadge1"></Badge>{" "}
                                 </div>
-                                  <div className="margin-4">
+                                  <div className="ml-4">
                                     <p>{item.libraryName}</p>
                                   </div></td>
                                 <td>
@@ -232,9 +232,9 @@ const App = props => {
                                 </td>
                                 <td>
                                   <ProgressBar className="w-200">
-                                    <ProgressBar style={{ backgroundColor: '#ec5050' }} now={item.description.high} label={`${item.description.high}`} key={1} max={item.description.totalCount} />
-                                    <ProgressBar style={{ backgroundColor: '#ffc107' }} now={item.description.medium} label={`${item.description.medium}`} key={2} max={item.description.totalCount} />
-                                    <ProgressBar style={{ backgroundColor: '#20c997' }} now={item.description.low} label={`${item.description.low}`} key={3} max={item.description.totalCount} />
+                                    <ProgressBar style={{ color: '#222222',backgroundColor: '#ec5050',fontWeight:'bold' }} now={item.description.high} label={`${item.description.high}`} key={1} max={item.description.totalCount} />
+                                    <ProgressBar style={{ color: '#222222',backgroundColor: '#ffc107',fontWeight:'bold' }} now={item.description.medium} label={`${item.description.medium}`} key={2} max={item.description.totalCount} />
+                                    <ProgressBar style={{ color: '#222222',backgroundColor: '#20c997',fontWeight:'bold' }} now={item.description.low} label={`${item.description.low}`} key={3} max={item.description.totalCount} />
                                   </ProgressBar>
 
                                 </td>

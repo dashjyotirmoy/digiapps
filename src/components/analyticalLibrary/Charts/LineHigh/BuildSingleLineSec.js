@@ -102,22 +102,22 @@ const BuildSingleLineSec = (props) => {
 	},
 {
   name : "High ",
-  color: '#ff0000',
+  color: '#ec5050',
   marker : {symbol : 'square',radius : 15 }
 },
 {
   name : "Medium ",
-  color: '#ffa500',
+  color: '#ffc107',
   marker : {symbol : 'square',radius : 15 }
   },
 {
   name : "Low ",
-  color: '#ffff00',
+  color: '#20c997',
   marker : {symbol : 'square',radius : 15 }
 },
 {
   name : "None ",
-  color: '#00FF00',
+  color: '#056642',
   marker : {symbol : 'square',radius : 15 }
 }
 

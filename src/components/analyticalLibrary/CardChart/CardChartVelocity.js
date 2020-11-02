@@ -55,7 +55,7 @@ const CardChart = props => {
         }
 
     return <React.Fragment>
-        <Card className="card-border">
+        <Card className="card-border grid-graph-comp" style={{color:'#ffffff'}}>
             <Card.Body className="p-0">
                 <div className="d-flex cardHeader p-2 rounded">
                     <div className="mr-auto">
