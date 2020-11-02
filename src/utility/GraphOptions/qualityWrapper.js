@@ -512,7 +512,7 @@ class QualityGraph {
           style: {
             textOutline: false,
             fontWeight: 'normal',
-            color: '#2E2E38',
+            color: '#ffffff',
             fontSize: '14px'
           }, 
         },
