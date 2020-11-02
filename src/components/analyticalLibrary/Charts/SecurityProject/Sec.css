@@ -92,23 +92,18 @@ font-family: Helvetica;
 /* legend color */
 .major{
   color: #C981B2;
-  margin-right: 0.5rem;
 }
 .minor{
   color: #42C9C2;
-  margin-right: 0.5rem;
 }
 .highbg{
   color: #ec5050;
-  margin-right: 1rem;
 }
 .mediumbg{
   color: #ffc107;
-  margin-right: 1rem;
 }
 .lowbg{
   color: #20c997;
-  margin-right: 1rem;
 }
 .w-45{
 width: 45%;

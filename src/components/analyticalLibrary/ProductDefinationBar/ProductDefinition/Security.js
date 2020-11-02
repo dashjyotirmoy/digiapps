@@ -670,25 +670,25 @@ class Security extends Component {
             </Col>
             { !this.state.policyActive?(
               <div className="text-right">               
-              <span className="font-size-small mr-2">
-                <FontAwesomeIcon  className="major" icon={faSquare} />
-                <span className='text-white'>Major</span>
+              <span className="font-size-small text-white">
+                <FontAwesomeIcon  className="major ml-3" icon={faSquare} />{" "}
+                Major
                 </span>
-                <span className="font-size-small mr-3">
-                <FontAwesomeIcon  className="minor" icon={faSquare} />
-                <span className='text-white'>Minor</span>
+                <span className="font-size-small text-white">
+                <FontAwesomeIcon  className="minor ml-3" icon={faSquare} />{" "}
+                Minor
                 </span>
-                <span className="font-size-small mr-2">
-                <FontAwesomeIcon  className="highbg" icon={faSquare} />
-                <span className='text-white'>High</span>
+                <span className="font-size-small text-white">
+                <FontAwesomeIcon  className="highbg ml-3" icon={faSquare} />{" "}
+                High
                 </span>
-                <span className="font-size-small mr-2">
-                <FontAwesomeIcon  className="mediumbg" icon={faSquare} />
-                <span className='text-white'>Medium</span>
+                <span className="font-size-small text-white">
+                <FontAwesomeIcon  className="mediumbg ml-3" icon={faSquare} />{" "}
+                Medium
                 </span>
-                <span className="font-size-small mr-2i">
-                <FontAwesomeIcon  className="lowbg" icon={faSquare} />
-                <span className='text-white'>Low</span>
+                <span className="font-size-small text-white">
+                <FontAwesomeIcon  className="lowbg ml-3" icon={faSquare} />{" "}
+                Low
                 </span>                  
                 </div>
             ):<div></div>
