@@ -19,6 +19,8 @@ import Layout from "../../../../utility/layoutManager/layoutManager";
 import { Row, Col, Button } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
 import VelocityBuild from './VelocityBuild';
+import CardChartVelocity from "../../CardChart/CardChartVelocity";
+import SideNavbar from "../../SideNavBar/SideNavbar";
 
 class Velocity extends Component {
   state = {
@@ -38,7 +40,8 @@ class Velocity extends Component {
     codeActive: true,
     buildActive: false,
     componentType: "velocity",
-    repoData: []
+    repoData: [],
+    filterStatus: 'Team'
   };
 
   //function to remove a chart component from the grid layout
@@ -243,7 +246,8 @@ class Velocity extends Component {
       // repoDetails.unshift({id: "selectProject", projectName: "select Project"});
       this.setState({
         repoData: repoDetails,
-        selectedRepo: ""
+        selectedRepo: "",
+        filterStatus: "Team"
       });
 
       this.props.velocityRepoDropValDispatch("");
@@ -304,6 +308,7 @@ class Velocity extends Component {
     this.setState({
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
+      filterStatus: "Repository"
     });
     this.props.velocityRepoDropValDispatch(repoDetails[selectedIndex].projectName);
     // if (repoId !== "selectProject") {
@@ -337,17 +342,31 @@ class Velocity extends Component {
 
 
   render() {
+    let velocityNav=<CardChartVelocity showChart="true" insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" />
     if (this.state.show) {
       return <Spinner show="true" />;
     } else {
       return (
         <React.Fragment>
-          <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start">
-          {this.state.showDropdown ? (
+          {this.props.velocityInsightDetails &&<SideNavbar card={velocityNav}/>}
+          <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start" style={{alignItems:'flex-end'}}>
+              <span className="px-3">
+                {this.state.showbutton ? (
+                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>Overview</Button>
+                ) : null}
+              </span>
+
+              <span>
+                {this.state.showbutton ? (
+                  <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>Build</Button>
+                  ) : null}
+              </span>
+            {this.state.showDropdown ? (
           <Col md={2}>
               <Dropdown
                 listData={this.state.repoData}
                 direction="down"
+                dropsLable="Repository"
                 onSelectDelegate={this.handleRepoChange}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -358,10 +377,10 @@ class Velocity extends Component {
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                  <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
                       {this.state.selectedRepo
-                        ? this.state.selectedRepo
-                        : "Select Project"}
+                        ? <span className=' font-weight-bold'>{this.state.selectedRepo}</span>
+                        : "Select Repository"}
                     </p>
                   </Col>
                   <Col
@@ -377,26 +396,8 @@ class Velocity extends Component {
               </Dropdown>
             </Col>
                ) : null}
-            <Col md={8}>
-              <span>
-                {this.state.showbutton ? (
-                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>Overview</Button>
-                  //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setAlert} >Alert</button>
-                ) : null}
-              </span>
-
-              <span className="ml-3">
-                {this.state.showbutton ? (
-                  <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>Build</Button>
-                  //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
-                ) : null}
-              </span>
-            </Col>
-            {/* {this.state.buildActive ? ( */}
-            
-          {/* ) : null} */}
-
-          </Row>
+            <Col md={4} className="mt-auto"><p className="font-size-small m-0 text-white">You are viewing data at <b>{this.state.filterStatus}</b>  level</p></Col>
+         </Row>
           {this.state.charts.length > 0 && this.state.componentType === "velocity"? (
             <Grid
               chartData={this.state.charts}
@@ -405,7 +406,7 @@ class Velocity extends Component {
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
             />
-          ) : null} */}
+          ) : null}
           {this.state.componentType === "VelocityBuild"? (
             <VelocityBuild cardsData={this.state.velocityBuildData}/>
             ) : null}
@@ -427,7 +428,8 @@ const mapStateToProps = state => {
     currentRepo: state.chartData.currentRepo,
     velocityBuildData: state.chartData.velocityBuildDetails,
     velocityProjectData: state.chartData.velocityProjectDetails,
-    organization: state.productDetails.currentProject.projectDetails.organization
+    organization: state.productDetails.currentProject.projectDetails.organization,
+    velocityInsightDetails: state.insightData.velocityInsightDetails,
   };
 };
 

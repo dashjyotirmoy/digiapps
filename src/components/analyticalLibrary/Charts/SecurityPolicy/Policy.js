@@ -75,7 +75,7 @@ const Policy = (props) => {
 								<tr >
 									<th className="pl-1">Library</th>
 									<th>Description</th>
-									<th>Library Type</th>									
+									<th className="text-center">Library Type</th>									
 									<th>Creation Date</th>
 									<th>Modified Date</th>
 								</tr>
@@ -94,10 +94,10 @@ const Policy = (props) => {
 														<Badge className="sevbadge1"></Badge>
 													) : <Badge className="sevbadge-minor"></Badge>}
 
-													</td>
-												<td>{item.libraryName}</td>
+												
+												<span className="ml-2">{item.libraryName}</span></td>
 												<td> {item.description} </td>
-												<td> {item.libraryType}</td>
+												<td className="text-center"> {item.libraryType}</td>
 												<td>  {item.creationDate ? moment(item.creationDate).format("DD-MM-YYYY"): null} </td>
 												<td>  {item.modifiedDate ? moment(item.modifiedDate).format("DD-MM-YYYY"): null} </td>
 

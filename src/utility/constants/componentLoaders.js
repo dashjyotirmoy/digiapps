@@ -1,1 +1,1 @@
-export const appComponentList = ["ProductInfoBar", "ProductDefBar"];
+export const appComponentList = ["ProductDefBar","ProductInfoBar"];

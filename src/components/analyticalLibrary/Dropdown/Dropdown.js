@@ -17,6 +17,8 @@ class CustDropdown extends Component {
       );
     });
     return (
+      <>
+      <div className="font-size-small w-100 m-0 text-white">{this.props.dropsLable}</div>
       <Dropdown
         onSelect={(evt, evtKey) => this.props.onSelectDelegate(evt, evtKey)}
         className="d-xl-block d-lg-block d-md-block d-sm-block d-sx-none d-none w-100"
@@ -37,6 +39,7 @@ class CustDropdown extends Component {
         </Dropdown.Menu>
 
       </Dropdown >
+      </>
     );
   }
 }

@@ -807,6 +807,7 @@ class Quality extends Component {
               <Dropdown
                 listData={this.state.repoData}
                 direction="down"
+                dropsLable="Repository"
                 onSelectDelegate={this.handleRepoChange}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">

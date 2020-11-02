@@ -111,9 +111,10 @@ const SecurityOnProjectSelection = (props) => {
                     </Row>
                     <Row className="text-center">
                       <Col sm={11}>
-                        {/* <Badge style={{ color: '#222222', background: '#ec5050' }}>0</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#ffc107' }}>2</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#20c997' }}>10</Badge>{' '} */}
+                      <Col>
+                        <Badge style={{ color: '#222222', background: '#C981B2' }}>{props.cardsData[0].data[3]}</Badge>{' '}
+                        <Badge style={{ color: '#222222', background: '#42C9C2' }}>{props.cardsData[0].data[4]}</Badge>{' '}
+                      </Col>
                       </Col>
                       {/* <Col sm={1}>
                         <FontAwesomeIcon
@@ -133,7 +134,7 @@ const SecurityOnProjectSelection = (props) => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <h6>Per Vulnerability Alert</h6>
+                        <h6>Unique Vulnerabilities</h6>
                       </Col>
                       <Col sm={4} className="iconend"> <InsecureProtectionSvg /></Col>
                     </Row>
@@ -158,7 +159,7 @@ const SecurityOnProjectSelection = (props) => {
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
-                        <h6>Per Library Alert</h6>
+                        <h6>Actionable Libraries</h6>
                       </Col>
                       <Col sm={4} className="iconend"><LibrarySvg /></Col>
                     </Row>
@@ -257,15 +258,15 @@ const SecurityOnProjectSelection = (props) => {
                                   props.cardsData[5].data[2].map((item, index) => {
                                     return (
                                       <tr className="tabrow f-12" key={index}>
-                                        <td className="w-45"><p>{item.name}</p></td>
-                                        <td className="tabpadding w-40">
+                                        <td className="w-23"><p>{item.name}</p></td>
+                                        <td className="tabpadding w-23">
                                           {item.vulnerabilities.totalCount === "0" ? (
                                             <p className="ml-3">No Vulnerabilities</p>
                                           ) :
-                                            <ProgressBar className="w-200">
-                                              <ProgressBar style={{ backgroundColor: '#ec5050' }} now={item.vulnerabilities.high} label={`${item.vulnerabilities.high}`} key={1} max={item.vulnerabilities.totalCount} />
-                                              <ProgressBar style={{ backgroundColor: '#ffc107' }} now={item.vulnerabilities.medium} label={`${item.vulnerabilities.medium}`} key={2} max={item.vulnerabilities.totalCount} />
-                                              <ProgressBar style={{ backgroundColor: '#20c997' }} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`} key={3} max={item.vulnerabilities.totalCount} />
+                                            <ProgressBar className="">
+                                              <ProgressBar style={{ color: '#222222',backgroundColor: '#ec5050',fontWeight:'bold' }} now={item.vulnerabilities.high} label={`${item.vulnerabilities.high}`} key={1} max={item.vulnerabilities.totalCount} />
+                                              <ProgressBar style={{ color: '#222222',backgroundColor: '#ffc107',fontWeight:'bold' }} now={item.vulnerabilities.medium} label={`${item.vulnerabilities.medium}`} key={2} max={item.vulnerabilities.totalCount} />
+                                              <ProgressBar style={{ color: '#222222',backgroundColor: '#20c997',fontWeight:'bold' }} now={item.vulnerabilities.low} label={`${item.vulnerabilities.low}`} key={3} max={item.vulnerabilities.totalCount} />
                                             </ProgressBar>
                                           }
 

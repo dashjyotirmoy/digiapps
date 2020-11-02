@@ -106,7 +106,7 @@ const BuildSingleLineQual = (props) => {
      },
     {
       name : "Bad",
-      color: '#ff0000',
+      color: '#ec5050',
       marker : {symbol : 'square',radius : 15 },
      // data:  bugsCount,
     //  visible:false
@@ -114,14 +114,14 @@ const BuildSingleLineQual = (props) => {
     },
     {
       name : "Average",
-      color: '#ffa500',
+      color: '#ffc107',
       marker : {symbol : 'square',radius : 15 },
     //  data:  codeVulnerabilityCount,
     //  visible:false
       },
     {
       name : "Good",
-      color: '#00FF00',
+      color: '#20c997',
       marker : {symbol : 'square',radius : 15 },
     //  data:  codeCoverageCount,
    //   visible:false

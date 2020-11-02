@@ -60,7 +60,7 @@ font-family: Helvetica;
  padding: .5rem 3rem;
 }
 .btnhighbg {
-  background: #ec282b;
+  background: #ec5050;
 }
 .btnmediumbg {
   background: #ffc107;
@@ -69,7 +69,7 @@ font-family: Helvetica;
   background: #20c997;
 }
 .btnnobg {
-  background: #21db10;
+  background: #056642;
 }
 .Alertbg:hover{
   background-color: #1D2632!important;

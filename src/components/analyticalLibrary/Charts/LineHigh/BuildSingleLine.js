@@ -100,16 +100,16 @@ const BuildSingleLine = (props) => {
       name: 'Velocity Variance',
     }, {
       name: "Warning",
-      color: '#ec282b',
+      color: '#ec5050',
       marker: { symbol: 'square', radius: 15 }
     }, {
       name: "Below Optimal",
-      color: '#ffff00',
+      color: '#ffc107',
       marker: { symbol: 'square', radius: 15 }
     },
     {
       name: "Ideal",
-      color: '#21db10',
+      color: '#20c997',
       marker: { symbol: 'square', radius: 15 }
     }],
   };

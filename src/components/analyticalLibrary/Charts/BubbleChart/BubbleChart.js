@@ -839,22 +839,22 @@ class BubbleHigh extends Component {
             {
               name: "Low",
               data: lowCodeSmells,
-              color: '#90ee90'
+              color: '#20c997'
             },
             {
               name: "Medium",
               data: mediumCodeSmells,
-              color: '#ffff00'
+              color: '#ffc107'
             },
             {
               name: "High",
               data: highCodeSmells,
-              color: '#ffa500'
+              color: '#ec5050'
             },
             {
               name: "Critical",
               data: criticalCodeSmells,
-              color: '#ff0000'
+              color: '#a21220'
             }
           ]
         }

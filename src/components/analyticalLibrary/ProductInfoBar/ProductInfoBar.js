@@ -385,44 +385,46 @@ class ProductInfoBar extends Component {
             fluid
             className="h-100 border-bottom border-dark border-top"
           >
-            <Row className="h-100  p-0 m-0">
+            <Row className="h-100" >
               <Col
                 xl={2}
                 lg={2}
                 md={2}
-                className="d-flex justify-content-center align-items-center p-0"
+                className="d-flex border-right border-dark justify-content-center align-items-center"
               >
                 <div className="w-100">
-                  <p className=" m-0 text-start text-white m-0 font-title">
+                  <p className=" m-0 text-start text-white m-0">
                     {this.props.execDataReceived
                       ? this.props.projectList.name
                       : ""}
                   </p>
-                  <p className="font-aggegate-sub-text m-0 text-start text-white-50 m-0 width-fit-content">
+                  <p className="font-aggegate-sub-text m-0 text-start text-white width-fit-content">
                     {this.props.execDataReceived
                       ? this.props.projectList.designation
                       : ""}
                   </p>
                 </div>
               </Col>
-              <Col className="h-100 pl-0" sm={12} md={5} lg={4} xl={5}>
+              <Col className="h-100" sm={12} md={5} lg={4} xl={5}>
                 <Row className="h-100">
                   <Col
                     sm={4}
                     md={4}
                     lg={4}
                     xl={4}
-                    className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
+                    className="border-light h-100 justify-content-center d-flex d-inline-block 
+                    flex-column align-items-center px-2"
                   >
                     {this.props.projectListReceived ? (
                       <Dropdown
                         listData={this.state.productData}
                         direction="down"
+                        dropsLable="Projects"
                         onSelectDelegate={this.prodOnSelectHandler}
                       >
-                        <Row className="h-100">
-                          <Col sm={10} md={10} lg={10} xl={10}>
-                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                        <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                          <Col sm={10} md={10} lg={10} xl={10} className="d-flex align-item-center justify-content-center">
+                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left">
                               {this.state.selectedProduct}
                             </p>
                           </Col>
@@ -444,17 +446,19 @@ class ProductInfoBar extends Component {
                     md={4}
                     lg={4}
                     xl={4}
-                    className="h-100 bg-prodInfo-prod justify-content-center d-flex align-items-center"
+                    className="border-light h-100 justify-content-center d-flex d-inline-block 
+                    flex-column align-items-center px-2"
                   >
                     {this.props.projectListReceived ? (
                       <Dropdown
                         listData={this.state.teamData}
                         direction="down"
+                        dropsLable="Teams"
                         onSelectDelegate={this.teamOnSelectHandler}
                       >
-                        <Row className="h-100">
-                          <Col sm={10} md={10} lg={10} xl={10}>
-                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                        <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                          <Col sm={10} md={10} lg={10} xl={10} className="d-flex align-item-center justify-content-center">
+                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left">
                               {this.state.selectedTeam}
                             </p>
                           </Col>
@@ -476,17 +480,18 @@ class ProductInfoBar extends Component {
                     md={4}
                     lg={4}
                     xl={4}
-                    className="border-right border-dark p-0 h-100"
+                    className="border-light h-100 justify-content-center d-flex d-inline-block 
+                    flex-column align-items-center px-2"
                   >
-                    <Row className="h-100 p-0 m-0 align-items-center col-md-12 d-flex justify-content-center">
                       <Dropdown
                         listData={this.state.sprintData}
                         direction="down"
+                        dropsLable="Sprints"
                         onSelectDelegate={this.sprintOnSelectHandler}
                       >
-                        <Row className="h-100 m-0 p-0">
-                          <Col sm={10} md={10} lg={10} xl={10}>
-                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                        <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                          <Col sm={10} md={10} lg={10} xl={10} className="d-flex align-item-center justify-content-center">
+                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left">
                               {this.state.selectedSprint}
                             </p>
                           </Col>
@@ -501,22 +506,20 @@ class ProductInfoBar extends Component {
                           </Col>
                         </Row>
                       </Dropdown>
-                    </Row>
                   </Col>
                 </Row>
               </Col>
               <Col sm={12} md={5} lg={6} xl={5} className="h-100 p-0">
                 <Row className="h-100">
                   <Col md={7} lg={8} xl={7} className="h-100">
-                    <Row className="p-0 m-0 h-100 w-100 border-right border-dark ">
-                      <Row className="px-4 h-100 w-100 d-flex align-items-center justify-content-between ">
+                    <Row className="p-0 m-0 h-100 w-100 border border-dark ">
+                      <Row className="p-0 m-0 h-100 w-100 d-flex align-items-center justify-content-around ">
                         {productMetrics.map(item => {
                           return (
                             <div
                               key={item.id}
                               className="d-flex d-inline-block 
-                        flex-column h-100 justify-content-center max-w-18 px-1 
-                        py-0  w-auto "
+                        flex-column h-100 justify-content-center max-w-18 w-auto "
                             >
                               <p className="font-metric-main-text m-0 text-center text-black m-0">
                                 <span className="text-white">
@@ -575,11 +578,11 @@ class ProductInfoBar extends Component {
                         </Row>
                       </Col>
                       <Col
-                        md={5}
-                        className="p-0 offset-md-1 align-items-center d-flex h-100"
+                        md={6}
+                        className="px-1 align-items-center d-flex h-100"
                       >
                         <Row className="p-0 m-0 w-100 h-100 ">
-                          <Col md={5} className="p-0">
+                          <Col md={4} className="offset-md-1 p-0">
                             {this.props.projectRecieved ? (
                               <Donut
                                 color={"#2ece95"}
