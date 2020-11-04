@@ -49,7 +49,7 @@ const CardChart = props => {
         }else if(insightVal.content && insightVal.content.colorCode === "RED"){
             return 'btnhighbg';
         }     
-        return 'btnnobg';
+        return 'btnlowbg';
     }
     function btnLabel() {
         if (insightVal.content && insightVal.content.colorCode === "AMBER") {
