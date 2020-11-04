@@ -18,7 +18,7 @@ const CardChart = props => {
           Object.keys(qualityData).forEach(function(key) {
            if(qualityData[key]!=null){
             graphValue.push({
-                color: qualityData[key].value === "HIGH"? '#ff0000': qualityData[key].value==="MEDIUM" ? '#ffa500' : qualityData[key].value==="LOW" ? '#ffff00' : '#00FF00',
+                color: qualityData[key].value === "HIGH"? '#ec5050': qualityData[key].value==="MEDIUM" ? '#ffc107' : '#20c997',
                 //y: qualityData[key].yaxisValue,
                 y: qualityData[key].yaxisValue === 4 ? 2 : qualityData[key].yaxisValue === 2 ? 1 : 0 ,
                 name: qualityData[key].releaseName,
@@ -83,7 +83,7 @@ const CardChart = props => {
                 <div className="d-flex mb-2">
                     <p className="mr-auto mb-0 pl-0 font-size-small font-weight-bold">{props.cardName} </p>
                     {insightVal.content && insightVal.content.recommendation!=="N/A"  ?
-                       <span style={{ color:"#ffffff",fontSize: "12px",fontWeight: "bold" }} 
+                       <span style={{ color:"#333333",fontSize: "12px",fontWeight: "bold" }} 
                        className={`badge btnSize w-auto ${btnClass()}`}>{btnLabel()}</span> : ''}
                 </div>
             {insightVal.graphValue.length !== 0 && props.showChart!=="true" ? 
