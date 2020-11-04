@@ -17,7 +17,7 @@ const CardChart = props => {
         Object.keys(securityData).forEach(function(key) {
             if(securityData[key]!=null){
             graphValue.push({
-                color: securityData[key].value === "HIGH"? '#ff0000': securityData[key].value==="MEDIUM" ? '#ffa500' : securityData[key].value==="LOW" ? '#ffff00' : '#00FF00',
+                color: securityData[key].value === "HIGH"? '#ec5050': securityData[key].value==="MEDIUM" ? '#ffc107' : securityData[key].value==="LOW" ? '#20c997' : '#056642',
                 y: securityData[key].yaxisValue,
                 name:securityData[key].releaseName,
                 high:securityData[key].highSeverityCount,
@@ -82,7 +82,7 @@ const CardChart = props => {
                 <div className="d-flex mb-2">
                     <p className="mr-auto mb-0 pl-0 font-size-small font-weight-bold">{props.cardName} </p>
                     {insightVal.content && insightVal.content.recommendation!=="N/A"  ?  
-                    <span style={{ color:"#ffffff",fontSize: "12px", fontWeight: "bold" }} 
+                    <span style={{ color:"#333333",fontSize: "12px", fontWeight: "bold" }} 
                     className={`badge btnSize w-auto ${btnClass()}`}>{btnLabel()}</span> : ''}
                 </div>
                 {insightVal.graphValue.length !== 0 && props.showChart!=="true" ?  <BuildSingleLineSec chartData={insightVal.graphValue}/> :insightVal.graphValue.length === 0 && props.showChart!=="true" ? 'No Data Found':'' }

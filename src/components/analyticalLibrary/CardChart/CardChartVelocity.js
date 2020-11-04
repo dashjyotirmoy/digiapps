@@ -76,7 +76,7 @@ const CardChart = props => {
                 <div className="rounded p-2" style={{'border': '1px solid #535353'}}>
                 <div className="d-flex mb-2">
                     <p className="mr-auto mb-0 pl-0 font-size-small font-weight-bold">{props.cardName} </p>
-                    {insightVal.content && insightVal.content.recommendation!=="N/A" ?   <span style={{ color:"#ffffff",fontSize: "12px",fontWeight: "bold" }} className={`badge btnSize w-auto ${btnClass()}`}>{btnLabel()}</span>
+                    {insightVal.content && insightVal.content.recommendation!=="N/A" ?   <span style={{ color:"#333333",fontSize: "12px",fontWeight: "bold" }} className={`badge btnSize w-auto ${btnClass()}`}>{btnLabel()}</span>
                     :" "}
                 </div>
                 {props.showChart!=="true" ?   <BuildSingleLine chartData={insightVal.graphValue}/>:''}
