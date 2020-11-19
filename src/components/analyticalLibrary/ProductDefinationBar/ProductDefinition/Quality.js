@@ -42,6 +42,7 @@ import SideNavbar from "../../SideNavBar/SideNavbar";
 import {
   insightsQuality
 }from "../../../../store/actions/qualityData";
+import Badge from 'react-bootstrap/Badge';
 const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
@@ -98,7 +99,9 @@ class Quality extends Component {
     showBuild:false,
     showInsights:false,
     filterStatus: 'Project',
-    marginCard: ''
+    marginCard: '',
+    showRemovedItemsList: [],
+    removed: []
   };
   onDisplayMetricsClickHandler = (metricType) => {
     // eslint-disable-next-line default-case
@@ -390,8 +393,47 @@ class Quality extends Component {
     });
     return processedData;
   };
+  addCharts = (event) => {debugger
+    if(event.target.value!==''){
+    const widgetName = event.target.value;
+    const userObj = this.state.showRemovedItemsList.find(u => u.name === widgetName);
+    const key = this.state.showRemovedItemsList.findIndex(u => u.name === widgetName);
+    this.addChartList(userObj,key);
+    const layouts = {};
+    Object.keys(this.state.layout).map(key => {
+      let copy = [...this.state.layout[key]];
+      if (key === "lg") {
+        let layout_instance = new Layout(copy.length + 1);
+        copy = layout_instance.layout.lg;
+      } else if (key === "md") {
+        let layout_instance = new Layout(copy.length + 1);
+        copy = layout_instance.layout.md;
+      }
+      layouts[key] = copy;
+    });
 
-  createCharts = (list, removed) => {
+    this.setState({
+      layout: layouts
+    });
+  }
+  }
+  addChartList= (list,removedindex) => {
+    let updatedList = this.state.charts[0];
+    let updatedRemoveBadge = this.state.showRemovedItemsList.filter((ele,index)=>{
+      if (index !== removedindex) return Object.assign({},ele)
+    });    
+    updatedList.unshift(list)
+    updatedList.map((ele,index) => {
+      ele.component = this.setChart(ele.title, ele.data[2]);
+    });
+    let chartList = [];
+    chartList[0] = updatedList;
+    this.setState({
+      charts: chartList,
+      showRemovedItemsList: updatedRemoveBadge
+    });
+  }
+  createCharts = (list, removed) => {debugger
     let list_temp = list[0];
     const updatedList = list_temp.filter((ele, index) => {
       if (index !== removed) {
@@ -408,7 +450,6 @@ class Quality extends Component {
       charts: chartList,
     });
   };
-
   setChart = (title, data) => {
     const chartArry = chartCompList.map((item) => {
       if (item.name === title) {
@@ -426,11 +467,12 @@ class Quality extends Component {
     });
     return chartArry;
   };
-
+  
   removeChartComponent = (chartIndex) => {
     const charts = [...this.state.charts];
     this.createCharts(charts, chartIndex);
     const layouts = {};
+    this.state.showRemovedItemsList.push(this.state.charts[0][chartIndex]);
     Object.keys(this.state.layout).map((key) => {
       let copy = [...this.state.layout[key]];
       if (key === "lg") {
@@ -690,7 +732,8 @@ class Quality extends Component {
       componentType: "quality",
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
-      filterStatus: "Repository"
+      filterStatus: "Repository",
+      showRemovedItemsList: []
     });
     this.props.repoDropValDispatch(repoDetails[selectedIndex].projectName);
     if (repoId !== "selectProject") {
@@ -711,7 +754,7 @@ class Quality extends Component {
         showbutton: false,
         show: false,
         layout: layout_instance.layout,
-        filterStatus: "Project"
+        filterStatus: "Project",
       });
       let type;
       type = this.setRawDefaultRepo(
@@ -937,7 +980,7 @@ class Quality extends Component {
                 </Row>
               </Col>
               </Row>
-          <Row className="p-0 px-3 m-0 mt-2">
+          <Row className="p-0 px-3 m-0 mt-2 justify-content-between">
           <Col md={3}>
               <span>
               {this.state.showbutton ? (
@@ -955,6 +998,18 @@ class Quality extends Component {
                ) : null}  
               </span>
               </Col>
+              <Col md='3' className="text-right mt-auto">{ this.state.showRemovedItemsList.length > 0 && this.state.componentType === "quality" ? 
+               <span className="text-white ml-auto w-20">
+               <p className="m-0 font-size-smaller text-left">Add Widgets</p>
+               <select className="drop repo-height text-white rounded border border-light w-100" onChange={(event)=> this.addCharts(event)} >
+               <option value=''>Select Widget</option>
+                 {
+                   this.state.showRemovedItemsList.map((item, index) =>
+                   <option key={index} value={item.name} >
+                           {item.name}
+                 </option>
+                 )
+                   }</select></span>: null}</Col>
           </Row>
           <Row
             className={classnames(
