@@ -21,6 +21,7 @@ import Dropdown from "../../Dropdown/Dropdown";
 import VelocityBuild from './VelocityBuild';
 import CardChartVelocity from "../../CardChart/CardChartVelocity";
 import SideNavbar from "../../SideNavBar/SideNavbar";
+import Badge from 'react-bootstrap/Badge';
 
 class Velocity extends Component {
   state = {
@@ -41,16 +42,60 @@ class Velocity extends Component {
     buildActive: false,
     componentType: "velocity",
     repoData: [],
-    filterStatus: 'Team'
+    filterStatus: 'Team',
+    showRemovedItemsList: [],
+    removed: []
   };
 
+  addCharts = (event) => {
+    if(event.target.value!==''){
+    const widgetName = event.target.value;
+    const userObj = this.state.showRemovedItemsList.find(u => u.name === widgetName);
+    const key = this.state.showRemovedItemsList.findIndex(u => u.name === widgetName);
+    this.addChartList(userObj,key);
+    const layouts = {};
+    Object.keys(this.state.layout).map(key => {
+      let copy = [...this.state.layout[key]];
+      if (key === "lg") {
+        let layout_instance = new Layout(copy.length + 1);
+        copy = layout_instance.layout.lg;
+      } else if (key === "md") {
+        let layout_instance = new Layout(copy.length + 1);
+        copy = layout_instance.layout.md;
+      }
+      layouts[key] = copy;
+    });
+
+    this.setState({
+      layout: layouts
+    });
+  }
+  }
+  addChartList= (list,removedindex) => {
+    let updatedList = [...this.state.charts];
+    let updatedRemoveBadge = this.state.showRemovedItemsList.filter((ele,index)=>{
+      if (index !== removedindex) return Object.assign({},ele)
+    });    
+    updatedList.unshift(list)
+    updatedList.map(ele => {
+      ele.component = this.setChart(
+        ele.type,
+        ele.title,
+        ele.data
+      );
+    });
+    this.setState({
+      charts: updatedList,
+      showRemovedItemsList: updatedRemoveBadge
+    });
+  }
   //function to remove a chart component from the grid layout
 
   removeChartComponent = chartIndex => {
     const charts = [...this.state.charts];
     this.createCharts(charts, chartIndex);
     const layouts = {};
-
+    this.state.showRemovedItemsList.push(this.state.charts[chartIndex]);
     Object.keys(this.state.layout).map(key => {
       let copy = [...this.state.layout[key]];
       if (key === "lg") {
@@ -396,7 +441,19 @@ class Velocity extends Component {
               </Dropdown>
             </Col>
                ) : null}
-            <Col md={4} className="mt-auto"><p className="font-size-small m-0 text-white">You are viewing data at <b>{this.state.filterStatus}</b>  level</p></Col>
+            <Col md={3} className="mt-auto"><p className="font-size-small m-0 text-white">You are viewing data at <b>{this.state.filterStatus}</b>  level</p></Col>
+            { this.state.showRemovedItemsList.length > 0 && this.state.componentType === "velocity" ? 
+            <span className="text-white ml-auto w-20">
+            <p className="m-0 font-size-smaller">Add Widgets</p>
+            <select className="drop repo-height text-white rounded border border-light w-100" onChange={(event)=> this.addCharts(event)} >
+            <option selected value=''>Select Widget</option>
+              {
+                this.state.showRemovedItemsList.map((item, index) =>
+                <option key={index} value={item.name} >
+                        {item.name}
+              </option>
+              )
+                }</select></span>: null}
          </Row>
           {this.state.charts.length > 0 && this.state.componentType === "velocity"? (
             <Grid
