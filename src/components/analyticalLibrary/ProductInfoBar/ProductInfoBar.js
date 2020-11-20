@@ -24,7 +24,9 @@ import { repoDropValDispatch } from "../../../store/actions/qualityData";
 import {
   insightsVelocity
 } from "../../../store/actions/sprintInsights";
+import { labelConst } from "../../../utility/constants/labelsConstants";
 let productMetrics;
+
 class ProductInfoBar extends Component {
   state = {
     productData: [],
@@ -43,7 +45,7 @@ class ProductInfoBar extends Component {
 
   //axios call to fetch executive data
 
-  componentDidMount() {
+  componentDidMount() {debugger
     this.props.execInsightsDispatch(this.props.executiveId);
     api
       .getExecInsightsData(this.props.executiveId)
@@ -367,7 +369,7 @@ class ProductInfoBar extends Component {
 
   render() {
     let dimensionData = this.props.widgetProps;
-
+    let labels = labelConst;
     const projectDimensions = new Widgets();
     const Components = projectDimensions.loadDimensions(dimensionData);
     const prodAggViewIcon = this.state.prodAggView
@@ -419,7 +421,7 @@ class ProductInfoBar extends Component {
                       <Dropdown
                         listData={this.state.productData}
                         direction="down"
-                        dropsLable="Projects"
+                        dropsLable={labels.mappings.projectLabel}
                         onSelectDelegate={this.prodOnSelectHandler}
                       >
                         <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -453,7 +455,7 @@ class ProductInfoBar extends Component {
                       <Dropdown
                         listData={this.state.teamData}
                         direction="down"
-                        dropsLable="Teams"
+                        dropsLable={labels.mappings.teamLabel}
                         onSelectDelegate={this.teamOnSelectHandler}
                       >
                         <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -486,7 +488,7 @@ class ProductInfoBar extends Component {
                       <Dropdown
                         listData={this.state.sprintData}
                         direction="down"
-                        dropsLable="Sprints"
+                        dropsLable={labels.mappings.sprintLabel}
                         onSelectDelegate={this.sprintOnSelectHandler}
                       >
                         <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -571,7 +573,7 @@ class ProductInfoBar extends Component {
                                   : "loading"}
                               </p>
                               <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
-                                Features
+                                {labels.mappings.feature}
                               </p>
                             </div>
                           </Col>
@@ -606,7 +608,7 @@ class ProductInfoBar extends Component {
                                   : "loading"}
                               </p>
                               <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
-                                User Stories
+                              {labels.mappings.userStory}
                               </p>
                             </div>
                           </Col>

@@ -32,7 +32,6 @@ const DashboardController = props => {
   let widget_item = new Widgets();
 
   const widgetComponents = widget_item.loadWidgets(widgetsMain);
-
   const componentArray = props.compList.map((item, index) => {
     const widgetProperties = dataFromDot(index);
     const Component = widgetComponents[item];
