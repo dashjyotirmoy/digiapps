@@ -27,7 +27,7 @@ const dataFromDot = index => {
 
 //Functional component which dynamically imports the widgets and renders
 
-const DashboardController = props => {debugger
+const DashboardController = props => {
   let widgetsMain = dotObject.pick("widgets", configurationData);
   let widget_item = new Widgets();
   const baseUrl = dashConstants.baseName.name;
