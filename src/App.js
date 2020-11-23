@@ -8,10 +8,12 @@ import ErrorBoundaries from "./components/errorBoundaries";
 class App extends React.Component {
   render() {
     const componentImports = appComponentList;
-    const labelConstantImports = labelConst;
+    const labelConstant = labelConst;
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labelConstantImports = labelConstant.filter((item)=> item.clientName === clientName );
     return (
       <React.Fragment>
-        <Header labelsConst={labelConstantImports}/>
+        <Header labelsConst={labelConstantImports[0]}/>
         <ErrorBoundaries>
           <DashboardController compList={componentImports} labelsConst={labelConstantImports}/>
         </ErrorBoundaries>

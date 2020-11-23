@@ -6,6 +6,7 @@ import { Container, Row, Col, Tabs, Tab } from "react-bootstrap";
 import { currentTabDispatch } from "../../../store/actions/chartData";
 import styled from "styled-components";
 import ErrorBoundaries from "../../../components/errorBoundaries";
+import { labelConst } from "../../../utility/constants/labelsConstants";
 
 const StyleMainTab = styled.div`
   .nav-tabs { {
@@ -50,6 +51,8 @@ class ProductDefBar extends Component {
   };
 
   render() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
     return (
       <ErrorBoundaries>
         <Container fluid>
@@ -62,58 +65,17 @@ class ProductDefBar extends Component {
                     defaultActiveKey={this.state.activeLink}
                     className="border-0"
                   >
+                  {labels[0].mappings.tabItems.map(item=>
                     <Tab
-                      eventKey="overview"
+                      eventKey={item.eventKey}
                       title={
                         <span className="font-aggegate-sub-text font-aggegate-sub-text-clr">
                           {" "}
-                          Overview
+                          {item.name}
                         </span>
                       }
                     ></Tab>
-                    <Tab
-                      eventKey="security"
-                      title={
-                        <span className="font-aggegate-sub-text">
-                          {" "}
-                          Security
-                        </span>
-                      }
-                    ></Tab>
-
-                    <Tab
-                      eventKey="velocity"
-                      title={
-                        <span className="font-aggegate-sub-text">
-                          Velocity and Efficiency
-                        </span>
-                      }
-                    ></Tab>
-                    <Tab
-                      eventKey="quality"
-                      title={
-                        <span className="font-aggegate-sub-text"> Quality</span>
-                      }
-                    ></Tab>
-                    {/* <Tab
-                      eventKey="customer"
-                      title={
-                        <span className="font-aggegate-sub-text">
-                          {" "}
-                          Customer Value
-                        </span>
-                      }
-                    ></Tab> */}
-                    <Tab
-                      eventKey="insights"
-                      title={
-                        <span className="font-aggegate-sub-text">
-                          {" "}
-                          Insights
-                        </span>
-                      }
-                    ></Tab>
-
+                    )}
                   </Tabs>
                 ) : null}
               </StyleMainTab>

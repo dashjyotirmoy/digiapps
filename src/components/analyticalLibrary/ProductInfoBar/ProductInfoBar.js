@@ -45,7 +45,7 @@ class ProductInfoBar extends Component {
 
   //axios call to fetch executive data
 
-  componentDidMount() {debugger
+  componentDidMount() {
     this.props.execInsightsDispatch(this.props.executiveId);
     api
       .getExecInsightsData(this.props.executiveId)
@@ -369,7 +369,8 @@ class ProductInfoBar extends Component {
 
   render() {
     let dimensionData = this.props.widgetProps;
-    let labels = labelConst;
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
     const projectDimensions = new Widgets();
     const Components = projectDimensions.loadDimensions(dimensionData);
     const prodAggViewIcon = this.state.prodAggView
@@ -387,8 +388,8 @@ class ProductInfoBar extends Component {
             fluid
             className="h-100 border-bottom border-dark border-top"
           >
-            <Row className="h-100" >
-              <Col
+            <Row className="h-100 justify-content-between" >
+              {labels[0].mappings.roleDesignation && <Col
                 xl={2}
                 lg={2}
                 md={2}
@@ -407,6 +408,7 @@ class ProductInfoBar extends Component {
                   </p>
                 </div>
               </Col>
+              }
               <Col className="h-100" sm={12} md={5} lg={4} xl={5}>
                 <Row className="h-100">
                   <Col
@@ -421,7 +423,7 @@ class ProductInfoBar extends Component {
                       <Dropdown
                         listData={this.state.productData}
                         direction="down"
-                        dropsLable={labels.mappings.projectLabel}
+                        dropsLable={labels[0].mappings.projectLabel}
                         onSelectDelegate={this.prodOnSelectHandler}
                       >
                         <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -455,7 +457,7 @@ class ProductInfoBar extends Component {
                       <Dropdown
                         listData={this.state.teamData}
                         direction="down"
-                        dropsLable={labels.mappings.teamLabel}
+                        dropsLable={labels[0].mappings.teamLabel}
                         onSelectDelegate={this.teamOnSelectHandler}
                       >
                         <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -488,7 +490,7 @@ class ProductInfoBar extends Component {
                       <Dropdown
                         listData={this.state.sprintData}
                         direction="down"
-                        dropsLable={labels.mappings.sprintLabel}
+                        dropsLable={labels[0].mappings.sprintLabel}
                         onSelectDelegate={this.sprintOnSelectHandler}
                       >
                         <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -511,12 +513,13 @@ class ProductInfoBar extends Component {
                   </Col>
                 </Row>
               </Col>
+              
               <Col sm={12} md={5} lg={6} xl={5} className="h-100 p-0">
-                <Row className="h-100">
-                  <Col md={7} lg={8} xl={7} className="h-100">
+                <Row className="h-100 justify-content-end">
+                {labels[0].mappings.count.length &&  <Col md={7} lg={8} xl={7} className="h-100">
                     <Row className="p-0 m-0 h-100 w-100 border border-dark ">
                       <Row className="p-0 m-0 h-100 w-100 d-flex align-items-center justify-content-around ">
-                        {productMetrics.map(item => {
+                        {productMetrics.map((item,index) => {
                           return (
                             <div
                               key={item.id}
@@ -529,14 +532,14 @@ class ProductInfoBar extends Component {
                                 </span>
                               </p>
                               <p className="font-metric-sub-text m-0 text-center text-white-50 m-0">
-                                {item.name}
+                                {labels[0].mappings.count[index].name}
                               </p>
                             </div>
                           );
                         })}
                       </Row>
                     </Row>
-                  </Col>
+                  </Col>}
                   <Col
                     md={5}
                     lg={4}
@@ -573,7 +576,7 @@ class ProductInfoBar extends Component {
                                   : "loading"}
                               </p>
                               <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
-                                {labels.mappings.feature}
+                                {labels[0].mappings.feature}
                               </p>
                             </div>
                           </Col>
@@ -608,7 +611,7 @@ class ProductInfoBar extends Component {
                                   : "loading"}
                               </p>
                               <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
-                              {labels.mappings.userStory}
+                              {labels[0].mappings.userStory}
                               </p>
                             </div>
                           </Col>
