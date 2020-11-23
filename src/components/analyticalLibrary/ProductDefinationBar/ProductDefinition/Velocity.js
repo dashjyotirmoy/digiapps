@@ -22,7 +22,7 @@ import VelocityBuild from './VelocityBuild';
 import CardChartVelocity from "../../CardChart/CardChartVelocity";
 import SideNavbar from "../../SideNavBar/SideNavbar";
 import Badge from 'react-bootstrap/Badge';
-
+import { labelConst } from "../../../../utility/constants/labelsConstants";
 class Velocity extends Component {
   state = {
     charts: [],
@@ -387,6 +387,8 @@ class Velocity extends Component {
 
 
   render() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
     let velocityNav=<CardChartVelocity showChart="true" insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" />
     if (this.state.show) {
       return <Spinner show="true" />;
@@ -411,7 +413,7 @@ class Velocity extends Component {
               <Dropdown
                 listData={this.state.repoData}
                 direction="down"
-                dropsLable="Repository"
+                dropsLable={labels[0].mappings.repository}
                 onSelectDelegate={this.handleRepoChange}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">

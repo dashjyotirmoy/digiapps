@@ -241,9 +241,9 @@ class ProductInfoBar extends Component {
   setProductMetrics(data , headCount, index = 0) {
     const metrics = [
       // { name: "Head Count", value: this.props.projDetails.totalMembers },
-      { id : index++ ,name: "Head Count", value: this.props.projDetails.totalMembers },
-      { id : index++, name: "Sprint Count", value: `${data.completed} / ${data.total}` },
-      { id : index++, name: "Team Head Count", value : headCount }
+      { id : index++ , value: this.props.projDetails.totalMembers },
+      { id : index++, value: `${data.completed} / ${data.total}` },
+      { id : index++, value : headCount }
     ];
     return metrics;
   }

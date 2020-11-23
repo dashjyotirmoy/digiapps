@@ -42,6 +42,7 @@ import SideNavbar from "../../SideNavBar/SideNavbar";
 import {
   insightsQuality
 }from "../../../../store/actions/qualityData";
+import { labelConst } from "../../../../utility/constants/labelsConstants";
 import Badge from 'react-bootstrap/Badge';
 const chartCompList = [
   {
@@ -837,6 +838,8 @@ class Quality extends Component {
     })
   }
   render() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
     let qualityNav=<CardChartQuality showChart="true" insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" />
    
     if (this.state.show) {
@@ -850,7 +853,7 @@ class Quality extends Component {
               <Dropdown
                 listData={this.state.repoData}
                 direction="down"
-                dropsLable="Repository"
+                dropsLable={labels[0].mappings.repository}
                 onSelectDelegate={this.handleRepoChange}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -884,7 +887,7 @@ class Quality extends Component {
             <Dropdown
                 listData={this.state.branchDropData}
                 direction="down"
-                dropsLable="Branch"
+                dropsLable={labels[0].mappings.branch}
                 onSelectDelegate={this.branchOnSelectHandler}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -917,7 +920,7 @@ class Quality extends Component {
               <Dropdown
                 listData={this.state.releaseDropData}
                 direction="down"
-                dropsLable="Release"
+                dropsLable={labels[0].mappings.release}
                 onSelectDelegate={this.releaseOnSelectHandler}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">

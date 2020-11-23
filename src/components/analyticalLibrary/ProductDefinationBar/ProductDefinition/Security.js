@@ -20,7 +20,7 @@ import api from "../../../../utility/Http/devOpsApis";
 import SideNavbar from "../../SideNavBar/SideNavbar";
 import {insightsSecurity} from "../../../../store/actions/securityData";
 import CardChartSecurity from "../../CardChart/CardChartSecurity";
-
+import { labelConst } from "../../../../utility/constants/labelsConstants";
 
 class Security extends Component {
 
@@ -537,6 +537,8 @@ class Security extends Component {
   }
 
   render() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
     let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" />
     if (this.state.show) {
       return <Spinner show="true" />;
@@ -553,7 +555,7 @@ class Security extends Component {
                 listData={this.state.repoData}
                 direction="down"
                 onSelectDelegate={this.handleRepoChange}
-                dropsLable="Repository"
+                dropsLable={labels[0].mappings.repository}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
                   <Col
@@ -586,7 +588,7 @@ class Security extends Component {
              <Dropdown
                 listData={this.state.branchDropData}
                 direction="down"
-                dropsLable="Branch"
+                dropsLable={labels[0].mappings.branch}
                 onSelectDelegate={this.branchOnSelectHandler}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -620,7 +622,7 @@ class Security extends Component {
             <Dropdown
                 listData={this.state.releaseDropData}
                 direction="down"
-                dropsLable="Release"
+                dropsLable={labels[0].mappings.release}
                 onSelectDelegate={this.releaseOnSelectHandler}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
