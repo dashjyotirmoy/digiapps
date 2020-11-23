@@ -27,10 +27,12 @@ const dataFromDot = index => {
 
 //Functional component which dynamically imports the widgets and renders
 
-const DashboardController = props => {
+const DashboardController = props => {debugger
   let widgetsMain = dotObject.pick("widgets", configurationData);
   let widget_item = new Widgets();
-
+  const baseUrl = dashConstants.baseName.name;
+  const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+  const baseUrlName = clientName !== "digitalops" ? "/"+clientName+baseUrl : baseUrl; 
   const widgetComponents = widget_item.loadWidgets(widgetsMain);
   const componentArray = props.compList.map((item, index) => {
     const widgetProperties = dataFromDot(index);
@@ -51,7 +53,7 @@ const DashboardController = props => {
   return (
     //Router configuration which sets the basename and base component
 
-    <BrowserRouter basename={dashConstants.baseName.name}>
+    <BrowserRouter basename={baseUrlName}>
       {componentArray}
       <Switch>
         <Route path={"/:productSelected"} component={DefinitionLoader} />
