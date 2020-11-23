@@ -13,6 +13,7 @@ import {
 import Dropdown from "../../Dropdown/Dropdown";
 import Spinner from "../../Spinner/Spinner";
 import api from "../../../../utility/Http/devOpsApis";
+import { labelConst } from "../../../../utility/constants/labelsConstants";
 class Insights extends Component {
   constructor(props) {
     super(props);
@@ -186,6 +187,8 @@ class Insights extends Component {
     }
   }
   render() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
     if (this.state.show && !this.state.noData) {
       return <Spinner show="true" />;
     } else if(!this.state.show && this.state.noData){

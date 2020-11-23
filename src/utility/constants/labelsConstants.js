@@ -16,7 +16,7 @@ export const labelConst = [{
 						{name:'Security',eventKey:'security'},
 						{name: 'Velocity and Efficiency',eventKey:'velocity'},
 						{name: 'Quality',eventKey:'quality'},
-						{name: 'Insights',eventKey:'insights'}]
+						{name: 'Insights',eventKey:'insights'}],
 	}
 },
 {

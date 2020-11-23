@@ -162,7 +162,7 @@ const App = props => {
                 <p>Alerts</p>
                 <Col sm={2}>
 
-                  <select className="drop" onChange={handleChange} className="repo-height text-white rounded border border-dark" style={{backgroundColor:'#33404d'}}>
+                  <select onChange={handleChange} className="drop repo-height text-white rounded border border-dark" style={{backgroundColor:'#33404d'}}>
                     {dropData.map(function (data, key) {
                       return (
                         <option className="text-white" key={key} value={data.id}>{data.name}</option>)
