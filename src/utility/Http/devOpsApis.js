@@ -1,7 +1,9 @@
 import axios from "axios";
 const fallback = "http://10.170.166.57:8080";
+const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+const clientname = clientName !== 'digitalops' ? "/"+clientName : '';
 const mainBase =
-  "https://fsdet-digitalctp.eastus.cloudapp.azure.com/digitalops-service";
+  `https://fsdet-digitalctp.eastus.cloudapp.azure.com${clientname}/digitalops-service`;
 const devovOpsApi = axios.create({
   baseURL: mainBase
 });
