@@ -29,7 +29,8 @@ class Header extends Component {
   state = {
     userName: "John Smith",
     designation: "Executive",
-    navListItem: ["Red", "Black", "Blue"]
+    navListItem: ["Red", "Black", "Blue"],
+    labelConst: this.props.labelsConst
   };
   componentDidMount() {
     this.props.execAllDispatch();
@@ -48,7 +49,7 @@ class Header extends Component {
     return (
       <Styles>
         <Navbar bg="light" expand="md">
-          <Navbar.Brand href="/digitalops/execDashboard/security">{this.props.labelsConst.mappings.logoName}</Navbar.Brand>
+          <Navbar.Brand href="/digitalops/execDashboard/security">{this.state.labelConst.mappings.logoName}</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
