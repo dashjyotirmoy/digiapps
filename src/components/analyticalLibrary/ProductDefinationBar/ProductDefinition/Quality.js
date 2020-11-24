@@ -963,22 +963,22 @@ class Quality extends Component {
                       className="critical ml-3 "
                       icon={faSquare}
                     />{" "}
-                    Critical{" "}
+                    {labels[0].mappings.critical}{" "}
                   </span>
                   <span className="font-size-small text-white">
                     <FontAwesomeIcon className="high ml-3" icon={faSquare} />{" "}
-                    High
+                    {labels[0].mappings.high}
                   </span>
                   <span className="font-size-small text-white">
                     <FontAwesomeIcon className="medium ml-3" icon={faSquare} />{" "}
-                    Medium
+                    {labels[0].mappings.medium}
                   </span>
                   <span className="font-size-small text-white">
-                    <FontAwesomeIcon className="low ml-3" icon={faSquare} /> Low
+                    <FontAwesomeIcon className="low ml-3" icon={faSquare} /> {labels[0].mappings.low}
                   </span>
                   <span className="font-size-small text-white">
                     <FontAwesomeIcon className="lowest ml-3" icon={faSquare} />{" "}
-                    Very Low
+                    {labels[0].mappings.veryLow}
                   </span>
                 </Row>
               </Col>
@@ -988,7 +988,7 @@ class Quality extends Component {
               <span>
               {this.state.showbutton ? (
                 <Button variant="outline-dark" className={this.state.showCode? "bgblue":"Buildbg"} onClick ={this.setCode}>
-                  Code
+                  {labels[0].mappings.codeBtn}
                 </Button>
                 ) : null} 
               </span> 
@@ -996,7 +996,7 @@ class Quality extends Component {
               <span className="ml-3">
               {this.state.showbutton ? (
                 <Button variant="outline-dark" className={this.state.showBuild?"bgblue":"Buildbg"} onClick ={this.setBuild}>
-                  Build
+                  {labels[0].mappings.buildBtn}
                 </Button>
                ) : null}  
               </span>

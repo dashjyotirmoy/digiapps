@@ -540,6 +540,7 @@ class Security extends Component {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" />
+    if(this.props.securityProjectData.id !== null){
     if (this.state.show) {
       return <Spinner show="true" />;
     } else {
@@ -658,14 +659,14 @@ class Security extends Component {
             <Col>
               <span>
               {this.state.showbutton ? (
-                <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>Alerts</Button>
+                <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>{labels[0].mappings.alertBtn}</Button>
           
                       ) : null}
               </span>
                       
               <span className="ml-3">
               {this.state.showbutton ? (
-                          <Button variant="outline-dark"  className={this.state.policyActive?"bgblue":"Alertbg"} onClick ={this.setPolicy}>Policies</Button>
+                          <Button variant="outline-dark"  className={this.state.policyActive?"bgblue":"Alertbg"} onClick ={this.setPolicy}>{labels[0].mappings.policiesBtn}</Button>
                         //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
                         ) : null}
               </span>
@@ -674,23 +675,23 @@ class Security extends Component {
               <div className="text-right">               
               <span className="font-size-small text-white">
                 <FontAwesomeIcon  className="major ml-3" icon={faSquare} />{" "}
-                Major
+                {labels[0].mappings.major}
                 </span>
                 <span className="font-size-small text-white">
                 <FontAwesomeIcon  className="minor ml-3" icon={faSquare} />{" "}
-                Minor
+                {labels[0].mappings.minor}
                 </span>
                 <span className="font-size-small text-white">
                 <FontAwesomeIcon  className="highbg ml-3" icon={faSquare} />{" "}
-                High
+                {labels[0].mappings.high}
                 </span>
                 <span className="font-size-small text-white">
                 <FontAwesomeIcon  className="mediumbg ml-3" icon={faSquare} />{" "}
-                Medium
+                {labels[0].mappings.medium}
                 </span>
                 <span className="font-size-small text-white">
                 <FontAwesomeIcon  className="lowbg ml-3" icon={faSquare} />{" "}
-                Low
+                {labels[0].mappings.low}
                 </span>                  
                 </div>
             ):<div></div>
@@ -713,6 +714,9 @@ class Security extends Component {
       
         </React.Fragment>
       );
+    }
+  }else{
+      return <div className="text-white p-2 text-center">No Data Found</div>;
     }
   }
 }

@@ -189,18 +189,9 @@ class Insights extends Component {
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    if (this.state.show && !this.state.noData) {
+    if (this.state.show) {
       return <Spinner show="true" />;
-    } else if(!this.state.show && this.state.noData){
-   return(
-    <Container fluid className="mt-3 Insights">
-    <Row className="p-0  m-0 mt-4 mb-3 d-flex justify-content-start row">          
-     
-      <Col md={2}>No Data Found
-        </Col></Row></Container>
-   )
-    }
-      else{
+    } else{
       return (
       <Container fluid className="mt-3 Insights">
         <Row className="p-0  m-0 mt-4 mb-3 d-flex justify-content-start row">          
@@ -209,7 +200,7 @@ class Insights extends Component {
               <Dropdown
                 listData={this.state.repoData}
                 direction="down"
-                dropsLable="Repository"
+                dropsLable={labels[0].mappings.repository}
                 onSelectDelegate={this.prodOnSelectHandler}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
@@ -240,7 +231,7 @@ class Insights extends Component {
               <Dropdown
                 listData={this.state.branchDropData}
                 direction="down"
-                dropsLable="Branch"
+                dropsLable={labels[0].mappings.branch}
                 onSelectDelegate={this.branchOnSelectHandler}
               >
                 <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
