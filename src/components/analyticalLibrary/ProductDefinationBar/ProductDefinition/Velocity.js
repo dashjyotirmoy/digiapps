@@ -399,13 +399,13 @@ class Velocity extends Component {
           <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start" style={{alignItems:'flex-end'}}>
               <span className="px-3">
                 {this.state.showbutton ? (
-                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>Overview</Button>
+                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>{labels[0].mappings.overviewBtn}</Button>
                 ) : null}
               </span>
 
               <span>
                 {this.state.showbutton ? (
-                  <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>Build</Button>
+                  <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>{labels[0].mappings.buildBtn}</Button>
                   ) : null}
               </span>
             {this.state.showDropdown ? (
