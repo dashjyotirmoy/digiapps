@@ -782,15 +782,9 @@ class VelocityGraph {
 
 
     options.title = {
-      text: `<span style='color:#f5f5f5;'>${
-        this.res.title
-        }</span><br><span style='color:#C0C0C0; font-size:12px;'>${this.formatDate(
-          sprintStartDate[0]
-        )} - ${this.formatDate(
-          sprintEndDate[0]
-        )}</span><br><br><span style='color : #50E3C2'>${parseFloat(
-          percentageCompleted
-        ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
+      useHTML: true,      
+      text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6><span style=";font-weight:normal;font-size:10px">${this.formatDate(sprintStartDate[0])} - ${this.formatDate(sprintEndDate[0])}</span>`,
+      align: "left",
       align: "left",
       style: {
         color: this.res.bgTheme ? "#f5f5f5":'#333333',
@@ -798,16 +792,18 @@ class VelocityGraph {
     };
 
     options.subtitle = {
+      verticalAlign: 'bottom',
+      align: 'left',
+      x:-8,
+      y:26,
+      width: this.res.containerWidth-4,
+      useHTML: true,
       text: `
-      <span  style="font-size:18px;">${averegeBurnDown}</span><span style="color:#c0c0c0"> Average Burndown</span>
-      <span  style="font-size:18px;">${totalScopeIncrease}</span><span style="color:#c0c0c0"> Total scope increase</span></span><br/>
-      <span  style="font-size:18px;">${hoursRemaining}</span><span style="color:#c0c0c0"> Hours remaining</span></span>
-        
-      `,
-      floating: true,
-      align: "right",
-      x: -20,
-      y: 40,
+      <div>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${parseFloat(percentageCompleted).toFixed(1)} %</b></span><b style="margin-left:10px">Completed</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${averegeBurnDown}</b></span><b style="margin-left:5px">Average Burndown</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${totalScopeIncrease}</b></span><b style="margin-left:5px">Total scope increase</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${hoursRemaining}</b></span><b style="margin-left:5px">Hours remaining</b></span> </div>`,
       style: {
         color: this.res.bgTheme ? "#f5f5f5":'#333333',
       }
@@ -848,6 +844,11 @@ class VelocityGraph {
 
     options.legend = {
       enabled: true,
+      floating: true,
+      verticalAlign: 'top',
+      align: 'right',
+      x: -30,
+      y: 47,
       itemStyle: {
         color: this.res.bgTheme ? "#f5f5f5":'#333333',
         fontWeight: "normal"
@@ -938,33 +939,31 @@ class VelocityGraph {
     };
 
     options.title = {
-      text: `<span style='color:#f5f5f5;'>${
-        this.res.title
-        }</span><br><span style='color:#C0C0C0; font-size:12px;'>${this.formatDate(
-          startDate
-        )} - ${this.formatDate(
-          endDate
-        )}</span><br><span style='color : #50E3C2'>${parseFloat(
-          percentageCompleted
-        ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
+      useHTML:true,
       align: "left",
+      text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6><span style="font-size:10px;font-weight:normal">${this.formatDate(startDate)} - ${this.formatDate(endDate)}</span>`,
       style: {
         color: this.res.bgTheme ? "#f5f5f5":'#333333',
       }
     };
     options.subtitle = {
-      text: `
-        <span  style="font-size:18px;">${av_burndown}</span><span style="color:#c0c0c0"> Average Burndown</span>
-        <span style="font-size:18px;">${this.res.data.itemsNotEstimated}</span><span style="color:#c0c0c0"> Items not estimated</span></span><br/>
-        <span style="font-size:18px;">${this.res.data.totalScopeIncrease}</span><span style="color:#c0c0c0"> Total Scope increase</span></span>
-        <span style="font-size:18px;">${this.res.data.remainingStoryPoints}</span><span style="color:#c0c0c0"> Story points remaining </span></span>
-      `,
-      floating: true,
-      align: "right",
-      x: -20,
-      y: 40,
+      verticalAlign: 'bottom',
+      align: 'bottom',
+      x:-8,
+      y:25,
+      width: this.res.containerWidth-2,
+      useHTML: true,
+      text: `<div>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${parseFloat(percentageCompleted).toFixed(1)} %</b></span><b style="margin-left:10px">Completed</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${av_burndown}</b></span><b style="margin-left:5px">Average Burndown</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${this.res.data.itemsNotEstimated}</b></span><b style="margin-left:5px">Items not estimated</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${this.res.data.totalScopeIncrease}</b></span><b style="margin-left:5px">Total Scope increase</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${this.res.data.remainingStoryPoints}</b></span><b style="margin-left:5px">Story points remaining</b></span> </div>`,
       style: {
+        width:'100%',
         color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        padding: '8px',
+        fontFamily: 'Arial',
       }
     };
     options.yAxis = {
@@ -982,6 +981,11 @@ class VelocityGraph {
     };
     options.legend = {
       enabled: true,
+      floating: true,
+      verticalAlign: 'top',
+      align: 'right',
+      x: -30,
+      y: 48,
       backgroundColor: "transparent",
       itemStyle: {
         color: this.res.bgTheme ? "#ffffff":'#333333',

@@ -21,7 +21,7 @@ const Grid = props => {
     return (
       <div className={`border border-dark ${bgTheme ? 'grid-graph-comp' : 'bg-light'}`} key={ele.i}>
         <div
-          className="position-absolute px-2 text-right text-white w-100"
+          className={`position-absolute px-2 text-right  w-100 ${bgTheme ? 'text-white' : 'text-muted'}`}
           style={{ zIndex: "100" }}
         >
           <p

@@ -155,6 +155,9 @@ a:hover {
 .font-size-xs {
   font-size: x-small;
 }
+.font-size-xxlarge {
+  font-size: xx-large;
+}
 .font-title {
   font-size: larger;
 }
