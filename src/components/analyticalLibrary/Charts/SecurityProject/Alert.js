@@ -10,6 +10,7 @@ import { securityMonthAlertDataDispatch } from '../../../../store/actions/securi
 import moment from 'moment/moment';
 
 const App = props => {
+  const bgTheme = props.bgTheme;
   let mediumCount = [];
   let highCount = [];
   let lowCount = [];
@@ -52,9 +53,9 @@ const App = props => {
   return (
     <React.Fragment>
       <Container fluid>
-        <Row className="mt-2">
+        <Row className={`${bgTheme ? '' : 'bg-light'}`}>
           <Col>
-            <Card.Body className="bg">
+            <Card.Body className={`border  ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
               <h5 className="mb-3">Unique Vulnerabilities</h5>
               <Row className="pl-2">
                 <Col sm={1} className="pr-0">
@@ -72,11 +73,11 @@ const App = props => {
                   </Badge>{" "}
                 </Col>
               </Row>
-              <Card.Body>
+              <Card.Body className="border">
 
-                <div className="wrap">
-                  <table className="table table-hover table-dark">
-                    <thead className="tabhead">
+                <div className="wrap border">
+                  <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
+                    <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
                       <tr>
                         <th className="w-8">Severity</th>
                         <th scope="col">Library</th>
@@ -91,13 +92,13 @@ const App = props => {
                   </table>
 
                   <div className="inner_table">
-                    <table className="table table-hover table-dark" >
+                    <table className={`table table-hover ${bgTheme ? 'table-dark' : 'text-light'}`}>
                       <tbody >
 
                         {
                           showAlertData && showAlertData.perVulnerabilityAlert && showAlertData.perVulnerabilityAlert.map((item, index) => {
                             return (
-                              <tr className="tabrow f-12" key={index}>
+                              <tr className={`f-12 ${bgTheme ? 'tabrow' : 'text-dark'}`} key={index}>
                                 <td className="w-8">
                                   {item.severity === 'MEDIUM' ? (
                                     <Badge className="sevbadge2"></Badge>
@@ -154,9 +155,9 @@ const App = props => {
 
 
       <Container fluid>
-        <Row className="mt-5">
+        <Row className={`py-3 ${bgTheme ? '' : 'bg-light'}`}>
           <Col>
-            <Card.Body className="bg">
+            <Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
               <h5 className="mb-3">Actionable Libraries</h5>
               <Row className="basealign">
                 <p>Alerts</p>
@@ -184,10 +185,10 @@ const App = props => {
 
 
               </Row>
-              <Card.Body >
-                <div className="wrap">
-                  <table className="table table-hover table-dark">
-                    <thead className="tabhead">
+              <Card.Body className={`pt-2 border  ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
+                <div className="wrap border">
+                  <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
+                    <thead className={`${bgTheme ? 'tabhead' : 'cardHeader'}`}>
                       <tr>
                         <th scope="col">
                           Library
@@ -213,13 +214,13 @@ const App = props => {
                   </table>
 
                   <div className="inner_table">
-                    <table className="table table-hover table-dark" >
+                    <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`} >
                       <tbody>
 
                         {(showAlertData && showAlertData.perLibraryAlert.length > 0) ?
                           showAlertData && showAlertData.perLibraryAlert && showAlertData.perLibraryAlert.map((item, index) => {
                             return (
-                              <tr className="tabrow f-12" key={index}>
+                              <tr className={`f-12 ${bgTheme ? 'tabrow' : 'text-dark'}`} key={index}>
 
                                 <td>  <div style={{ float: "left" }}>
                                   <Badge className="sevbadge1"></Badge>{" "}
@@ -249,7 +250,7 @@ const App = props => {
                                 </td>
                               </tr>
                             )
-                          }) : <tr><td style={{ textAlign: "center" }} colSpan="5">No data found</td></tr>
+                          }) : <tr><td style={{ textAlign: "center" }} className={`${bgTheme ? 'text-light' : 'text-dark'}`} colSpan="5">No data found</td></tr>
                         }
                       </tbody>
                     </table>

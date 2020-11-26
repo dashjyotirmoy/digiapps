@@ -8,6 +8,7 @@ import BuildSingleLineSummaryBurndown from "../../OverView/BuildSingleLineSummar
 import BuildColumnSummaryTrend from "../../OverView/BuildColumnSummaryTrend";
 import Spinner from "../../Spinner/Spinner";
 import { Row, Col,Card,} from "react-bootstrap";
+import { labelConst } from "../../../../utility/constants/labelsConstants";
 
 class Overview extends Component {
   state = {
@@ -166,78 +167,158 @@ class Overview extends Component {
   };
 
   render() {
-      return (
-        
+        const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+        const labels = labelConst.filter((item)=> item.clientName === clientName );
+        const bgTheme = labels[0].mappings.bgColor;
+      return (        
         <React.Fragment>
-          <Row className="p-0 px-3 m-0 mt-4 no-gutters">
-           <Col
-                    sm={12}
-                    md={12}
-                    lg={5}
-                    xl={5}
-                    className="pr-3"
-                  >
-                    
-                   <Card.Body className="p-0 rounded" style={{ 'border' :'1px solid #535353'}}>
-                  <h6 className="cardHeader m-0 font-weight-bold text-white px-3 pt-3">Project Productivity</h6>
+        <Row className={`px-3 py-4 ${bgTheme ? '' : 'bg-light'}`}>
+        <Col
+                  sm={12}
+                  md={12}
+                  lg={5}
+                  xl={5}
+                  className="pr-0"
+                >
+              <Card.Body className="p-0">
+                <h6 className="cardHeader m-0 font-weight-bold">Application Security</h6>
+              <Row className='no-gutters p-3 bg-white border'>
+                  <Col
+                  sm={12}
+                  md={12}
+                  lg={5}
+                  xl={5}
+                  className="bg-white"
+                ><div className="p-3" style={{border:'1px solid #999a9c',borderRadius:'5px'}}>
+                    <p className="mb-2 font-weight-bold" style={{fontSize:'14px',fontFamily:"Arial"}}>Top 10 Critical & High Vulnerabilities</p>
 
-                    <Row className="no-gutters p-3">
-                    <Col md={12} className="mb-3">
-                   <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.velocityTrendsSummary} type='velocity'/>
-                   </Col>
-                   <Col md={12}>
-                   <div><BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.projectBurndownSummary} type='velocity'/></div>
-                  </Col></Row>
-                  </Card.Body>
-              </Col>
-              <Col
-                    sm={12}
-                    md={12}
-                    lg={7}
-                    xl={7}>
-                  <Card.Body className="p-0 rounded" style={{ 'border' :'1px solid #535353'}}>
-                  <h6 className="cardHeader m-0 font-weight-bold text-white px-3 pt-3">Defect Management</h6>
-                  <Row className="no-gutters p-3">
-                  <Col sm={12}
-                    md={12}
-                    lg={6}
-                    xl={6}
-                    className="pr-3">
-                   <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.defectOverview} type='qualityColumnReverse'/>
-                    {/* <div style={{backgroundColor: '#E1E7F0',padding: '10px',fontSize:'12px'}} className='text-center border rounded'><span>Total Critical: </span><span style={{backgroundColor: '#a21220',fontSize:'14px',color:'#ffffff'}} className="mr-1 font-weight-bold p-1 rounded">{this.state.totalCritical}</span> 
-                      <span>Total High: </span><span style={{backgroundColor: '#ec5050',fontSize:'14px',color:'#ffffff'}} className="mr-1 font-weight-bold p-1 rounded">{this.state.totalHigh}</span> 
-                      <span>Total Medium: </span><span style={{backgroundColor: '#ffc107',fontSize:'14px',color:'#ffffff'}} className="mr-1 font-weight-bold p-1 rounded">{this.state.totalMedium}</span> 
-                      <span>Total Low: </span><span style={{backgroundColor: '#20c997',fontSize:'14px',color:'#ffffff'}} className="font-weight-bold p-1 rounded">{this.state.totalLow}</span>
-                      </div> */}
-                   </Col>
-                   <Col sm={12}
-                    md={12}
-                    lg={6}
-                    xl={6}>
-                    <Row>
+                    <Card.Body className="p-0">
+                      <div className="wrap">
+                        <table className="table table-hover cardHeader" style={{fontSize:'10px'}}>
+                            <thead>
+                              <tr>
+                              <th scope="col">Vulnerabilities</th>
+                              <th scope="col" className="text-right">Critical/High</th>
+                              </tr>
+                              </thead>
+                          </table>
+                    
+                      <div className="inner_table_overview">    
+                      <table className="table table-hover border" >
+                        <tbody >
+                  {(this.state.secuityData!=null) ? 
+                      
+                    this.state.secuityData.map((item, index) => {
+                          return (
+                            <tr className="f-12" key={index}>
+                              <td style={{"border": "1px solid gray","width":"8rem"}}>{item.name}</td>
+                              <td style={{"border": "1px solid gray"}} className="text-center">{item.count}</td>
+                            </tr>
+                          )
+                        }):  <tr><td style={{ textAlign: "center" }} colSpan="5">No data found</td></tr>
+                      }
+                    </tbody>
+                    </table>
+                      </div> 
+                      </div>
+                    </Card.Body>
+                </div>
+               </Col>
+               <Col
+                  sm={12}
+                  md={12}
+                  lg={7}
+                  xl={7}
+                  className="pl-3"                    
+                >
+               <div className="mb-3"><BuildColumnSummaryTrend summaryTrend={this.state.openVulnerability} type="securityOpen"/></div>
+               
+                </Col>
+                <Col sm={12}>
+                  <BuildSingleLineSummaryBurndown summaryBurndown={this.state.averageTimeRemediation} type="security"/>
+                </Col>
+               </Row> 
+               </Card.Body>
+         </Col>
+         <Col
+                  sm={12}
+                  md={12}
+                  lg={7}
+                  xl={7}
+                >
+                  <Row className="no-gutters">
+                  <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  className="mb-3"
+                >
+                 <Card.Body className="p-0">
+                <h6 className="cardHeader m-0 font-weight-bold">Project Productivity</h6>
+
+                  <Row className="no-gutters p-3 bg-white border">
+                  <Col className="pr-3">
+                 <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.velocityTrendsSummary} type='velocity'/>
+                 </Col>
+                 <Col>
+                 <div><BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.projectBurndownSummary} type='velocity'/></div>
+                </Col></Row>
+                </Card.Body>
+                </Col>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}                  >
+                <Card.Body className="p-0">
+                <h6 className="cardHeader m-0 font-weight-bold">Defect Management</h6>
+                <Row className="no-gutters p-3 bg-white border">
+                <Col sm={12}
+                  md={12}
+                  lg={6}
+                  xl={6}
+                  className="pr-3">
+                 <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.defectOverview} type='qualityColumnReverse'/>
+                  {/* <div style={{backgroundColor: '#E1E7F0',padding: '10px',fontSize:'12px'}} className='text-center border rounded'><span>Total Critical: </span><span style={{backgroundColor: '#a21220',fontSize:'14px',color:'#ffffff'}} className="mr-1 font-weight-bold p-1 rounded">{this.state.totalCritical}</span> 
+                    <span>Total High: </span><span style={{backgroundColor: '#ec5050',fontSize:'14px',color:'#ffffff'}} className="mr-1 font-weight-bold p-1 rounded">{this.state.totalHigh}</span> 
+                    <span>Total Medium: </span><span style={{backgroundColor: '#ffc107',fontSize:'14px',color:'#ffffff'}} className="mr-1 font-weight-bold p-1 rounded">{this.state.totalMedium}</span> 
+                    <span>Total Low: </span><span style={{backgroundColor: '#20c997',fontSize:'14px',color:'#ffffff'}} className="font-weight-bold p-1 rounded">{this.state.totalLow}</span>
+                    </div> */}
+                 </Col>
+                 <Col sm={12}
+                  md={12}
+                  lg={6}
+                  xl={6}>
+                  <Row>
+                  <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  className="mb-3">
+                    <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.defectOverview} type='qualityColumn'/>
+                    </Col>
                     <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    xl={12}
-                    className="mb-3">
-                      <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.defectOverview} type='qualityColumn'/>
-                      </Col>
-                      <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      xl={12}>
-                      <BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.defectOverview} type='qualityLine'/>
-                      </Col>
-                    </Row>
-                  
-                  </Col>
+                    xl={12}>
+                    <BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.defectOverview} type='qualityLine'/>
+                    </Col>
                   </Row>
-                  </Card.Body>    
-              </Col>
-          </Row>
-        </React.Fragment>
+                
+                </Col>
+                </Row>
+                </Card.Body>    
+                </Col>
+
+                  </Row>
+                  
+
+         </Col>
+        </Row>
+      </React.Fragment>
       );
     }
   }

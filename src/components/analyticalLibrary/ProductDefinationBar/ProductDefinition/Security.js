@@ -189,7 +189,7 @@ class Security extends Component {
        });
     }
    };
-   updateRelease = releaseId => {debugger
+   updateRelease = releaseId => {
     const releaseList = [...this.state.releaseDropData];
     const { list, selectedIndex } = this.markSelectedbranch(releaseList, releaseId);
     const releaseDetail = list.map(ele => {
@@ -539,6 +539,7 @@ class Security extends Component {
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
     let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" />
     if(this.props.securityProjectData.id !== null){
     if (this.state.show) {
@@ -549,7 +550,7 @@ class Security extends Component {
 
         <React.Fragment>
          {this.props.securityDetails &&  this.state.showInsights?<SideNavbar  card={securityNav}/>:''}
-          <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start">
+          <Row className={`px-3 py-4 d-flex justify-content-start ${bgTheme ? '' : 'bg-light'}`}>
      
             <Col md={2}>
               <Dropdown
@@ -558,7 +559,7 @@ class Security extends Component {
                 onSelectDelegate={this.handleRepoChange}
                 dropsLable={labels[0].mappings.repository}
               >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                   <Col
                     sm={10}
                     md={10}
@@ -566,7 +567,7 @@ class Security extends Component {
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                    <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                       {this.state.selectedRepo
                         ? this.state.selectedRepo
                         : "Select Project"}
@@ -577,7 +578,7 @@ class Security extends Component {
                     md={2}
                     g={2}
                     xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                    className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                   >
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Col>
@@ -592,7 +593,7 @@ class Security extends Component {
                 dropsLable={labels[0].mappings.branch}
                 onSelectDelegate={this.branchOnSelectHandler}
               >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                   <Col
                     sm={10}
                     md={10}
@@ -600,7 +601,7 @@ class Security extends Component {
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                    <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                       {this.state.selectedBranch? <span className=' font-weight-bold'>{this.state.selectedBranch}</span>
                         : "Select Branch"}
                     </p>
@@ -610,7 +611,7 @@ class Security extends Component {
                     md={2}
                     g={2}
                     xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                    className={`font-aggegate-sub-text p-0 d-flex align-items-center  ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                   >
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Col>
@@ -626,7 +627,7 @@ class Security extends Component {
                 dropsLable={labels[0].mappings.release}
                 onSelectDelegate={this.releaseOnSelectHandler}
               >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                   <Col
                     sm={10}
                     md={10}
@@ -634,7 +635,7 @@ class Security extends Component {
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                    <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                       {this.state.selectedRelease? <span className=' font-weight-bold'>{this.state.selectedRelease}</span>
                         : "Select Release"}
                     </p>
@@ -644,7 +645,7 @@ class Security extends Component {
                     md={2}
                     g={2}
                     xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                    className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                   >
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Col>
@@ -653,9 +654,9 @@ class Security extends Component {
             </Col>
               }
               <Col md={3} className="mt-auto">
-              <p className="font-size-small m-0 text-white" >You are viewing data at <b>{this.state.filterStatus}</b> level</p></Col>
+              <p className={`font-size-small m-0 ${bgTheme ? 'text-white' : 'text-dark'}`} >You are viewing data at <b>{this.state.filterStatus}</b> level</p></Col>
           </Row>
-          <Row className="my-2 no-gutters px-3">
+          <Row className={`py-2 no-gutters px-3 ${bgTheme ? '' : 'bg-light'}`}>
             <Col>
               <span>
               {this.state.showbutton ? (
@@ -672,24 +673,24 @@ class Security extends Component {
               </span>
             </Col>
             { !this.state.policyActive?(
-              <div className="text-right">               
-              <span className="font-size-small text-white">
+              <div className={`text-right ${bgTheme ? 'text-white' : 'text-dark'}`}>               
+              <span className="font-size-small">
                 <FontAwesomeIcon  className="major ml-3" icon={faSquare} />{" "}
                 {labels[0].mappings.major}
                 </span>
-                <span className="font-size-small text-white">
+                <span className="font-size-small">
                 <FontAwesomeIcon  className="minor ml-3" icon={faSquare} />{" "}
                 {labels[0].mappings.minor}
                 </span>
-                <span className="font-size-small text-white">
+                <span className="font-size-small">
                 <FontAwesomeIcon  className="highbg ml-3" icon={faSquare} />{" "}
                 {labels[0].mappings.high}
                 </span>
-                <span className="font-size-small text-white">
+                <span className="font-size-small">
                 <FontAwesomeIcon  className="mediumbg ml-3" icon={faSquare} />{" "}
                 {labels[0].mappings.medium}
                 </span>
-                <span className="font-size-small text-white">
+                <span className="font-size-small">
                 <FontAwesomeIcon  className="lowbg ml-3" icon={faSquare} />{" "}
                 {labels[0].mappings.low}
                 </span>                  
@@ -700,23 +701,23 @@ class Security extends Component {
 
 
           {this.state.charts.length && this.state.componentType === "Product" ? (
-            <Sec cardsData={this.state.charts} />
+            <Sec cardsData={this.state.charts} bgTheme={bgTheme}/>
           ) : null}
           {this.state.charts.length && this.state.componentType === "Project" ? (
-            <SecurityOnProjectSelection cardsData={this.state.charts} />
+            <SecurityOnProjectSelection cardsData={this.state.charts} bgTheme={bgTheme}/>
           ) : null}
           { this.state.componentType === "Policy" ? (
-            <Policy cardsData={this.state.charts} />
+            <Policy cardsData={this.state.charts} bgTheme={bgTheme}/>
           ) : null}
           {this.state.componentType === "Alert" ? (
-           <App cardsData = {this.state.charts}/>
+           <App cardsData = {this.state.charts} bgTheme={bgTheme}/>
           ) : null}
       
         </React.Fragment>
       );
     }
   }else{
-      return <div className="text-white p-2 text-center">No Data Found</div>;
+      return <div className={`p-2 text-center ${bgTheme ? 'text-white' : 'text-dark'}`}>No Data Found</div>;
     }
   }
 }

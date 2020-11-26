@@ -16,9 +16,10 @@ import { velocityGraphInfo } from "../Translations/velocityGraphInfo";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Grid = props => {
+  const bgTheme = props.bgTheme;
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
-      <div className="border border-dark grid-graph-comp" key={ele.i}>
+      <div className={`border border-dark ${bgTheme ? 'grid-graph-comp' : 'bg-light'}`} key={ele.i}>
         <div
           className="position-absolute px-2 text-right text-white w-100"
           style={{ zIndex: "100" }}

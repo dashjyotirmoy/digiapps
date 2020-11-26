@@ -23,6 +23,7 @@ function update(actionData) {
 }
 
 const Policy = (props) => {
+	const bgTheme = props.bgTheme;
 	let dataItem = props.cardsData;
 	let actionData = [...dataItem.policyAlerts];
 	const [showResults, setShowResults] = React.useState(true)
@@ -64,14 +65,14 @@ const Policy = (props) => {
 	return (
 		<React.Fragment>
 			 <Container fluid>
-			 <Row className="mt-3">
+			 <Row className={`${bgTheme ? '' : 'bg-light'}`}>
 			<Col>
-			<Card.Body className="bg">
+			<Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white border'}`}>
                   <h6 className="cardHeader m-0 font-weight-bold">Policy Violations</h6>
-				  <Card.Body>
-				  <div className="wrap">
-                  <table className="table table-hover table-dark">
-                    <thead className="tabhead">
+				  <Card.Body className="border">
+				  <div className="wrap border">
+                  <table className={`table table-hover ${bgTheme ? 'table-dark' : 'text-light'}`}>
+                    <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
 								<tr >
 									<th className="pl-1">Library</th>
 									<th>Description</th>
@@ -83,12 +84,12 @@ const Policy = (props) => {
                   </table>
 
                   <div className="inner_table">
-                    <table className="table table-hover table-dark" >
+                    <table className={`table table-hover ${bgTheme ? 'table-dark' : 'text-light'}`}>
                       <tbody >
 											{(showPolicyData && showPolicyData.policyViolations.length > 0) ?
 								showPolicyData && showPolicyData.policyViolations.map((item, index) => {
 									return (
-										<tr className="tabrow f-12" key={index}>
+										<tr className={`f-12 ${bgTheme ? 'tabrow' : 'text-dark'}`} key={index}>
 												<td className="w-2">
 													{item.alertLevel === 'MAJOR' ? (
 														<Badge className="sevbadge1"></Badge>
@@ -105,7 +106,7 @@ const Policy = (props) => {
 										
 
 									)
-								}) : <tr><td style={{ textAlign: "center" }} colSpan="6">No data found</td></tr>
+								}) : <tr><td style={{ textAlign: "center" }} className={`${bgTheme ? 'text-light' : 'text-dark'}`} colSpan="6">No data found</td></tr>
 							}
 							</tbody>
 							</table>
@@ -114,14 +115,14 @@ const Policy = (props) => {
 </Card.Body></Card.Body>
 
 			</Col></Row>
-        <Row className="py-3">
+        <Row className={`py-3 ${bgTheme ? '' : 'bg-light'}`}>
 			<Col>
-			<Card.Body className="bg">
+			<Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                   <h6 className="cardHeader m-0 font-weight-bold">Policies</h6>
-				  <Card.Body>
-				  <div className="wrap">
-                  <table className="table table-hover table-dark">
-                    <thead className="tabhead">
+				  <Card.Body className="border">
+				  <div className="wrap border">
+                  <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
+                    <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
 								<tr >
 									<th>Policy ID</th>
 									<th>Policy Name</th>
@@ -165,12 +166,12 @@ const Policy = (props) => {
                   </table>
 
                   <div className="inner_table">
-                    <table className="table table-hover table-dark" >
+                    <table className={`table table-hover ${bgTheme ? 'table-dark' : 'text-light'}`} >
                       <tbody >
 											{(showPolicyData && showPolicyData.policyAlerts.length > 0) ?
 								showPolicyData && showPolicyData.policyAlerts.map((item, index) => {
 									return (
-										<tr className="tabrow f-12" key={index}>
+										<tr className={`f-12 ${bgTheme ? 'tabrow' : 'text-dark'}`} key={index}>
 												<td>{item.policyId}</td>
 												<td> {item.policyName} </td>
 												<td style={{wordBreak:"break-all"}}>By {item.match} Group</td>
@@ -191,7 +192,7 @@ const Policy = (props) => {
 										
 
 									)
-								}) : <tr><td style={{ textAlign: "center" }} colSpan="6">No data found</td></tr>
+								}) : <tr><td style={{ textAlign: "center" }} className={`${bgTheme ? 'text-light' : 'text-dark'}`} colSpan="6">No data found</td></tr>
 							}
 							</tbody>
 							</table>

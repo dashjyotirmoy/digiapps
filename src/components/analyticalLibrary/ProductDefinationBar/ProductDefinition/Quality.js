@@ -43,7 +43,6 @@ import {
   insightsQuality
 }from "../../../../store/actions/qualityData";
 import { labelConst } from "../../../../utility/constants/labelsConstants";
-import Badge from 'react-bootstrap/Badge';
 const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
@@ -394,7 +393,7 @@ class Quality extends Component {
     });
     return processedData;
   };
-  addCharts = (event) => {debugger
+  addCharts = (event) => {
     if(event.target.value!==''){
     const widgetName = event.target.value;
     const userObj = this.state.showRemovedItemsList.find(u => u.name === widgetName);
@@ -434,7 +433,7 @@ class Quality extends Component {
       showRemovedItemsList: updatedRemoveBadge
     });
   }
-  createCharts = (list, removed) => {debugger
+  createCharts = (list, removed) => {
     let list_temp = list[0];
     const updatedList = list_temp.filter((ele, index) => {
       if (index !== removed) {
@@ -499,6 +498,10 @@ class Quality extends Component {
   }
 
   componentDidMount() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
+    bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
     if (
       this.state.selectedRepo === undefined ||
       this.state.selectedRepo === ""
@@ -840,6 +843,7 @@ class Quality extends Component {
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
     let qualityNav=<CardChartQuality showChart="true" insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" />
    
     if (this.state.show) {
@@ -856,7 +860,8 @@ class Quality extends Component {
                 dropsLable={labels[0].mappings.repository}
                 onSelectDelegate={this.handleRepoChange}
               >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+              <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
+
                   <Col
                     sm={10}
                     md={10}
@@ -864,7 +869,7 @@ class Quality extends Component {
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                    <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                       {this.state.selectedRepo
                         ? this.state.selectedRepo
                         : "Select Repository"}
@@ -875,7 +880,7 @@ class Quality extends Component {
                     md={2}
                     g={2}
                     xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                    className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                   >
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Col>
@@ -890,7 +895,7 @@ class Quality extends Component {
                 dropsLable={labels[0].mappings.branch}
                 onSelectDelegate={this.branchOnSelectHandler}
               >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+              <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                   <Col
                     sm={10}
                     md={10}
@@ -898,7 +903,7 @@ class Quality extends Component {
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                   <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                 <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                     {this.state.selectedBranch? <span className=' font-weight-bold'>{this.state.selectedBranch}</span>
                         : "Select Branch"}
                     </p>
@@ -908,7 +913,8 @@ class Quality extends Component {
                     md={2}
                     g={2}
                     xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                    className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
+
                   >
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Col>
@@ -923,7 +929,7 @@ class Quality extends Component {
                 dropsLable={labels[0].mappings.release}
                 onSelectDelegate={this.releaseOnSelectHandler}
               >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+              <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                   <Col
                     sm={10}
                     md={10}
@@ -931,7 +937,7 @@ class Quality extends Component {
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+            <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
             {this.state.selectedRelease? <span className=' font-weight-bold'>{this.state.selectedRelease}</span>
                         : "Select Release"}
                     </p>
@@ -942,14 +948,14 @@ class Quality extends Component {
                     md={2}
                     g={2}
                     xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                    className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                   >
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Col>
                 </Row>
               </Dropdown>
             </Col>
-            }<span className='mt-auto'><p className="font-size-small m-0 text-left text-white">You are viewing data at <b>{this.state.filterStatus}</b> level</p></span>
+            }<span className='mt-auto'><p className={`font-size-small m-0 text-left ${bgTheme ? 'text-white' : 'text-dark'}`}>You are viewing data at <b>{this.state.filterStatus}</b> level</p></span>
             <Col
                 
                 className="ml-auto align-self-end"
@@ -958,28 +964,30 @@ class Quality extends Component {
               " Quality w-100 p-0 m-0 mt-3",
               { "d-none": !this.state.selectedRepo || this.state.componentType !== "quality" }
             )} style={{justifyContent:'flex-end'}}>
-                  <span className="font-size-small text-white">
+              <div className={`${bgTheme ? 'text-white' : 'text-dark'}`}>
+                  <span className="font-size-small">
                     <FontAwesomeIcon
                       className="critical ml-3 "
                       icon={faSquare}
                     />{" "}
                     {labels[0].mappings.critical}{" "}
                   </span>
-                  <span className="font-size-small text-white">
+                  <span className="font-size-small">
                     <FontAwesomeIcon className="high ml-3" icon={faSquare} />{" "}
                     {labels[0].mappings.high}
                   </span>
-                  <span className="font-size-small text-white">
+                  <span className="font-size-small">
                     <FontAwesomeIcon className="medium ml-3" icon={faSquare} />{" "}
                     {labels[0].mappings.medium}
                   </span>
-                  <span className="font-size-small text-white">
+                  <span className="font-size-small">
                     <FontAwesomeIcon className="low ml-3" icon={faSquare} /> {labels[0].mappings.low}
                   </span>
-                  <span className="font-size-small text-white">
+                  <span className="font-size-small">
                     <FontAwesomeIcon className="lowest ml-3" icon={faSquare} />{" "}
                     {labels[0].mappings.veryLow}
                   </span>
+                  </div>
                 </Row>
               </Col>
               </Row>
@@ -1029,7 +1037,7 @@ class Quality extends Component {
                       key={ele.type}
                       className="border-radius-10 border border-dark flex-grow-1 metric-card mx-3 mb-3 p-3"
                     >
-                      <Row className="h-15 m-0 text-white d-flex justify-content-between">
+                      <Row className={`h-15 m-0 d-flex justify-content-between ${bgTheme ? 'text-white' : 'text-dark'}`}>
                         <span>{ele.type}</span>
                         <span>
                           {ele.position ? (
@@ -1042,10 +1050,10 @@ class Quality extends Component {
                           )}
                         </span>
                       </Row>
-                      <Row className="align-items-center d-flex h-75 justify-content-center row text-white metric-value">
+                      <Row className={`align-items-center d-flex h-75 justify-content-center row metric-value ${bgTheme ? 'text-white' : 'text-dark'}`}>
                         {ele.value}
                       </Row>
-                      <Row className="d-flex justify-content-end px-3 text-white-50">
+                      <Row className={`d-flex justify-content-end px-3 ${bgTheme ? 'text-white-50' : 'text-dark'}`}>
                         {/* <TooltipHoc info=""> */}
                         <FontAwesomeIcon
                           className="show-cursor"
@@ -1071,6 +1079,7 @@ class Quality extends Component {
               removeDelegate={this.removeChartComponent}
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
+              bgTheme={bgTheme}
             />
           ) : null}
           

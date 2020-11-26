@@ -9,6 +9,7 @@ const VelocityTrend = React.forwardRef((props, ref) => {
   temp_options = new VelocityGraph(props, props.type);
   let containerHeight = props.containerHeight;
   options = temp_options.options;
+  let bgTheme=props.bgTheme;
   return (
     <React.Fragment>
       <ChartHOC
@@ -16,6 +17,7 @@ const VelocityTrend = React.forwardRef((props, ref) => {
         options={options}
         type={"column"}
         height={containerHeight}
+        bgTheme={bgTheme}
       />
     </React.Fragment>
   );

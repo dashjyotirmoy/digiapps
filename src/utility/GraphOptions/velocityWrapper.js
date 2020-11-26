@@ -288,7 +288,7 @@ class VelocityGraph {
       text: this.res.title,
       align: "left",
       style: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
         fontWeight: "normal"
       }
     };
@@ -300,7 +300,7 @@ class VelocityGraph {
       x: 70,
       y: 50,
       style: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
         fontWeight: "",
         fontSize: "18px"
       }
@@ -312,7 +312,7 @@ class VelocityGraph {
       },
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
       },
       plotBands: [{
@@ -333,7 +333,7 @@ class VelocityGraph {
       lineWidth: 0,
       tickLength: 0,
       style: {
-        color: "#f5f5f5"
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
       }
     };
     options.yAxis = {
@@ -343,12 +343,12 @@ class VelocityGraph {
       title: {
         text: "Days",
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
       },
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
       },
       plotLines: [
@@ -440,11 +440,11 @@ class VelocityGraph {
       y: -30,
       x: -30,
       itemStyle: {
-        color: "#ffffff",
+        color: this.res.bgTheme ? "#ffffff":'#333333',
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#D3D3D3"
+        color: this.res.bgTheme ? "#D3D3D3":'#333333',
       },
       labelFormatter: function () {
         if (this.name === "Bug" || this.name === "User Story") {
@@ -578,7 +578,7 @@ class VelocityGraph {
       text: "Velocity Trend",
       align: "left",
       style: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
         fontWeight: "normal"
       }
     };
@@ -589,7 +589,7 @@ class VelocityGraph {
       categories: xAxis_data,
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
         // format: "Sprint {value}"
       }
@@ -603,12 +603,12 @@ class VelocityGraph {
       title: {
         text: " ",
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
       },
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         },
         format: "{value} %"
       },
@@ -637,11 +637,11 @@ class VelocityGraph {
       enabled: true,
       backgroundColor: "transparent",
       itemStyle: {
-        color: "#ffffff",
+        color: this.res.bgTheme ? "#ffffff":'#333333',
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#d3d3d3"
+        color: this.res.bgTheme ? "#d3d3d3":'#333333',
       },
       align: "right",
       verticalAlign: "top",
@@ -695,7 +695,7 @@ class VelocityGraph {
           shape: "callout",
           backgroundColor: "#5cbef2",
           borderColor: "#ECEDEE",
-          color: "#f5f5f5",
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
           borderWidth: 0,
           borderRadius: 5,
           y: -10,
@@ -793,7 +793,7 @@ class VelocityGraph {
         ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
       align: "left",
       style: {
-        color: "#f5f5f5"
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
       }
     };
 
@@ -809,7 +809,7 @@ class VelocityGraph {
       x: -20,
       y: 40,
       style: {
-        color: "#f5f5f5"
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
       }
     };
 
@@ -823,7 +823,7 @@ class VelocityGraph {
       tickLength: 0,
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
       }
     };
@@ -834,7 +834,7 @@ class VelocityGraph {
       gridLineWidth: 0,
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
       },
       title: {
@@ -849,7 +849,7 @@ class VelocityGraph {
     options.legend = {
       enabled: true,
       itemStyle: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
         fontWeight: "normal"
       }
     };
@@ -949,7 +949,7 @@ class VelocityGraph {
         ).toFixed(1)} % <span style='font-size : 14px'>Completed</span></span>`,
       align: "left",
       style: {
-        color: "#f5f5f5"
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
       }
     };
     options.subtitle = {
@@ -964,7 +964,7 @@ class VelocityGraph {
       x: -20,
       y: 40,
       style: {
-        color: "#f5f5f5"
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
       }
     };
     options.yAxis = {
@@ -972,7 +972,7 @@ class VelocityGraph {
       labels: {
         enabled: true,
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
       },
       title: {
@@ -984,11 +984,11 @@ class VelocityGraph {
       enabled: true,
       backgroundColor: "transparent",
       itemStyle: {
-        color: "#ffffff",
+        color: this.res.bgTheme ? "#ffffff":'#333333',
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#d3d3d3"
+        color: this.res.bgTheme ? "#d3d3d3":'#333333',
       }
     };
     options.xAxis = {
@@ -997,7 +997,7 @@ class VelocityGraph {
       categories: xAxis_data,
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
       },
       lineColor: "transparent"

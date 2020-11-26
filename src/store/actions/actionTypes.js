@@ -1,4 +1,5 @@
 export const GET_EXEC_DATA = "GET_EXEC_DATA";
+export const GET_CLIENT_ID_DATA = "GET_CLIENT_ID_DATA";
 export const SET_EXEC_DATA = "SET_EXEC_DATA";
 export const LOAD_PRODUCTS = "LOAD_PRODUCTS";
 export const LOAD_CURRENT_SPRINT = "LOAD_CURRENT_SPRINT";

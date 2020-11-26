@@ -7,7 +7,9 @@ const mainBase =
 const devovOpsApi = axios.create({
   baseURL: mainBase
 });
-
+const getAllClientList = () => {
+  return devovOpsApi.get(`/clientDetails/fetchClientList`);
+};
 const getAllExecutives = () => {
   return devovOpsApi.get(`/executive/all`);
 };
@@ -142,6 +144,7 @@ const getSummaryData = (execId) => {
 }
 
 export default {
+  getAllClientList,
   getVelocityData,
   getQualityBuildData,
   getVelocityBuildData,

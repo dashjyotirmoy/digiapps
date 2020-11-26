@@ -5,7 +5,9 @@ import CardChartSecurity from "../../CardChart/CardChartSecurity";
 import CardChartVelocity from "../../CardChart/CardChartVelocity";
 import CardChartQuality from "../../CardChart/CardChartQuality";
 import { connect } from "react-redux";
-import {insightsQuality,insightsSecurity} from "../../../../store/actions/sprintInsights";
+import { insightsQuality,
+  insightsSecurity
+} from "../../../../store/actions/sprintInsights";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown
@@ -70,7 +72,7 @@ class Insights extends Component {
     };
   setProject = (res) => {
     const projects = res.data;
-    if (projects !== null) {
+    if (projects.length !== 0) {
     const { list, selectedIndex } = this.markSelected(projects, projects[0].id);
     const prrojDetail = list.map(ele => {
       return {
@@ -180,6 +182,10 @@ class Insights extends Component {
     }
   }
   componentDidMount() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
+    bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
     if (this.state.selectedRepo === undefined || this.state.selectedRepo === "") {
       this.setState({
         all_data: true
@@ -189,6 +195,7 @@ class Insights extends Component {
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
     if (this.state.show) {
       return <Spinner show="true" />;
     } else{
@@ -203,7 +210,7 @@ class Insights extends Component {
                 dropsLable={labels[0].mappings.repository}
                 onSelectDelegate={this.prodOnSelectHandler}
               >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                   <Col
                     sm={10}
                     md={10}
@@ -211,7 +218,7 @@ class Insights extends Component {
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                     {this.state.selectedProduct}
                     </p>
                   </Col>
@@ -220,7 +227,7 @@ class Insights extends Component {
                     md={2}
                     g={2}
                     xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                    className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                   >
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Col>
@@ -234,7 +241,7 @@ class Insights extends Component {
                 dropsLable={labels[0].mappings.branch}
                 onSelectDelegate={this.branchOnSelectHandler}
               >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+              <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                   <Col
                     sm={10}
                     md={10}
@@ -242,7 +249,7 @@ class Insights extends Component {
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                    <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
+                <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                       {this.state.selectedBranch}
                     </p>
                   </Col>
@@ -251,7 +258,7 @@ class Insights extends Component {
                     md={2}
                     g={2}
                     xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                    className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                   >
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Col>
@@ -265,19 +272,19 @@ class Insights extends Component {
             
             className="bg-card"
           >
-            <CardChartSecurity insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security"/>
+            <CardChartSecurity insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" bgTheme={bgTheme}/>
           </Col>
           <Col
             
             className="bg-card p-0"
           >
-            <CardChartVelocity insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" />
+            <CardChartVelocity insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme}/>
           </Col>
           <Col
 
             className="bg-card"
           >
-            <CardChartQuality insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" />
+            <CardChartQuality insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" bgTheme={bgTheme}/>
           </Col>
         </Row>
       </Container>
@@ -293,6 +300,7 @@ const mapStateToProps = state => {
     velocityInsightDetails: state.insightData.velocityInsightDetails,
     securityDetails: state.insightData.securityDetails,
     qualityDetails: state.insightData.qualityDetails,
+    dropData: state.insightData.projectDropdownDetails
   };
 };
 const mapDispatchToProps = dispatch => {

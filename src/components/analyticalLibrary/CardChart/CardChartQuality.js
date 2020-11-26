@@ -8,6 +8,7 @@ import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 
 
 const CardChart = props => {
+    const bgTheme = props.bgTheme;
     const [ open, setOpen ] = useState(false)
     let graphValue = [];
     let chatDescrp = [];
@@ -61,11 +62,11 @@ const CardChart = props => {
         }
 
     return <React.Fragment>
-        <Card className="card-border grid-graph-comp" style={{color:'#ffffff'}}>
+        <Card className={`card-border ${bgTheme ? 'bg-dark-theme' : 'bg-light text-dark'}`}>
             <Card.Body className="p-0">
-                <div className="d-flex cardHeader p-2 rounded">
+                <div className={`d-flex p-2 rounded ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>
                     <div className="mr-auto">
-                        <p className="cardHeader m-0 p-0 font-weight-bold">{props.cardHeader}</p>
+                        <p className="m-0 p-0 font-weight-bold">{props.cardHeader}</p>
                     </div>
                     <TooltipHoc
                         info="Quality Insight shows the quality of the code for the selected repository by considering the quality flaws in last 3 releases.<br /><br /> 
@@ -83,11 +84,11 @@ const CardChart = props => {
                 <div className="d-flex mb-2">
                     <p className="mr-auto mb-0 pl-0 font-size-small font-weight-bold">{props.cardName} </p>
                     {insightVal.content && insightVal.content.recommendation!=="N/A"  ?
-                       <span style={{ color:"#333333",fontSize: "12px",fontWeight: "bold" }} 
-                       className={`badge btnSize w-auto ${btnClass()}`}>{btnLabel()}</span> : ''}
+                       <span style={{fontSize: "12px",fontWeight: "bold" }} 
+                       className={`badge btnSize w-auto ${btnClass()} ${bgTheme ? 'text-dark' : 'text-white'}`}>{btnLabel()}</span> : ''}
                 </div>
             {insightVal.graphValue.length !== 0 && props.showChart!=="true" ? 
-            <BuildSingleLineQual chartData={insightVal.graphValue}/> :insightVal.graphValue.length === 0 && props.showChart!=="true" ? 
+            <BuildSingleLineQual chartData={insightVal.graphValue} bgTheme={bgTheme}/> :insightVal.graphValue.length === 0 && props.showChart!=="true" ? 
             'No Data Found':'' } 
             </div>
                {insightVal.content &&
@@ -105,7 +106,7 @@ const CardChart = props => {
                 {props.showChart==="true"  && insightVal.graphValue.length !== 0 ?
                 <>
                  <div className="row"><button type="button" className="ml-auto btn btn-link" onClick={chartDetails}>{open ? "Hide":"Show"} Details</button></div>
-                <div className={open ? "show" : "hide"}><BuildSingleLineQual chartData={insightVal.graphValue}/></div>
+                <div className={open ? "show" : "hide"}><BuildSingleLineQual chartData={insightVal.graphValue} bgTheme={bgTheme}/></div>
                 </>
                 :props.showChart==="true"  && insightVal.graphValue.length === 0 ? 'No Data Found' :''
                  } 

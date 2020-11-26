@@ -12,6 +12,7 @@ import Alert from 'react-bootstrap/Alert';
 
 
 const SecurityOnProjectSelection = (props) => {
+  const bgTheme = props.bgTheme;
   props.cardsData[4].data[2].sort((a, b) => b.score.localeCompare(a.score));
   props.cardsData[5].data[2].sort((a, b) => b.vulnerabilities.totalCount.localeCompare(a.vulnerabilities.totalCount));
   var totalCount = props.cardsData[2].data[2].alertMetrics.totalCount;
@@ -90,13 +91,13 @@ const SecurityOnProjectSelection = (props) => {
   }
   return (
     <React.Fragment>
-      <Container fluid style={{ paddingTop: "10px" }}>
-        <Row>
+      <Container fluid >
+        <Row className={`${bgTheme ? '' : 'bg-light'}`}>
           <Col sm={9}>
             <Row>
               <Col sm={4}>
-                <Card className="borderadius" style={{ height: "180px" }}>
-                  <Card.Body className="pt-2 bg">
+                <Card style={{ height: "180px" }}>
+                  <Card.Body className={`pt-2 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
@@ -129,8 +130,8 @@ const SecurityOnProjectSelection = (props) => {
 
 
               <Col sm={4}>
-                <Card className="borderadius">
-                  <Card.Body className="pt-2 bg">
+                <Card>
+                  <Card.Body className={`pt-2 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
@@ -154,8 +155,8 @@ const SecurityOnProjectSelection = (props) => {
 
 
               <Col sm={4}>
-                <Card className="borderadius">
-                  <Card.Body className="pt-2 bg">
+                <Card>
+                  <Card.Body className={`pt-2 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
@@ -188,13 +189,13 @@ const SecurityOnProjectSelection = (props) => {
               <Col sm={6}>
                 <Row>
                   <Col>
-                    <Card.Body className="bg">
+                    <Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                       <h6 className="mb-3">Vulnerabilities</h6>
 
-                      <Card.Body className="pb-0">
-                        <div className="wrap">
-                          <table className="table table-hover table-dark">
-                            <thead className="tabhead">
+                      <Card.Body className="pb-0 border">
+                        <div className="wrap border">
+                          <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
+                            <thead className={`${bgTheme ? 'tabhead' : 'cardHeader'}`}>
                               <tr>
                                 <th scope="col">Name</th>
                                 <th scope="col">Type</th>
@@ -204,11 +205,10 @@ const SecurityOnProjectSelection = (props) => {
                             </thead>
                             </table>
 
-<div className="inner_table">
-  <table className="table table-hover table-dark" >
-    <tbody >
-      {
-                                
+                            <div className="inner_table">
+                              <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`} >
+                                <tbody >
+                                  {    
                                   props.cardsData[4].data[2].map((item, index) => {
                                     return (
                                       <tr className="tabrow f-12" key={index}>
@@ -235,13 +235,13 @@ const SecurityOnProjectSelection = (props) => {
               <Col sm={6}>
                 <Row>
                   <Col>
-                    <Card.Body className="bg">
+                    <Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                       <h6 className="mb-3">Libraries</h6>
 
-                      <Card.Body className="pb-0">
-                        <div className="wrap">
-                          <table className="table table-hover table-dark ">
-                            <thead className="tabhead">
+                      <Card.Body className="pb-0 border">
+                        <div className="wrap border">
+                          <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
+                            <thead className={`${bgTheme ? 'tabhead' : 'cardHeader'}`}>
                               <tr>
                                 <th className="w-45">Library Name</th>
                                 <th  >Vulnerable Libraries</th>
@@ -251,13 +251,13 @@ const SecurityOnProjectSelection = (props) => {
                             </thead>
                           </table>
                           <div className="inner_table">
-                            <table className="table table-hover table-dark" >
+                            <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`} >
 
                               <tbody >
                                 {
                                   props.cardsData[5].data[2].map((item, index) => {
                                     return (
-                                      <tr className="tabrow f-12" key={index}>
+                                      <tr className={`f-12 ${bgTheme ? 'tabrow' : 'text-dark'}`} key={index}>
                                         <td className="w-23"><p>{item.name}</p></td>
                                         <td className="tabpadding w-23">
                                           {item.vulnerabilities.totalCount === "0" ? (
@@ -296,7 +296,7 @@ const SecurityOnProjectSelection = (props) => {
 
           <Col sm={3}>
             <Row>
-              <Card.Body className="bg">
+              <Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                 <h6>Vulnerability Analysis</h6>
                 <HighchartsReact highcharts={Highcharts} options={options} />
                 <Col

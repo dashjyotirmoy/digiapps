@@ -1,6 +1,20 @@
 import api from "../../utility/Http/devOpsApis";
 import * as actionTypes from "./actionTypes";
 
+export const clientListDispatch = () => async dispatch => {
+  try {
+    const response = await api.getAllClientList();
+    let data = response.data;
+    dispatch({
+      type: actionTypes.GET_CLIENT_ID_DATA,
+      payload: {
+          getAllClient: data
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 export const execAllDispatch = () => async dispatch => {
   try {
     const response = await api.getAllExecutives();

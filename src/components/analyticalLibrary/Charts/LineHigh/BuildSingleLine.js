@@ -1,6 +1,7 @@
 import React from 'react';
 import ChartHOC from '../ChartHOC/ChartHOC';
 const BuildSingleLine = (props) => {
+  let bgTheme= props.bgTheme;
   var options = {}
   let result = props.chartData.map(xaxisName => xaxisName.name)
   options = {
@@ -8,7 +9,7 @@ const BuildSingleLine = (props) => {
       text: 'Project > Team > Sprints',
       align: "left",
       style: {
-        color: "#ffffff",
+        color: bgTheme ? "#ffffff": "#333333",
         fontSize: '12px'
       }
     },
@@ -23,11 +24,11 @@ const BuildSingleLine = (props) => {
       symbolWidth: 12,
       symbolRadius: 0,
       itemStyle: {
-        color: "#ffffff",
+        color: bgTheme ? "#ffffff": "#333333",
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#ffffff"
+        color: bgTheme ? "#ffffff": "#333333"
       }
     },
     xAxis: {
@@ -41,7 +42,7 @@ const BuildSingleLine = (props) => {
       labels: {
         rotation: -45,
         style: {
-          color: "#ffffff",
+          color: bgTheme ? "#ffffff": "#333333",
           fontWeight: 'bold',
         }
       }
@@ -66,7 +67,7 @@ const BuildSingleLine = (props) => {
       labels: {
         format: '{value}',
         style: {
-          color: "#ffffff",
+          color: bgTheme ? "#ffffff": "#333333",
           fontWeight: 'normal',
         }
       },
