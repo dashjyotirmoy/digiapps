@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
 import john from "../../../content/img/user-default.png";
-import { execAllDispatch } from "../../../store/actions/executiveInsights";
+import { clientListDispatch,execAllDispatch } from "../../../store/actions/executiveInsights";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -33,6 +33,7 @@ class Header extends Component {
     labelConst: this.props.labelsConst
   };
   componentDidMount() {
+    //this.props.clientListDispatch();
     this.props.execAllDispatch();
   }
   render() {
@@ -96,14 +97,15 @@ class Header extends Component {
 
 const mapStateToProps = state => {
   return {
-    getAllExecInfo: state.execData.executiveInfo
+    getAllExecInfo: state.execData.executiveInfo,
+    getAllClientList: state.execData.clientList
   };
 };
 
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ execAllDispatch }, dispatch);
+  return bindActionCreators({ clientListDispatch,execAllDispatch }, dispatch);
 };
 
 //Connect react component to redux

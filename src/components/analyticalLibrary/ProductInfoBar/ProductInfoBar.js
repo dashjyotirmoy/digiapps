@@ -371,6 +371,7 @@ class ProductInfoBar extends Component {
     let dimensionData = this.props.widgetProps;
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
     const projectDimensions = new Widgets();
     const Components = projectDimensions.loadDimensions(dimensionData);
     const prodAggViewIcon = this.state.prodAggView
@@ -383,25 +384,25 @@ class ProductInfoBar extends Component {
     } else {
       return (
         <>{!window.location.href.includes("/overview") ?
-        <div className="h-10 summary-view">
+        <div className={`h-10 ${bgTheme ? 'summary-view' : 'summary-light-view'}`}>
           <Container
             fluid
-            className="h-100 border-bottom border-dark border-top"
+            className={`h-100 border-bottom border-top ${bgTheme ? 'border-dark' : 'border-light'}`}
           >
             <Row className="h-100 justify-content-between" >
               {labels[0].mappings.roleDesignation && <Col
                 xl={2}
                 lg={2}
                 md={2}
-                className="d-flex border-right border-dark justify-content-center align-items-center"
+                className={`d-flex border-right justify-content-center align-items-center ${bgTheme ? 'border-dark' : 'border-light'}`}
               >
                 <div className="w-100">
-                  <p className=" m-0 text-start text-white m-0">
+                  <p className={` m-0 text-start m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>
                     {this.props.execDataReceived
                       ? this.props.projectList.name
                       : ""}
                   </p>
-                  <p className="font-aggegate-sub-text m-0 text-start text-white width-fit-content">
+                  <p className={`font-aggegate-sub-text m-0 text-start width-fit-content ${bgTheme ? 'text-white' : 'text-dark'}`}>
                     {this.props.execDataReceived
                       ? this.props.projectList.designation
                       : ""}
@@ -426,9 +427,9 @@ class ProductInfoBar extends Component {
                         dropsLable={labels[0].mappings.projectLabel}
                         onSelectDelegate={this.prodOnSelectHandler}
                       >
-                        <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                        <Row className={`h-100  repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                           <Col sm={10} md={10} lg={10} xl={10} className="d-flex align-item-center justify-content-center">
-                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left">
+                          <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                               {this.state.selectedProduct}
                             </p>
                           </Col>
@@ -437,7 +438,7 @@ class ProductInfoBar extends Component {
                             md={2}
                             lg={2}
                             xl={2}
-                            className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                            className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                           >
                             <FontAwesomeIcon icon={faChevronDown} />
                           </Col>
@@ -460,9 +461,9 @@ class ProductInfoBar extends Component {
                         dropsLable={labels[0].mappings.teamLabel}
                         onSelectDelegate={this.teamOnSelectHandler}
                       >
-                        <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                        <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                           <Col sm={10} md={10} lg={10} xl={10} className="d-flex align-item-center justify-content-center">
-                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left">
+                            <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                               {this.state.selectedTeam}
                             </p>
                           </Col>
@@ -471,7 +472,7 @@ class ProductInfoBar extends Component {
                             md={2}
                             lg={2}
                             xl={2}
-                            className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                            className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                           >
                             <FontAwesomeIcon icon={faChevronDown} />
                           </Col>
@@ -493,9 +494,9 @@ class ProductInfoBar extends Component {
                         dropsLable={labels[0].mappings.sprintLabel}
                         onSelectDelegate={this.sprintOnSelectHandler}
                       >
-                        <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
+                        <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
                           <Col sm={10} md={10} lg={10} xl={10} className="d-flex align-item-center justify-content-center">
-                            <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left">
+                          <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                               {this.state.selectedSprint}
                             </p>
                           </Col>
@@ -504,7 +505,7 @@ class ProductInfoBar extends Component {
                             md={2}
                             lg={2}
                             xl={2}
-                            className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                            className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                           >
                             <FontAwesomeIcon icon={faChevronDown} />
                           </Col>
@@ -517,7 +518,7 @@ class ProductInfoBar extends Component {
               <Col sm={12} md={5} lg={6} xl={5} className="h-100 p-0">
                 <Row className="h-100 justify-content-end">
                 {labels[0].mappings.count.length &&  <Col md={7} lg={8} xl={7} className="h-100">
-                    <Row className="p-0 m-0 h-100 w-100 border border-dark ">
+                    <Row className={`p-0 m-0 h-100 w-100 border ${bgTheme ? 'border-dark' : 'border-light'}`}>
                       <Row className="p-0 m-0 h-100 w-100 d-flex align-items-center justify-content-around ">
                         {productMetrics.map((item,index) => {
                           return (
@@ -526,12 +527,12 @@ class ProductInfoBar extends Component {
                               className="d-flex d-inline-block 
                         flex-column h-100 justify-content-center max-w-18 w-auto "
                             >
-                              <p className="font-metric-main-text m-0 text-center text-black m-0">
-                                <span className="text-white">
+                              <p className={`font-metric-main-text m-0 text-center m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>
+                                <span>
                                   {item.value}{" "}
                                 </span>
                               </p>
-                              <p className="font-metric-sub-text m-0 text-center text-white-50 m-0">
+                              <p className={`font-metric-sub-text m-0 text-center m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>
                                 {labels[0].mappings.count[index].name}
                               </p>
                             </div>
@@ -549,7 +550,7 @@ class ProductInfoBar extends Component {
                     <Row className="p-0 m-0 w-100 d-flex align-items-center h-100">
                       <Col
                         md={5}
-                        className="align-items-center d-flex h-100 p-0 border-right border-dark"
+                        className={`align-items-center d-flex h-100 p-0 border-right ${bgTheme ? 'border-dark' : 'border-light'}`}
                       >
                         <Row className="p-0 m-0 w-100 h-100 ">
                           <Col md={5} className="p-0">
@@ -568,14 +569,14 @@ class ProductInfoBar extends Component {
                           >
                             <div
                               id="feature-info"
-                              className="d-inline-block text-white"
+                              className={`d-inline-block ${bgTheme ? 'text-white' : 'text-dark'}`}
                             >
-                              <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
+                              <p className="font-size-smaller m-0 text-center">
                                 {this.props.projectRecieved
                                   ? `${this.props.projDetails.features.completed}/ ${this.props.projDetails.features.total}`
                                   : "loading"}
                               </p>
-                              <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
+                              <p className="font-size-small m-0 text-center m-0">
                                 {labels[0].mappings.feature}
                               </p>
                             </div>
@@ -603,14 +604,14 @@ class ProductInfoBar extends Component {
                           >
                             <div
                               id="feature-info"
-                              className="d-inline-block text-white"
+                              className={`d-inline-block ${bgTheme ? 'text-white' : 'text-dark'}`}
                             >
-                              <p className="font-size-smaller m-0 text-left text-lg-center text-md-center text-sm-center text-xl-center">
+                              <p className="font-size-smaller m-0 text-left">
                                 {this.props.projectRecieved
                                   ? `${this.props.projDetails.userStory.completed}/ ${this.props.projDetails.userStory.total}`
                                   : "loading"}
                               </p>
-                              <p className="font-size-small m-0 text-left text-lg-center text-md-center text-sm-left text-xl-center m-0">
+                              <p className="font-size-small m-0 text-center">
                               {labels[0].mappings.userStory}
                               </p>
                             </div>

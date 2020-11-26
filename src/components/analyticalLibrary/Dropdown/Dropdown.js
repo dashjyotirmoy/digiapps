@@ -5,9 +5,13 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownMenu from "./DropdownMenu";
 import DropdownToggle from "./DropdownToggle";
 import './Dropdown.css';
+import { labelConst } from "../../../utility/constants/labelsConstants";
 
 class CustDropdown extends Component {
   render() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
     const arr = this.props.listData;
     const dropdownItems = arr.map((ele, index) => {
       return (
@@ -18,10 +22,10 @@ class CustDropdown extends Component {
     });
     return (
       <>
-      <div className="font-size-small w-100 m-0 text-white">{this.props.dropsLable}</div>
+      <div className={`font-size-small w-100 m-0 ${bgTheme ? 'text-white': 'text-dark'}`}>{this.props.dropsLable}</div>
       <Dropdown
         onSelect={(evt, evtKey) => this.props.onSelectDelegate(evt, evtKey)}
-        className="d-xl-block d-lg-block d-md-block d-sm-block d-sx-none d-none w-100"
+        className={`w-100 ${bgTheme ? 'text-white': 'rounded border border-primary'}`}
       >
         <Dropdown.Toggle
           as={DropdownToggle}

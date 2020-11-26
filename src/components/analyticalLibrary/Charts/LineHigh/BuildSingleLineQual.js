@@ -2,6 +2,7 @@ import React from 'react';
 import ChartHOC from '../ChartHOC/ChartHOC';
 
 const BuildSingleLineQual = (props) => {
+  let bgTheme= props.bgTheme;
   let result =props.chartData.map(xaxisName => xaxisName.name);
   let ylabel=['Good','Average','Bad']
  var options = {}
@@ -10,7 +11,7 @@ const BuildSingleLineQual = (props) => {
       text: 'Project > Repository > Branch > Releases',
       align: "left",
       style: {
-        color: "#ffffff",
+        color: bgTheme ? "#ffffff": "#333333",
         fontSize: '12px'
       }
     },
@@ -25,11 +26,11 @@ const BuildSingleLineQual = (props) => {
             symbolWidth: 12,
             symbolRadius: 0,
             itemStyle: {
-                color: "#ffffff",
+                color:  bgTheme ? "#ffffff": "#333333",
                 fontWeight: "normal"
             },
             itemHoverStyle: {
-                color: "#ffffff"
+                color:  bgTheme ? "#ffffff": "#333333"
             }
         },
     xAxis: {
@@ -45,7 +46,7 @@ const BuildSingleLineQual = (props) => {
         rotation: -45,
         format: "{value}",
         style: {
-          color: "#ffffff",
+          color: bgTheme ? "#ffffff": "#333333",
           fontWeight: 'bold',
         }
       }
@@ -61,7 +62,7 @@ const BuildSingleLineQual = (props) => {
       title: {
         text: "",
         style: {
-          color: "#ffffff"
+          color:  bgTheme ? "#ffffff": "#333333"
         }
       },
     labels: {
@@ -70,7 +71,7 @@ const BuildSingleLineQual = (props) => {
         return ylabel[this.pos]
       },
       style: {
-        color: "#ffffff",
+        color:  bgTheme ? "#ffffff": "#333333",
         fontWeight: 'normal',
       }
       },

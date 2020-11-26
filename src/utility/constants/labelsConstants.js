@@ -1,6 +1,8 @@
 export const labelConst = [{
 	clientName: 'digitalops',
+	clientId: 'DOPS',
 	mappings: {
+			bgColor: true,
 			logoName: 'DevOps Dashboard',
 			projectLabel: 'Projects',
 			teamLabel: 'Teams',
@@ -33,7 +35,9 @@ export const labelConst = [{
 },
 {
 	clientName: 'aia',
+	clientId: 'AIA',
 	mappings: {
+			bgColor: false,
 			logoName: 'AIA Dashboard',
 			projectLabel: 'Projects',
 			teamLabel: 'Teams',
@@ -67,7 +71,9 @@ export const labelConst = [{
 },
 {
 	clientName: 'wpc',
+	clientId: 'WPC',
 	mappings: {
+			bgColor: true,
 			logoName: 'EY Dash',
 			projectLabel: 'Portfolio',
 			teamLabel: 'Projects',

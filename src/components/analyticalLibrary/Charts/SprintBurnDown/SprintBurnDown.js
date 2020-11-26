@@ -9,9 +9,10 @@ const SprintBurndown = React.forwardRef((props, ref) => {
   temp_options = new VelocityGraph(props, props.type);
   let containerHeight = props.containerHeight;
   options = temp_options.options;
+  let bgTheme=props.bgTheme;
   return (
     <React.Fragment>
-      <ChartHOc ref={ref} options={options} height={containerHeight} />
+      <ChartHOc ref={ref} options={options} height={containerHeight} bgTheme={bgTheme}/>
     </React.Fragment>
   );
 });

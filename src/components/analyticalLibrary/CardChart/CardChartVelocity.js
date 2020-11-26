@@ -8,6 +8,7 @@ import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 
 
 const CardChart = props => {
+    const bgTheme = props.bgTheme;
     const [ open, setOpen ] = useState(false);
     let graphValue = [];
      let velocityVariance;
@@ -35,11 +36,11 @@ const CardChart = props => {
     let chartDetails = () => setOpen(!open);
     function btnClass() {
         if(insightVal.content && insightVal.content.colorCode === "GREEN"){
-            return 'btnmediumbg';
+            return 'btnlowbg';
         }else if(insightVal.content && insightVal.content.colorCode === "RED"){
             return 'btnhighbg';
         }else if(insightVal.content && insightVal.content.colorCode === "YELLOW"){
-            return 'btnlowbg';
+            return 'btnmediumbg';
         }       
         return 'btnnobg';
     }
@@ -55,11 +56,11 @@ const CardChart = props => {
         }
 
     return <React.Fragment>
-        <Card className="card-border grid-graph-comp" style={{color:'#ffffff'}}>
+        <Card className={`card-border ${bgTheme ? 'bg-dark-theme' : 'bg-light text-dark'}`}>
             <Card.Body className="p-0">
-                <div className="d-flex cardHeader p-2 rounded">
+                <div className={`d-flex p-2 rounded ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>
                     <div className="mr-auto">
-                        <p className="cardHeader m-0 p-0 font-weight-bold">{props.cardHeader}</p>
+                        <p className="m-0 p-0 font-weight-bold">{props.cardHeader}</p>
                     </div>
                     <TooltipHoc
                         info="Velocity & Efficiency Insight shows the velocity variance of the product across various sprints. <br /><br />                            
@@ -76,10 +77,11 @@ const CardChart = props => {
                 <div className="rounded p-2" style={{'border': '1px solid #535353'}}>
                 <div className="d-flex mb-2">
                     <p className="mr-auto mb-0 pl-0 font-size-small font-weight-bold">{props.cardName} </p>
-                    {insightVal.content && insightVal.content.recommendation!=="N/A" ?   <span style={{ color:"#333333",fontSize: "12px",fontWeight: "bold" }} className={`badge btnSize w-auto ${btnClass()}`}>{btnLabel()}</span>
+                    {insightVal.content && insightVal.content.recommendation!=="N/A" ?   
+                        <span style={{fontSize: "12px",fontWeight: "bold" }} className={`badge btnSize w-auto ${btnClass()} ${bgTheme ? 'text-dark' : 'text-white'}`}>{btnLabel()}</span>
                     :" "}
                 </div>
-                {props.showChart!=="true" ?   <BuildSingleLine chartData={insightVal.graphValue}/>:''}
+                {props.showChart!=="true" ?   <BuildSingleLine chartData={insightVal.graphValue} bgTheme={bgTheme}/>:''}
                 </div>
                 {insightVal.content &&
                 <>
@@ -94,7 +96,7 @@ const CardChart = props => {
                 {props.showChart==="true"  && insightVal.graphValue.length !== 0 ?
                 <>
                  <div className="row"><button type="button" className="ml-auto btn btn-link" onClick={chartDetails}>{open ? "Hide":"Show"} Details</button></div>
-                <div className={open ? "show" : "hide"}><BuildSingleLine chartData={insightVal.graphValue}/></div>
+                <div className={open ? "show" : "hide"}><BuildSingleLine chartData={insightVal.graphValue} bgTheme={bgTheme}/></div>
                 </>
                 :''
                  } 

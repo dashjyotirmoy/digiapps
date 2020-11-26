@@ -11,6 +11,7 @@ import LibrarySvg from './LibrarySvg';
 import Alert from 'react-bootstrap/Alert';;
 
 const Sec = props => {
+    const bgTheme = props.bgTheme;
   let topProject = props.cardsData[4].data[2].slice(0, 5);
   props.cardsData[4].data[2].sort((a, b) => b.vulnerableLibraries.totalCount.localeCompare(a.vulnerableLibraries.totalCount));
 
@@ -90,14 +91,13 @@ const Sec = props => {
 
   return (
     <React.Fragment>
-      <Container fluid style={{ paddingTop: "10px" }}>
-        
-        <Row>
+      <Container fluid>        
+        <Row className={`${bgTheme ? '' : 'bg-light'}`}>
           <Col sm={9}>
             <Row>
               <Col sm={4}>
-                <Card className="borderadius policy-height">
-                  <Card.Body className="pt-2 bg">
+                <Card className="policy-height">
+                  <Card.Body className={`pt-2 ${bgTheme ? 'bg' : 'border-radius-10 text-dark bg-white'}`}>
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
@@ -124,8 +124,8 @@ const Sec = props => {
 
 
               <Col sm={4}>
-                <Card className="borderadius">
-                  <Card.Body className="pt-2 bg">
+                <Card>
+                  <Card.Body className={`pt-2 ${bgTheme ? 'bg' : 'border-radius-10 text-dark bg-white'}`}>
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
@@ -154,8 +154,8 @@ const Sec = props => {
 
 
               <Col sm={4}>
-                <Card className="borderadius">
-                  <Card.Body className="pt-2 bg">
+                <Card>
+                  <Card.Body className={`pt-2 ${bgTheme ? 'bg' : 'border-radius-10 text-dark bg-white'}`}>
                     <Row>
                       <Col sm={8} className="mb-3">
                         {" "}
@@ -186,12 +186,12 @@ const Sec = props => {
 
             <Row className="mt-5">
               <Col >
-                <Card.Body className="bg card-height">
+                <Card.Body className={`card-height border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                   <h6>Vulnerable Repositories</h6>
                   <Card.Body>
-                    <div className="wrap">
-                      <table className="table table-hover table-dark">
-                        <thead className="tabhead">
+                    <div className="wrap border">
+                      <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
+                        <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
                           <tr>
                             <th scope="col">Repositories</th>
                             <th scope="col">Libraries</th>
@@ -203,8 +203,8 @@ const Sec = props => {
                       </table>
 
                       <div className="inner_table">
-                        <table className="table table-hover table-dark" >
-                          <tbody className="tabrow">
+                        <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`} >
+                          <tbody className={`f-12 ${bgTheme ? 'tabrow' : 'text-dark'}`}>
                             {
                               topProject.map((item, index) => {
                                 return (
@@ -241,7 +241,7 @@ const Sec = props => {
 
           <Col sm={3}>
             <Row>
-              <Card.Body className="bg">
+              <Card.Body className={`border  ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                 <p>Vulnerability Analysis</p>
                 <HighchartsReact highcharts={Highcharts} options={options} />
                 <Col

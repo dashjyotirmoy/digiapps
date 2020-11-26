@@ -44,7 +44,8 @@ class Velocity extends Component {
     repoData: [],
     filterStatus: 'Team',
     showRemovedItemsList: [],
-    removed: []
+    removed: [],
+    bgTheme:'',
   };
 
   addCharts = (event) => {
@@ -138,7 +139,7 @@ class Velocity extends Component {
     switch (type) {
       case "VelocityTrends":
         return (
-          <VelocityTrend title={title} type={type} data={data} key={title} />
+          <VelocityTrend title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
         );
       case "ControlChartHigh":
         return (
@@ -149,15 +150,16 @@ class Velocity extends Component {
             key={title}
             projID={this.props.projId}
             organization={this.props.organization}
+            bgTheme={this.state.bgTheme}
           />
         );
       case "ProjectBurnDown":
         return (
-          <BreakDownHigh title={title} type={type} data={data} key={title} />
+          <BreakDownHigh title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
         );
       case "SprintBurndown":
         return (
-          <SprintBurndown title={title} type={type} data={data} key={title} />
+          <SprintBurndown title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
         );
       default:
         return "";
@@ -206,6 +208,10 @@ class Velocity extends Component {
   }
 
   componentDidMount() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
+    bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
     if (this.props.projId && this.props.sprintId) {
       this.setState({
         all_data: true
@@ -213,7 +219,8 @@ class Velocity extends Component {
     }
     let layout_instance = new Layout(5);
     this.setState({
-      layout: layout_instance.layout
+      layout: layout_instance.layout,
+      bgTheme: bgTheme
     });
   }
 
@@ -389,6 +396,7 @@ class Velocity extends Component {
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
     let velocityNav=<CardChartVelocity showChart="true" insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" />
     if (this.state.show) {
       return <Spinner show="true" />;
@@ -396,7 +404,7 @@ class Velocity extends Component {
       return (
         <React.Fragment>
           {this.props.velocityInsightDetails &&<SideNavbar card={velocityNav}/>}
-          <Row className="p-0 px-3 m-0 mt-4 mb-3 d-flex justify-content-start" style={{alignItems:'flex-end'}}>
+          <Row className={`px-3 py-4 d-flex justify-content-start`} style={{alignItems:'flex-end'}}>
               <span className="px-3">
                 {this.state.showbutton ? (
                   <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>{labels[0].mappings.overviewBtn}</Button>
@@ -416,16 +424,16 @@ class Velocity extends Component {
                 dropsLable={labels[0].mappings.repository}
                 onSelectDelegate={this.handleRepoChange}
               >
-                <Row className="h-100 bg-prodAgg-btn repo-height m-0 p-0 rounded">
-                  <Col
+                <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
+                   <Col
                     sm={10}
                     md={10}
                     lg={10}
                     xl={10}
                     className="d-flex align-item-center justify-content-center"
                   >
-                  <p className="font-aggegate-sub-text text-ellipsis font-weight-bold text-white m-auto text-left text-lg-left text-md-left text-sm-left text-xl-center">
-                      {this.state.selectedRepo
+                    <p className={`font-aggegate-sub-text text-ellipsis font-weight-bold m-auto text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
+                     {this.state.selectedRepo
                         ? <span className=' font-weight-bold'>{this.state.selectedRepo}</span>
                         : "Select Repository"}
                     </p>
@@ -435,7 +443,7 @@ class Velocity extends Component {
                     md={2}
                     g={2}
                     xl={2}
-                    className="font-aggegate-sub-text p-0 text-white d-flex align-items-center"
+                    className={`font-aggegate-sub-text p-0 d-flex align-items-center ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}
                   >
                     <FontAwesomeIcon icon={faChevronDown} />
                   </Col>
@@ -443,10 +451,10 @@ class Velocity extends Component {
               </Dropdown>
             </Col>
                ) : null}
-            <Col md={3} className="mt-auto"><p className="font-size-small m-0 text-white">You are viewing data at <b>{this.state.filterStatus}</b>  level</p></Col>
+            <Col md={3} className="mt-auto"><p className={`font-size-small m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>You are viewing data at <b>{this.state.filterStatus}</b>  level</p></Col>
             { this.state.showRemovedItemsList.length > 0 && this.state.componentType === "velocity" ? 
             <span className="text-white ml-auto w-20">
-            <p className="m-0 font-size-smaller">Add Widgets</p>
+            <p className={`m-0 font-size-smaller ${bgTheme ? '' : 'text-dark'}`}>Add Widgets</p>
             <select className="drop repo-height text-white rounded border border-light w-100" onChange={(event)=> this.addCharts(event)} >
             <option selected value=''>Select Widget</option>
               {
@@ -464,6 +472,7 @@ class Velocity extends Component {
               removeDelegate={this.removeChartComponent}
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
+              bgTheme={bgTheme}
             />
           ) : null}
           {this.state.componentType === "VelocityBuild"? (
