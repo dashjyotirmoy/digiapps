@@ -14,7 +14,11 @@ import LineHigh from "../../Charts/LineHigh/LineHigh";
 import AreaHigh from "../../Charts/AreaHigh/AreaHigh";
 import StackedBar from "../../Charts/StackedBar/StackedBar";
 import { repoDropValDispatch } from "../../../../store/actions/qualityData";
-
+import BugsSvg from '../../Charts/SecurityProject/Bugs';
+import CodeSmellsSvg from '../../Charts/SecurityProject/CodeSmells';
+import CoverageSvg from '../../Charts/SecurityProject/Coverage';
+import DuplicationsSvg from '../../Charts/SecurityProject/Duplications';
+import VulnarabilitiesSvg from '../../Charts/SecurityProject/Vulnarabilities';
 
 import CardChartQuality from "../../CardChart/CardChartQuality";
 import {
@@ -101,7 +105,8 @@ class Quality extends Component {
     filterStatus: 'Project',
     marginCard: '',
     showRemovedItemsList: [],
-    removed: []
+    removed: [],
+    bgTheme:'',
   };
   onDisplayMetricsClickHandler = (metricType) => {
     // eslint-disable-next-line default-case
@@ -461,6 +466,7 @@ class Quality extends Component {
             data={data}
             projID={this.props.projId}
             organization={this.props.organization}
+            bgTheme={this.state.bgTheme}
           />
         );
       }
@@ -513,6 +519,7 @@ class Quality extends Component {
     let layout_instance = new Layout(2);
     this.setState({
       layout: layout_instance.layout,
+      bgTheme: bgTheme
     });
   }
   branchOnSelectHandler= (branchId, evtKey) => {
@@ -1030,45 +1037,44 @@ class Quality extends Component {
           >
             {this.state.componentType === "quality" ? (
             <Container fluid className=" w-100 h-90 d-flex align-item-center">
-              <div className="h-100 w-100 d-flex overflow-auto">
-                {this.state.qualityMetrics.map((ele) => {
-                  return (
-                    <div
-                      key={ele.type}
-                      className="border-radius-10 border border-dark flex-grow-1 metric-card mx-3 mb-3 p-3"
-                    >
-                      <Row className={`h-15 m-0 d-flex justify-content-between ${bgTheme ? 'text-white' : 'text-dark'}`}>
-                        <span>{ele.type}</span>
-                        <span>
-                          {ele.position ? (
-                            <FontAwesomeIcon
-                              className={ele.position}
-                              icon={faSquare}
-                            />
-                          ) : (
-                            ""
-                          )}
-                        </span>
-                      </Row>
-                      <Row className={`align-items-center d-flex h-75 justify-content-center row metric-value ${bgTheme ? 'text-white' : 'text-dark'}`}>
-                        {ele.value}
-                      </Row>
-                      <Row className={`d-flex justify-content-end px-3 ${bgTheme ? 'text-white-50' : 'text-dark'}`}>
-                        {/* <TooltipHoc info=""> */}
-                        <FontAwesomeIcon
+            <div className="h-100 w-100 d-flex overflow-auto">
+              {this.state.qualityMetrics.map((ele) => {
+                return (
+                  <div
+                    key={ele.type}
+                    className={`border-radius-10 border ml-3 mb-3 w-50 ${bgTheme ? 'bg-dark-theme border-dark' : 'bg-white'}`}
+                  >
+                    <Row className={`m-0  d-flex justify-content-between  ${bgTheme ? 'bg-prodInfo-prod text-white p-2' : 'cardHeader text-dark'}`}>
+                      <span className="font-weight-bold">{ele.type}</span>
+                      <span>
+                        {ele.position ? (
+                          <FontAwesomeIcon
                           className="show-cursor"
                           onClick={() =>
                             this.onDisplayMetricsClickHandler(ele.type)
                           }
                           icon={faEllipsisV}
                         />
-                        {/* </TooltipHoc> */}
-                      </Row>
-                    </div>
-                  );
-                })}
-              </div>
-            </Container>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </Row>
+                    <Row className={`align-items-center d-flex px-3 py-2 justify-content-center no-gutters p-3 ${bgTheme ? 'text-white' : 'text-dark'}`}>
+                      <Col>{ele.type === "Bugs"? <BugsSvg />:ele.type === "Vulnerabilities"?<VulnarabilitiesSvg />:ele.type === "Code Smells"? <CodeSmellsSvg /> :ele.type ==="Coverage"?<CoverageSvg />: <DuplicationsSvg />}</Col>
+                      <Col className="text-center font-size-xxlarge font-weight-bold">{ele.value}</Col>
+                      <Col className="text-right">
+                        <FontAwesomeIcon
+                            className={ele.position}
+                            icon={faSquare}
+                          />
+                     </Col>
+                    </Row>
+                  </div>
+                );
+              })}
+            </div>
+          </Container>
             ) : null}
           </Row>
 

@@ -9,6 +9,7 @@ const ColumnHigh = React.forwardRef((props, ref) => {
   temp_options = new QualityGraph(props, props.type, props.data);
   options = temp_options.options;
   let containerHeight = props.containerHeight;
+  let bgTheme=props.bgTheme;
   return (
     <React.Fragment>
       <ChartHOC
@@ -16,6 +17,7 @@ const ColumnHigh = React.forwardRef((props, ref) => {
         options={options}
         type={"column"}
         height={containerHeight}
+        bgTheme={bgTheme}
       />
     </React.Fragment>
   );

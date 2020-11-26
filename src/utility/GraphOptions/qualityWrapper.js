@@ -2,7 +2,7 @@
 
 import Options from "./optionsModel";
 
-class QualityGraph {
+class QualityGraph { 
   constructor(props) {
     this.res = props;
     this.options = this.generateOption(props.type);
@@ -86,7 +86,7 @@ class QualityGraph {
       text: this.res.title,
       align: "left",
       style: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "normal"
       }
     };
@@ -97,13 +97,13 @@ class QualityGraph {
       },
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
       },
       lineWidth: 1,
       tickLength: 0,
       style: {
-        color: "#f5f5f5"
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
       }
     };
     options.yAxis = {
@@ -112,7 +112,7 @@ class QualityGraph {
       },
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
       },
       gridLineColor: ""
@@ -120,11 +120,11 @@ class QualityGraph {
     options.legend = {
       enabled: true,
       itemStyle: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#D3D3D3",
+        color: this.res.bgTheme ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
       align: "right",
@@ -210,7 +210,7 @@ class QualityGraph {
       type: "datetime",
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
       },
       dateTimeLabelFormats: {
@@ -219,7 +219,7 @@ class QualityGraph {
       lineWidth: 0,
       tickLength: 0,
       style: {
-        color: "#f5f5f5"
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
       }
     };
     options.yAxis = {
@@ -228,7 +228,7 @@ class QualityGraph {
         enabled: true,
         format: "{value}K",
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
       },
       title: {
@@ -240,7 +240,7 @@ class QualityGraph {
       text: this.res.title,
       align: "left",
       style: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "normal"
       }
     };
@@ -258,11 +258,11 @@ class QualityGraph {
     options.legend = {
       enabled: true,
       itemStyle: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#D3D3D3",
+        color: this.res.bgTheme ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
       align: "right",
@@ -319,7 +319,7 @@ class QualityGraph {
       text: this.res.title,
       align: "left",
       style: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "normal"
       }
     };
@@ -331,22 +331,22 @@ class QualityGraph {
       lineWidth: 0,
       tickLength: 0,
       style: {
-        color: "#f5f5f5"
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
       },
       labels: {
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
       }
     };
     options.legend = {
       enabled: true,
       itemStyle: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#D3D3D3",
+        color: this.res.bgTheme ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
       align: "right",
@@ -361,13 +361,13 @@ class QualityGraph {
       title: {
         text: "Days",
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":"#333333"
         }
       },
       labels: {
         format: "{value}",
         style: {
-          color: "#f5f5f5"
+          color: this.res.bgTheme ? "#f5f5f5":"#333333"
         }
       },
       lineColor: "blue",
@@ -431,7 +431,7 @@ class QualityGraph {
       text: 'Outstanding Defects',
       align: "left",
       style: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
       }
     };
     options.yAxis = {
@@ -460,11 +460,11 @@ class QualityGraph {
       x: -30,
       y: 48,
       itemStyle: {
-        color: "#f5f5f5",
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#d3d3d3"
+        color: this.res.bgTheme ? "#d3d3d3":"#333333",
       },
     };
 
@@ -512,7 +512,7 @@ class QualityGraph {
           style: {
             textOutline: false,
             fontWeight: 'normal',
-            color: '#ffffff',
+            color: this.res.bgTheme ? "#ffffff":"#333333",
             fontSize: '14px'
           }, 
         },
