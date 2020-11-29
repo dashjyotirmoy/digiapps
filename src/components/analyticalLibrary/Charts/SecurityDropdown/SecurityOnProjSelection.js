@@ -5,23 +5,29 @@ import HighchartsReact from "highcharts-react-official";
 import { Row, Col, Container, Card, Badge, ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../SecurityProject/Sec.css";
-import DocumentCancelSvg from '../SecurityDropdown/DocumentCancelSvg';
-import InsecureProtectionSvg from '../SecurityDropdown/InsecureProtectionSvg';
-import LibrarySvg from '../SecurityDropdown/LibrarySvg';
+import DocumentCancelSvg from './DocumentCancel';
+import InsecureProtectionSvg from './InsecureProtection';
+import LibrarySvg from './LibrarySvgS';
 import Alert from 'react-bootstrap/Alert';
 
 
 const SecurityOnProjectSelection = (props) => {
   const bgTheme = props.bgTheme;
-  props.cardsData[4].data[2].sort((a, b) => b.score.localeCompare(a.score));
-  props.cardsData[5].data[2].sort((a, b) => b.vulnerabilities.totalCount.localeCompare(a.vulnerabilities.totalCount));
-  var totalCount = props.cardsData[2].data[2].alertMetrics.totalCount;
-
+  if(props.cardsData[4].data[2]!=null){
+    props.cardsData[4].data[2].sort((a, b) => b.score.localeCompare(a.score));
+  }  
+  if(props.cardsData[5].data[2]!=null){
+    props.cardsData[5].data[2].sort((a, b) => b.vulnerabilities.totalCount.localeCompare(a.vulnerabilities.totalCount));
+  }  
+ 
+  var totalVulCount =props.cardsData[1].data[2]!=null? props.cardsData[1].data[2].alertMetrics.totalCount:'N/A';
+  var totalLib = props.cardsData[2].data[2]!=null? props.cardsData[2].data[2].alertMetrics.totalCount:'N/A';
+  var totalLibraryStas =props.cardsData[3].data[2]!=null? props.cardsData[3].data[2]:'N/A';
   let options = {
     chart: {
       type: 'pie',
       height: 60 + '%',
-      backgroundColor: '#232D3B'
+      backgroundColor: bgTheme ? '#232D3B':'#ffffff',
     },
     title: {
       text: 'Duplications'
@@ -34,7 +40,7 @@ const SecurityOnProjectSelection = (props) => {
       symbolRadius: 0,
       reversed: true,
       itemStyle: {
-        color: '#C8CED5',
+        color: bgTheme ?'#C8CED5':'#333333',
         fontWeight: 'normal'
       }
     },
@@ -43,8 +49,11 @@ const SecurityOnProjectSelection = (props) => {
       align: 'center',
       verticalAlign: "middle",
       y: 2,
-      text: `<span style='color: #798EA8; font-size: 14px'>Total</span><br><span style='color: #FFFFFF; font-size: 30px'>${props.cardsData[2].data[2].alertMetrics.totalCount}</span>`,
+      text: `<span style='color: #798EA8; font-size: 14px'>Total</span><br><span style='color: #FFFFFF; font-size: 30px'>${totalLib}</span>`,
       floating: true,
+      style: {
+        color: bgTheme ? '#ffffff':'#333333'
+      }
     },
     pie: {
       shadow: false
@@ -52,7 +61,7 @@ const SecurityOnProjectSelection = (props) => {
     tooltip: {
       shape: 'callout',
       formatter: function () {
-        return "<b>" + this.point.name + "</b>: " + this.y + "  (" + Math.round(this.point.y / totalCount * 100) + "% )";
+        return totalLib!=='N/A'? "<b>" + this.point.name + "</b>: " + this.y + "  (" + Math.round(this.point.y / totalLib * 100) + "% )":'';
       }
     },
     series: [
@@ -95,90 +104,55 @@ const SecurityOnProjectSelection = (props) => {
         <Row className={`${bgTheme ? '' : 'bg-light'}`}>
           <Col sm={9}>
             <Row>
-              <Col sm={4}>
-                <Card style={{ height: "180px" }}>
-                  <Card.Body className={`pt-2 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-                    <Row>
-                      <Col sm={8} className="mb-3">
-                        {" "}
-                        <h6>Policy Violations</h6>
-                      </Col>
-                      <Col sm={4} className="iconend">
-                        <DocumentCancelSvg />
-                      </Col>
-                    </Row>
-                    <Row className="justify-content-center mr-3 mb-3">
-                      <h3>{props.cardsData[0].data[2]}</h3>
-                    </Row>
-                    <Row className="text-center">
-                      <Col sm={11}>
+            <Col sm={4} className="pr-3">
+              <Card className={`${bgTheme ? 'border-dark':'border'}`}>
+                  <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme':'bg-white'}`}>
+                  <p className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Policy Violations</p>
+                    <Row className="no-gutters px-2 py-3 d-flex align-items-center">
                       <Col>
-                        <Badge style={{ color: '#222222', background: '#C981B2' }}>{props.cardsData[0].data[3]}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#42C9C2' }}>{props.cardsData[0].data[4]}</Badge>{' '}
+                        <DocumentCancelSvg />
+                        </Col>
+                      <Col>
+                      <h3 className='font-weight-bold'>{props.cardsData[0].data[2]!=null?props.cardsData[0].data[2]:'N/A'}</h3>
                       </Col>
-                      </Col>
-                      {/* <Col sm={1}>
-                        <FontAwesomeIcon
-                          icon={faEllipsisV}
-                          color={"#D8D8D8"}
-                        ></FontAwesomeIcon>
-                      </Col> */}
+                      <Col>
+                      <Badge style={{ color: '#ffffff', background: '#C981B2' }}>{props.cardsData[0].data[3]}</Badge>{' '}
+                        <Badge style={{ color: '#ffffff', background: '#42C9C2' }}>{props.cardsData[0].data[4]}</Badge>{' '}
+                        </Col>
                     </Row>
                   </Card.Body>
                 </Card>
               </Col>
-
-
-              <Col sm={4}>
-                <Card>
-                  <Card.Body className={`pt-2 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-                    <Row>
-                      <Col sm={8} className="mb-3">
-                        {" "}
-                        <h6>Unique Vulnerabilities</h6>
+              <Col sm={4}  className="pr-3">
+              <Card className={`${bgTheme ? 'border-dark':'border'}`}>
+                  <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme':'bg-white'}`}>
+                  <p className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Unique Vulnerabilities</p>
+                  <Row className="no-gutters px-2 py-3 d-flex align-items-center">
+                      <Col><InsecureProtectionSvg /></Col>
+                      <Col><h3 className='font-weight-bold'>{totalVulCount!=='N/A'?props.cardsData[1].data[2].alertMetrics.totalCount:'N/A'}</h3>
                       </Col>
-                      <Col sm={4} className="iconend"> <InsecureProtectionSvg /></Col>
-                    </Row>
-                    <Row className="justify-content-center mr-3 mb-3">
-                      <h3>{props.cardsData[1].data[2].alertMetrics.totalCount}</h3>
-                    </Row>
-                    <Row className="text-center">
-                      <Col sm={11}>
-                        <Badge style={{ color: '#222222', background: '#ec5050' }}>{props.cardsData[1].data[2].alertMetrics.high}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#ffc107' }}>{props.cardsData[1].data[2].alertMetrics.medium}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#20c997' }}>{props.cardsData[1].data[2].alertMetrics.low}</Badge>{' '}
+                      <Col>
+                        <Badge style={{ color: '#ffffff', background: '#FF4136' }}>{totalVulCount!=='N/A'?props.cardsData[1].data[2].alertMetrics.high:''}</Badge>{' '}
+                        <Badge style={{ color: '#ffffff', background: '#ffc107' }}>{totalVulCount!=='N/A'?props.cardsData[1].data[2].alertMetrics.medium:''}</Badge>{' '}
+                        <Badge style={{ color: '#ffffff', background: '#57E188' }}>{totalVulCount!=='N/A'?props.cardsData[1].data[2].alertMetrics.low:''}</Badge>{' '}
                       </Col>
-                    
-                    </Row>
+                      </Row>
                   </Card.Body>
                 </Card></Col>
-
-
-              <Col sm={4}>
-                <Card>
-                  <Card.Body className={`pt-2 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-                    <Row>
-                      <Col sm={8} className="mb-3">
-                        {" "}
-                        <h6>Actionable Libraries</h6>
+                <Col sm={4}>
+                <Card className={`${bgTheme ? 'border-dark':'border'}`}>
+                  <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme border-dark' : 'bg-white'}`}>
+                  <p className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Actionable Libraries</p>
+                  <Row className="no-gutters px-2 py-3 d-flex align-items-center">
+                      <Col sm={4}><LibrarySvg /></Col>
+                      <Col>
+                      <h3 className='font-weight-bold'>{totalLib}</h3>
                       </Col>
-                      <Col sm={4} className="iconend"><LibrarySvg /></Col>
-                    </Row>
-                    <Row className="justify-content-center mr-3 mb-3">
-                      <h3>{props.cardsData[2].data[2].alertMetrics.totalCount}</h3>
-                    </Row>
-                    <Row className="text-center">
-                      <Col sm={11}>
-                        <Badge style={{ color: '#222222', background: '#ec5050' }}>{props.cardsData[2].data[2].alertMetrics.high}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#ffc107' }}>{props.cardsData[2].data[2].alertMetrics.medium}</Badge>{' '}
-                        <Badge style={{ color: '#222222', background: '#20c997' }}>{props.cardsData[2].data[2].alertMetrics.low}</Badge>{' '}
+                      <Col>
+                        <Badge style={{ color: '#ffffff', background: '#FF4136' }}>{totalLib!=='N/A'?props.cardsData[2].data[2].alertMetrics.high:''}</Badge>{' '}
+                        <Badge style={{ color: '#ffffff', background: '#ffc107' }}>{totalLib!=='N/A'?props.cardsData[2].data[2].alertMetrics.medium:''}</Badge>{' '}
+                        <Badge style={{ color: '#ffffff', background: '#57E188' }}>{totalLib!=='N/A'?props.cardsData[2].data[2].alertMetrics.low:''}</Badge>{' '}
                       </Col>
-                      {/* <Col sm={1}>
-                        <FontAwesomeIcon
-                          icon={faEllipsisV}
-                          color={"#D8D8D8"}
-                        ></FontAwesomeIcon>
-                      </Col> */}
                     </Row>
                   </Card.Body>
                 </Card></Col>
@@ -189,10 +163,10 @@ const SecurityOnProjectSelection = (props) => {
               <Col sm={6}>
                 <Row>
                   <Col>
-                    <Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-                      <h6 className="mb-3">Vulnerabilities</h6>
+                    <Card.Body className={`border p-0 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
+                    <h6 className={`font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Vulnerabilities</h6>
 
-                      <Card.Body className="pb-0 border">
+                      <Card.Body className="pb-0">
                         <div className="wrap border">
                           <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                             <thead className={`${bgTheme ? 'tabhead' : 'cardHeader'}`}>
@@ -211,7 +185,7 @@ const SecurityOnProjectSelection = (props) => {
                                   {    
                                   props.cardsData[4].data[2].map((item, index) => {
                                     return (
-                                      <tr className="tabrow f-12" key={index}>
+                                      <tr className={`f-12 ${bgTheme ? 'tabrow' : 'text-dark'}`} key={index}>
                                         <td><p>{item.name}</p></td>
                                         <td> <p>{item.type} </p></td>
                                         <td><p>{item.severity}</p></td>
@@ -235,10 +209,10 @@ const SecurityOnProjectSelection = (props) => {
               <Col sm={6}>
                 <Row>
                   <Col>
-                    <Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-                      <h6 className="mb-3">Libraries</h6>
+                    <Card.Body className={`border p-0 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
+                    <h6 className={`font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Libraries</h6>
 
-                      <Card.Body className="pb-0 border">
+                      <Card.Body className="pb-0">
                         <div className="wrap border">
                           <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                             <thead className={`${bgTheme ? 'tabhead' : 'cardHeader'}`}>
@@ -297,7 +271,7 @@ const SecurityOnProjectSelection = (props) => {
           <Col sm={3}>
             <Row>
               <Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-                <h6>Vulnerability Analysis</h6>
+                <h6 className={`font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Vulnerability Analysis</h6>
                 <HighchartsReact highcharts={Highcharts} options={options} />
                 <Col
                   className="p-4"
@@ -305,8 +279,7 @@ const SecurityOnProjectSelection = (props) => {
                 </Col>
                 <Col>
                   <Alert
-                    className="pl-4"
-                    style={{ borderRadius: '40px', backgroundColor: '#334154' }}
+                    className={`pl-4  ${bgTheme ? 'label-bg-dark' : 'label-bg-light'}`}
                   >
                     <span
                       className="pl-3"
@@ -320,8 +293,7 @@ const SecurityOnProjectSelection = (props) => {
                 </Col>
                 <Col>
                   <Alert
-                    className="pl-4"
-                    style={{ borderRadius: '40px', backgroundColor: '#334154' }}
+                    className={`pl-4  ${bgTheme ? 'label-bg-dark' : 'label-bg-light'}`}
                   >
                     <span
                       className="pl-3"
@@ -335,8 +307,7 @@ const SecurityOnProjectSelection = (props) => {
                 </Col>
                 <Col>
                   <Alert
-                    className="pl-4"
-                    style={{ borderRadius: '40px', backgroundColor: '#334154' }}
+                    className={`pl-4  ${bgTheme ? 'label-bg-dark' : 'label-bg-light'}`}
                   >
                     <span
                       className="pl-3"

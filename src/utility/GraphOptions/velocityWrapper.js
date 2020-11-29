@@ -281,28 +281,23 @@ class VelocityGraph {
 
     options.chart = {
       height: 0,
-      backgroundColor: ""
     };
     options.title = {
       useHTML: true,
-      text: this.res.title,
+      text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6><span style=";font-weight:normal;font-size:10px">${average || 0} Days on average</span>`,
       align: "left",
+      x:-8,
+      y:5,
+      width: this.res.containerWidth+4,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
-        fontWeight: "normal"
-      }
-    };
-    options.subtitle = {
-      useHTML: true,
-      text: `<p class='m-0 d-inline'><h3 class='m-0' style='color: #50E3C2'>${average || 0}</h3> Days on average</p>`,
-      align: "left",
-      floating: true,
-      x: 70,
-      y: 50,
-      style: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
-        fontWeight: "",
-        fontSize: "18px"
+        width:'100%',
+        padding: '9px',
+        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
+        color: this.res.bgTheme ? '#ffffff':"#2E2E38",
+        fontSize: '14px',
+        fontWeight:'bold',
+        'border-radius': '10px 10px 0 0',
+        fontFamily: 'Arial'
       }
     };
     options.xAxis = {
@@ -575,14 +570,25 @@ class VelocityGraph {
     };
 
     options.title = {
-      text: "Velocity Trend",
+      useHTML: true,
+      text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6>`,
       align: "left",
+      x:-8,
+      y:5,
+      width: this.res.containerWidth+4,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
-        fontWeight: "normal"
+        width:'100%',
+        padding: '17px 9px',
+        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
+        color: this.res.bgTheme ? '#ffffff':"#2E2E38",
+        fontSize: '14px',
+        fontWeight:'bold',
+        'border-radius': '10px 10px 0 0',
+        borderWidth:'2px',
+        fontFamily: 'Arial'
       }
     };
-
+    
     options.xAxis = {
       lineWidth: 0,
       tickLength: 0,
@@ -598,6 +604,7 @@ class VelocityGraph {
     options.yAxis = {
       min: 0,
       // max: 160,
+      maxPadding: 0.4,
       gridLineColor: "transparent",
       tickInterval: 20,
       title: {
@@ -622,13 +629,29 @@ class VelocityGraph {
           value: upper_Limit,
           color: "#9EF988",
           dashStyle: "shortdash",
-          width: 2
+          width: 2,
+          label: {
+            text: '+10%',
+            align: 'right',
+            style: {
+              color: '#333333',
+              fontSize:'10px'
+          }
+        }
         },
         {
           value: lower_limit,
           color: "#DAC131",
           dashStyle: "shortdash",
-          width: 2
+          width: 2,
+          label: {
+            text: '-10%',
+            align: 'right',
+            style: {
+              color: '#333333',
+              fontSize:'10px'
+          }
+        }
         }
       ]
     };
@@ -636,6 +659,11 @@ class VelocityGraph {
     options.legend = {
       enabled: true,
       backgroundColor: "transparent",
+      floating: true,
+      verticalAlign: 'top',
+      align: 'right',
+      x: 0,
+      y: 40,
       itemStyle: {
         color: this.res.bgTheme ? "#ffffff":'#333333',
         fontWeight: "normal"
@@ -643,9 +671,7 @@ class VelocityGraph {
       itemHoverStyle: {
         color: this.res.bgTheme ? "#d3d3d3":'#333333',
       },
-      align: "right",
-      verticalAlign: "top",
-      y: -30
+      
     };
 
     options.tooltip = {
@@ -785,9 +811,19 @@ class VelocityGraph {
       useHTML: true,      
       text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6><span style=";font-weight:normal;font-size:10px">${this.formatDate(sprintStartDate[0])} - ${this.formatDate(sprintEndDate[0])}</span>`,
       align: "left",
-      align: "left",
+      x:-8,
+      y:5,
+      width: this.res.containerWidth+4,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        width:'100%',
+        padding: '9px',
+        backgroundColor: this.res.bgTheme ?'#334154c7':'#E1E7F0',
+        color: this.res.bgTheme ? "#f5f5f5":'#2E2E38',
+        fontSize: '14px',
+        fontWeight:'bold',
+        'border-radius': '10px 10px 0 0',
+        borderWidth:'2px',
+        fontFamily: 'Arial'
       }
     };
 
@@ -796,7 +832,7 @@ class VelocityGraph {
       align: 'left',
       x:-8,
       y:26,
-      width: this.res.containerWidth-4,
+      width: this.res.containerWidth,
       useHTML: true,
       text: `
       <div>
@@ -826,6 +862,7 @@ class VelocityGraph {
     options.yAxis = {
       min: 0,
       // tickInterval: 100,
+      maxPadding: 0.4,
       lineColor: "transparent",
       gridLineWidth: 0,
       labels: {
@@ -942,8 +979,19 @@ class VelocityGraph {
       useHTML:true,
       align: "left",
       text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6><span style="font-size:10px;font-weight:normal">${this.formatDate(startDate)} - ${this.formatDate(endDate)}</span>`,
+      x:-9,
+      y:5,
+      width: this.res.containerWidth+4,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        width:'100%',
+        padding: '9px',
+        backgroundColor: this.res.bgTheme ?'#334154c7':'#E1E7F0',
+        color: this.res.bgTheme ? "#f5f5f5":'#2E2E38',
+        fontSize: '14px',
+        fontWeight:'bold',
+        'border-radius': '10px 10px 0 0',
+        borderWidth:'2px',
+        fontFamily: 'Arial'
       }
     };
     options.subtitle = {
@@ -1018,7 +1066,16 @@ class VelocityGraph {
       }
     };
     options.tooltip = {
-      shared: true
+      shared: true,
+      useHTML: true,
+      positioner: function (labelWidth, labelHeight, point) {
+        var chart = this.chart,
+                posX = (chart.plotLeft + point.plotX - (labelWidth / 2)),
+                posY = chart.plotHeight;
+  
+        return { x: posX , y: posY };
+              
+          }
     };
     options.series = [
       {

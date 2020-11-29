@@ -67,9 +67,9 @@ const Policy = (props) => {
 			 <Container fluid>
 			 <Row className={`${bgTheme ? '' : 'bg-light'}`}>
 			<Col>
-			<Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white border'}`}>
-                  <h6 className="cardHeader m-0 font-weight-bold">Policy Violations</h6>
-				  <Card.Body className="border">
+			<Card.Body className={`border p-0 rounded ${bgTheme ? 'bg' : 'text-dark bg-white border'}`}>
+                  <h6 className={`${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Policy Violations</h6>
+				  <Card.Body>
 				  <div className="wrap border">
                   <table className={`table table-hover ${bgTheme ? 'table-dark' : 'text-light'}`}>
                     <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
@@ -117,9 +117,9 @@ const Policy = (props) => {
 			</Col></Row>
         <Row className={`py-3 ${bgTheme ? '' : 'bg-light'}`}>
 			<Col>
-			<Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-                  <h6 className="cardHeader m-0 font-weight-bold">Policies</h6>
-				  <Card.Body className="border">
+			<Card.Body className={`border rounded p-0 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
+                  <h6 className={`${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Policies</h6>
+				  <Card.Body>
 				  <div className="wrap border">
                   <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                     <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
