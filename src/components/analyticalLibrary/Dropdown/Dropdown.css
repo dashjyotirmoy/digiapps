@@ -17,3 +17,22 @@
   background-color: #334154!important;
   box-shadow: 6px 5px 5px 0px #212529;
 }
+.bg-secondary-light {
+  color: #333333;
+  background-color: #fff!important;
+  box-shadow: 6px 5px 5px 0 #cbccce;
+}
+.dropdown-h100-scroll-light{
+  max-height: 190px;
+  overflow: auto;
+}
+
+.dropdown-h100-scroll-light::-webkit-scrollbar {
+  width: 9px;
+  display: block;
+}
+.dropdown-h100-scroll-light::-webkit-scrollbar-thumb {
+  background-color: #E1E7F0;
+  border-radius: 25px;
+  height: 35%;
+}

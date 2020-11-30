@@ -15,7 +15,7 @@ class CustDropdown extends Component {
     const arr = this.props.listData;
     const dropdownItems = arr.map((ele, index) => {
       return (
-        <Dropdown.Item key={index} eventKey={ele.id} className="text-white">
+        <Dropdown.Item key={index} eventKey={ele.id} className={`${bgTheme ? 'text-white': 'text-dark dropdown-light'}`}>
           {ele.projectName}
         </Dropdown.Item>
       );
@@ -25,7 +25,7 @@ class CustDropdown extends Component {
       <div className={`font-size-small w-100 m-0 ${bgTheme ? 'text-white': 'text-dark'}`}>{this.props.dropsLable}</div>
       <Dropdown
         onSelect={(evt, evtKey) => this.props.onSelectDelegate(evt, evtKey)}
-        className={`w-100 ${bgTheme ? 'text-white': 'rounded border border-primary'}`}
+        className={`w-100 ${bgTheme ? 'text-white': 'rounded border border-primary bg-white'}`}
       >
         <Dropdown.Toggle
           as={DropdownToggle}
@@ -37,7 +37,7 @@ class CustDropdown extends Component {
 
         <Dropdown.Menu
           as={DropdownMenu}
-          className="w-inherit width-fit-content dropdown-menu-right font-aggegate-sub-text mr-0 bg-secondary1 dropdown-h100-scroll"
+          className={`w-inherit width-fit-content dropdown-menu-right font-aggegate-sub-text mr-0 ${bgTheme ? 'bg-secondary1 dropdown-h100-scroll': 'bg-secondary-light dropdown-h100-scroll-light'}`}
         >
           {dropdownItems}
         </Dropdown.Menu>

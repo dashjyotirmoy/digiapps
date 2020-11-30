@@ -55,8 +55,8 @@ const App = props => {
       <Container fluid>
         <Row className={`${bgTheme ? '' : 'bg-light'}`}>
           <Col>
-            <Card.Body className={`border  ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-              <h5 className="mb-3">Unique Vulnerabilities</h5>
+            <Card.Body className={`border rounded p-0 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
+              <h5 className={`mb-3 ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Unique Vulnerabilities</h5>
               <Row className="pl-2">
                 <Col sm={1} className="pr-0">
                   <p>Vulnerabilities</p>
@@ -73,7 +73,7 @@ const App = props => {
                   </Badge>{" "}
                 </Col>
               </Row>
-              <Card.Body className="border">
+              <Card.Body>
 
                 <div className="wrap border">
                   <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
@@ -157,8 +157,8 @@ const App = props => {
       <Container fluid>
         <Row className={`py-3 ${bgTheme ? '' : 'bg-light'}`}>
           <Col>
-            <Card.Body className={`border ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-              <h5 className="mb-3">Actionable Libraries</h5>
+            <Card.Body className={`border rounded p-0 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
+              <h5 className={`mb-3 ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Actionable Libraries</h5>
               <Row className="basealign">
                 <p>Alerts</p>
                 <Col sm={2}>
@@ -185,7 +185,7 @@ const App = props => {
 
 
               </Row>
-              <Card.Body className={`pt-2 border  ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
+              <Card.Body className={`p-3  ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
                 <div className="wrap border">
                   <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                     <thead className={`${bgTheme ? 'tabhead' : 'cardHeader'}`}>

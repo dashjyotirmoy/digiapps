@@ -77,7 +77,14 @@ font-family: Helvetica;
   color: #fff!important;
   padding: .5rem 3rem;
  }
-
+ .label-bg-light{
+  border-radius: 10px;
+  background-color: rgb(234, 236, 239);
+ }
+ .label-bg-dark{
+  border-radius: 10px;
+  background-color: #334154;
+ }
 .Alertbg:focus{
  box-shadow: none;
 }

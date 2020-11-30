@@ -19,10 +19,10 @@ const Grid = props => {
   const bgTheme = props.bgTheme;
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
-      <div className={`border border-dark ${bgTheme ? 'grid-graph-comp' : 'bg-light'}`} key={ele.i}>
+      <div key={ele.i} className={`${bgTheme ? 'card-border-dark' : 'card-border-light'}`}>
         <div
-          className={`position-absolute px-2 text-right  w-100 ${bgTheme ? 'text-white' : 'text-muted'}`}
-          style={{ zIndex: "100" }}
+          className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
+          style={{ zIndex: "100",right:'11px',top:'15px'}}
         >
           <p
             className="d-inline px-1"
@@ -53,14 +53,14 @@ const Grid = props => {
             />
           </p> */}
 
-          <p
+          <span
             className="show-cursor d-inline"
             onClick={() => props.removeDelegate(index)}
           >
             <span className="d-inline-block">
               <FontAwesomeIcon icon={faTimes} />
             </span>
-          </p>
+          </span>
         </div>
         {props.chartData[ele.i].component}
       </div>

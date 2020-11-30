@@ -83,11 +83,22 @@ class QualityGraph {
       backgroundColor: ""
     };
     options.title = {
-      text: this.res.title,
+      useHTML: true,
+      text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6>`,
       align: "left",
+      x:-8,
+      y:5,
+      width: this.res.containerWidth-4,
       style: {
+        width:'100%',
+        padding: '17px 9px',
+        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
-        fontWeight: "normal"
+        fontSize: '14px',
+        fontWeight:'bold',
+        'border-radius': '10px 10px 0 0',
+        borderWidth:'2px',
+        fontFamily: 'Arial'
       }
     };
     options.xAxis = {
@@ -121,15 +132,18 @@ class QualityGraph {
       enabled: true,
       itemStyle: {
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
-        fontWeight: "normal"
+        fontWeight: "bold"
       },
       itemHoverStyle: {
         color: this.res.bgTheme ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
-      align: "right",
-      verticalAlign: "top",
-      y: -30
+      backgroundColor: "transparent",
+      floating: true,
+      verticalAlign: 'top',
+      align: 'right',
+      x: -30,
+      y: 48,
     };
     options.series = [
       {
@@ -237,11 +251,18 @@ class QualityGraph {
       }
     };
     options.title = {
-      text: this.res.title,
+      useHTML: true,
+      text: `<div style="width: ${this.res.containerWidth-4}px;border-radius: 50px 20px;padding: 17px 9px"><h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6></div>`,
       align: "left",
+      x:-8,
+      y:5,
       style: {
+        width:'100%',
+        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
-        fontWeight: "normal"
+        fontSize: '14px',
+        fontWeight:'bold',
+        fontFamily: 'Arial'
       }
     };
     options.plotOpions = {
@@ -259,15 +280,18 @@ class QualityGraph {
       enabled: true,
       itemStyle: {
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
-        fontWeight: "normal"
+        fontWeight: "bold"
       },
       itemHoverStyle: {
         color: this.res.bgTheme ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
-      align: "right",
-      verticalAlign: "top",
-      y: -30
+      backgroundColor: "transparent",
+      floating: true,
+      verticalAlign: 'top',
+      align: 'right',
+      x: -30,
+      y: 48,
     };
 
     options.series = [
@@ -316,12 +340,23 @@ class QualityGraph {
       backgroundColor: ""
     };
     options.title = {
-      text: this.res.title,
+      useHTML: true,
+      text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6>`,
       align: "left",
+      x:-8,
+      y:5,
+      width: this.res.containerWidth-4,
       style: {
+        width:'100%',
+        padding: '17px 9px',
+        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
-        fontWeight: "normal"
-      }
+        fontSize: '14px',
+        fontWeight:'bold',
+        'border-radius': '10px 10px 0 0',
+        borderWidth:'2px',
+        fontFamily: 'Arial'
+      }    
     };
     options.xAxis = {
       type: "datetime",
@@ -340,18 +375,20 @@ class QualityGraph {
       }
     };
     options.legend = {
-      enabled: true,
+      enabled: true,      
+      backgroundColor: "transparent",
+      floating: true,
+      verticalAlign: 'top',
+      align: 'right',
+      x: -30,
+      y: 48,
       itemStyle: {
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
-        fontWeight: "normal"
+        fontWeight: "bold"
       },
       itemHoverStyle: {
         color: this.res.bgTheme ? "#D3D3D3":"#333333",
-        fontWeight: ""
       },
-      align: "right",
-      verticalAlign: "top",
-      y: -30
     };
     options.yAxis = {
       min: 0,
@@ -428,10 +465,22 @@ class QualityGraph {
       backgroundColor: ""
     };
     options.title = {
-      text: 'Outstanding Defects',
+      useHTML: true,
+      text: '<h6 style="display:block;font-weight:bold;margin-bottom:0px">Outstanding Defects</h6>',
       align: "left",
+      x:-8,
+      y:5,
+      width: this.res.containerWidth-4,
       style: {
+        width:'100%',
+        padding: '17px 9px',
+        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        fontSize: '14px',
+        fontWeight:'bold',
+        'border-radius': '10px 10px 0 0',
+        borderWidth:'2px',
+        fontFamily: 'Arial'
       }
     };
     options.yAxis = {
@@ -461,7 +510,7 @@ class QualityGraph {
       y: 48,
       itemStyle: {
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
-        fontWeight: "normal"
+        fontWeight: "bold"
       },
       itemHoverStyle: {
         color: this.res.bgTheme ? "#d3d3d3":"#333333",
