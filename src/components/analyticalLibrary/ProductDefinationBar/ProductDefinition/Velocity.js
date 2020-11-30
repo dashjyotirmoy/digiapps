@@ -476,7 +476,7 @@ class Velocity extends Component {
             />
           ) : null}
           {this.state.componentType === "VelocityBuild"? (
-            <VelocityBuild cardsData={this.state.velocityBuildData}/>
+            <VelocityBuild cardsData={this.state.velocityBuildData} bgTheme={bgTheme}/>
             ) : null}
         </React.Fragment>
       );

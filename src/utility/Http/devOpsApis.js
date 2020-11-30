@@ -13,7 +13,6 @@ const getAllClientList = () => {
 const getAllExecutives = () => {
   return devovOpsApi.get(`/executive/all`);
 };
-
 const getExecInsightsData = execId => {
   return devovOpsApi.get(`/executive/${execId}/executive-insights`);
 };
@@ -23,7 +22,11 @@ const getVelocityData = (execId, projectId, sprintId, teamID) => {
     `/widget/velocity-efficiency-insights?executiveId=${execId}&projectId=${projectId}&sprintId=${sprintId}&teamId=${teamID}`
   );
 };
-
+const getSummaryData = (execId) => {
+  return devovOpsApi.get(
+    `/summary/velocity?executiveId=${execId}`
+  );
+};
 const getProjectInsightsData = (projectId, execId) => {
   return devovOpsApi.get(
     `/project/${projectId}/project-insights?executiveId=${execId}`
@@ -56,7 +59,6 @@ const getQualityMetricsDrilledFilterDownData = (branchName,execId,metricsType,pr
     `/widget/quality-insights/charts?branchName=${branchName}&executiveId=${execId}&metric=${metricsType}&projectId=${projectId}&releaseNumber=${releaseName}&repoId=${repoId}&repositoryName=${repoName}`
   );
 };
-
 // widget/quality-insights/charts?executiveId={} &projectId={}&repoId={}&metric={}
 
 const getSecurityProjectData = (projectId) => {
@@ -81,6 +83,7 @@ const getSecurityReleaseData = (branchName,projectId, repoId, releaseName, repoN
     `/widget/security-insights/repos?branchName=${branchName}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
   );
 };
+
 const getSecurityPolicyData = (projectId, repoId) => {
   return devovOpsApi.get(
     `/widget/security-insights/policies?productId=${projectId}&projectId=${repoId}`
@@ -97,6 +100,7 @@ const getSecurityAlertData = (projectId, repoId) => {
     `/widget/security-insights/alerts?productId=${projectId}&projectId=${repoId}`
   );
 }
+
 const getSecurityReleaseAlertData = (branchName,filterID,projectId,repoId,releaseName,repoName) => {
   return devovOpsApi.get(
     `/widget/security-insights/alerts?branchName=${branchName}&filter=${filterID}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
@@ -116,33 +120,32 @@ const getQualityBuildData = (projectId, repoId) => {
 
 const getSecurityMonthAlertData = (projectId, repoId, filtertype) => {
   return devovOpsApi.get(
-    `/widget/security-insights/alerts?productId=${projectId}&projectId=${repoId}&filter=${filtertype}`
+    `/widget/security-insights/alerts?filter=${filtertype}&productId=${projectId}&projectId=${repoId}`
   );
 }
 const getSecurityInsightsData = (branchName,projectId,repoName) => {
   return devovOpsApi.get(`/insights/security?branchName=${branchName}&productId=${projectId}&repositoryName=${repoName}`);
-}
+};
 const getVelocityInsightsData = (execId,projectId,teamID) => {
   return devovOpsApi.get(`/insights/velocity?executiveId=${execId}&productId=${projectId}&teamId=${teamID}`);
-}
+};
 const getQualityInsightsData = (branchName,execId,projectId,repoName) => {
   return devovOpsApi.get(`/insights/quality?branchName=${branchName}&executiveId=${execId}&productId=${projectId}&repositoryName=${repoName}`);
-}
+};
 const getProjectDropdownInsight = (projectId) => {
   return devovOpsApi.get(`/common/dropdown/repository?productId=${projectId}`);
-}
+};
 const getBranchDropdownInsight = (projectId,repoName) => {
   return devovOpsApi.get(`/common/dropdown/branch?productId=${projectId}&repositoryName=${repoName}`);
-}
+};
 const getReleaseDropdownInsight = (branchName,projectId,repoName) => {
   return devovOpsApi.get(`/common/dropdown/release?branchName=${branchName}&productId=${projectId}&repositoryName=${repoName}`);
 };
-const getSummaryData = (execId) => {
+const getVulnerabilityData = (projectId) => {
   return devovOpsApi.get(
-    `/summary/velocity?executiveId=${execId}`
+    `/widget/security-insights/vulnerability-detail?productId=${projectId}`
   );
-}
-
+};
 export default {
   getAllClientList,
   getVelocityData,
@@ -154,22 +157,23 @@ export default {
   getSprintInsightsData,
   getQualityMetricsData,
   getQualityMetricsDrilledDownData,
+  getQualityMetricsDrilledFilterDownData,
   getAllExecutives,
   getSecurityProjectData,
   getSecurityMonthAlertData,
   getSecurityRepoData,
+  getSecurityReleaseData,
   getSecurityPolicyData,
+  getSecurityReleasePolicyData,
   getSecurityAlertData,
+  getSecurityReleaseAlertData,
   getSecurityInsightsData,
   getVelocityInsightsData,
   getQualityInsightsData,
   getProjectDropdownInsight,
   getBranchDropdownInsight,
   getReleaseDropdownInsight,
+  getQualityReleaseMetricsData,
   getSummaryData,
-  getSecurityReleaseData,
-  getSecurityReleaseAlertData,
-  getSecurityReleasePolicyData,
-  getQualityMetricsDrilledFilterDownData,
-  getQualityReleaseMetricsData
+  getVulnerabilityData
 };

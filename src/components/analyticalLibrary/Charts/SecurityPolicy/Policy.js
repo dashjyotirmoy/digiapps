@@ -67,10 +67,10 @@ const Policy = (props) => {
 			 <Container fluid>
 			 <Row className={`${bgTheme ? '' : 'bg-light'}`}>
 			<Col>
-			<Card.Body className={`border p-0 rounded ${bgTheme ? 'bg' : 'text-dark bg-white border'}`}>
-                  <h6 className={`${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Policy Violations</h6>
+			<Card.Body className={`p-0 rounded ${bgTheme ? 'bg-dark-theme card-border-dark' : 'card-border-light bg-white'}`}>
+                  <h6 className={`font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Policy Violations</h6>
 				  <Card.Body>
-				  <div className="wrap border">
+				  <div className="wrap">
                   <table className={`table table-hover ${bgTheme ? 'table-dark' : 'text-light'}`}>
                     <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
 								<tr >
@@ -83,7 +83,7 @@ const Policy = (props) => {
 								</thead>
                   </table>
 
-                  <div className="inner_table">
+                  <div className={`${bgTheme ? 'inner_table' : 'inner_table_light'}`}>
                     <table className={`table table-hover ${bgTheme ? 'table-dark' : 'text-light'}`}>
                       <tbody >
 											{(showPolicyData && showPolicyData.policyViolations.length > 0) ?
@@ -117,10 +117,10 @@ const Policy = (props) => {
 			</Col></Row>
         <Row className={`py-3 ${bgTheme ? '' : 'bg-light'}`}>
 			<Col>
-			<Card.Body className={`border rounded p-0 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-                  <h6 className={`${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Policies</h6>
+			<Card.Body className={`rounded p-0 ${bgTheme ? 'bg-dark-theme card-border-dark' : 'card-border-light bg-white'}`}>
+                  <h6 className={`font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Policies</h6>
 				  <Card.Body>
-				  <div className="wrap border">
+				  <div className="wrap">
                   <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                     <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
 								<tr >
@@ -165,7 +165,7 @@ const Policy = (props) => {
 								</thead>
                   </table>
 
-                  <div className="inner_table">
+                  <div className={`${bgTheme ? 'inner_table' : 'inner_table_light'}`}>
                     <table className={`table table-hover ${bgTheme ? 'table-dark' : 'text-light'}`} >
                       <tbody >
 											{(showPolicyData && showPolicyData.policyAlerts.length > 0) ?

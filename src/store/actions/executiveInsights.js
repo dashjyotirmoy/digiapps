@@ -15,9 +15,9 @@ export const clientListDispatch = () => async dispatch => {
     console.error(error);
   }
 };
-export const execAllDispatch = () => async dispatch => {
+export const execAllDispatch = (clientId) => async dispatch => {
   try {
-    const response = await api.getAllExecutives();
+    const response = await api.getAllExecutives(clientId);
     let data = response.data;
     dispatch({
       type: actionTypes.GET_EXEC_DATA,

@@ -21,6 +21,9 @@ import SideNavbar from "../../SideNavBar/SideNavbar";
 import {insightsSecurity} from "../../../../store/actions/securityData";
 import CardChartSecurity from "../../CardChart/CardChartSecurity";
 import { labelConst } from "../../../../utility/constants/labelsConstants";
+import BuildColumnSummaryTrend from "../../OverView/BuildColumnSummaryTrend";
+import SecSastDast from '../../Charts/SecurityProject/SecSastDast';
+import BuildPieKpi from "../../OverView/BuildPieKpi";
 
 class Security extends Component {
 
@@ -513,6 +516,8 @@ class Security extends Component {
  
   componentDidUpdate() {
     if (this.state.all_data) {
+      const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+      const labels = labelConst.filter((item)=> item.clientName === clientName );
       this.fetchSecurityData();
     }
 
@@ -551,8 +556,80 @@ class Security extends Component {
         <React.Fragment>
          {this.props.securityDetails &&  this.state.showInsights?<SideNavbar  card={securityNav}/>:''}
           <Row className={`px-3 py-4 d-flex justify-content-start ${bgTheme ? '' : 'bg-light'}`}>
-     
-            <Col md={2}>
+          <Col sm={12} className="mb-3">
+            <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark' : 'card-border-light'}`}>
+                <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod text-light' : 'cardHeader text-dark'}`}>
+                  <h6 className="font-weight-bold mb-1 p-0">Vulnerabilities</h6>
+                  { !this.state.policyActive?(
+                      <div className="text-right">               
+                        <span className="font-size-small">
+                            <FontAwesomeIcon  className="highbg ml-3" icon={faSquare} />{" "}
+                            {labels[0].mappings.high}
+                            </span>
+                            <span className="font-size-small">
+                            <FontAwesomeIcon  className="mediumbg ml-3" icon={faSquare} />{" "}
+                            {labels[0].mappings.medium}
+                            </span>
+                            <span className="font-size-small">
+                            <FontAwesomeIcon  className="lowbg ml-3" icon={faSquare} />{" "}
+                            {labels[0].mappings.low}
+                            </span>                                   
+                        </div>
+                        
+                    ):<div></div>
+                  }</div>
+                <Card.Body className="p-0">
+                  <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
+                  <Col sm={5} className="rounded" style={{border:'1px solid #999a9c'}}>
+                  <h6 className="font-size-small font-weight-bold px-3 py-2">Vulnerabilities by SCA,SAST & DAST</h6>
+                    <Row className="no-gutters px-3 ">                
+                      <Col><BuildColumnSummaryTrend summaryTrend={this.props.securityProjectData.vulnerabilityAlerts} type="securityTabSCA" bgTheme={bgTheme}/></Col>
+                      <Col className="px-2"><BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.totalVulnerability.toolVulnerabilityList[0]} type="securityTabSAST" bgTheme={bgTheme}/></Col>
+                      <Col><BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.totalVulnerability.toolVulnerabilityList[1]} type="securityTabDAST" bgTheme={bgTheme}/></Col>
+                    </Row>
+                  </Col>
+                  <Col sm={3} className="px-3">
+                  <BuildPieKpi openVulnerability={this.props.vulnerabilitytDetails.openVulnerabilityInProduction.toolVulnerabilityList}  type="securityTabPie" bgTheme={bgTheme}/>
+                  </Col>
+                  <Col sm={4}>
+                  <BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.newVulnerability} type="securityTabReverse" bgTheme={bgTheme}/>
+                  </Col>
+                  </Row>
+              </Card.Body>
+            </Card.Body> 
+          </Col>
+          <Col sm={6}>
+          <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark' : 'bg-white card-border-light'}`}>
+            <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod' :'cardHeader'}`}>
+              <h6 className="font-weight-bold mb-1">Open Source Vulnerabilities</h6>
+              { !this.state.policyActive?(
+              <div className={`text-right ${bgTheme ? 'text-white' : 'text-dark'}`}>               
+              <span className="font-size-small">
+                <FontAwesomeIcon  className="major ml-3" icon={faSquare} />{" "}
+                {labels[0].mappings.major}
+                </span>
+                <span className="font-size-small">
+                <FontAwesomeIcon  className="minor ml-3" icon={faSquare} />{" "}
+                {labels[0].mappings.minor}
+                </span>
+                <span className="font-size-small">
+                <FontAwesomeIcon  className="highbg ml-3" icon={faSquare} />{" "}
+                {labels[0].mappings.high}
+                </span>
+                <span className="font-size-small">
+                <FontAwesomeIcon  className="mediumbg ml-3" icon={faSquare} />{" "}
+                {labels[0].mappings.medium}
+                </span>
+                <span className="font-size-small">
+                <FontAwesomeIcon  className="lowbg ml-3" icon={faSquare} />{" "}
+                {labels[0].mappings.low}
+                </span>                  
+                </div>
+            ):<div></div>
+            }</div>
+            <Card.Body className="p-0">
+            <Row className='no-gutters my-3 px-3'>
+            <Col md={3} className="pr-3">
               <Dropdown
                 listData={this.state.repoData}
                 direction="down"
@@ -586,7 +663,7 @@ class Security extends Component {
               </Dropdown>
             </Col>
             {this.state.selectedRepo &&
-            <Col md={2} className="pr-3">
+            <Col md={3} className="pr-3">
              <Dropdown
                 listData={this.state.branchDropData}
                 direction="down"
@@ -620,7 +697,7 @@ class Security extends Component {
             </Col>
             }
             {this.state.selectedBranch &&
-            <Col md={2} className="pr-3">
+            <Col md={3} className="pr-3">
             <Dropdown
                 listData={this.state.releaseDropData}
                 direction="down"
@@ -656,51 +733,21 @@ class Security extends Component {
               <Col md={3} className="mt-auto">
               <p className={`font-size-small m-0 ${bgTheme ? 'text-white' : 'text-dark'}`} >You are viewing data at <b>{this.state.filterStatus}</b> level</p></Col>
           </Row>
-          <Row className={`py-2 no-gutters px-3 ${bgTheme ? '' : 'bg-light'}`}>
+          <Row className={`mb-2 no-gutters px-3 ${bgTheme ? '' : 'bg-light'}`}>
             <Col>
-              <span>
-              {this.state.showbutton ? (
-                <Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>{labels[0].mappings.alertBtn}</Button>
-          
-                      ) : null}
+              {this.state.showbutton && <>
+                <span><Button variant="outline-dark" className={this.state.alertActive?"bgblue":"Alertbg"}  onClick ={this.setAlert}>{labels[0].mappings.alertBtn}</Button>
               </span>
                       
               <span className="ml-3">
-              {this.state.showbutton ? (
+            
                           <Button variant="outline-dark"  className={this.state.policyActive?"bgblue":"Alertbg"} onClick ={this.setPolicy}>{labels[0].mappings.policiesBtn}</Button>
-                        //  <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button>
-                        ) : null}
-              </span>
+                        {/* <button className="bg-prodAgg-btn" style={{ color: '#FFFFFF', paddingLeft: '5px', background: '#1D2632', border: '#364D68', minWidth: '6rem' }} onClick ={this.setPolicy} >Policy</button> */}
+        
+              </span></>}
             </Col>
-            { !this.state.policyActive?(
-              <div className={`text-right ${bgTheme ? 'text-white' : 'text-dark'}`}>               
-              <span className="font-size-small">
-                <FontAwesomeIcon  className="major ml-3" icon={faSquare} />{" "}
-                {labels[0].mappings.major}
-                </span>
-                <span className="font-size-small">
-                <FontAwesomeIcon  className="minor ml-3" icon={faSquare} />{" "}
-                {labels[0].mappings.minor}
-                </span>
-                <span className="font-size-small">
-                <FontAwesomeIcon  className="highbg ml-3" icon={faSquare} />{" "}
-                {labels[0].mappings.high}
-                </span>
-                <span className="font-size-small">
-                <FontAwesomeIcon  className="mediumbg ml-3" icon={faSquare} />{" "}
-                {labels[0].mappings.medium}
-                </span>
-                <span className="font-size-small">
-                <FontAwesomeIcon  className="lowbg ml-3" icon={faSquare} />{" "}
-                {labels[0].mappings.low}
-                </span>                  
-                </div>
-            ):<div></div>
-            }
-          </Row>
-
-
-          {this.state.charts.length && this.state.componentType === "Product" ? (
+            </Row>
+            {this.state.charts.length && this.state.componentType === "Product" ? (
             <Sec cardsData={this.state.charts} bgTheme={bgTheme}/>
           ) : null}
           {this.state.charts.length && this.state.componentType === "Project" ? (
@@ -712,7 +759,30 @@ class Security extends Component {
           {this.state.componentType === "Alert" ? (
            <App cardsData = {this.state.charts} bgTheme={bgTheme}/>
           ) : null}
-      
+          </Card.Body>
+        </Card.Body>
+        </Col>
+        <Col sm={6}>
+        <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark': 'bg-white card-border-light'}`}>
+        <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod' :'cardHeader'}`}>
+            <h6 className="font-weight-bold mb-1 p-0">SAST and DAST Vulnerabilities</h6>
+            <div className="text-right">               
+            <span className="font-size-small">
+                <FontAwesomeIcon  className="highbg ml-3" icon={faSquare} />{" "}
+                {labels[0].mappings.high}
+                </span>
+                <span className="font-size-small">
+                <FontAwesomeIcon  className="mediumbg ml-3" icon={faSquare} />{" "}
+                {labels[0].mappings.medium}
+                </span>
+                  </div>
+                  </div>
+            <Card.Body className="p-0">
+                  <SecSastDast cardsSastDast={this.props.vulnerabilitytDetails} bgTheme={bgTheme}></SecSastDast>
+            </Card.Body>
+          </Card.Body>
+        </Col>
+        </Row> 
         </React.Fragment>
       );
     }
@@ -724,8 +794,9 @@ class Security extends Component {
 
 //function to map the state received from reducer
 
-const mapStateToProps = state => {
+const mapStateToProps = state => {console.log("state.securityData.vulnerabilitytDetails",state.execData);
   return {
+    // clientList: 
     currentExecId: state.execData.executiveId,
     securityProjectData: state.securityData.securityProjectDetails,
     securityRepoData: state.securityData.securityRepoDetails,
@@ -746,7 +817,17 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    { vulnerabilityDataDispatch,securityProjectDataDispatch, resetProjectRepoDispatch,securityReleaseDataDispatch, repoDropValDispatchSecurity, securityRepoDataDispatch, insightsSecurity,securityPolicyDataDispatch,securityReleasePolicyDataDispatch, securityAlertDataDispatch,securityReleaseAlertDataDispatch },
+    { vulnerabilityDataDispatch,
+      securityProjectDataDispatch, 
+      resetProjectRepoDispatch,
+      securityReleaseDataDispatch, 
+      repoDropValDispatchSecurity, 
+      securityRepoDataDispatch, 
+      insightsSecurity,
+      securityPolicyDataDispatch,
+      securityReleasePolicyDataDispatch, 
+      securityAlertDataDispatch,
+      securityReleaseAlertDataDispatch },
     dispatch
   );
 };

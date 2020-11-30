@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { summaryChartDataDispatch} from "../../../../store/actions/summaryChartData";
+import { clientListDispatch } from "../../../../store/actions/executiveInsights";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import BuildSingleLineSummaryBurndown from "../../OverView/BuildSingleLineSummaryBurndown";
@@ -163,6 +164,7 @@ class Overview extends Component {
     // setTimeout(()=>this.getTotalCount(),3000);
   };
   componentDidMount() {
+    this.props.clientListDispatch();
     this.fetchChartsData();
   };
 
@@ -180,22 +182,21 @@ class Overview extends Component {
                   xl={5}
                   className="pr-0"
                 >
-              <Card.Body className="p-0">
-                <h6 className="cardHeader m-0 font-weight-bold">Application Security</h6>
-              <Row className='no-gutters p-3 bg-white border'>
+              <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark':'card-border-light'}`}>
+                <h6 className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod text-white' : 'cardHeader'}`}>Application Security</h6>
+              <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
                   <Col
                   sm={12}
                   md={12}
                   lg={5}
                   xl={5}
-                  className="bg-white"
-                ><div className="p-3" style={{border:'1px solid #999a9c',borderRadius:'5px'}}>
-                    <p className="mb-2 font-weight-bold" style={{fontSize:'14px',fontFamily:"Arial"}}>Top 10 Critical & High Vulnerabilities</p>
+                ><div className={`${bgTheme ? 'bg-dark-theme' : 'bg-white'}`} style={{border:'1px solid #999a9c',borderRadius:'5px'}}>
+                    <p className={`mb-2 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod text-white' : 'cardHeader'}`} style={{fontSize:'14px',fontFamily:"Arial"}}>Top 10 Critical & High Vulnerabilities</p>
 
                     <Card.Body className="p-0">
                       <div className="wrap">
-                        <table className="table table-hover cardHeader" style={{fontSize:'10px'}}>
-                            <thead>
+                        <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`} style={{fontSize:'10px'}}>
+                            <thead className={`${bgTheme ? 'tabhead text-light' : 'cardHeader text-dark'}`}>
                               <tr>
                               <th scope="col">Vulnerabilities</th>
                               <th scope="col" className="text-right">Critical/High</th>
@@ -203,9 +204,9 @@ class Overview extends Component {
                               </thead>
                           </table>
                     
-                      <div className="inner_table_overview">    
-                      <table className="table table-hover border" >
-                        <tbody >
+                      <div className={`${bgTheme ? 'inner_table_overview' : 'inner_table_overview_light'}`}>    
+                      <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
+                        <tbody className={`${bgTheme ? 'tabrow text-light' : 'text-dark'}`}>
                   {(this.state.secuityData!=null) ? 
                       
                     this.state.secuityData.map((item, index) => {
@@ -231,11 +232,11 @@ class Overview extends Component {
                   xl={7}
                   className="pl-3"                    
                 >
-               <div className="mb-3"><BuildColumnSummaryTrend summaryTrend={this.state.openVulnerability} type="securityOpen"/></div>
+               <div className="mb-3"><BuildColumnSummaryTrend summaryTrend={this.state.openVulnerability} type="securityOpen" bgTheme={bgTheme}/></div>
                
                 </Col>
                 <Col sm={12}>
-                  <BuildSingleLineSummaryBurndown summaryBurndown={this.state.averageTimeRemediation} type="security"/>
+                  <BuildSingleLineSummaryBurndown summaryBurndown={this.state.averageTimeRemediation} type="security" bgTheme={bgTheme}/>
                 </Col>
                </Row> 
                </Card.Body>
@@ -254,15 +255,15 @@ class Overview extends Component {
                   xl={12}
                   className="mb-3"
                 >
-                 <Card.Body className="p-0">
-                <h6 className="cardHeader m-0 font-weight-bold">Project Productivity</h6>
+                 <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark':'card-border-light'}`}>
+                    <h6 className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod text-white' : 'cardHeader'}`}>Project Productivity</h6>
 
-                  <Row className="no-gutters p-3 bg-white border">
+                    <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
                   <Col className="pr-3">
-                 <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.velocityTrendsSummary} type='velocity'/>
+                 <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.velocityTrendsSummary} type='velocity' bgTheme={bgTheme}/>
                  </Col>
                  <Col>
-                 <div><BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.projectBurndownSummary} type='velocity'/></div>
+                 <div><BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.projectBurndownSummary} type='velocity' bgTheme={bgTheme}/></div>
                 </Col></Row>
                 </Card.Body>
                 </Col>
@@ -271,15 +272,15 @@ class Overview extends Component {
                   md={12}
                   lg={12}
                   xl={12}                  >
-                <Card.Body className="p-0">
-                <h6 className="cardHeader m-0 font-weight-bold">Defect Management</h6>
-                <Row className="no-gutters p-3 bg-white border">
+                <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark':'card-border-light'}`}>
+                    <h6 className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod text-white' : 'cardHeader'}`}>Defect Management</h6>
+                    <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
                 <Col sm={12}
                   md={12}
                   lg={6}
                   xl={6}
                   className="pr-3">
-                 <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.defectOverview} type='qualityColumnReverse'/>
+                 <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.defectOverview} type='qualityColumnReverse' bgTheme={bgTheme}/>
                   {/* <div style={{backgroundColor: '#E1E7F0',padding: '10px',fontSize:'12px'}} className='text-center border rounded'><span>Total Critical: </span><span style={{backgroundColor: '#a21220',fontSize:'14px',color:'#ffffff'}} className="mr-1 font-weight-bold p-1 rounded">{this.state.totalCritical}</span> 
                     <span>Total High: </span><span style={{backgroundColor: '#ec5050',fontSize:'14px',color:'#ffffff'}} className="mr-1 font-weight-bold p-1 rounded">{this.state.totalHigh}</span> 
                     <span>Total Medium: </span><span style={{backgroundColor: '#ffc107',fontSize:'14px',color:'#ffffff'}} className="mr-1 font-weight-bold p-1 rounded">{this.state.totalMedium}</span> 
@@ -297,14 +298,14 @@ class Overview extends Component {
                   lg={12}
                   xl={12}
                   className="mb-3">
-                    <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.defectOverview} type='qualityColumn'/>
+                    <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.defectOverview} type='qualityColumn' bgTheme={bgTheme}/>
                     </Col>
                     <Col
                     sm={12}
                     md={12}
                     lg={12}
                     xl={12}>
-                    <BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.defectOverview} type='qualityLine'/>
+                    <BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.defectOverview} type='qualityLine' bgTheme={bgTheme}/>
                     </Col>
                   </Row>
                 
@@ -334,7 +335,7 @@ const mapStateToProps = state => {
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ summaryChartDataDispatch }, dispatch);
+  return bindActionCreators({ clientListDispatch,summaryChartDataDispatch }, dispatch);
 };
 
 //Connect react component to redux

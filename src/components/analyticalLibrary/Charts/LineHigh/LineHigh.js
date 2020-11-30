@@ -3,7 +3,7 @@ import ChartHOC from "../ChartHOC/ChartHOC";
 import QualityGraph from "../../../../utility/GraphOptions/qualityWrapper";
 import Dimensions from "react-dimensions";
 
-const LineHigh = React.forwardRef((props, ref) => {debugger
+const LineHigh = React.forwardRef((props, ref) => {
   let options = {};
   let temp_options;
   temp_options = new QualityGraph(props, props.type);

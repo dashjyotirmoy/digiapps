@@ -9,6 +9,7 @@ const BuildSingleLineSummaryBurndown = (props) => {
   var high=''
   var medium=''
   var burndownList = props.summaryBurndown
+  var bgTheme = props.bgTheme
   var height = props.type === 'securityTabPie' ? '289px':props.type === 'qualityLine' ? '240px'
               :props.type === 'velocity' ? '240px': '209px'
 
@@ -138,7 +139,7 @@ else{
       text: titleText,
       align: "left",
       style: {
-        color: "#ffffff",
+        color: bgTheme ? "#ffffff" : '#333333',
         fontSize: '14px',
         fontWeight:'bold',
         fontFamily:"Arial"
@@ -148,7 +149,7 @@ else{
     chart: {
       type: charttype,
       height: height,
-      borderColor:'',
+      borderColor:bgTheme ? '#ffffff':'#999a9c',
       // width: width
       
     },
@@ -162,11 +163,11 @@ else{
       symbolRadius: 0,
       itemStyle: {
         // width: "50px",
-        color: "#ffffff",
+        color: bgTheme ? "#ffffff" : '#333333',
         fontWeight: "normal"
     },
     itemHoverStyle: {
-        color: "#ffffff"
+        color: bgTheme ? "#ffffff" : '#333333'
       }
     },
     xAxis: {
@@ -182,7 +183,7 @@ else{
         width:  '20px',
         enabled: true,
         style: {
-          color: "#ffffff"
+          color: bgTheme ? "#ffffff" : '#333333'
         }
       }
     },
@@ -193,13 +194,13 @@ else{
       title: {
         text: "",
         style: {
-          color: "#ffffff",
+          color: bgTheme ? "#ffffff" : '#333333',
         }
       },
       labels: {
         format: props.type==='security'?'{value}hr':'{value}',
         style: {
-          color: "#ffffff"
+          color: bgTheme ? "#ffffff" : '#333333'
         }
       },
 

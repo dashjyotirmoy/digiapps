@@ -7,10 +7,11 @@ import { withSize } from 'react-sizeme';
 const ChartHOC = (props) => {
   let optionsData = { ...props.options };
   let containerWidth = props.size.width;
+  let backgroundColor = props.options.chart.backgroundColor;
   optionsData.chart = {
     height: props.height,
     width: containerWidth,
-    backgroundColor: "",
+    backgroundColor: backgroundColor,
     type: props.type
   };
   return <HighchartsReact highcharts={Highcharts} options={optionsData} />

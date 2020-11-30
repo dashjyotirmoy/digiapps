@@ -2,11 +2,11 @@ import * as actionTypes from "./actionTypes";
 import api from "../../utility/Http/devOpsApis";
 
 export const summaryChartDataDispatch = (
-  execId
+  clientId,execId
 ) => async dispatch => {
   try {
     const response = await api.getSummaryData(
-      execId
+      clientId,execId
     );
     dispatch({
       type: actionTypes.SET_SUMMARY_CHARTS_DETAILS,
