@@ -19,7 +19,7 @@ const Grid = props => {
   const bgTheme = props.bgTheme;
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
-      <div key={ele.i} className={`${bgTheme ? 'card-border-dark' : 'card-border-light'}`}>
+      <div key={ele.i} className={`${bgTheme ? 'card-border-dark bg-dark-theme' : 'card-border-light'}`}>
         <div
           className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
           style={{ zIndex: "100",right:'11px',top:'15px'}}

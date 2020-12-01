@@ -1,6 +1,6 @@
 const initialState = {
   executiveInfo: {},
-  clientList: {},
+  clientlist:{},
   executiveId: "4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f",
   currentExecutiveInfo: {
     executiveData: {},
@@ -12,7 +12,7 @@ const dimReducer = (state = initialState, action) => {
     case "GET_CLIENT_ID_DATA":
       return {
         ...state,
-        clientList: action.payload.getAllClient
+        clientlist: action.payload.getAllClient.clientsList
       };
     case "GET_EXEC_DATA":
       return {

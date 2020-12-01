@@ -1096,7 +1096,7 @@ class Quality extends Component {
                 style={{ zIndex: "100" }}
               >
                 <p
-                  className="d-inline px-1"
+                  className={`d-inline px-1 ${bgTheme ? 'text-white' : 'text-dark'}`}
                   data-toggle="tooltip"
                   data-placement="top"
                 >
@@ -1110,7 +1110,7 @@ class Quality extends Component {
                   </TooltipHoc>
                 </p>
                 <p
-                  className="show-cursor d-inline"
+                  className={`show-cursor d-inline ${bgTheme ? 'text-white' : 'text-dark'}`}
                   onClick={this.onDisplayMetricExitClick}
                 >
                   <TooltipHoc info="Remove">
@@ -1118,7 +1118,7 @@ class Quality extends Component {
                   </TooltipHoc>
                 </p>
               </div>
-              <BubbleHigh title={this.state.metricType} />
+              <BubbleHigh title={this.state.metricType} bgTheme={bgTheme}/>
             </div>
           </ModalBackDrop>
           {this.state.componentType === "QualityBuild" ? (

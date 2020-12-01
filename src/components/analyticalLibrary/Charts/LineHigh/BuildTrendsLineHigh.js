@@ -101,7 +101,7 @@ function setUnstableData(data) {
 
 
 const BuildTreds = props => {
-
+  let bgTheme = props.bgTheme
   if (Object.keys(props.buildTrendsData.cardsData).length > 0) {
 
     setAvgDurationData(props.buildTrendsData.cardsData.buildTrendDTOList);
@@ -124,7 +124,7 @@ const BuildTreds = props => {
         text: 'Build Trend',
         align: 'left',
         style: {
-          color: '#f5f5f5'
+          color: bgTheme ? "#f5f5f5" : '#333333',
         }
       },
       xAxis: {
@@ -132,7 +132,7 @@ const BuildTreds = props => {
         // crosshair: true,
         labels: {
           style: {
-            color: '#f5f5f5'
+            color:  bgTheme ? "#f5f5f5" : '#333333',
           }
         },
         dateTimeLabelFormats: {
@@ -142,7 +142,7 @@ const BuildTreds = props => {
         lineWidth: 0,
         tickLength: 0,
         style: {
-          color: '#f5f5f5'
+          color:  bgTheme ? "#f5f5f5" : '#333333',
         },
       },
       yAxis: [
@@ -152,13 +152,13 @@ const BuildTreds = props => {
           labels: {
             format: '{value}',
             style: {
-              color: '#f5f5f5'
+              color:  bgTheme ? "#f5f5f5" : '#333333',
             }
           },
           title: {
             text: 'Average Duration Time (s)',
             style: {
-              color: '#f5f5f5'
+              color:  bgTheme ? "#f5f5f5" : '#333333',
             }
           }
         },
@@ -168,13 +168,13 @@ const BuildTreds = props => {
           labels: {
             format: '{value}',
             style: {
-              color: '#f5f5f5'
+              color:  bgTheme ? "#f5f5f5" : '#333333',
             }
           },
           title: {
             text: 'Total Duration Time (s)',
             style: {
-              color: '#f5f5f5'
+              color:  bgTheme ? "#f5f5f5" : '#333333',
             }
           },
           opposite: true
@@ -185,13 +185,13 @@ const BuildTreds = props => {
           labels: {
             format: '{value}',
             style: {
-              color: '#f5f5f5'
+              color:  bgTheme ? "#f5f5f5" : '#333333',
             }
           },
           title: {
             text: 'Count',
             style: {
-              color: '#f5f5f5'
+              color:  bgTheme ? "#f5f5f5" : '#333333',
             }
           },
           opposite: true,
@@ -206,11 +206,11 @@ const BuildTreds = props => {
         align: 'right',
         verticalAlign: 'top',
         itemStyle: {
-          color: '#f5f5f5',
+          color:  bgTheme ? "#f5f5f5" : '#333333',
           fontWeight: 'normal'
         },
         itemHoverStyle: {
-          color: '#cccccc'
+          color:  bgTheme ? "#f5f5f5" : '#333333',
         }
       },
       series: [{
@@ -313,7 +313,7 @@ const BuildTreds = props => {
   }
   return (
     <React.Fragment>
-      <ChartHOC options={options} height={'700px'} width={'100%'} />
+      <ChartHOC options={options} height={'300px'} width={'100%'} />
     </React.Fragment>
   )
 }

@@ -134,7 +134,7 @@ div#root{
   word-wrap: break-word;
 } */
 
-.inner_table {
+.inner_table,.inner_table_light {
   height: 325px;
   overflow-y: auto;
 }

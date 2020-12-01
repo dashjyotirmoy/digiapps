@@ -33,7 +33,6 @@ class Header extends Component {
     labelConst: this.props.labelsConst
   };
   componentDidMount() {
-    //this.props.clientListDispatch();
     this.props.execAllDispatch();
   }
   render() {
@@ -98,7 +97,6 @@ class Header extends Component {
 const mapStateToProps = state => {
   return {
     getAllExecInfo: state.execData.executiveInfo,
-    getAllClientList: state.execData.clientList
   };
 };
 

@@ -55,13 +55,12 @@ const App = props => {
       <Container fluid>
         <Row className={`${bgTheme ? '' : 'bg-light'}`}>
           <Col>
-            <Card.Body className={`border rounded p-0 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-              <h5 className={`mb-3 ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Unique Vulnerabilities</h5>
+            <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark' : 'card-border-light bg-white'}`}>
+              <h6 className={`mb-3 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Unique Vulnerabilities</h6>
               <Row className="pl-2">
-                <Col sm={1} className="pr-0">
-                  <p>Vulnerabilities</p>
-                </Col>
-                <Col sm={3} className="pl-0">
+                <Col sm={12} className="pr-0">
+                  <span className="mr-2">Vulnerabilities</span>                
+                <span>
                   <Badge style={{ color: "#222222", background: "#ec5050" }}>
                     {highCount && highCount.length}
                   </Badge>{" "}
@@ -71,11 +70,12 @@ const App = props => {
                   <Badge style={{ color: '#222222', background: '#20c997' }}>
                     {lowCount && lowCount.length}
                   </Badge>{" "}
+                </span>
                 </Col>
               </Row>
               <Card.Body>
 
-                <div className="wrap border">
+                <div className="wrap">
                   <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                     <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
                       <tr>
@@ -91,7 +91,7 @@ const App = props => {
                     </thead>
                   </table>
 
-                  <div className="inner_table">
+                  <div className={`${bgTheme ? 'inner_table' : 'inner_table_light'}`}>
                     <table className={`table table-hover ${bgTheme ? 'table-dark' : 'text-light'}`}>
                       <tbody >
 
@@ -157,8 +157,8 @@ const App = props => {
       <Container fluid>
         <Row className={`py-3 ${bgTheme ? '' : 'bg-light'}`}>
           <Col>
-            <Card.Body className={`border rounded p-0 ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-              <h5 className={`mb-3 ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Actionable Libraries</h5>
+            <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark' : 'card-border-light bg-white'}`}>
+              <h6 className={`mb-3 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Actionable Libraries</h6>
               <Row className="basealign">
                 <p>Alerts</p>
                 <Col sm={2}>
@@ -186,7 +186,7 @@ const App = props => {
 
               </Row>
               <Card.Body className={`p-3  ${bgTheme ? 'bg' : 'text-dark bg-white'}`}>
-                <div className="wrap border">
+                <div className="wrap">
                   <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                     <thead className={`${bgTheme ? 'tabhead' : 'cardHeader'}`}>
                       <tr>
@@ -213,7 +213,7 @@ const App = props => {
                     </thead>
                   </table>
 
-                  <div className="inner_table">
+                  <div className={`${bgTheme ? 'inner_table' : 'inner_table_light'}`}>
                     <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`} >
                       <tbody>
 

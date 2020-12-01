@@ -24,7 +24,7 @@ class BubbleHigh extends Component {
         type: "bubble",
         plotBorderWidth: 0,
         zoomType: "xy",
-        backgroundColor: "#232d3b"
+        backgroundColor: this.props.bgTheme ? "#232d3b" : "#ffffff"
       },
       credits: {
         enabled: false
@@ -35,10 +35,10 @@ class BubbleHigh extends Component {
         symbolRadius: 0,
         align: "left",
         itemHoverStyle: {
-          color: "#ffffff"
+          color: this.props.bgTheme ?"#ffffff":"#333333"
         },
         itemStyle: {
-          color: "#f5f5f5",
+          color: this.props.bgTheme ?"#f5f5f5":"#333333",
           fontWeight: "normal"
         }
       },
@@ -46,7 +46,7 @@ class BubbleHigh extends Component {
         text: "",
         align: "left",
         style: {
-          color: "#f5f5f5",
+          color: this.props.bgTheme ?"#f5f5f5":"#333333",
           fontWeight: "bold"
         }
       },
@@ -60,7 +60,7 @@ class BubbleHigh extends Component {
         labels: {
           format: "{value}",
           style: {
-            color: "#f5f5f5"
+            color: this.props.bgTheme ?"#f5f5f5":"#333333"
           }
         }
       },
@@ -77,7 +77,7 @@ class BubbleHigh extends Component {
         labels: {
           format: "{value} min",
           style: {
-            color: "#f5f5f5"
+            color: this.props.bgTheme ?"#f5f5f5":"#333333"
           }
         },
         maxPadding: 0.2
@@ -475,7 +475,7 @@ class BubbleHigh extends Component {
             type: "bubble",
             plotBorderWidth: 0,
             zoomType: "xy",
-            backgroundColor: "#232d3b"
+            backgroundColor: this.props.bgTheme ?"#232d3b":"#ffffff"
           },
           credits: {
             enabled: false
@@ -486,10 +486,10 @@ class BubbleHigh extends Component {
             symbolRadius: 0,
             align: "left",
             itemHoverStyle: {
-              color: "#ffffff"
+              color: this.props.bgTheme ?"#ffffff":'#333333'
             },
             itemStyle: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "normal"
             }
           },
@@ -497,7 +497,7 @@ class BubbleHigh extends Component {
             text: "",
             align: "left",
             style: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "bold"
             }
           },
@@ -510,13 +510,13 @@ class BubbleHigh extends Component {
             title: {
               text: "Lines of Code",
               style: {
-                color: '#f5f5f5'
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             },
             labels: {
               format: "{value}",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             }
           },
@@ -529,13 +529,13 @@ class BubbleHigh extends Component {
             title: {
               text: "Reliability Remediation Effort",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             },
             labels: {
               format: "{value} min",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             },
             maxPadding: 0.2
@@ -612,7 +612,7 @@ class BubbleHigh extends Component {
             type: "bubble",
             plotBorderWidth: 0,
             zoomType: "xy",
-            backgroundColor: "#232d3b"
+            backgroundColor: this.props.bgTheme ?"#232d3b":"#ffffff",
           },
           credits: {
             enabled: false
@@ -623,10 +623,10 @@ class BubbleHigh extends Component {
             symbolRadius: 0,
             align: "left",
             itemHoverStyle: {
-              color: "#ffffff"
+              color: this.props.bgTheme ?"#ffffff":"#333333"
             },
             itemStyle: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "normal"
             }
           },
@@ -634,7 +634,7 @@ class BubbleHigh extends Component {
             text: "",
             align: "left",
             style: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "bold"
             }
           },
@@ -650,7 +650,7 @@ class BubbleHigh extends Component {
             labels: {
               format: "{value}",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333"
               }
             }
           },
@@ -663,13 +663,13 @@ class BubbleHigh extends Component {
             title: {
               text: "Security Remediation Effort",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333"
               }
             },
             labels: {
               format: "{value} min",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333"
               }
             },
             maxPadding: 0.2
@@ -742,7 +742,7 @@ class BubbleHigh extends Component {
             type: "bubble",
             plotBorderWidth: 0,
             zoomType: "xy",
-            backgroundColor: "#232d3b"
+            backgroundColor: this.props.bgTheme ?"#232d3b":"#ffffff"
           },
           credits: {
             enabled: false
@@ -753,10 +753,10 @@ class BubbleHigh extends Component {
             symbolRadius: 0,
             align: "left",
             itemHoverStyle: {
-              color: "#ffffff"
+              color: this.props.bgTheme ?"#ffffff":"#333333"
             },
             itemStyle: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "normal"
             }
           },
@@ -764,7 +764,7 @@ class BubbleHigh extends Component {
             text: "",
             align: "left",
             style: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "bold"
             }
           },
@@ -777,13 +777,13 @@ class BubbleHigh extends Component {
             title: {
               text: "Lines of Code",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333"
               }
             },
             labels: {
               format: "{value}",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333"
               }
             }
           },
@@ -796,13 +796,13 @@ class BubbleHigh extends Component {
             title: {
               text: "Technical Debt",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333"
               }
             },
             labels: {
               format: "{value} min",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333"
               }
             },
             maxPadding: 0.2
@@ -875,7 +875,7 @@ class BubbleHigh extends Component {
             type: "bubble",
             plotBorderWidth: 0,
             zoomType: "xy",
-            backgroundColor: "#232d3b"
+            backgroundColor: this.props.bgTheme ?"#232d3b":"#ffffff"
           },
           credits: {
             enabled: false
@@ -886,10 +886,10 @@ class BubbleHigh extends Component {
             symbolRadius: 0,
             align: "left",
             itemHoverStyle: {
-              color: "#ffffff"
+              color: this.props.bgTheme ?"#ffffff":"#333333"
             },
             itemStyle: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "normal"
             }
           },
@@ -897,7 +897,7 @@ class BubbleHigh extends Component {
             text: "",
             align: "left",
             style: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "bold"
             }
           },
@@ -910,13 +910,13 @@ class BubbleHigh extends Component {
             title: {
               text: "Cyclomatic Complexity ",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             },
             labels: {
               format: "{value}",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             }
           },
@@ -929,13 +929,13 @@ class BubbleHigh extends Component {
             title: {
               text: "Coverage",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             },
             labels: {
               format: "{value}%",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             },
             maxPadding: 0.2
@@ -985,7 +985,7 @@ class BubbleHigh extends Component {
             type: "bubble",
             plotBorderWidth: 0,
             zoomType: "xy",
-            backgroundColor: "#232d3b"
+            backgroundColor: this.props.bgTheme ?"#232d3b":"#ffffff"
           },
           credits: {
             enabled: false
@@ -996,10 +996,10 @@ class BubbleHigh extends Component {
             symbolRadius: 0,
             align: "left",
             itemHoverStyle: {
-              color: "#ffffff"
+              color: this.props.bgTheme ?"#fff":"#333333",
             },
             itemStyle: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "normal"
             }
           },
@@ -1007,7 +1007,7 @@ class BubbleHigh extends Component {
             text: "",
             align: "left",
             style: {
-              color: "#f5f5f5",
+              color: this.props.bgTheme ?"#f5f5f5":"#333333",
               fontWeight: "bold"
             }
           },
@@ -1020,13 +1020,13 @@ class BubbleHigh extends Component {
             title: {
               text: "Lines of Code",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             },
             labels: {
               format: "{value}",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             }
           },
@@ -1039,13 +1039,13 @@ class BubbleHigh extends Component {
             title: {
               text: "Duplicated Lines",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             },
             labels: {
               format: "{value}",
               style: {
-                color: "#f5f5f5"
+                color: this.props.bgTheme ?"#f5f5f5":"#333333",
               }
             },
             maxPadding: 0.2
@@ -1094,13 +1094,14 @@ class BubbleHigh extends Component {
     this.state.options.title.text = this.props.title;
     return (
       <React.Fragment>
-        <ChartHOC options={this.state.options} type={"bubble"} />
+        <ChartHOC options={this.state.options} type={"bubble"} bgTheme={this.props.bgTheme}/>
       </React.Fragment>
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state,props) => {
   return {
+    bgTheme: props.bgTheme,
     qualityDrilledDownData: state.qualityData.qualityDrilledDownDetails
   };
 };

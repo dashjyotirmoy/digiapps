@@ -19,6 +19,7 @@ const BuildColumnSummaryTrend = (props) => {
   var titleText = props.type === 'securityOpen'? 'Open Vulnerabilities per project in production':props.type === 'securityTab'?'Vulnerabilities by SCA, SAST & DAST':props.type==='qualityColumnReverse'?'Open Defects Count':props.type==='qualityColumn'?'Average Resolution Time for Defects':props.type==='securityTabReverse'?'New Vulnerabilities':props.type==='velocity'?'Velocity - Projects that need attention':''
   var chartType = props.type === 'qualityColumnReverse'? 'bar': props.type === 'securityTabReverse'?'bar': 'column'
   var trendList = props.summaryTrend
+  var bgTheme = props.bgTheme
   var DURATION_IN_SECONDS = {
     epochs: ['year', 'month', 'day', 'hour', 'minute'],
     year: 31536000,
@@ -115,7 +116,7 @@ const BuildColumnSummaryTrend = (props) => {
       text: titleText,
       align: "left",
       style: {
-        color: "#ffffff",
+        color: bgTheme ? "#ffffff" : '#333333',
         fontSize: '14px',
         fontWeight:'bold',
         fontFamily:"Arial"
@@ -124,7 +125,7 @@ const BuildColumnSummaryTrend = (props) => {
 
     subtitle: {
       useHTML: props.type === 'securityTabReverse' || props.type==='qualityColumnReverse' ? true: false,
-      text: props.type === 'securityTabReverse'? `Scanned ${timeSince(newTime)} ago`:props.type==='qualityColumnReverse'?`<div style='font-size: 11px;width: 385px;display: inline-block;padding: 10px;background-color:#232d3b'>
+      text: props.type === 'securityTabReverse'? `Scanned ${timeSince(newTime)} ago`:props.type==='qualityColumnReverse'?`<div style='font-size: 11px;width: 385px;display: inline-block;padding: 10px'>
       <span style='margin-right: 5px'>Total Critical:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#a21220;border-radius: 5px">${totalCritical}</span></span>
       <span style='margin-right: 5px'>Total High:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#ec5050;border-radius: 5px">${totalHigh}</span> </span>
       <span style='margin-right: 5px'>Total Medium:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#ffc107;border-radius: 5px">${totalMedium}</span> </span>
@@ -137,13 +138,13 @@ const BuildColumnSummaryTrend = (props) => {
       // width: 100 '%',
       style: {
         fontSize: '14px',
-        color: "#ffffff",
+        color: bgTheme ? "#ffffff" : '#333333',
       }
   },
     chart: {
       type: chartType,
       height: height,
-      borderColor: ''
+      borderColor: (props.type === 'securityTabSCA' || props.type === 'securityTabSAST' || props.type === 'securityTabDAST')?'transparent':'#999a9c',
     },
   xAxis: {
     categories: xAxisLabel,
@@ -152,7 +153,7 @@ const BuildColumnSummaryTrend = (props) => {
       // enabled: true,
        enabled: props.type ==='securityTabReverse'? false: true,
       style: {
-        color: "#ffffff",
+        color: bgTheme ? "#ffffff" : '#333333',
         //width:  '45px',
         fontWeight: 'bold',
         whiteSpace: 'nowrap',
@@ -171,7 +172,7 @@ const BuildColumnSummaryTrend = (props) => {
         // format: props.type==='qualityColumn'?'{value}hr':'{value}',
         format: props.type==='qualityColumn'?'{value}hr':'{value}',
         style: {
-          color: "#ffffff"
+          color: bgTheme ? "#ffffff" : '#333333'
         }
       },
       stackLabels: {
@@ -197,11 +198,11 @@ const BuildColumnSummaryTrend = (props) => {
       reversed: props.type === 'qualityColumn'? false : true,
       itemWidth: 93,
       itemStyle: {
-        color: "#ffffff",
+        color: bgTheme ? "#ffffff" : '#333333',
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: "#ffffff"
+        color: bgTheme ? "#ffffff" : '#333333'
       }
 },
     
@@ -235,7 +236,7 @@ const BuildColumnSummaryTrend = (props) => {
           style: {
             textOutline: false,
             fontWeight: 'bold',
-            color: '#ffffff',
+            color: bgTheme ? "#ffffff" : '#333333',
             fontSize: '12px'
         },       
         },

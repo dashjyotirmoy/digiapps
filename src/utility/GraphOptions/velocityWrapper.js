@@ -972,7 +972,7 @@ class VelocityGraph {
     });
     options.chart = {
       height: 0,
-      backgroundColor: " "
+      backgroundColor: this.res.bgTheme ? "#232d3b":"#ffffff" 
     };
 
     options.title = {

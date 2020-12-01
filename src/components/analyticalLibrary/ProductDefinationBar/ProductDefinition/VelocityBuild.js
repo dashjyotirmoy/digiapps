@@ -28,7 +28,7 @@ const VelocityBuild = props => {
             </Col>
           </Row>
           <Row style={{ width: '100%' }}>
-            <BuildTreds buildTrendsData={props} />
+            <BuildTreds buildTrendsData={props} bgTheme={props.bgTheme}/>
           </Row>
         </Container>
       ) : <div style={{ color: "#ffffff", fontSize: "20px", textAlign: "center" }}>Please select the dropdown for Chart Data</div>}

@@ -25,7 +25,7 @@ class CustDropdown extends Component {
       <div className={`font-size-small w-100 m-0 ${bgTheme ? 'text-white': 'text-dark'}`}>{this.props.dropsLable}</div>
       <Dropdown
         onSelect={(evt, evtKey) => this.props.onSelectDelegate(evt, evtKey)}
-        className={`w-100 ${bgTheme ? 'text-white': 'rounded border border-primary bg-white'}`}
+        className={`w-100 ${bgTheme ? 'text-white rounded border border-secondary': 'rounded border border-primary bg-white'}`}
       >
         <Dropdown.Toggle
           as={DropdownToggle}

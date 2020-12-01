@@ -8,9 +8,9 @@ const ChartHOCSummary = (props) => {
   let optionsData = { ...props.options };
   let containerHeight = props.options.chart.height;
   let borderColor = props.options.chart.borderColor;
-  //let containerWidth = props.size.width;
+  let backgroundColor = props.options.chart.backgroundColor;
   optionsData.chart = {
-    backgroundColor: "#232d3b",
+    backgroundColor: backgroundColor,
     borderColor: borderColor,
     borderWidth: 1,
     borderRadius: 5,
