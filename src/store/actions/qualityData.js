@@ -1,11 +1,11 @@
 import * as actionTypes from "./actionTypes";
 import api from "../../utility/Http/devOpsApis";
 
-export const qualityDataDispatch = (projectId, execId) =>
+export const qualityDataDispatch = (clientId,execId,projectId) =>
   //   sprintId
   async dispatch => {
     try {
-      const response = await api.getQualityMetricsData(projectId, execId);
+      const response = await api.getQualityMetricsData(clientId,execId,projectId);
       dispatch({
         type: actionTypes.SET_QUALITY_DETAILS,
         payload: {
@@ -17,11 +17,11 @@ export const qualityDataDispatch = (projectId, execId) =>
       console.error(error);
     }
   };
-  export const qualityReleaseDataDispatch = (branchName,execId, projectId,releaseName, repoName) =>
+  export const qualityReleaseDataDispatch = (branchName,clientId,execId, projectId,releaseName, repoName) =>
   //   sprintId
   async dispatch => {
     try {
-      const response = await api.getQualityReleaseMetricsData(branchName,execId, projectId,releaseName, repoName);
+      const response = await api.getQualityReleaseMetricsData(branchName,clientId,execId, projectId,releaseName, repoName);
       dispatch({
         type: actionTypes.SET_QUALITY_RELEASE_DETAILS,
         payload: {
@@ -33,10 +33,10 @@ export const qualityDataDispatch = (projectId, execId) =>
       console.error(error);
     }
   };
-  export const qualityBuildDataDispatch = (projectId, repoId) => 
+  export const qualityBuildDataDispatch = (projectId,clientId,repoId) => 
   async dispatch => {
     try {
-      const response = await api.getQualityBuildData(projectId, repoId);
+      const response = await api.getQualityBuildData(projectId,clientId,repoId);
       dispatch({
         type: actionTypes.SET_QUALITY_BUILD_DETAILS,
         payload: {
@@ -48,11 +48,11 @@ export const qualityDataDispatch = (projectId, execId) =>
       console.error(error);
     }
   }
-  export const qualityDrilledDownDataDispatch = (execId,metricsType,repoId, projectId) =>
+  export const qualityDrilledDownDataDispatch = (clientId,execId,metricsType,repoId, projectId) =>
   //   sprintId
   async dispatch => {
     try {
-      const response = await api.getQualityMetricsDrilledDownData(execId,metricsType,repoId,projectId);
+      const response = await api.getQualityMetricsDrilledDownData(clientId,execId,metricsType,repoId,projectId);
       dispatch({
         type: actionTypes.SET_QUALITY_DRILLED_DOWN_DETAILS,
         payload: {
@@ -64,11 +64,11 @@ export const qualityDataDispatch = (projectId, execId) =>
       console.error(error);
     }
   };
-  export const qualityDrilledDownDataFilterDispatch = (branchName,execId,metricsType, projectId,releaseName, repoId,repoName) =>
+  export const qualityDrilledDownDataFilterDispatch = (branchName,clientId,execId,metricsType, projectId,releaseName, repoId,repoName) =>
   //   sprintId
   async dispatch => {
     try {
-      const response = await api.getQualityMetricsDrilledFilterDownData(branchName,execId,metricsType, projectId,releaseName, repoId,repoName);
+      const response = await api.getQualityMetricsDrilledFilterDownData(branchName,clientId,execId,metricsType, projectId,releaseName, repoId,repoName);
       dispatch({
         type: actionTypes.SET_QUALITY_DRILLED_DOWN_FILTER_DETAILS,
         payload: {
@@ -89,10 +89,10 @@ export const qualityDataDispatch = (projectId, execId) =>
   });
 };
 export const insightsQuality = (
-  branchName, executiveId, projectId, repoName
+  branchName,clientId,executiveId, projectId, repoName
 ) => async dispatch => {
   api
-    .getQualityInsightsData(branchName, executiveId, projectId, repoName)
+    .getQualityInsightsData(branchName,clientId,executiveId, projectId, repoName)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_QUALITY_DETAILS,

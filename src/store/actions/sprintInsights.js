@@ -3,12 +3,13 @@ import api from "../../utility/Http/devOpsApis";
 
 export const sprintInsightsDispatch = (
   sprintId,
+  clientId,
   execId,
   projectId,
   teamID
 ) => async dispatch => {
   api
-    .getSprintInsightsData(sprintId, execId, projectId, teamID)
+    .getSprintInsightsData(sprintId,clientId,execId, projectId, teamID)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_CURRENT_SPRINT,
@@ -23,10 +24,10 @@ export const sprintInsightsDispatch = (
     });
 };
 export const insightsSecurity = (
-  branchName, projectId, repoName
+  branchName,clientId, projectId, repoName
 ) => async dispatch => {
   api
-    .getSecurityInsightsData(branchName, projectId, repoName)
+    .getSecurityInsightsData(branchName,clientId, projectId, repoName)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_SECURITY_DETAILS,
@@ -41,12 +42,13 @@ export const insightsSecurity = (
     });
 };
 export const insightsVelocity = (
+  clientId,
   executiveId,
   projectId,
   teamID
 ) => async dispatch => {
   api
-    .getVelocityInsightsData(executiveId, projectId, teamID)
+    .getVelocityInsightsData(clientId,executiveId, projectId, teamID)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_VELOCITY_DETAILS,
@@ -61,10 +63,10 @@ export const insightsVelocity = (
     });
 };
 export const insightsQuality = (
-  branchName, executiveId, projectId, repoName
+  branchName,clientId,executiveId, projectId, repoName
 ) => async dispatch => {
   api
-    .getQualityInsightsData(branchName, executiveId, projectId, repoName)
+    .getQualityInsightsData(branchName,clientId,executiveId, projectId, repoName)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_QUALITY_DETAILS,

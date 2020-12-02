@@ -1,15 +1,16 @@
 import api from "../../utility/Http/devOpsApis";
 import * as actionTypes from "./actionTypes";
 
-export const clientListDispatch = () => async dispatch => {
+export const clientListDispatch = (currentID) => async dispatch => {
   try {
     const response = await api.getAllClientList();
     let data = response.data;
     dispatch({
       type: actionTypes.GET_CLIENT_ID_DATA,
       payload: {
-          getAllClient: data
-      }
+        getAllClient: data,
+        currentClientID: currentID
+      },
     });
   } catch (error) {
     console.error(error);
@@ -29,9 +30,9 @@ export const execAllDispatch = (clientId) => async dispatch => {
     console.error(error);
   }
 };
-export const execInsightsDispatch = execId => async dispatch => {
+export const execInsightsDispatch = (execId, clientId) => async dispatch => {
   try {
-    const response = await api.getExecInsightsData(execId);
+    const response = await api.getExecInsightsData(execId, clientId);
     let data = response.data;
     data["totalProduct"] = response.data.projects.length;
     dispatch({

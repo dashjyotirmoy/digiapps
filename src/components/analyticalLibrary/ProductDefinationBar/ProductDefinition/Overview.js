@@ -2,7 +2,6 @@
 
 import React, { Component } from "react";
 import { summaryChartDataDispatch} from "../../../../store/actions/summaryChartData";
-import { clientListDispatch } from "../../../../store/actions/executiveInsights";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import BuildSingleLineSummaryBurndown from "../../OverView/BuildSingleLineSummaryBurndown";
@@ -12,143 +11,148 @@ import { Row, Col,Card,} from "react-bootstrap";
 import { labelConst } from "../../../../utility/constants/labelsConstants";
 
 class Overview extends Component {
-  state = {
-    charts: [],
-    velocityBuildData: [],
-    codeActive: true,
-    componentType: "summary",
-    repoData: [],
-    sortedTableData:'',
-    totalCritical:'',
-    totalHigh:'',
-    totalMedium:'',
-    totalLow:'',
-    "secuityData": [
-      {
-          "name": "Cross Site Scripting (Reflected)",
-          "count": "704"
-      },
-      {
-          "name": "SQL Injection",
-          "count": "59"
-      },
-      {
-          "name": "Path Traversal",
-          "count": "99"
-      },
-      {
-          "name": "SQL Injection - Hypersonic SQL",
-          "count": "456"
-      },
-      {
-          "name": "Remote OS Command Injection",
-          "count": "52"
-      },
-      {
-          "name": "Open Source Vulnerabilities",
-          "count": "10"
-      },
-      {
-          "name": "Cross-Site Scripting: DOM",
-          "count": "5"
-      },
-      {
-          "name": "Key Management: Hardcoded Encryption Key",
-          "count": "44"
-      },
-      {
-          "name": "Dynamic Code Evaluation: Code Injection",
-          "count": "14"
-      },
-      {
-          "name": "Password Management: Empty Password",
-          "count": "7"
-      }
-  ],
-  "openVulnerability": [
-      {
-          "projectName": "Digital Insights",
-          "high": "15",
-          "medium": "15",
-          "low": "18"
-      },
-      {
-          "projectName": "DevSecOps Project",
-          "high": "17",
-          "medium": "15",
-          "low": "17"
-      }
-  ],
-  "averageTimeRemediation": [
-      {
-          "projectName": "Digital Insights",
-          "remediationList": [
-              {
-                  "date": "Fri Jun 10 14:11:09 GMT 2020",
-                  "remediationTime": "10.0"
-              },
-              {
-                  "date": "Fri Jul 24 14:11:09 GMT 2020",
-                  "remediationTime": "15.0"
-              },
-              {
-                  "date": "Fri Aug 07 14:11:09 GMT 2020",
-                  "remediationTime": "3.0"
-              },
-              {
-                  "date": "Fri Aug 21 14:11:09 GMT 2020",
-                  "remediationTime": "2.0"
-              },
-              {
-                  "date": "Fri Sept 04 14:11:09 GMT 2020",
-                  "remediationTime": "6.0"
-              },
-              {
-                  "date": "Fri Sept 18 14:11:09 GMT 2020",
-                  "remediationTime": "4.0"
-              },
-              {
-                  "date": "Fri Oct 02 14:11:09 GMT 2020",
-                  "remediationTime": "4.0"
-              }
-          ]
-      },
-      {
-          "projectName": "DevSecOps Project",
-          "remediationList": [
-              {
-                  "date": "Sun Jul 10 14:11:09 GMT 2020",
-                  "remediationTime": "2.0"
-              },
-              {
-                  "date": "Fri Jul 24 14:11:09 GMT 2020",
-                  "remediationTime": "12.0"
-              },
-              {
-                  "date": "Fri Aug 07 14:11:09 GMT 2020",
-                  "remediationTime": "10.0"
-              },
-              {
-                  "date": "Fri Aug 21 14:11:09 GMT 2020",
-                  "remediationTime": "3.0"
-              },
-              {
-                  "date": "Fri Sept 04 14:11:09 GMT 2020",
-                  "remediationTime": "3.0"
-              },
-              {
-                  "date": "Fri Sept 18 14:11:09 GMT 2020",
-                  "remediationTime": "8.0"
-              },
-              {
-                  "date": "Fri Oct 02 14:11:09 GMT 2020",
-                  "remediationTime": "4.0"
-              },
-    
-          ]
-      }
-  ]
+  constructor(props){
+    super(props);
+    this.state = {
+      show: true,
+      charts: [],
+      velocityBuildData: [],
+      codeActive: true,
+      componentType: "summary",
+      repoData: [],
+      sortedTableData:'',
+      totalCritical:'',
+      totalHigh:'',
+      totalMedium:'',
+      totalLow:'',
+      "secuityData": [
+        {
+            "name": "Cross Site Scripting (Reflected)",
+            "count": "704"
+        },
+        {
+            "name": "SQL Injection",
+            "count": "59"
+        },
+        {
+            "name": "Path Traversal",
+            "count": "99"
+        },
+        {
+            "name": "SQL Injection - Hypersonic SQL",
+            "count": "456"
+        },
+        {
+            "name": "Remote OS Command Injection",
+            "count": "52"
+        },
+        {
+            "name": "Open Source Vulnerabilities",
+            "count": "10"
+        },
+        {
+            "name": "Cross-Site Scripting: DOM",
+            "count": "5"
+        },
+        {
+            "name": "Key Management: Hardcoded Encryption Key",
+            "count": "44"
+        },
+        {
+            "name": "Dynamic Code Evaluation: Code Injection",
+            "count": "14"
+        },
+        {
+            "name": "Password Management: Empty Password",
+            "count": "7"
+        }
+    ],
+    "openVulnerability": [
+        {
+            "projectName": "Digital Insights",
+            "high": "15",
+            "medium": "15",
+            "low": "18"
+        },
+        {
+            "projectName": "DevSecOps Project",
+            "high": "17",
+            "medium": "15",
+            "low": "17"
+        }
+    ],
+    "averageTimeRemediation": [
+        {
+            "projectName": "Digital Insights",
+            "remediationList": [
+                {
+                    "date": "Fri Jun 10 14:11:09 GMT 2020",
+                    "remediationTime": "10.0"
+                },
+                {
+                    "date": "Fri Jul 24 14:11:09 GMT 2020",
+                    "remediationTime": "15.0"
+                },
+                {
+                    "date": "Fri Aug 07 14:11:09 GMT 2020",
+                    "remediationTime": "3.0"
+                },
+                {
+                    "date": "Fri Aug 21 14:11:09 GMT 2020",
+                    "remediationTime": "2.0"
+                },
+                {
+                    "date": "Fri Sept 04 14:11:09 GMT 2020",
+                    "remediationTime": "6.0"
+                },
+                {
+                    "date": "Fri Sept 18 14:11:09 GMT 2020",
+                    "remediationTime": "4.0"
+                },
+                {
+                    "date": "Fri Oct 02 14:11:09 GMT 2020",
+                    "remediationTime": "4.0"
+                }
+            ]
+        },
+        {
+            "projectName": "DevSecOps Project",
+            "remediationList": [
+                {
+                    "date": "Sun Jul 10 14:11:09 GMT 2020",
+                    "remediationTime": "2.0"
+                },
+                {
+                    "date": "Fri Jul 24 14:11:09 GMT 2020",
+                    "remediationTime": "12.0"
+                },
+                {
+                    "date": "Fri Aug 07 14:11:09 GMT 2020",
+                    "remediationTime": "10.0"
+                },
+                {
+                    "date": "Fri Aug 21 14:11:09 GMT 2020",
+                    "remediationTime": "3.0"
+                },
+                {
+                    "date": "Fri Sept 04 14:11:09 GMT 2020",
+                    "remediationTime": "3.0"
+                },
+                {
+                    "date": "Fri Sept 18 14:11:09 GMT 2020",
+                    "remediationTime": "8.0"
+                },
+                {
+                    "date": "Fri Oct 02 14:11:09 GMT 2020",
+                    "remediationTime": "4.0"
+                },
+      
+            ]
+        }
+    ]
+    }
   }
+  
   // getTotalCount=()=>{
   //   var items = this.props.summaryCharts.defectOverview
   //     this.setState({
@@ -159,20 +163,41 @@ class Overview extends Component {
   //     })    
   // };
   fetchChartsData = () => {
-    this.props.summaryChartDataDispatch(this.props.currentExecId);
+     if(this.props.currentClientId){
+      this.props.summaryChartDataDispatch(this.props.currentClientId,this.props.currentExecId);
+    }
     this.state.secuityData.sort((a, b)=> b.count -a.count);
-    // setTimeout(()=>this.getTotalCount(),3000);
+    this.setState({
+      show: false,
+    });
   };
-  componentDidMount() {
-    this.props.clientListDispatch();
+
+  UNSAFE_componentWillMount() {
     this.fetchChartsData();
-  };
+  }
+
+  componentDidMount() {  
+    this.fetchChartsData();
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if(this.props.currentClientId !== nextProps.currentClientId) {
+      nextProps.summaryChartDataDispatch(nextProps.currentClientId, nextProps.currentExecId);
+        this.setState({
+          all_data: false
+        });
+    }
+    // console.log('from receview ',nextProps.currentClientId);
+  }
 
   render() {
         const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
         const labels = labelConst.filter((item)=> item.clientName === clientName );
         const bgTheme = labels[0].mappings.bgColor;
-      return (        
+        if (this.state.show) {
+          return <Spinner show="true"/>;
+        } else {
+          return (      
         <React.Fragment>
         <Row className={`px-3 py-4 ${bgTheme ? '' : 'bg-light'}`}>
         <Col
@@ -321,13 +346,16 @@ class Overview extends Component {
         </Row>
       </React.Fragment>
       );
+      }
     }
   }
 //function to map the state received from reducer
 
 const mapStateToProps = state => {
-  return {    
+  console.log(state.execData)
+  return {  
     currentExecId: state.execData.executiveId,
+    currentClientId: state.execData.currentClientId,
     summaryCharts: state.summaryData.summaryChartData,
   };
 };
@@ -335,7 +363,7 @@ const mapStateToProps = state => {
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ clientListDispatch,summaryChartDataDispatch }, dispatch);
+  return bindActionCreators({summaryChartDataDispatch }, dispatch);
 };
 
 //Connect react component to redux

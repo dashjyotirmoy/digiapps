@@ -36,7 +36,8 @@ class Insights extends Component {
       isClearable: true,
       items: [],
       projectList:[],
-      selectedProduct: ""
+      selectedProduct: "",
+      clientId:''
     }
   }
   // Project List Dropdown starts here
@@ -46,9 +47,9 @@ class Insights extends Component {
   branchOnSelectHandler= (branchId, evtKey) => {
     this.updateBranch(branchId);
   };
-  getBranchDetails = (projectID, projName) => {
+  getBranchDetails = (clientId,projectID, projName) => {
     api
-      .getBranchDropdownInsight(projectID, projName)
+      .getBranchDropdownInsight(clientId,projectID, projName)
       .then(this.setBranch)
       .catch(error => {
         console.error(error);
@@ -67,8 +68,8 @@ class Insights extends Component {
       branchDropData: branchDetail,
        selectedBranch: branchDetail[selectedIndex].projectName
      });
-     this.props.insightsSecurity(branchDetail[selectedIndex].projectName, this.props.projectID,this.state.selectedProduct);
-     this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
+     this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.projectID,this.state.selectedProduct);
+     this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
     };
   setProject = (res) => {
     const projects = res.data;
@@ -86,7 +87,7 @@ class Insights extends Component {
       repoData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-    this.getBranchDetails(this.props.projectID, projects[selectedIndex].projectName);
+    this.getBranchDetails(this.state.clientId,this.props.projectID, projects[selectedIndex].projectName);
   }
   else{
     this.setState({
@@ -109,8 +110,8 @@ class Insights extends Component {
       branchDropData: branchDetail,
       selectedBranch: branchDetail[selectedIndex].projectName
     }); 
-    this.props.insightsSecurity(branchDetail[selectedIndex].projectName, this.props.projectID,this.state.selectedProduct);
-    this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
+    this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.projectID,this.state.selectedProduct);
+    this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
     
   };
   updateProject = projectId => {
@@ -126,7 +127,7 @@ class Insights extends Component {
       repoData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-    this.getBranchDetails(this.props.projectID, prrojDetail[selectedIndex].projectName);
+    this.getBranchDetails(this.state.clientId,this.props.projectID, prrojDetail[selectedIndex].projectName);
   };
  
   markSelected = (prodList, id) => {
@@ -155,7 +156,7 @@ class Insights extends Component {
     });
     //setTimeout(() => {
       api
-      .getProjectDropdownInsight(this.props.projectID)
+      .getProjectDropdownInsight(this.state.clientId,this.props.projectID)
       .then(this.setProject)
       .catch(error => {
         console.error(error);
@@ -178,6 +179,11 @@ class Insights extends Component {
     ) {
       this.setState({
         all_data: true
+      });
+    }
+    if(this.props.currentClientId !== nextProps.currentClientId){
+      this.setState({
+        clientId: nextProps.currentClientId
       });
     }
   }
@@ -295,6 +301,7 @@ class Insights extends Component {
 const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
+    currentClientId: state.execData.currentClientId,
     projectID: state.productDetails.currentProject.projectDetails.id,
     teamId: state.productDetails.currentSprint.teamId,
     velocityInsightDetails: state.insightData.velocityInsightDetails,

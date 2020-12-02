@@ -46,6 +46,7 @@ class Velocity extends Component {
     showRemovedItemsList: [],
     removed: [],
     bgTheme:'',
+    clientId:''
   };
 
   addCharts = (event) => {
@@ -117,11 +118,11 @@ class Velocity extends Component {
   //function that create charts based on the data from services
 
   createCharts = (list, removed) => {
-    let updatedList = list.filter((ele, index) => {
+    let updatedList =list && list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
 
-    updatedList.map(ele => {
+    updatedList && updatedList.map(ele => {
       ele.component = this.setChart(
         ele.type,
         translations[ele.title.toLowerCase()] || ele.title,
@@ -169,7 +170,7 @@ class Velocity extends Component {
   // function that create the chart object to paint the chart
 
   createChartObject = rawData => {
-    const processedData = rawData.map(ele => {
+    const processedData = rawData && rawData.map(ele => {
       return {
         name: ele.name,
         type:
@@ -199,10 +200,11 @@ class Velocity extends Component {
     if (
       this.props.sprintId !== nextProps.sprintId &&
       nextProps.projId &&
-      nextProps.sprintId
+      nextProps.sprintId && nextProps.currentClientId && this.state.showRemovedItemsList
     ) {
       this.setState({
-        all_data: true
+        all_data: true,
+        clientId: nextProps.currentClientId
       });
     }
   }
@@ -234,7 +236,7 @@ class Velocity extends Component {
   setDefaultData() {
     // let type;
     this.props
-      .velocityProjectDataDispatch(this.props.projId)
+      .velocityProjectDataDispatch(this.props.projId,this.state.clientId)
       .then(item => {
         if (this.props.velocityProjectData.jobDetailDtoList.length > 0) {
           this.setRepository(this.props.velocityProjectData);
@@ -314,13 +316,14 @@ class Velocity extends Component {
 
   //function to fetch charts data
 
-  fetchChartsData = () => {
+  fetchChartsData = () => {debugger
     this.setState({
       all_data: false,
       charts: []
     });
     this.props
       .chartDataDispatch(
+        this.state.clientId,
         this.props.currentExecId,
         this.props.projId,
         this.props.sprintId,
@@ -452,13 +455,13 @@ class Velocity extends Component {
             </Col>
                ) : null}
             <Col md={3} className="mt-auto"><p className={`font-size-small m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>You are viewing data at <b>{this.state.filterStatus}</b>  level</p></Col>
-            { this.state.showRemovedItemsList.length > 0 && this.state.componentType === "velocity" ? 
+            {this.state.componentType === "velocity" ? 
             <span className="text-white ml-auto w-20">
             <p className={`m-0 font-size-smaller ${bgTheme ? '' : 'text-dark'}`}>Add Widgets</p>
             <select className="drop repo-height text-white rounded border border-light w-100" onChange={(event)=> this.addCharts(event)} >
             <option selected value=''>Select Widget</option>
               {
-                this.state.showRemovedItemsList.map((item, index) =>
+                this.state.showRemovedItemsList && this.state.showRemovedItemsList.map((item, index) =>
                 <option key={index} value={item.name} >
                         {item.name}
               </option>
@@ -489,6 +492,7 @@ class Velocity extends Component {
 const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
+    currentClientId: state.execData.currentClientId,
     velocityCharts: state.chartData.currentChartData.chartDetails,
     projId: state.productDetails.currentProject.projectDetails.id,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,

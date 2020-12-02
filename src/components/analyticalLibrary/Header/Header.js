@@ -4,9 +4,11 @@ import React, { Component } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
 import john from "../../../content/img/user-default.png";
-import { clientListDispatch,execAllDispatch } from "../../../store/actions/executiveInsights";
+import {clientListDispatch,execAllDispatch } from "../../../store/actions/executiveInsights";
+import Spinner from "../Spinner/Spinner";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import api from "../../../utility/Http/devOpsApis";
 
 const Styles = styled.div`
   .navbar {
@@ -27,14 +29,37 @@ const Styles = styled.div`
 `;
 class Header extends Component {
   state = {
-    userName: "John Smith",
-    designation: "Executive",
-    navListItem: ["Red", "Black", "Blue"],
-    labelConst: this.props.labelsConst
-  };
-  componentDidMount() {
-    this.props.execAllDispatch();
-  }
+      userName: "John Smith",
+      designation: "Executive",
+      navListItem: ["Red", "Black", "Blue"],
+      labelConst: this.props.labelsConst,
+      show: true,
+      clientList: [{name: "aia", clientId: "AIA"},
+        {name: "digitalops", clientId: "DOPS"},
+        {name: "wpc", clientId: "WPC"}]
+    }
+getClientId = (clientDetails) => {
+  let currentUrl = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+  let currentId = clientDetails.filter((item,index) => item.name === currentUrl);
+  return currentId;
+};
+fetchChartsData = (res) => {
+  const clientId = this.getClientId(res.data.clientsList);
+  this.props.clientListDispatch(clientId[0].clientId);
+  //this.props.execAllDispatch();
+  this.setState({
+    show: false,
+  });
+  // setTimeout(()=>this.getTotalCount(),3000);
+};
+componentDidMount() {
+  api
+      .getAllClientList()
+      .then(this.fetchChartsData)
+      .catch(error => {
+        console.error(error);
+      });
+}
   render() {
     const listItem = this.state.navListItem.map((val, index) => {
       return (
@@ -49,7 +74,7 @@ class Header extends Component {
     return (
       <Styles>
         <Navbar bg="light" expand="md">
-          <Navbar.Brand href="/digitalops/execDashboard/security">{this.state.labelConst.mappings.logoName}</Navbar.Brand>
+    <Navbar.Brand href="/digitalops/execDashboard/security">{this.state.labelConst.mappings.logoName}</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
@@ -96,14 +121,15 @@ class Header extends Component {
 
 const mapStateToProps = state => {
   return {
-    getAllExecInfo: state.execData.executiveInfo,
+    clientList: state.execData.clientlist,
+    getAllExecInfo: state.execData.executiveInfo    
   };
 };
 
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ clientListDispatch,execAllDispatch }, dispatch);
+  return bindActionCreators({clientListDispatch,execAllDispatch }, dispatch);
 };
 
 //Connect react component to redux
