@@ -3,7 +3,7 @@ import api from "../../utility/Http/devOpsApis";
 
 export const securityProjectDataDispatch = (clientId,projectId) =>
   //   sprintId
-  async dispatch => {debugger
+  async dispatch => {
     try {
       if (projectId) {
         const response = await api.getSecurityProjectData(clientId,projectId);
