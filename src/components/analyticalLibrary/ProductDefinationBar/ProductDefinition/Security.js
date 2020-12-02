@@ -74,10 +74,10 @@ class Security extends Component {
 
     setDefaultData() {
       let type;
-      this.props.vulnerabilityDataDispatch(this.state.clientId,this.props.projectID)
+      this.props.vulnerabilityDataDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId,this.props.projectID)
 
       this.props
-        .securityProjectDataDispatch(this.state.clientId,this.props.projectID)
+        .securityProjectDataDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId,this.props.projectID)
         .then(item => {
           if (this.props.securityProjectData.projectDetail.length > 0) {
             this.setRepository(this.props.securityProjectData);

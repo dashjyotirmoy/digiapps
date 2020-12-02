@@ -107,6 +107,7 @@ class Quality extends Component {
     showRemovedItemsList: [],
     removed: [],
     bgTheme:'',
+    clientId:''
   };
   onDisplayMetricsClickHandler = (metricType) => {
     // eslint-disable-next-line default-case
@@ -166,10 +167,7 @@ class Quality extends Component {
       metricType: "",
     });
   };
-  // routeToSecurity = () => {
-  //   this.props.history.push("/security");
-  // };
-  fetchQualityData = () => {
+  fetchQualityData = (props) => {
     this.setState({
       show: true,
       all_data: false,
@@ -188,9 +186,14 @@ class Quality extends Component {
   };
 
   setDefaultQualityData() {
+    if(this.state.clientId === undefined || this.state.clientId === ''){
+      this.setState({
+        clientId: this.props.currentClientId
+      })
+    }
     let type;
     this.props
-      .qualityDataDispatch(this.state.clientId,this.props.currentExecId,this.props.projectID)
+      .qualityDataDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId,this.props.currentExecId,this.props.projectID)
       .then((item) => {
         // if (this.props.qualityData.repositories.length > 0) {
         this.initialData = this.props.qualityData;
@@ -497,10 +500,14 @@ class Quality extends Component {
     });
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.projectID !== nextProps.projectID && nextProps.currentClientId) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props.projectID !== nextProps.projectID) {
       this.setState({
         all_data: true,
+      });
+    }
+    if (this.props.currentClientId !== nextProps.currentClientId) {
+      this.setState({
         clientId: nextProps.currentClientId
       });
     }

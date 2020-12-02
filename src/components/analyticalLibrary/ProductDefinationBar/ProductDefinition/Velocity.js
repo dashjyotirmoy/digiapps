@@ -196,14 +196,18 @@ class Velocity extends Component {
 
   //compare the current props and incoming props
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (
       this.props.sprintId !== nextProps.sprintId &&
       nextProps.projId &&
-      nextProps.sprintId && nextProps.currentClientId && this.state.showRemovedItemsList
+      nextProps.sprintId
     ) {
       this.setState({
-        all_data: true,
+        all_data: true
+      });
+    }
+    if(this.props.currentClientId !== nextProps.currentClientId){
+      this.setState({
         clientId: nextProps.currentClientId
       });
     }
@@ -316,14 +320,14 @@ class Velocity extends Component {
 
   //function to fetch charts data
 
-  fetchChartsData = () => {debugger
+  fetchChartsData = (props) => {
     this.setState({
       all_data: false,
       charts: []
     });
     this.props
       .chartDataDispatch(
-        this.state.clientId,
+        this.state.clientId ? this.state.clientId:this.props.currentClientId,
         this.props.currentExecId,
         this.props.projId,
         this.props.sprintId,
