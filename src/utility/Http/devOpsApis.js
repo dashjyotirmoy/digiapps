@@ -1,149 +1,155 @@
 import axios from "axios";
 const fallback = "http://10.170.166.57:8080";
-const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
-const clientname = clientName !== 'digitalops' ? "/"+clientName : '';
+// const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+// const clientname = clientName !== 'digitalops' ? "/"+clientName : '';
+// const mainBase =
+//   `https://fsdet-digitalctp.eastus.cloudapp.azure.com${clientname}/digitalops-service`;
 const mainBase =
-  `https://fsdet-digitalctp.eastus.cloudapp.azure.com${clientname}/digitalops-service`;
+  `https://fsdet-digitalctp.eastus.cloudapp.azure.com/digitalops-service`;
 const devovOpsApi = axios.create({
   baseURL: mainBase
 });
 const getAllClientList = () => {
   return devovOpsApi.get(`/clientDetails/fetchClientList`);
 };
-const getAllExecutives = () => {
-  return devovOpsApi.get(`/executive/all`);
-};
-const getExecInsightsData = execId => {
-  return devovOpsApi.get(`/executive/${execId}/executive-insights`);
+const getWidgetList = (clientId) => {
+  return devovOpsApi.get(`/clientDetails/fetchWidgetList?clientId=${clientId}`);
 };
 
-const getVelocityData = (execId, projectId, sprintId, teamID) => {
-  return devovOpsApi.get(
-    `/widget/velocity-efficiency-insights?executiveId=${execId}&projectId=${projectId}&sprintId=${sprintId}&teamId=${teamID}`
-  );
+const getAllExecutives = (clientId) => {
+  return devovOpsApi.get(`/executive/all?clientId=${clientId}`);
 };
-const getSummaryData = (execId) => {
-  return devovOpsApi.get(
-    `/summary/velocity?executiveId=${execId}`
-  );
-};
-const getProjectInsightsData = (projectId, execId) => {
-  return devovOpsApi.get(
-    `/project/${projectId}/project-insights?executiveId=${execId}`
-  );
+const getExecInsightsData = (execId,clientId) => {
+  return devovOpsApi.get(`/executive/${execId}/executive-insights?clientId=${clientId}`);
 };
 
-const getSprintInsightsData = (sprintId, execId, projectId, teamID) => {
+const getVelocityData = (clientId,execId, projectId, sprintId, teamID) => {
   return devovOpsApi.get(
-    `sprint/${sprintId}/sprint-insights?executiveId=${execId}&projectId=${projectId}&teamId=${teamID}`
+    `/widget/velocity-efficiency-insights?clientId=${clientId}&executiveId=${execId}&projectId=${projectId}&sprintId=${sprintId}&teamId=${teamID}`
+  );
+};
+const getSummaryData = (clientId,execId) => {
+  return devovOpsApi.get(
+    `/summary/velocity?clientId=${clientId}&executiveId=${execId}`
+  );
+};
+const getProjectInsightsData = (projectId,clientId,execId) => {
+  return devovOpsApi.get(
+    `/project/${projectId}/project-insights?clientId=${clientId}&executiveId=${execId}`
   );
 };
 
-const getQualityMetricsData = (execId, projectId) => {
+const getSprintInsightsData = (sprintId,clientId,execId, projectId, teamID) => {
   return devovOpsApi.get(
-    `/widget/quality-insights?executiveId=${execId}&projectId=${projectId}`
+    `sprint/${sprintId}/sprint-insights?clientId=${clientId}&executiveId=${execId}&projectId=${projectId}&teamId=${teamID}`
   );
 };
-const getQualityReleaseMetricsData = (branchName,execId, projectId,releaseName, repoName) => {
+
+const getQualityMetricsData = (clientId,execId, projectId) => {
   return devovOpsApi.get(
-    `/widget/quality-insights?branchName=${branchName}&executiveId=${execId}&projectId=${projectId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
+    `/widget/quality-insights?clientId=${clientId}&executiveId=${execId}&projectId=${projectId}`
   );
 };
-const getQualityMetricsDrilledDownData = (execId,metricsType,repoId, projectId) => {
+const getQualityReleaseMetricsData = (branchName,clientId,execId, projectId,releaseName, repoName) => {
   return devovOpsApi.get(
-    `/widget/quality-insights/charts?executiveId=${execId}&metric=${metricsType}&repoId=${repoId}&projectId=${projectId}`
+    `/widget/quality-insights?branchName=${branchName}&clientId=${clientId}&executiveId=${execId}&projectId=${projectId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
   );
 };
-const getQualityMetricsDrilledFilterDownData = (branchName,execId,metricsType,projectId,releaseName,repoId,repoName) => {
+const getQualityMetricsDrilledDownData = (clientId,execId,metricsType,repoId, projectId) => {
   return devovOpsApi.get(
-    `/widget/quality-insights/charts?branchName=${branchName}&executiveId=${execId}&metric=${metricsType}&projectId=${projectId}&releaseNumber=${releaseName}&repoId=${repoId}&repositoryName=${repoName}`
+    `/widget/quality-insights/charts?clientId=${clientId}&executiveId=${execId}&metric=${metricsType}&repoId=${repoId}&projectId=${projectId}`
+  );
+};
+const getQualityMetricsDrilledFilterDownData = (branchName,clientId,execId,metricsType,projectId,releaseName,repoId,repoName) => {
+  return devovOpsApi.get(
+    `/widget/quality-insights/charts?branchName=${branchName}&clientId=${clientId}&executiveId=${execId}&metric=${metricsType}&projectId=${projectId}&releaseNumber=${releaseName}&repoId=${repoId}&repositoryName=${repoName}`
   );
 };
 // widget/quality-insights/charts?executiveId={} &projectId={}&repoId={}&metric={}
 
-const getSecurityProjectData = (projectId) => {
+const getSecurityProjectData = (clientId,projectId) => {
   return devovOpsApi.get(
-    `/widget/security-insights/product?productId=${projectId}`
+    `/widget/security-insights/product?clientId=${clientId}&productId=${projectId}`
   );
 };
 
-const getVelocityProjectData = (projectId) => {
+const getVelocityProjectData = (projectId,clientId) => {
   return devovOpsApi.get(
-    `/build/${projectId}/jobs`
+    `/build/${projectId}/jobs?clientId=${clientId}`
   );
 };
 
-const getSecurityRepoData = (projectId, repoId) => {
+const getSecurityRepoData = (clientId,projectId, repoId) => {
   return devovOpsApi.get(
-    `/widget/security-insights/repos?productId=${projectId}&projectId=${repoId}`
+    `/widget/security-insights/repos?clientId=${clientId}&productId=${projectId}&projectId=${repoId}`
   );
 };
-const getSecurityReleaseData = (branchName,projectId, repoId, releaseName, repoName) => {
+const getSecurityReleaseData = (branchName,clientId,projectId, repoId, releaseName, repoName) => {
   return devovOpsApi.get(
-    `/widget/security-insights/repos?branchName=${branchName}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
+    `/widget/security-insights/repos?branchName=${branchName}&clientId=${clientId}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
   );
 };
 
-const getSecurityPolicyData = (projectId, repoId) => {
+const getSecurityPolicyData = (clientId,projectId, repoId) => {
   return devovOpsApi.get(
-    `/widget/security-insights/policies?productId=${projectId}&projectId=${repoId}`
+    `/widget/security-insights/policies?clientId=${clientId}&productId=${projectId}&projectId=${repoId}`
   );
 }
-const getSecurityReleasePolicyData = (branchName,projectId,repoId,releaseName,repoName) => {
+const getSecurityReleasePolicyData = (branchName,clientId,projectId,repoId,releaseName,repoName) => {
   return devovOpsApi.get(
-    `/widget/security-insights/policies?branchName=${branchName}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
-  );
-}
-
-const getSecurityAlertData = (projectId, repoId) => {
-  return devovOpsApi.get(
-    `/widget/security-insights/alerts?productId=${projectId}&projectId=${repoId}`
+    `/widget/security-insights/policies?branchName=${branchName}&clientId=${clientId}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
   );
 }
 
-const getSecurityReleaseAlertData = (branchName,filterID,projectId,repoId,releaseName,repoName) => {
+const getSecurityAlertData = (clientId,projectId, repoId) => {
   return devovOpsApi.get(
-    `/widget/security-insights/alerts?branchName=${branchName}&filter=${filterID}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
-  );
-}
-const getVelocityBuildData = (projectId, repoId) => {
-  return devovOpsApi.get(
-    `/build/${projectId}/build-trend?projectId=${repoId}`
+    `/widget/security-insights/alerts?clientId=${clientId}&productId=${projectId}&projectId=${repoId}`
   );
 }
 
-const getQualityBuildData = (projectId, repoId) => {
+const getSecurityReleaseAlertData = (branchName,clientId,filterID,projectId,repoId,releaseName,repoName) => {
   return devovOpsApi.get(
-    `/build/${projectId}/build-metrics?projectId=${repoId}`
+    `/widget/security-insights/alerts?branchName=${branchName}&clientId=${clientId}&filter=${filterID}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
+  );
+}
+const getVelocityBuildData = (projectId,clientId,repoId) => {
+  return devovOpsApi.get(
+    `/build/${projectId}/build-trend?clientId=${clientId}&projectId=${repoId}`
   );
 }
 
-const getSecurityMonthAlertData = (projectId, repoId, filtertype) => {
+const getQualityBuildData = (projectId,clientId,repoId) => {
   return devovOpsApi.get(
-    `/widget/security-insights/alerts?filter=${filtertype}&productId=${projectId}&projectId=${repoId}`
+    `/build/${projectId}/build-metrics?clientId=${clientId}&projectId=${repoId}`
   );
 }
-const getSecurityInsightsData = (branchName,projectId,repoName) => {
-  return devovOpsApi.get(`/insights/security?branchName=${branchName}&productId=${projectId}&repositoryName=${repoName}`);
-};
-const getVelocityInsightsData = (execId,projectId,teamID) => {
-  return devovOpsApi.get(`/insights/velocity?executiveId=${execId}&productId=${projectId}&teamId=${teamID}`);
-};
-const getQualityInsightsData = (branchName,execId,projectId,repoName) => {
-  return devovOpsApi.get(`/insights/quality?branchName=${branchName}&executiveId=${execId}&productId=${projectId}&repositoryName=${repoName}`);
-};
-const getProjectDropdownInsight = (projectId) => {
-  return devovOpsApi.get(`/common/dropdown/repository?productId=${projectId}`);
-};
-const getBranchDropdownInsight = (projectId,repoName) => {
-  return devovOpsApi.get(`/common/dropdown/branch?productId=${projectId}&repositoryName=${repoName}`);
-};
-const getReleaseDropdownInsight = (branchName,projectId,repoName) => {
-  return devovOpsApi.get(`/common/dropdown/release?branchName=${branchName}&productId=${projectId}&repositoryName=${repoName}`);
-};
-const getVulnerabilityData = (projectId) => {
+
+const getSecurityMonthAlertData = (clientId,projectId, repoId, filtertype) => {
   return devovOpsApi.get(
-    `/widget/security-insights/vulnerability-detail?productId=${projectId}`
+    `/widget/security-insights/alerts?clientId=${clientId}&filter=${filtertype}&productId=${projectId}&projectId=${repoId}`
+  );
+}
+const getSecurityInsightsData = (branchName,clientId,projectId,repoName) => {
+  return devovOpsApi.get(`/insights/security?branchName=${branchName}&clientId=${clientId}&productId=${projectId}&repositoryName=${repoName}`);
+};
+const getVelocityInsightsData = (clientId,execId,projectId,teamID) => {
+  return devovOpsApi.get(`/insights/velocity?clientId=${clientId}&executiveId=${execId}&productId=${projectId}&teamId=${teamID}`);
+};
+const getQualityInsightsData = (branchName,clientId,execId,projectId,repoName) => {
+  return devovOpsApi.get(`/insights/quality?branchName=${branchName}&clientId=${clientId}&executiveId=${execId}&productId=${projectId}&repositoryName=${repoName}`);
+};
+const getProjectDropdownInsight = (clientId,projectId) => {
+  return devovOpsApi.get(`/common/dropdown/repository?clientId=${clientId}&productId=${projectId}`);
+};
+const getBranchDropdownInsight = (clientId,projectId,repoName) => {
+  return devovOpsApi.get(`/common/dropdown/branch?clientId=${clientId}&productId=${projectId}&repositoryName=${repoName}`);
+};
+const getReleaseDropdownInsight = (branchName,clientId,projectId,repoName) => {
+  return devovOpsApi.get(`/common/dropdown/release?branchName=${branchName}&clientId=${clientId}&productId=${projectId}&repositoryName=${repoName}`);
+};
+const getVulnerabilityData = (clientId,projectId) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/vulnerability-detail?clientId=${clientId}&productId=${projectId}`
   );
 };
 export default {
@@ -175,5 +181,6 @@ export default {
   getReleaseDropdownInsight,
   getQualityReleaseMetricsData,
   getSummaryData,
-  getVulnerabilityData
+  getVulnerabilityData,
+  getWidgetList
 };

@@ -323,7 +323,7 @@ class QualityGraph {
 
   generateDefect(options) {
     let final_data = [];
-    this.res.data.map(data => {
+    this.res.data && this.res.data.map(data => {
       let temp_data = {},
         rawDate;
       rawDate = data.date.split("T");
@@ -455,10 +455,10 @@ class QualityGraph {
       newURL,
       organization = this.res.organization,
       low_value = [];
-    critical_value.push(parseInt(this.res.data.criticalBugs.totalCount));
-    high_value.push(parseInt(this.res.data.highBugs.totalCount));
-    medium_value.push(parseInt(this.res.data.mediumBugs.totalCount));
-    low_value.push(parseInt(this.res.data.lowBugs.totalCount));
+      critical_value.push(parseInt(this.res.data.criticalBugs.totalCount));
+      high_value.push(parseInt(this.res.data.highBugs.totalCount));
+      medium_value.push(parseInt(this.res.data.mediumBugs.totalCount));
+      low_value.push(parseInt(this.res.data.lowBugs.totalCount));
     options.chart = {
       type: "bar",
       height: 300,

@@ -1,12 +1,12 @@
 import * as actionTypes from "./actionTypes";
 import api from "../../utility/Http/devOpsApis";
 
-export const securityProjectDataDispatch = (projectId) =>
+export const securityProjectDataDispatch = (clientId,projectId) =>
   //   sprintId
-  async dispatch => {
+  async dispatch => {debugger
     try {
       if (projectId) {
-        const response = await api.getSecurityProjectData(projectId);
+        const response = await api.getSecurityProjectData(clientId,projectId);
         dispatch({
         type: actionTypes.SET_SECURITY_PROJECT_DETAILS,
         payload: {
@@ -20,11 +20,11 @@ export const securityProjectDataDispatch = (projectId) =>
       console.error(error);
     }
   };
-  export const vulnerabilityDataDispatch = (projectId) =>
+  export const vulnerabilityDataDispatch = (clientId,projectId) =>
   async dispatch => {
     try {
       if (projectId) {
-        const response = await api.getVulnerabilityData(projectId);
+        const response = await api.getVulnerabilityData(clientId,projectId);
         dispatch({
         type: actionTypes.SET_VULNERABILITY_DETAILS,
         payload: {
@@ -54,10 +54,10 @@ export const securityRepoDataDispatch = (projectId, repoId) =>
       console.error(error);
     }
   }
-  export const securityReleaseDataDispatch = (branchName,projectId, repoId, releaseId, repoName) => 
+  export const securityReleaseDataDispatch = (branchName,clientId,projectId, repoId, releaseId, repoName) => 
   async dispatch => {
     try {
-      const response = await api.getSecurityReleaseData(branchName,projectId, repoId, releaseId,repoName);
+      const response = await api.getSecurityReleaseData(branchName,clientId,projectId, repoId, releaseId,repoName);
       dispatch({
         type: actionTypes.SET_SECURITY_RELEASE_DETAILS,
         payload: {
@@ -70,10 +70,10 @@ export const securityRepoDataDispatch = (projectId, repoId) =>
     }
   }
   
-export const securityPolicyDataDispatch = (projectId, repoId) => 
+export const securityPolicyDataDispatch = (clientId,projectId, repoId) => 
   async dispatch => {
     try {
-      const response = await api.getSecurityPolicyData(projectId, repoId);
+      const response = await api.getSecurityPolicyData(clientId,projectId, repoId);
       dispatch({
         type: actionTypes.SET_SECURITY_POLICY_DETAILS,
         payload: {
@@ -85,10 +85,10 @@ export const securityPolicyDataDispatch = (projectId, repoId) =>
       console.error(error);
     }
   }
-  export const securityReleasePolicyDataDispatch = (branchName,projectId,repoId,releaseName,repoName) => 
+  export const securityReleasePolicyDataDispatch = (branchName,clientId,projectId,repoId,releaseName,repoName) => 
   async dispatch => {
     try {
-      const response = await api.getSecurityReleasePolicyData(branchName,projectId,repoId,releaseName,repoName);
+      const response = await api.getSecurityReleasePolicyData(branchName,clientId,projectId,repoId,releaseName,repoName);
       dispatch({
         type: actionTypes.SET_SECURITY_RELEASE_POLICY_DETAILS,
         payload: {
@@ -102,10 +102,10 @@ export const securityPolicyDataDispatch = (projectId, repoId) =>
   }
   // getSecurityMonthAlertData
 
-  export const securityAlertDataDispatch = (projectId, repoId) => 
+  export const securityAlertDataDispatch = (clientId,projectId, repoId) => 
   async dispatch => {
     try {
-      const response = await api.getSecurityAlertData(projectId, repoId);
+      const response = await api.getSecurityAlertData(clientId,projectId, repoId);
       dispatch({
         type: actionTypes.SET_SECURITY_ALERT_DETAILS,
         payload: {
@@ -118,10 +118,10 @@ export const securityPolicyDataDispatch = (projectId, repoId) =>
     }
   }
 // get alert data from release label
-  export const securityReleaseAlertDataDispatch = (branchName,filterID,projectId,repoId,releaseName,repoName) => 
+  export const securityReleaseAlertDataDispatch = (branchName,clientId,filterID,projectId,repoId,releaseName,repoName) => 
   async dispatch => {
     try {
-      const response = await api.getSecurityReleaseAlertData(branchName,filterID,projectId,repoId,releaseName,repoName);
+      const response = await api.getSecurityReleaseAlertData(branchName,clientId,filterID,projectId,repoId,releaseName,repoName);
       dispatch({
         type: actionTypes.SET_SECURITY_RELEASE_ALERT_DETAILS,
         payload: {
@@ -159,10 +159,10 @@ export const repoDropValDispatchSecurity = type => dispatch => {
   });
 };
 export const insightsSecurity = (
-  branchName, projectId, repoName
+  branchName,clientId,projectId, repoName
 ) => async dispatch => {
   api
-    .getSecurityInsightsData(branchName, projectId, repoName)
+    .getSecurityInsightsData(branchName,clientId,projectId, repoName)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_SECURITY_DETAILS,

@@ -40,19 +40,34 @@ class ProductInfoBar extends Component {
     prodAggView: false,
     repoData: [],
     selectedRepo: "",
-    show: true
+    show: true,
+    clientId:''
   };
 
   //axios call to fetch executive data
-
-  componentDidMount() {
-    this.props.execInsightsDispatch(this.props.executiveId);
-    api
-      .getExecInsightsData(this.props.executiveId)
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if(this.props.currentClientId !== nextProps.currentClientId) {
+      nextProps.execInsightsDispatch(nextProps.executiveId,nextProps.currentClientId);
+      api
+      .getExecInsightsData(this.props.executiveId,nextProps.currentClientId)
       .then(this.setProject)
       .catch(error => {
         console.error(error);
       });
+      this.setState({
+        clientId: nextProps.currentClientId
+      });
+    }
+  }
+  // this.state.currentClientId
+  componentDidMount() {
+    // this.props.execInsightsDispatch(this.props.executiveId,this.props.currentClientId);
+    // api
+    //   .getExecInsightsData(this.props.executiveId,this.props.currentClientId)
+    //   .then(this.setProject)
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
   }
 
   //Handling project Data starts
@@ -72,8 +87,7 @@ class ProductInfoBar extends Component {
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-
-    this.getProjectDetails(projects[selectedIndex].id, this.props.executiveId);
+    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId, this.props.executiveId);
   };
 
   //function to update project details when project dropdown values are changed
@@ -91,16 +105,16 @@ class ProductInfoBar extends Component {
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-    this.getProjectDetails(projects[selectedIndex].id, this.props.executiveId);
+    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId,this.props.executiveId);
   };
 
   //axios call to fetch project details
 
-  getProjectDetails = (projectID, executiveId) => {
+  getProjectDetails = (projectID,clientId,executiveId) => {
     // this.props.qualityDataDispatch(projectID, executiveId);
-    this.props.projInsightDispatch(projectID, executiveId);
+    this.props.projInsightDispatch(projectID,clientId,executiveId);
     api
-      .getProjectInsightsData(projectID, executiveId)
+      .getProjectInsightsData(projectID,clientId,executiveId)
       .then(this.setTeams)
       .catch(error => {
         console.error(error);
@@ -115,6 +129,7 @@ class ProductInfoBar extends Component {
   getSprintData = (sprintId, selectedProjectId, teamID) => {
     this.props.sprintInsightsDispatch(
       sprintId,
+      this.state.clientId,
       this.props.executiveId,
       this.props.projectID,
       teamID
@@ -142,7 +157,7 @@ class ProductInfoBar extends Component {
       selectedTeamId: teamDetails[teamData.selectedIndex].id,
       show: false
     });
-    this.props.insightsVelocity(this.props.executiveId, this.props.projectID, teamDetails[teamData.selectedIndex].id);
+    this.props.insightsVelocity(this.state.clientId,this.props.executiveId, this.props.projectID, teamDetails[teamData.selectedIndex].id);
     this.setSprint(
       teams,
       teamDetails[teamData.selectedIndex].id,
@@ -167,7 +182,7 @@ class ProductInfoBar extends Component {
       selectedTeam: teamDetail[selectedIndex].projectName
     });
     this.setSprint(teams, teams[selectedIndex].id, selectedIndex, true);
-    this.props.insightsVelocity(this.props.executiveId, this.props.projectID, teams[selectedIndex].id);
+    this.props.insightsVelocity(this.state.clientId,this.props.executiveId, this.props.projectID, teams[selectedIndex].id);
   };
 
   //method to set current sprint value and set sprint details
@@ -275,6 +290,7 @@ class ProductInfoBar extends Component {
 
   getQualityData = () => {
     const qualityData = api.getQualityMetricsData(
+      this.state.clientId,
       this.props.executiveId,
       this.props.projectID
     );
@@ -379,9 +395,9 @@ class ProductInfoBar extends Component {
       : prodAggDisabled;
     const Donut = Components["Donut"];
 
-    if (this.state.show) {
-      return <Spinner show={this.state.show} />;
-    } else {
+    // if (this.state.show) {
+    //   return <Spinner show="true" />;
+    // } else {
       return (
         <>{!window.location.href.includes("/overview") ?
         <div className={`h-10 ${bgTheme ? 'summary-view' : 'summary-light-view'}`}>
@@ -520,7 +536,7 @@ class ProductInfoBar extends Component {
                 {labels[0].mappings.count.length &&  <Col md={7} lg={8} xl={7} className="h-100">
                     <Row className={`p-0 m-0 h-100 w-100 border ${bgTheme ? 'border-dark' : 'border-light'}`}>
                       <Row className="p-0 m-0 h-100 w-100 d-flex align-items-center justify-content-around ">
-                        {productMetrics.map((item,index) => {
+                        {productMetrics && productMetrics.map((item,index) => {
                           return (
                             <div
                               key={item.id}
@@ -626,16 +642,16 @@ class ProductInfoBar extends Component {
           </Container>
           </div>: null }</>
       );
-    }
+    // }
   }
 }
 
 ////function to map the state received from reducer
 
-const mapStateToProps = state => {
+const mapStateToProps = state => {console.log("prodInfo",state.execData.currentClientId)
   return {
     executiveId: state.execData.executiveId,
-
+    currentClientId: state.execData.currentClientId,
     projectList: state.execData.currentExecutiveInfo.executiveData,
     projectListReceived:
       state.execData.currentExecutiveInfo.executiveDataReceived,

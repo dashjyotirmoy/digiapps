@@ -2,6 +2,7 @@ import * as actionTypes from "./actionTypes";
 import api from "../../utility/Http/devOpsApis";
 
 export const chartDataDispatch = (
+  clientId,
   execId,
   projectId,
   sprintId,
@@ -9,6 +10,7 @@ export const chartDataDispatch = (
 ) => async dispatch => {
   try {
     const response = await api.getVelocityData(
+      clientId,
       execId,
       projectId,
       sprintId,
@@ -26,11 +28,11 @@ export const chartDataDispatch = (
   }
 };
 
-export const velocityProjectDataDispatch = (projectId) =>
+export const velocityProjectDataDispatch = (projectId,clientId) =>
   async dispatch => {
     try {
       if (projectId) {
-        const response = await api.getVelocityProjectData(projectId);
+        const response = await api.getVelocityProjectData(projectId,clientId);
         dispatch({
         type: actionTypes.SET_VELOCITY_PROJECT_DETAILS,
         payload: {
@@ -45,10 +47,10 @@ export const velocityProjectDataDispatch = (projectId) =>
     }
   };
 
-  export const velocityBuildDataDispatch = (projectId, repoId) => 
+  export const velocityBuildDataDispatch = (projectId,clientId,repoId) => 
   async dispatch => {
     try {
-      const response = await api.getVelocityBuildData(projectId, repoId);
+      const response = await api.getVelocityBuildData(projectId,clientId,repoId);
       dispatch({
         type: actionTypes.SET_VELOCITY_BUILD_DETAILS,
         payload: {

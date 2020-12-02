@@ -1,9 +1,9 @@
 import * as actionTypes from "./actionTypes";
 import api from "../../utility/Http/devOpsApis";
 
-export const projInsightDispatch = (projectId, execId) => async dispatch => {
+export const projInsightDispatch = (projectId,clientId,execId) => async dispatch => {
   api
-    .getProjectInsightsData(projectId, execId)
+    .getProjectInsightsData(projectId,clientId,execId)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_PRODUCTS,
