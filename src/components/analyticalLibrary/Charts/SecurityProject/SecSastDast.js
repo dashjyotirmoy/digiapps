@@ -147,7 +147,7 @@ const SecSastDast = props => {
                       {projectName === "SAST" ? 
                       
                         <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
-                        <thead className={`${bgTheme? "tabhead":''}`}>
+                        <thead className={`${bgTheme? "tabhead":'cardHeader'}`}>
                           <tr>
                             <th scope="col" className="w-20">Category</th>
                             <th scope="col" className="w-40">Package</th>
@@ -174,7 +174,7 @@ const SecSastDast = props => {
                                   }):<tr><td style={{ textAlign: "center" }} colSpan="10">No data found</td></tr>}
                           </tbody>
                         </table>:<table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
-                        <thead>
+                        <thead className={`${bgTheme? "tabhead":'cardHeader'}`}>
                           <tr>
                             <th >Alert Name</th>
                             <th >Plugin ID</th>

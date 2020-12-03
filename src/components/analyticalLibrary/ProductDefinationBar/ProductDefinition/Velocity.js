@@ -23,6 +23,7 @@ import CardChartVelocity from "../../CardChart/CardChartVelocity";
 import SideNavbar from "../../SideNavBar/SideNavbar";
 import Badge from 'react-bootstrap/Badge';
 import { labelConst } from "../../../../utility/constants/labelsConstants";
+import { widgetListDispatch } from "../../../../store/actions/executiveInsights";
 class Velocity extends Component {
   state = {
     charts: [],
@@ -46,7 +47,8 @@ class Velocity extends Component {
     showRemovedItemsList: [],
     removed: [],
     bgTheme:'',
-    clientId:''
+    clientId:'',
+    build: 'Build Trend'
   };
 
   addCharts = (event) => {
@@ -239,6 +241,7 @@ class Velocity extends Component {
 
   setDefaultData() {
     // let type;
+    this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId)
     this.props
       .velocityProjectDataDispatch(this.props.projId,this.state.clientId)
       .then(item => {
@@ -371,7 +374,7 @@ class Velocity extends Component {
     });
     this.props.velocityRepoDropValDispatch(repoDetails[selectedIndex].projectName);
     // if (repoId !== "selectProject") {
-      this.props.velocityBuildDataDispatch(this.props.projId, repoId)
+      this.props.velocityBuildDataDispatch(this.props.projId,this.state.clientId,repoId)
       .then(() => { this.setVelocityBuildData(this.props.velocityBuildData) });
   };
 
@@ -404,6 +407,8 @@ class Velocity extends Component {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
+    const currentWidgetList = this.props.widgetList;
+    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "Velocity and Efficiency");
     let velocityNav=<CardChartVelocity showChart="true" insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" />
     if (this.state.show) {
       return <Spinner show="true" />;
@@ -418,11 +423,11 @@ class Velocity extends Component {
                 ) : null}
               </span>
 
-              <span>
+             {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.build) && <span>
                 {this.state.showbutton ? (
                   <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>{labels[0].mappings.buildBtn}</Button>
                   ) : null}
-              </span>
+              </span> }
             {this.state.showDropdown ? (
           <Col md={2}>
               <Dropdown
@@ -458,8 +463,8 @@ class Velocity extends Component {
               </Dropdown>
             </Col>
                ) : null}
-            <Col md={3} className="mt-auto"><p className={`font-size-small m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>You are viewing data at <b>{this.state.filterStatus}</b>  level</p></Col>
-            {this.state.componentType === "velocity" ? 
+            <Col md={3} className="mt-auto"><p className={`font-size-small m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>You are viewing data at <b>{labels[0].mappings.teamLabel}</b>  level</p></Col>
+            {this.state.showRemovedItemsList.length !== 0 && this.state.componentType === "velocity" ? 
             <span className="text-white ml-auto w-20">
             <p className={`m-0 font-size-smaller ${bgTheme ? '' : 'text-dark'}`}>Add Widgets</p>
             <select className="drop repo-height text-white rounded border border-light w-100" onChange={(event)=> this.addCharts(event)} >
@@ -497,6 +502,7 @@ const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
+    widgetList: state.execData.widgetList,
     velocityCharts: state.chartData.currentChartData.chartDetails,
     projId: state.productDetails.currentProject.projectDetails.id,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
@@ -512,7 +518,9 @@ const mapStateToProps = state => {
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ chartDataDispatch, velocityProjectDataDispatch, velocityBuildDataDispatch, velocityRepoDropValDispatch }, dispatch);
+  return bindActionCreators({ widgetListDispatch,
+    chartDataDispatch, velocityProjectDataDispatch, 
+    velocityBuildDataDispatch, velocityRepoDropValDispatch }, dispatch);
 };
 
 //Connect react component to redux

@@ -16,6 +16,20 @@ export const clientListDispatch = (currentID) => async dispatch => {
     console.error(error);
   }
 };
+export const widgetListDispatch = (currentID) => async dispatch => {
+  try {
+    const response = await api.getWidgetList(currentID);
+    let data = response.data;
+    dispatch({
+      type: actionTypes.GET_WIDGET_LIST_DATA,
+      payload: {
+        getAllWidgetList: data
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 export const execAllDispatch = (clientId) => async dispatch => {
   try {
     const response = await api.getAllExecutives(clientId);

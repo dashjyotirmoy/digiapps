@@ -191,9 +191,6 @@ a:hover {
     border-radius: 5px 5px 0 0;
     color: #333333;
 }
-#popover-basic {
-  max-width: 510px !important;
-}
 
 /* small devices */
 @media (min-width: 576px) {
@@ -423,7 +420,7 @@ a:hover {
 .wrap2,.wrap2_light {
   display: block;
   overflow-x: auto;
-  max-height: 359px; 
+  max-height: 359px;
 }
 .wrap2 thead th,.wrap2_light thead th{
 position: sticky;

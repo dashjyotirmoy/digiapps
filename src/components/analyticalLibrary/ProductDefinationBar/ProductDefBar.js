@@ -53,11 +53,11 @@ class ProductDefBar extends Component {
   };
   updateView = type => {
     this.props.currentTabDispatch(type.toLowerCase());
+    // this.props.currentTabWidgetListDispatch(type.toLowerCase());
     this.props.history.push(`/${type}`);
   };
   componentDidMount() {
     const currentLink = this.getActiveLink().toLowerCase();
-    this.props.currentTabDispatch(currentLink);
     this.setState({
       activeLink: currentLink
     });
@@ -86,6 +86,7 @@ class ProductDefBar extends Component {
                   >
                   {labels[0].mappings.tabItems.map(item=>
                     <Tab
+                      key={item.id}
                       eventKey={item.eventKey}
                       title={
                         <span className="font-aggegate-sub-text">
@@ -105,7 +106,8 @@ class ProductDefBar extends Component {
                     className="border-0"
                   >
                   {labels[0].mappings.tabItems.map(item=>
-                    <Tab
+                    <Tab 
+                      key={item.id}
                       eventKey={item.eventKey}
                       title={
                         <span className="font-aggegate-sub-text">

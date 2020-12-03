@@ -187,7 +187,6 @@ class Overview extends Component {
           all_data: false
         });
     }
-    // console.log('from receview ',nextProps.currentClientId);
   }
 
   render() {
@@ -352,7 +351,6 @@ class Overview extends Component {
 //function to map the state received from reducer
 
 const mapStateToProps = state => {
-  console.log(state.execData)
   return {  
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,

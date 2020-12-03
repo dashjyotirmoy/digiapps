@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import classnames from "classnames";
-import { Row, Container, Col, Button } from "react-bootstrap";
+import { Row, Container, Col, Button,ButtonGroup,ToggleButton } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSquare,
@@ -19,7 +19,7 @@ import CodeSmellsSvg from '../../Charts/SecurityProject/CodeSmells';
 import CoverageSvg from '../../Charts/SecurityProject/Coverage';
 import DuplicationsSvg from '../../Charts/SecurityProject/Duplications';
 import VulnarabilitiesSvg from '../../Charts/SecurityProject/Vulnarabilities';
-
+import QualityTeamDetails from "../../Charts/Bar/QualityTeamDetails";
 import CardChartQuality from "../../CardChart/CardChartQuality";
 import {
   qualityDataDispatch,
@@ -47,6 +47,8 @@ import {
   insightsQuality
 }from "../../../../store/actions/qualityData";
 import { labelConst } from "../../../../utility/constants/labelsConstants";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { widgetListDispatch } from "../../../../store/actions/executiveInsights";
 const chartCompList = [
   {
     name: "Bugs, Vulnerabilities & Code Smells",
@@ -91,6 +93,7 @@ class Quality extends Component {
     gridBreakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
     qualityMetrics: [],
     show: true,
+    open: true,
     componentType: "quality",
     selectedRepo: "",
     branchDropData:[],
@@ -107,7 +110,42 @@ class Quality extends Component {
     showRemovedItemsList: [],
     removed: [],
     bgTheme:'',
-    clientId:''
+    clientId:'',
+    radioValue:'opened',
+    qualityStatusDetails:'',
+    defectAggregate: "Defects Aggregated View",
+    radios: [
+      { name: 'OPEN', value: 'opened' },
+      { name: 'CLOSED', value: 'closed' },
+      { name: 'ALL', value: 'all' }
+    ]
+  };
+  setRadioValue = (e) => {
+    this.setState({
+      radioValue: e.currentTarget.checked
+    })
+  };
+  removeKpi = () => {
+    this.setState({
+      open: false
+    })
+  };
+  clickDetailsByStatus = (data)=> {
+    if(data === 'all'){
+      this.setState({        
+        radioValue:'all'
+      })
+    }else if(data === 'opened'){
+      this.setState({
+        radioValue:'opened'
+      })
+    }else{
+      this.setState({
+        radioValue:'closed'
+      })
+      
+    }
+
   };
   onDisplayMetricsClickHandler = (metricType) => {
     // eslint-disable-next-line default-case
@@ -186,12 +224,8 @@ class Quality extends Component {
   };
 
   setDefaultQualityData() {
-    if(this.state.clientId === undefined || this.state.clientId === ''){
-      this.setState({
-        clientId: this.props.currentClientId
-      })
-    }
     let type;
+    this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId)
     this.props
       .qualityDataDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId,this.props.currentExecId,this.props.projectID)
       .then((item) => {
@@ -201,10 +235,9 @@ class Quality extends Component {
         let layout_instance = new Layout(2);
         this.setState({
           layout: layout_instance.layout,
-        });
-        this.setState({
+          qualityStatusDetails:this.props.qualityData.defectsAggregateDTOList,
           show: false,
-          showbutton: false,
+          // showbutton: false,
         });
         if (this.state.selectedRepo === "") {
           type = this.setRawDefaultRepo(
@@ -758,6 +791,9 @@ class Quality extends Component {
     });
     this.props.repoDropValDispatch(repoDetails[selectedIndex].projectName);
     if (repoId !== "selectProject") {
+      this.setState({
+        open: false
+      })
       this.updateQualityData(repoId, selectedIndex);
       if (this.state.repoData[0].id !== "selectProject") {
         this.state.repoData.unshift({
@@ -774,6 +810,7 @@ class Quality extends Component {
         selectedRepo: "",
         showbutton: false,
         show: false,
+        open: true,
         layout: layout_instance.layout,
         filterStatus: "Project",
       });
@@ -861,6 +898,8 @@ class Quality extends Component {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
+    const currentWidgetList = this.props.widgetList;
+    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "Quality");
     let qualityNav=<CardChartQuality showChart="true" insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" />
    
     if (this.state.show) {
@@ -1087,7 +1126,60 @@ class Quality extends Component {
           </Container>
             ) : null}
           </Row>
-
+          {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.defectAggregate) &&
+          <Row className={classnames(
+              "p-0 px-3 m-0 mt-2",
+              { "d-none": this.state.selectedRepo || !this.state.open }
+            )}>
+            <Col>
+            <ButtonGroup toggle style={{position: 'relative',top: '10%',left: '46%',zIndex: '1'}}>
+              {this.state.radios.map((radio, idx) => (
+                <ToggleButton
+                    key={idx}
+                    type="radio"
+                    variant="secondary"
+                    name="radio"
+                    size="sm"
+                    value={radio.value}
+                    checked={this.state.radioValue === radio.value}
+                    onChange={this.setRadioValue}
+                    onClick={(e) => this.clickDetailsByStatus(radio.value)}
+                >
+                  {radio.name}
+                </ToggleButton>
+              ))}
+            </ButtonGroup>                  
+            <div className="border border-dark grid-graph-comp">
+                <div
+                  className="position-absolute px-2 text-right text-white w-100"
+                  style={{ zIndex: "100",right:14}}
+                >
+                  <p
+                    className="d-inline px-1"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                >
+                  <TooltipHoc
+                    info="Defects Aggregated View shows the open, closed and total defects (functional bugs) for various projects in a portfolio.<br/>"
+                    >
+                    <span className="d-inline-block">
+                      <FontAwesomeIcon icon={faInfoCircle} />
+                    </span>
+                  </TooltipHoc>
+                </p>
+                <p
+                  className="show-cursor d-inline"
+                  onClick={this.removeKpi}
+                >
+                  <span className="d-inline-block">
+                    <FontAwesomeIcon icon={faTimes} />
+                  </span>
+                </p>
+              </div>
+                  <QualityTeamDetails  summaryTrend={this.state.qualityStatusDetails} radioValue={this.state.radioValue} organization={this.props.organization} projID={this.props.projId}/>
+            </div>
+          </Col>
+          </Row>}
           {this.state.charts.length  && this.state.componentType === "quality" ? (
             <Grid
               chartData={this.state.charts[0]}
@@ -1147,6 +1239,7 @@ const mapStateToProps = (state) => {
   return {
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
+    widgetList: state.execData.widgetList,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
     currentRepo: state.qualityData.currentRepo,
@@ -1164,6 +1257,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {  insightsQuality,
+      widgetListDispatch,
       qualityDataDispatch,
       qualityBuildDataDispatch,
       resetProjectRepoDispatch,

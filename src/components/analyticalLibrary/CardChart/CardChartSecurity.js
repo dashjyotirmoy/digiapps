@@ -68,6 +68,7 @@ const CardChart = props => {
                         <p className="m-0 p-0 font-weight-bold">{props.cardHeader}</p>
                     </div>
                     <TooltipHoc
+                        bgTheme={bgTheme}
                         info="Security Insight shows the open source vulnerability risk for the selected repository by considering the risk level of last 3 releases.<br /><br />                        
                         It also presents the count of High, Medium and Low vulnerabilities for each release of the selected repository.<br /><br />
                         At a time, only 10 releases are displayed.<br/>"

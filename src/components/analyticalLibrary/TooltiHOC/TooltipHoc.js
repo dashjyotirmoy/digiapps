@@ -3,14 +3,14 @@ import { OverlayTrigger, Tooltip, Popover } from "react-bootstrap";
 import "../TooltiHOC/Tooltip.css";
 
 export const TooltipHoc = props => {
-
+  const bgTheme = props.bgTheme;
   function createMarkup() {
     return { __html: props.info };
   }
   const popover = (
-    <Popover id="popover-basic">
-      <h5 className="bg-color">{props.head}</h5>
-      <div className="body-col" dangerouslySetInnerHTML={createMarkup()}></div>
+    <Popover className={`popover-basic ${bgTheme?'popover-basic-dark':'popover-basic-light'}`}>
+      <h5 className={`${bgTheme?'bg-color':'bg-white'}`}>{props.head}</h5>
+      <div className={`${bgTheme?'body-col':'bg-white'}`} dangerouslySetInnerHTML={createMarkup()}></div>
     </Popover>
   );
   return (

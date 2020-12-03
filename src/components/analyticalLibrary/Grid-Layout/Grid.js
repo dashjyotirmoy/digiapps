@@ -30,6 +30,7 @@ const Grid = props => {
             data-placement="top"
           >
             <TooltipHoc
+              bgTheme={bgTheme}
               info={
                 velocityGraphInfo[props.chartData[ele.i].name] ||
                 qualityGraphInfo[props.chartData[ele.i].name]
