@@ -555,7 +555,7 @@ class Security extends Component {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
-    let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" />
+    let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" bgTheme={bgTheme}/>
     const currentWidgetList = this.props.widgetList;
     const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "Security");
     
@@ -611,9 +611,10 @@ class Security extends Component {
                   </Row>
               </Card.Body>
             </Card.Body> 
-          </Col>}
+          </Col>}</Row>
+          <Row className={`px-3 d-flex justify-content-between ${bgTheme ? '' : 'bg-light'}`}>
           {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.openSourceVul) && 
-          <Col>
+          <Col  className={`${!currentTabWidgets[0].widgets.includes(this.state.sastDastVul)? 'col-sm-12':'col-sm-6'}`}>
           <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark' : 'bg-white card-border-light'}`}>
             <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod' :'cardHeader'}`}>
               <h6 className="font-weight-bold mb-1">Open Source Vulnerabilities</h6>
@@ -778,7 +779,7 @@ class Security extends Component {
         </Card.Body>
         </Col>}
         {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.sastDastVul) && 
-        <Col>
+        <Col sm={6}>
         <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark': 'bg-white card-border-light'}`}>
         <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod' :'cardHeader'}`}>
             <h6 className="font-weight-bold mb-1 p-0">SAST and DAST Vulnerabilities</h6>

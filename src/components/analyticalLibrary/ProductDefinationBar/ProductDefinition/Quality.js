@@ -900,7 +900,7 @@ class Quality extends Component {
     const bgTheme = labels[0].mappings.bgColor;
     const currentWidgetList = this.props.widgetList;
     const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "Quality");
-    let qualityNav=<CardChartQuality showChart="true" insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" />
+    let qualityNav=<CardChartQuality showChart="true" insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" bgTheme={bgTheme}/>
    
     if (this.state.show) {
       return <Spinner show="true" />;
@@ -1224,7 +1224,7 @@ class Quality extends Component {
             </div>
           </ModalBackDrop>
           {this.state.componentType === "QualityBuild" ? (
-           <QualityBuild cardsData={this.state.qualityBuildCharts}/>
+           <QualityBuild cardsData={this.state.qualityBuildCharts} bgTheme={bgTheme}/>
           ) : null}
         </React.Fragment>
       );
