@@ -69,6 +69,7 @@ const CardChart = props => {
                         <p className="m-0 p-0 font-weight-bold">{props.cardHeader}</p>
                     </div>
                     <TooltipHoc
+                        bgTheme={bgTheme}
                         info="Quality Insight shows the quality of the code for the selected repository by considering the quality flaws in last 3 releases.<br /><br /> 
                          It also presents the count of Bugs, Vulnerabilities & Code Smells along with the % of Code Coverage and % of Duplications for each release of the selected repository.<br /><br />
                         At a time, only 10 releases are displayed.<br/>"

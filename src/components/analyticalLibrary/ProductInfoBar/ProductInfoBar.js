@@ -648,7 +648,7 @@ class ProductInfoBar extends Component {
 
 ////function to map the state received from reducer
 
-const mapStateToProps = state => {console.log("prodInfo",state.execData.currentClientId)
+const mapStateToProps = state => {
   return {
     executiveId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,

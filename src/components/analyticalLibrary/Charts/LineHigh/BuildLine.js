@@ -58,7 +58,7 @@ function setTotalTestData(data) {
 
 const BuildLine = (props) => {
 
-
+    let bgTheme = props.bgTheme;
     setPassedData(props.chartData.cardsData.buildStatusDTOList);
 
     setFailedData(props.chartData.cardsData.buildStatusDTOList);
@@ -77,7 +77,7 @@ const BuildLine = (props) => {
             enabled: false
         },
         chart: {
-            backgroundColor: '#232D3B',
+            backgroundColor: bgTheme?'#232D3B':'#ffffff',
             type: 'line',
             height: '300px'
         },
@@ -92,7 +92,7 @@ const BuildLine = (props) => {
             },
             labels: {
                 style: {
-                    color: "#f5f5f5"
+                    color: bgTheme?"#f5f5f5":"#333333"
                 },
             }
         },
@@ -101,13 +101,13 @@ const BuildLine = (props) => {
                 text: 'Build No.',
                 margin: 20,
                 style: {
-                    color: "#f5f5f5"
+                    color: bgTheme?"#f5f5f5":"#333333"
                 }
             },
             // min: 0,
             labels: {
                 style: {
-                    color: "#f5f5f5"
+                    color: bgTheme?"#f5f5f5":"#333333"
                 }
             },
             tickInterval: 2
@@ -121,11 +121,11 @@ const BuildLine = (props) => {
             align: 'right',
             verticalAlign: 'top',
             itemStyle: {
-                color: "#ffffff",
+                color: bgTheme?"#ffffff":"#333333",
                 fontWeight: "normal"
             },
             itemHoverStyle: {
-                color: "#fff"
+                color:  bgTheme?"#ffffff":"#333333"
             },
         },
         series: [{

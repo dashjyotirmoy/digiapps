@@ -63,6 +63,7 @@ const CardChart = props => {
                         <p className="m-0 p-0 font-weight-bold">{props.cardHeader}</p>
                     </div>
                     <TooltipHoc
+                        bgTheme={bgTheme}
                         info="Velocity & Efficiency Insight shows the velocity variance of the product across various sprints. <br /><br />                            
                         Velocity Variance is calculated as velocity of the current sprint divided by the velocity of the previous sprint.<br /><br />                            
                         Velocity is calculated as the number of story points delivered by the team in a sprint.<br/>"

@@ -2,6 +2,7 @@ const initialState = {
   executiveInfo: {},
   clientlist: [],
   currentClientId: "",
+  widgetList:[],
   executiveId: "4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f",
   currentExecutiveInfo: {
     executiveData: {},
@@ -15,6 +16,12 @@ const dimReducer = (state = initialState, action) => {
         ...state,
         // clientlist: action.payload.getAllClient.clientsList,
         currentClientId: action.payload.currentClientID
+      };
+      case "GET_WIDGET_LIST_DATA":
+      return {
+        ...state,
+        // clientlist: action.payload.getAllClient.clientsList,
+        widgetList: action.payload.getAllWidgetList.metrics
       };
     case "GET_EXEC_DATA":
       return {

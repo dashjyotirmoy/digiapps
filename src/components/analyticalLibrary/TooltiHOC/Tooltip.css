@@ -12,11 +12,35 @@
     background-color: #334154;
     color: #f5f5f5;
 }
-div#popover-basic{
+.popover-basic {
+    max-width: 510px !important;
+    overflow-y: scroll;
+    max-height: 37%;
+  }
+.popover-basic-dark{
     box-shadow: 6px 5px 5px 0px #212529;
 }
-.bs-popover-bottom>.arrow::after{
-    border-bottom-color: #334154!important;
-    
-    
+.popover-basic-light{
+    box-shadow: 6px 5px 5px 0px #d1d4d7;
 }
+.popover-basic-dark::-webkit-scrollbar {
+    width: 9px;
+    display: block;
+  }
+.popover-basic-dark::-webkit-scrollbar-thumb {
+    background-color: #515e70;
+    border-radius: 25px;
+    height: 35%;
+  }
+.popover-basic-light::-webkit-scrollbar {
+    width: 9px;
+    display: block;
+  }
+  .popover-basic-light::-webkit-scrollbar-thumb {
+    background-color: #E1E7F0;
+    border-radius: 25px;
+    height: 35%;
+  }
+/* .bs-popover-bottom>.arrow::after{
+    border-bottom-color: #334154!important;    
+} */

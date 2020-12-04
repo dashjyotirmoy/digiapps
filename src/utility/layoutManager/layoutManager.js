@@ -27,21 +27,21 @@ class Layout{
                 let layout = new baseLayout();
                 layout.layout_object.i = String(index);
                 if(index % 5 === 0){
-                    layout.layout_object.x = 0;
+                    layout.layout_object.x = 12;
                     layout.layout_object.y = (Math.floor(rowNumber / 3)) + groupNumber * 4;
-                    layout.layout_object.w = 4;
+                    layout.layout_object.w = 12;
                     rowNumber++;
                   }
                   else if(index % 5 === 1){
-                    layout.layout_object.x = 4;
+                    layout.layout_object.x = 0;
                     layout.layout_object.y = (Math.floor(rowNumber / 3)) + groupNumber * 4;
-                    layout.layout_object.w = 4;
+                    layout.layout_object.w = 6;
                     rowNumber++;
                   }
                   else if(index % 5 === 2){
-                    layout.layout_object.x = 8;
+                    layout.layout_object.x = 6;
                     layout.layout_object.y = (Math.floor(rowNumber / 3)) + groupNumber * 4;
-                    layout.layout_object.w = 4;
+                    layout.layout_object.w = 6;
                     rowNumber++;
                   }
                   else if(index % 5 === 3){

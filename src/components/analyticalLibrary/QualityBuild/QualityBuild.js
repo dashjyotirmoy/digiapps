@@ -12,35 +12,27 @@ let StatusColor = {
 
 
 const QualityBuild = props => {
+  const bgTheme = props.bgTheme;
   let QualityData = props.cardsData;
+
   QualityData.testOverviewDTO.buildIds.sort((a, b) => b.localeCompare(a));
   return (
     <React.Fragment>
       <Container fluid>
         <Row className="mt-2">
           <Col md={6} sm={12}>
-            <Row>
-              <Col>
-                <Card.Body className="bg">
-                  <h6 className="mb-3">Build Status</h6>
-                  <BuildLine chartData={props} />
-                  <Card.Body className="pb-0">
-
-                  </Card.Body>
+                <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark bg-dark-theme':'card-border-light bg-white'}`}>
+                  <h6 className={`${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Build Status</h6>
+                  <BuildLine chartData={props} bgTheme={bgTheme}/>
                 </Card.Body>
-              </Col>
-            </Row>
           </Col>
           <Col md={6} sm={12}>
-            <Row>
-              <Col>
-                <Card.Body className="bg">
-                  <h6 className="mb-3">Top Most Broken Tests</h6>
-
+                <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark bg-dark-theme':'card-border-light bg-white'}`}>
+                  <h6 className={`${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Top Most Broken Tests</h6>
                   <Card.Body >
-                    <div className="wrap">
-                      <table className="table table-hover table-dark">
-                        <thead className="tablehead">
+                    <div className={`wrap ${bgTheme ? 'card-border-dark' : 'card-border-light'}`}>
+                      <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
+                        <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
                           <tr>
                             <th>Test Name</th>
                             <th className="w-18">Times Failed</th>
@@ -51,7 +43,7 @@ const QualityBuild = props => {
 
                       <div className="inner_table">
                         <table className="table table-hover table-dark"> */}
-                        <tbody className="tablerow f-12">
+                        <tbody className={`f-12 ${bgTheme ? 'tabrow' : 'text-dark'}`}>
                           {(QualityData && QualityData.brokenTestDetailDTOList.length > 0) ?
                             QualityData && QualityData.brokenTestDetailDTOList.map((item, index) => {
                               return (
@@ -77,18 +69,16 @@ const QualityBuild = props => {
                     {/* </div> */}
                   </Card.Body>
                 </Card.Body>
-              </Col>
-            </Row>
           </Col>
         </Row>
         <Row className="mt-5">
           <Col>
-            <Card.Body className="bg card-height">
-              <h6>Test Overview</h6>
-              <Card.Body>
-                <div className="wrap">
-                  <table className="table table-hover table-dark">
-                    <thead className="tablehead">
+            <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark bg-dark-theme':'card-border-light bg-white'}`}>
+              <h6 className={`mb-3 ${bgTheme ? 'bg-prodInfo-prod' : 'cardHeader'}`}>Test Overview</h6>
+              <Card.Body >
+                <div className={`wrap ${bgTheme ? 'card-border-dark' : 'card-border-light'}`}>
+                  <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
+                    <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
                       <tr>
                         <th className="w-40">Package Name</th>
                         <th>Passed</th>
@@ -103,10 +93,13 @@ const QualityBuild = props => {
 
 
                       </tr>
-                    </thead>
-                    <tbody className="tablerow">
-
-                      {
+                      </thead>
+                      </table>
+                      <div className={`${bgTheme ? 'inner_table' : 'inner_table_light'}`}>
+                        <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`} >
+                          <tbody className={`f-12 ${bgTheme ? 'tabrow' : 'text-dark'}`}>
+                          {(QualityData && QualityData.testOverviewDTO.testDetailDTOList.length > 0) ?
+                        
                         QualityData && QualityData.testOverviewDTO.testDetailDTOList.map((item, index) => {
                           return (
                             <tr key={index}>
@@ -137,14 +130,14 @@ const QualityBuild = props => {
 
                             </tr>
                           )
-                        })
+                        }) : <tr><td style={{ textAlign: "center" }} colSpan="3">No data found</td></tr>
                       }
 
 
-                    </tbody>
-                  </table>
-                </div>
-
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
               </Card.Body>
             </Card.Body>
           </Col>

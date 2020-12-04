@@ -26,11 +26,11 @@ export const labelConst = [{
 			veryLow: 'Very Low',
 			major: 'Major',
 			minor: 'Minor',
-			tabItems: [{name:'Overview',eventKey:'overview'},
-						{name:'Security',eventKey:'security'},
-						{name: 'Velocity and Efficiency',eventKey:'velocity'},
-						{name: 'Quality',eventKey:'quality'},
-						{name: 'Insights',eventKey:'insights'}],
+			tabItems: [{id:"1",name:'Overview',eventKey:'overview'},
+						{id:"2",name:'Security',eventKey:'security'},
+						{id:"3",name: 'Velocity and Efficiency',eventKey:'velocity'},
+						{id:"4",name: 'Quality',eventKey:'quality'},
+						{id:"5",name: 'Insights',eventKey:'insights'}],
 	}
 },
 {
@@ -61,11 +61,11 @@ export const labelConst = [{
 			veryLow: 'Very Low',
 			major: 'Major',
 			minor: 'Minor',
-			tabItems: [{name:'Overview',eventKey:'overview'},
-						{name:'Security',eventKey:'security'},
-						{name: 'Velocity and Efficiency',eventKey:'velocity'},
-						{name: 'Quality',eventKey:'quality'},
-						{name: 'Insights',eventKey:'insights'}]
+			tabItems: [{id:"1",name:'Overview',eventKey:'overview'},
+						{id:"2",name:'Security',eventKey:'security'},
+						{id:"3",name: 'Velocity and Efficiency',eventKey:'velocity'},
+						{id:"4",name: 'Quality',eventKey:'quality'},
+						{id:"5",name: 'Insights',eventKey:'insights'}]
 
 	}
 },
@@ -97,9 +97,9 @@ export const labelConst = [{
 			veryLow: 'Very Low',
 			major: 'Major',
 			minor: 'Minor',
-			tabItems: [{name: 'Velocity and Efficiency',eventKey:'velocity'},
-						{name: 'Quality',eventKey:'quality'},
-						{name:'Security',eventKey:'security'},
-						{name: 'Insights',eventKey:'insights'}]
+			tabItems: [{id:"1",name: 'Velocity and Efficiency',eventKey:'velocity'},
+						{id:"2",name: 'Quality',eventKey:'quality'},
+						// {id:"3",name:'Security',eventKey:'security'},
+						{id:"4",name: 'Insights',eventKey:'insights'}]
 	}
 }];

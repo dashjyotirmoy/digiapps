@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {vulnerabilityDataDispatch,repoDropValDispatchSecurity, securityProjectDataDispatch,securityReleaseDataDispatch, securityRepoDataDispatch, securityPolicyDataDispatch,securityReleasePolicyDataDispatch, securityAlertDataDispatch,securityReleaseAlertDataDispatch } from '../../../../store/actions/securityData';
+import { widgetListDispatch } from "../../../../store/actions/executiveInsights";
 import { resetProjectRepoDispatch } from "../../../../store/actions/projectInsights";
 import Sec from '../../Charts/SecurityProject/Sec';
 import App from '../../Charts/SecurityProject/Alert'
@@ -55,7 +56,11 @@ class Security extends Component {
     selectedRepoId: '',
     showInsights:false,
     filterStatus: 'Project',
-    clientId: ''  
+    clientId: '',
+    currenttab:"",
+    vulnerable:"Vulnerabilities",
+    openSourceVul: "Open Source Vulnerabilities",
+    sastDastVul: "SAST and DAST Vulnerabilities"
   };
 
   removeChartComponent = (chartIndex) => {
@@ -75,11 +80,11 @@ class Security extends Component {
     setDefaultData() {
       let type;
       this.props.vulnerabilityDataDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId,this.props.projectID)
-
+      this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId)
       this.props
         .securityProjectDataDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId,this.props.projectID)
         .then(item => {
-          if (this.props.securityProjectData.projectDetail.length > 0) {
+          if (this.props.securityProjectData.projectDetail && this.props.securityProjectData.projectDetail.length > 0) {
             this.setRepository(this.props.securityProjectData);
 
             this.setState({
@@ -530,9 +535,10 @@ class Security extends Component {
         all_data: true
       });
     }
-    if(this.props.currentClientId !== nextProps.currentClientId){
+    if(this.props.currentClientId !== nextProps.currentClientId && nextProps.currenttab){
       this.setState({
-        clientId: nextProps.currentClientId
+        clientId: nextProps.currentClientId,
+        currenttab: nextProps.currenttab
       });
     }
   }
@@ -549,7 +555,10 @@ class Security extends Component {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
-    let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" />
+    let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" bgTheme={bgTheme}/>
+    const currentWidgetList = this.props.widgetList;
+    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "Security");
+    
     if(this.props.securityProjectData.id !== null){
     if (this.state.show) {
       return <Spinner show="true" />;
@@ -560,7 +569,8 @@ class Security extends Component {
         <React.Fragment>
          {this.props.securityDetails &&  this.state.showInsights?<SideNavbar  card={securityNav}/>:''}
           <Row className={`px-3 py-4 d-flex justify-content-start ${bgTheme ? '' : 'bg-light'}`}>
-          {clientName === 'aia' && <Col sm={12} className="mb-3">
+          {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.vulnerable) && 
+            <Col sm={12} className="mb-3">
             <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark' : 'card-border-light'}`}>
                 <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod text-light' : 'cardHeader text-dark'}`}>
                   <h6 className="font-weight-bold mb-1 p-0">Vulnerabilities</h6>
@@ -601,8 +611,10 @@ class Security extends Component {
                   </Row>
               </Card.Body>
             </Card.Body> 
-          </Col>}
-          <Col className={`${clientName !== 'aia'? 'col-sm-12':'col-sm-6'}`}>
+          </Col>}</Row>
+          <Row className={`px-3 d-flex justify-content-between ${bgTheme ? '' : 'bg-light'}`}>
+          {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.openSourceVul) && 
+          <Col  className={`${!currentTabWidgets[0].widgets.includes(this.state.sastDastVul)? 'col-sm-12':'col-sm-6'}`}>
           <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark' : 'bg-white card-border-light'}`}>
             <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod' :'cardHeader'}`}>
               <h6 className="font-weight-bold mb-1">Open Source Vulnerabilities</h6>
@@ -765,8 +777,9 @@ class Security extends Component {
           ) : null}
           </Card.Body>
         </Card.Body>
-        </Col>
-        {clientName === 'aia' && <Col sm={6}>
+        </Col>}
+        {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.sastDastVul) && 
+        <Col sm={6}>
         <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark': 'bg-white card-border-light'}`}>
         <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod' :'cardHeader'}`}>
             <h6 className="font-weight-bold mb-1 p-0">SAST and DAST Vulnerabilities</h6>
@@ -798,11 +811,12 @@ class Security extends Component {
 
 //function to map the state received from reducer
 
-const mapStateToProps = state => {console.log("security",state.execData.currentClientId)
+const mapStateToProps = state => {console.log("state.chartData.currentTab",state.chartData.currentTab);
   return {
     // clientList: 
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
+    widgetList: state.execData.widgetList,
     securityProjectData: state.securityData.securityProjectDetails,
     securityRepoData: state.securityData.securityRepoDetails,
     securityReleaseData: state.securityData.securityReleaseDetails,
@@ -832,7 +846,8 @@ const mapDispatchToProps = dispatch => {
       securityPolicyDataDispatch,
       securityReleasePolicyDataDispatch, 
       securityAlertDataDispatch,
-      securityReleaseAlertDataDispatch },
+      securityReleaseAlertDataDispatch,
+      widgetListDispatch },
     dispatch
   );
 };

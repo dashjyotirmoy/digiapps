@@ -127,6 +127,10 @@ const BuildTreds = props => {
           color: bgTheme ? "#f5f5f5" : '#333333',
         }
       },
+      chart: {
+        borderColor:bgTheme ? '#ffffff':'#999a9c',
+        backgroundColor: bgTheme ? '#232D3B':'#ffffff',
+      },
       xAxis: {
         type: "datetime",
         // crosshair: true,
