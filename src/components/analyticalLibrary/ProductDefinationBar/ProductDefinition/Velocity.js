@@ -408,7 +408,7 @@ class Velocity extends Component {
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
     const currentWidgetList = this.props.widgetList;
-    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "Velocity and Efficiency");
+    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === this.state.componentType);
     let velocityNav=<CardChartVelocity showChart="true" insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme}/>
     if (this.state.show) {
       return <Spinner show="true" />;
