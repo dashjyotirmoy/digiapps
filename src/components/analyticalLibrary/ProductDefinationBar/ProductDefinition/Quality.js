@@ -114,6 +114,7 @@ class Quality extends Component {
     radioValue:'opened',
     qualityStatusDetails:'',
     defectAggregate: "Defects Aggregated View",
+    buildStatus: "Build Status",
     radios: [
       { name: 'OPEN', value: 'opened' },
       { name: 'CLOSED', value: 'closed' },
@@ -899,7 +900,7 @@ class Quality extends Component {
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
     const currentWidgetList = this.props.widgetList;
-    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "Quality");
+    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === this.state.componentType);
     let qualityNav=<CardChartQuality showChart="true" insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" bgTheme={bgTheme}/>
    
     if (this.state.show) {
@@ -1056,14 +1057,14 @@ class Quality extends Component {
                 </Button>
                 ) : null} 
               </span> 
-
+              {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.buildStatus) &&
               <span className="ml-3">
               {this.state.showbutton ? (
                 <Button variant="outline-dark" className={this.state.showBuild?"bgblue":"Buildbg"} onClick ={this.setBuild}>
                   {labels[0].mappings.buildBtn}
                 </Button>
                ) : null}  
-              </span>
+              </span>}
               </Col>
               <Col md='3' className="text-right mt-auto">{ this.state.showRemovedItemsList.length > 0 && this.state.componentType === "quality" ? 
                <span className="text-white ml-auto w-20">
