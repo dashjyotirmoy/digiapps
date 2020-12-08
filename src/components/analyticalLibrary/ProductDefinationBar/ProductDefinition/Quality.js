@@ -897,6 +897,7 @@ class Quality extends Component {
   }
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const activeLink = window.location.href.includes("/quality");
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
     const currentWidgetList = this.props.widgetList;
@@ -914,7 +915,7 @@ class Quality extends Component {
               <Dropdown
                 listData={this.state.repoData}
                 direction="down"
-                dropsLable={labels[0].mappings.repository}
+                dropsLable= {clientName !== "wpc" || !activeLink ?labels[0].mappings.repository:labels[0].mappings.qualityRepo}
                 onSelectDelegate={this.handleRepoChange}
               >
               <Row className={`h-100 repo-height m-0 p-0 rounded ${bgTheme ? 'bg-prodAgg-btn' : 'bg-prodAgg-light-btn'}`}>
