@@ -274,12 +274,11 @@ class Insights extends Component {
             <span className='mt-auto'><p className="font-size-small m-0 text-left">You are viewing data at <b>Repository</b> level</p></span>
         </Row>
         <Row className="m-0 p-0">
-          <Col
-            
+          {labels[0].clientName !== 'wpc' && <Col            
             className="bg-card"
           >
             <CardChartSecurity insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" bgTheme={bgTheme}/>
-          </Col>
+          </Col>}
           <Col
             
             className="bg-card p-0"
