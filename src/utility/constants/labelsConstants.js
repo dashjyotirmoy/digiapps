@@ -81,7 +81,7 @@ export const labelConst = [{
 			count: [],
 			feature: 'Features',
 			userStory: 'User Stories',
-			repository: 'Repository',
+			repository: 'Show Code Quality',
 			branch: 'Branch',
 			release: 'Release',
 			roleDesignation: false,

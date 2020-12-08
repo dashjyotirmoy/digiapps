@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Container, Col } from "react-bootstrap";
+import { Row, Container, Col,Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown/Dropdown";
@@ -386,6 +386,7 @@ class ProductInfoBar extends Component {
   render() {
     let dimensionData = this.props.widgetProps;
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const activeLink = window.location.href.includes("/quality");
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
     const projectDimensions = new Widgets();
@@ -468,9 +469,10 @@ class ProductInfoBar extends Component {
                     lg={4}
                     xl={4}
                     className="border-light h-100 justify-content-center d-flex d-inline-block 
-                    flex-column align-items-center px-2"
+                    flex-column px-2"
                   >
-                    {this.props.projectListReceived ? (
+                 
+                    {this.props.projectListReceived && (clientName !== "wpc" || !activeLink) ? (
                       <Dropdown
                         listData={this.state.teamData}
                         direction="down"
@@ -494,7 +496,7 @@ class ProductInfoBar extends Component {
                           </Col>
                         </Row>
                       </Dropdown>
-                    ) : null}
+                    ) : <><span className="text-white font-size-small">{labels[0].mappings.teamLabel}</span><Button variant="outline-dark" className="bg-prodAgg-btn text-white w-100 rounded border border-secondary">ALL</Button></>}
                   </Col>
                   <Col
                     sm={4}
@@ -502,9 +504,10 @@ class ProductInfoBar extends Component {
                     lg={4}
                     xl={4}
                     className="border-light h-100 justify-content-center d-flex d-inline-block 
-                    flex-column align-items-center px-2"
+                    flex-column px-2"
                   >
-                      <Dropdown
+                    {(clientName !== "wpc" || !activeLink) ?
+                      (<Dropdown
                         listData={this.state.sprintData}
                         direction="down"
                         dropsLable={labels[0].mappings.sprintLabel}
@@ -526,7 +529,7 @@ class ProductInfoBar extends Component {
                             <FontAwesomeIcon icon={faChevronDown} />
                           </Col>
                         </Row>
-                      </Dropdown>
+                      </Dropdown>):<><span className="text-white font-size-small">{labels[0].mappings.sprintLabel}</span><Button variant="outline-dark" className="bg-prodAgg-btn text-white repo-height w-100 rounded border border-secondary">ALL</Button></>}
                   </Col>
                 </Row>
               </Col>
