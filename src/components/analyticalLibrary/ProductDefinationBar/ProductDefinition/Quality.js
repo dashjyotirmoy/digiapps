@@ -115,6 +115,7 @@ class Quality extends Component {
     qualityStatusDetails:'',
     defectAggregate: "Defects Aggregated View",
     buildStatus: "Build Status",
+    selectWidget: 'Select Widget',
     radios: [
       { name: 'OPEN', value: 'opened' },
       { name: 'CLOSED', value: 'closed' },
@@ -1070,11 +1071,11 @@ class Quality extends Component {
               <Col md='3' className="text-right mt-auto">{ this.state.showRemovedItemsList.length > 0 && this.state.componentType === "quality" ? 
                <span className="text-white ml-auto w-20">
                <p className="m-0 font-size-smaller text-left">Add Widgets</p>
-               <select className="drop repo-height text-white rounded border border-light w-100" onChange={(event)=> this.addCharts(event)} >
-               <option value=''>Select Widget</option>
+               <select className={`repo-height rounded w-100 ${bgTheme ? 'bg-prodAgg-btn text-white' : 'bg-prodAgg-light-btn'}`} value={this.state.selectWidget || ''} onChange={(event)=> this.addCharts(event)} >
+               <option value=''>{this.state.selectWidget}</option>
                  {
                    this.state.showRemovedItemsList.map((item, index) =>
-                   <option key={index} value={item.name} >
+                   <option key={index} value={item.name} className={`${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                            {item.name}
                  </option>
                  )
