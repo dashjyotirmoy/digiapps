@@ -81,10 +81,10 @@ export const insightsQuality = (
     });
 };
 export const projectDropdownDispatch = (
-  projectId
+  clientId,projectId
 ) => async dispatch => {
   api
-    .getProjectDropdownInsight(projectId)
+    .getProjectDropdownInsight(clientId,projectId)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_PROJECT_DROPDOWN_DETAILS,

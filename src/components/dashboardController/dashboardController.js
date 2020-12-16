@@ -32,7 +32,7 @@ const DashboardController = props => {
   let widget_item = new Widgets();
   const baseUrl = dashConstants.baseName.name;
   const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
-  const baseUrlName = clientName !== "digitalops" ? "/"+clientName+baseUrl : baseUrl; 
+  const baseUrlName = clientName+baseUrl; 
   const widgetComponents = widget_item.loadWidgets(widgetsMain);
   const componentArray = props.compList.map((item, index) => {
     const widgetProperties = dataFromDot(index);
