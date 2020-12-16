@@ -1,6 +1,6 @@
 export default {
   baseName: {
-    name: "/digitalops/execDashboard"
+    name: "/execDashboard"
   },
   dotProps: [
     {

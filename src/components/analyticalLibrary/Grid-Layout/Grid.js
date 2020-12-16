@@ -22,7 +22,7 @@ const Grid = props => {
       <div key={ele.i} className={`${bgTheme ? 'card-border-dark bg-dark-theme' : 'card-border-light'}`}>
         <div
           className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
-          style={{ zIndex: "100",right:'11px',top:'15px'}}
+          style={{ zIndex: "1",right:'11px',top:'15px'}}
         >
           <p
             className="d-inline px-1"
