@@ -779,7 +779,7 @@ class Security extends Component {
         </Card.Body>
         </Col>}
         {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.sastDastVul) && 
-        <Col>
+        <Col className="col-lg-6">
         <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark': 'bg-white card-border-light'}`}>
         <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod' :'cardHeader'}`}>
             <h6 className="font-weight-bold mb-1 p-0">SAST and DAST Vulnerabilities</h6>
