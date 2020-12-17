@@ -5,7 +5,7 @@ export const labelConst = [{
 			navLogoUrl: 'overview',
 			bgColor: true,
 			logoName: 'DevOps Dashboard',
-			projectLabel: 'Projects',
+			projectLabel: 'Project',
 			teamLabel: 'Teams',
 			sprintLabel: 'Sprints',
 			count: [{name:'Head Count'},{name:'Sprint Count'},{name: 'Team Head Count'}],
