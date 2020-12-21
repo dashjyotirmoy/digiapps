@@ -577,6 +577,7 @@ class ProductInfoBar extends Component {
                               <Donut
                                 color={"#7a61ff"}
                                 percentage={this.props.projDetails.features}
+                                bgTheme={bgTheme}
                               ></Donut>
                             ) : (
                                 "loading"
@@ -612,6 +613,7 @@ class ProductInfoBar extends Component {
                               <Donut
                                 color={"#2ece95"}
                                 percentage={this.props.projDetails.userStory}
+                                bgTheme={bgTheme}
                               ></Donut>
                             ) : (
                                 "loading"

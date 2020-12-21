@@ -902,7 +902,7 @@ class Quality extends Component {
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
     const currentWidgetList = this.props.widgetList;
-    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === this.state.componentType);
+    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === 'quality');
     let qualityNav=<CardChartQuality showChart="true" insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" bgTheme={bgTheme}/>
    
     if (this.state.show) {
@@ -1066,7 +1066,8 @@ class Quality extends Component {
                   {labels[0].mappings.buildBtn}
                 </Button>
                ) : null}  
-              </span>}
+              </span>
+              }
               </Col>
               <Col md='3' className="text-right mt-auto">{ this.state.showRemovedItemsList.length > 0 && this.state.componentType === "quality" ? 
                <span className="text-white ml-auto w-20">

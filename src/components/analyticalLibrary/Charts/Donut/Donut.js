@@ -26,7 +26,7 @@ class Donut extends Component {
             value={percentage}
             text={`${percentage}%`}
             styles={buildStyles({
-              textColor: "#f5f5f5",
+              textColor: this.props.bgTheme?"#f5f5f5":"#333333",
               pathColor: color,
               trailColor: "#828282",
               textSize: "1.5rem"

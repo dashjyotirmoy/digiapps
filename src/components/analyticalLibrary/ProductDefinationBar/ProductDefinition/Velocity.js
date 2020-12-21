@@ -48,7 +48,7 @@ class Velocity extends Component {
     removed: [],
     bgTheme:'',
     clientId:'',
-    build: 'Build Trend',
+    buildStatus: 'Build Trend',
     selectWidget: 'Select Widget'
   };
 
@@ -409,7 +409,7 @@ class Velocity extends Component {
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
     const currentWidgetList = this.props.widgetList;
-    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === this.state.componentType);
+    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === 'velocity');
     let velocityNav=<CardChartVelocity showChart="true" insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme}/>
     if (this.state.show) {
       return <Spinner show="true" />;
@@ -424,11 +424,13 @@ class Velocity extends Component {
                 ) : null}
               </span>
 
-             {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.build) && <span>
+            {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.buildStatus) &&
+             <span>
                 {this.state.showbutton ? (
                   <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>{labels[0].mappings.buildBtn}</Button>
                   ) : null}
-              </span> }
+              </span>
+            }
             {this.state.showDropdown ? (
           <Col md={2}>
               <Dropdown
