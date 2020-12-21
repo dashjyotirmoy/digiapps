@@ -48,7 +48,7 @@ class Velocity extends Component {
     removed: [],
     bgTheme:'',
     clientId:'',
-    build: 'Build Trend',
+    buildStatus: 'Build Trend',
     selectWidget: 'Select Widget'
   };
 
@@ -424,12 +424,13 @@ class Velocity extends Component {
                 ) : null}
               </span>
 
-            
+            {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.buildStatus) &&
              <span>
-                {(this.state.showbutton && (currentTabWidgets[0] || currentTabWidgets[0].widgets || currentTabWidgets[0].widgets.includes(this.state.build)) ) ? (
+                {this.state.showbutton ? (
                   <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>{labels[0].mappings.buildBtn}</Button>
                   ) : null}
               </span>
+            }
             {this.state.showDropdown ? (
           <Col md={2}>
               <Dropdown
