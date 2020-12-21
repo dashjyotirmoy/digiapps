@@ -80,17 +80,16 @@ const QualityBuild = props => {
                   <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                     <thead className={`${bgTheme ? 'tabhead' : 'cardHeader text-dark'}`}>
                       <tr>
-                        <th className="w-40">Package Name</th>
-                        <th>Passed</th>
-                        <th>Transitions</th>
+                      <th scope="col" className="w-23">Package Name</th>
+                        <th scope="col" className="text-center">Passed</th>
+                        <th scope="col" className="text-center">Transitions</th>
                         {
                           QualityData.testOverviewDTO.buildIds.map((item, index) => {
                             return (
-                              <th key={index} className="text-center">{item}</th>
+                              <th key={index} scope="col" className="text-center">{item}</th>
                             )
                           })
                         }
-
 
                       </tr>
                       </thead>
@@ -103,19 +102,19 @@ const QualityBuild = props => {
                         QualityData && QualityData.testOverviewDTO.testDetailDTOList.map((item, index) => {
                           return (
                             <tr key={index}>
-                              <td>
-                                <p>{item.packageName}</p>
+                              <td className="w-23">
+                                <p style={{wordBreak: 'break-all'}}>{item.packageName}</p>
                               </td>
-                              <td>{item.passedPercentage}%</td>
-                              <td>{item.transitionCount}</td>
+                              <td className="text-center">{item.passedPercentage}%</td>
+                              <td className="text-center">{item.transitionCount}</td>
                               {item.testStatus.map((item, index) => {
                                 return (
-                                  <td key={index}>
+                                  <td key={index} className="text-center">
                                     <Button
                                       style={{
                                         minWidth: "4rem",
                                         lineHeight: "1rem",
-                                        color: "#222222",
+                                        color: "#ffffff",
                                         background: StatusColor[item],
                                         border: StatusColor[item],
                                       }}
