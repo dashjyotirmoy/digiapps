@@ -46,7 +46,7 @@ getClientId = (clientDetails) => {
 fetchChartsData = (res) => {
   const clientId = this.getClientId(res.data.clientsList);
   this.props.clientListDispatch(clientId[0].clientId);
-  //this.props.execAllDispatch();
+  this.props.execAllDispatch(clientId[0].clientId);
   this.setState({
     show: false,
   });

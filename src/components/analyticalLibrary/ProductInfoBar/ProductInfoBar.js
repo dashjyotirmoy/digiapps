@@ -41,21 +41,23 @@ class ProductInfoBar extends Component {
     repoData: [],
     selectedRepo: "",
     show: true,
-    clientId:''
+    clientId:'',
+    currentExecId: ''
   };
 
   //axios call to fetch executive data
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if(this.props.currentClientId !== nextProps.currentClientId) {
+    if(this.props.executiveId !== nextProps.executiveId) {
       nextProps.execInsightsDispatch(nextProps.executiveId,nextProps.currentClientId);
       api
-      .getExecInsightsData(this.props.executiveId,nextProps.currentClientId)
+      .getExecInsightsData(nextProps.executiveId,nextProps.currentClientId)
       .then(this.setProject)
       .catch(error => {
         console.error(error);
       });
       this.setState({
-        clientId: nextProps.currentClientId
+        clientId: nextProps.currentClientId,
+        currentExecId: nextProps.executiveId
       });
     }
   }
@@ -87,7 +89,7 @@ class ProductInfoBar extends Component {
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId, this.props.executiveId);
+    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId, this.state.currentExecId);
   };
 
   //function to update project details when project dropdown values are changed
@@ -105,7 +107,7 @@ class ProductInfoBar extends Component {
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId,this.props.executiveId);
+    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId,this.state.currentExecId);
   };
 
   //axios call to fetch project details
@@ -130,14 +132,14 @@ class ProductInfoBar extends Component {
     this.props.sprintInsightsDispatch(
       sprintId,
       this.state.clientId,
-      this.props.executiveId,
+      this.state.currentExecId,
       this.props.projectID,
       teamID
     );
   };
 
   setTeams = res => {
-    let teams = res.data.teamDetails.reverse();
+    let teams = res.data.teamDetails!== null ? res.data.teamDetails.reverse():"";
 
     const teamData = this.markSelected(teams, teams[0].teamId);
     const teamDetails = teamData.list.map(ele => {
@@ -157,7 +159,7 @@ class ProductInfoBar extends Component {
       selectedTeamId: teamDetails[teamData.selectedIndex].id,
       show: false
     });
-    this.props.insightsVelocity(this.state.clientId,this.props.executiveId, this.props.projectID, teamDetails[teamData.selectedIndex].id);
+    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID, teamDetails[teamData.selectedIndex].id);
     this.setSprint(
       teams,
       teamDetails[teamData.selectedIndex].id,
@@ -182,7 +184,7 @@ class ProductInfoBar extends Component {
       selectedTeam: teamDetail[selectedIndex].projectName
     });
     this.setSprint(teams, teams[selectedIndex].id, selectedIndex, true);
-    this.props.insightsVelocity(this.state.clientId,this.props.executiveId, this.props.projectID, teams[selectedIndex].id);
+    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID, teams[selectedIndex].id);
   };
 
   //method to set current sprint value and set sprint details
@@ -230,7 +232,7 @@ class ProductInfoBar extends Component {
 
       this.getSprintData(
         sprintDetails[sprintData.selectedIndex].id,
-        this.props.executiveId,
+        this.state.currentExecId,
         teamID
       );
       this.props.repoDropValDispatch();
@@ -280,7 +282,7 @@ class ProductInfoBar extends Component {
       sprintData: list,
       selectedSprint: list[selectedIndex].projectName
     });
-    this.getSprintData(sprintId, this.props.executiveId, this.props.teamId);
+    this.getSprintData(sprintId, this.state.currentExecId, this.props.teamId);
   };
 
   // Handling sprint Data ends
@@ -291,7 +293,7 @@ class ProductInfoBar extends Component {
   getQualityData = () => {
     const qualityData = api.getQualityMetricsData(
       this.state.clientId,
-      this.props.executiveId,
+      this.state.currentExecId,
       this.props.projectID
     );
     qualityData.then(this.setRepository).catch(error => {
@@ -593,7 +595,7 @@ class ProductInfoBar extends Component {
                             >
                               <p className="font-size-smaller m-0 text-center">
                                 {this.props.projectRecieved
-                                  ? `${this.props.projDetails.features.completed}/ ${this.props.projDetails.features.total}`
+                                  ? this.props.projDetails.features && `${this.props.projDetails.features.completed}/ ${this.props.projDetails.features.total}`
                                   : "loading"}
                               </p>
                               <p className="font-size-small m-0 text-center m-0">
@@ -629,7 +631,7 @@ class ProductInfoBar extends Component {
                             >
                               <p className="font-size-smaller m-0 text-left">
                                 {this.props.projectRecieved
-                                  ? `${this.props.projDetails.userStory.completed}/ ${this.props.projDetails.userStory.total}`
+                                  ? this.props.projDetails.userStory && `${this.props.projDetails.userStory.completed}/ ${this.props.projDetails.userStory.total}`
                                   : "loading"}
                               </p>
                               <p className="font-size-small m-0 text-center">
@@ -658,8 +660,7 @@ const mapStateToProps = state => {
     executiveId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
     projectList: state.execData.currentExecutiveInfo.executiveData,
-    projectListReceived:
-      state.execData.currentExecutiveInfo.executiveDataReceived,
+    projectListReceived: state.execData.currentExecutiveInfo.executiveDataReceived,
     projDetails: state.productDetails.currentProject.projectDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
     teamId: state.productDetails.currentSprint.teamId,

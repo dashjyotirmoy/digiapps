@@ -5,6 +5,7 @@ export const chartDataDispatch = (
   clientId,
   execId,
   projectId,
+  sourceTypeId,
   sprintId,
   teamID
 ) => async dispatch => {
@@ -13,6 +14,7 @@ export const chartDataDispatch = (
       clientId,
       execId,
       projectId,
+      sourceTypeId,
       sprintId,
       teamID
     );
