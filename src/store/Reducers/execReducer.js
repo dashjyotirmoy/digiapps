@@ -3,7 +3,7 @@ const initialState = {
   clientlist: [],
   currentClientId: "",
   widgetList:[],
-  executiveId: "4c78ede2-1be2-66e5-8dc7-bc89cc8dfe0f",
+  executiveId: "",
   currentExecutiveInfo: {
     executiveData: {},
     executiveDataReceived: false
@@ -26,7 +26,8 @@ const dimReducer = (state = initialState, action) => {
     case "GET_EXEC_DATA":
       return {
         ...state,
-        executiveInfo: action.payload.getAllExec
+        executiveInfo: action.payload.getAllExec,
+        executiveId: action.payload.getAllExec[0].id
       };
     case "SET_EXEC_DATA":
       return {

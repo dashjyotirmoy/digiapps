@@ -334,6 +334,7 @@ class Velocity extends Component {
         this.state.clientId ? this.state.clientId:this.props.currentClientId,
         this.props.currentExecId,
         this.props.projId,
+        this.props.sourceType,
         this.props.sprintId,
         this.props.teamId
       )
@@ -515,6 +516,7 @@ const mapStateToProps = state => {
     velocityProjectData: state.chartData.velocityProjectDetails,
     organization: state.productDetails.currentProject.projectDetails.organization,
     velocityInsightDetails: state.insightData.velocityInsightDetails,
+    sourceType: state.productDetails.currentProject.projectDetails.sourceType,
   };
 };
 

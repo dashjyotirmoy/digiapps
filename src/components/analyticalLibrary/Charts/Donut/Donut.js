@@ -9,8 +9,8 @@ var percentage, color, completed, total;
 class Donut extends Component {
   render() {
     color = this.props.color || "#0582EC";
-    completed = parseInt(this.props.percentage.completed);
-    total = parseInt(this.props.percentage.total);
+    completed = this.props.percentage && parseInt(this.props.percentage.completed);
+    total = this.props.percentage && parseInt(this.props.percentage.total);
     percentage = completed / total;
     if (isNaN(percentage)) {
       percentage = 0;
