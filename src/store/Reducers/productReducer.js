@@ -10,6 +10,10 @@ const initialState = {
   currentSprint: {
     sprintInfo: {},
     sprintReceived: false
+  },
+  currentProjectSprint: {
+    sprintInfo: {},
+    sprintReceived: false
   }
 };
 const prodReducer = (state = initialState, action) => {
@@ -36,7 +40,14 @@ const prodReducer = (state = initialState, action) => {
           sprintReceived: action.payload.sprintReceived
         }
       };
-
+      case actionType.LOAD_CURRENT_PROJECT_SPRINT:
+      return {
+        ...state,
+        currentProjectSprint: {
+          sprintInfo: action.payload.data.sprintDetails[0],
+          sprintReceived: action.payload.sprintReceived
+        }
+      };
     default:
       return state;
   }

@@ -23,6 +23,27 @@ export const sprintInsightsDispatch = (
       console.log(error.message);
     });
 };
+export const projectSprintInsightsDispatch = (
+  sprintId,
+  clientId,
+  execId,
+  projectId
+) => async dispatch => {
+  api
+    .getProjectSprintData(sprintId,clientId,execId,projectId)
+    .then(response => {
+      dispatch({
+        type: actionTypes.LOAD_CURRENT_PROJECT_SPRINT,
+        payload: {
+          data: response.data,
+          sprintReceived: true
+        }
+      });
+    })
+    .catch(error => {
+      console.log(error.message);
+    });
+};
 export const insightsSecurity = (
   branchName,clientId, projectId, repoName
 ) => async dispatch => {
@@ -45,10 +66,11 @@ export const insightsVelocity = (
   clientId,
   executiveId,
   projectId,
+  sourceType,
   teamID
 ) => async dispatch => {
   api
-    .getVelocityInsightsData(clientId,executiveId, projectId, teamID)
+    .getVelocityInsightsData(clientId,executiveId,projectId,sourceType,teamID)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_VELOCITY_DETAILS,

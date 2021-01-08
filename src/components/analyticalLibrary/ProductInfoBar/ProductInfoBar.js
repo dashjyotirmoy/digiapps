@@ -9,7 +9,7 @@ import {
   projInsightDispatch,
   resetProjectRepoDispatch
 } from "../../../store/actions/projectInsights";
-import { sprintInsightsDispatch } from "../../../store/actions/sprintInsights";
+import { sprintInsightsDispatch,projectSprintInsightsDispatch } from "../../../store/actions/sprintInsights";
 import api from "../../../utility/Http/devOpsApis";
 import prodAggEnabled from "../../../content/img/prodAggButton.svg";
 import prodAggDisabled from "../../../content/img/prodAggButtonDisabbled.svg";
@@ -42,7 +42,9 @@ class ProductInfoBar extends Component {
     selectedRepo: "",
     show: true,
     clientId:'',
-    currentExecId: ''
+    currentExecId: '',
+    sprintList:[],
+    currentSourecType:''
   };
 
   //axios call to fetch executive data
@@ -57,7 +59,8 @@ class ProductInfoBar extends Component {
       });
       this.setState({
         clientId: nextProps.currentClientId,
-        currentExecId: nextProps.executiveId
+        currentExecId: nextProps.executiveId,
+        currentSourecType: nextProps.currentSourceType
       });
     }
   }
@@ -82,14 +85,16 @@ class ProductInfoBar extends Component {
     const prrojDetail = list.map(ele => {
       return {
         id: ele.id,
-        projectName: ele.projectName
+        projectName: ele.projectName,
       };
     });
+    
     this.setState({
       productData: prrojDetail,
-      selectedProduct: prrojDetail[selectedIndex].projectName
+      selectedProduct: prrojDetail[selectedIndex].projectName,
+      
     });
-    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId, this.state.currentExecId);
+    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId, this.state.currentExecId,this.props.currentSourceType);
   };
 
   //function to update project details when project dropdown values are changed
@@ -107,12 +112,12 @@ class ProductInfoBar extends Component {
       productData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId,this.state.currentExecId);
+    this.getProjectDetails(projects[selectedIndex].id,this.state.clientId,this.state.currentExecId,this.props.currentSourceType);
   };
 
   //axios call to fetch project details
 
-  getProjectDetails = (projectID,clientId,executiveId) => {
+  getProjectDetails = (projectID,clientId,executiveId,sourceType) => {debugger
     // this.props.qualityDataDispatch(projectID, executiveId);
     this.props.projInsightDispatch(projectID,clientId,executiveId);
     api
@@ -137,10 +142,18 @@ class ProductInfoBar extends Component {
       teamID
     );
   };
-
+  getProjectSprintData=(sprintId, selectedExecId, projectID) => {
+    this.props.projectSprintInsightsDispatch(
+      sprintId,
+      this.state.clientId,
+      selectedExecId,
+      projectID,
+    );
+  };
   setTeams = res => {
-    let teams = res.data.teamDetails!== null ? res.data.teamDetails.reverse():"";
-
+    let teams = res.data.teamDetails!== null ? res.data.teamDetails.reverse():this.setProjectSprint(
+      this.props.projDetails,this.props.projDetails.id,0
+    );
     const teamData = this.markSelected(teams, teams[0].teamId);
     const teamDetails = teamData.list.map(ele => {
       return {
@@ -159,12 +172,12 @@ class ProductInfoBar extends Component {
       selectedTeamId: teamDetails[teamData.selectedIndex].id,
       show: false
     });
-    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID, teamDetails[teamData.selectedIndex].id);
+    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType,teamDetails[teamData.selectedIndex].id);
     this.setSprint(
       teams,
       teamDetails[teamData.selectedIndex].id,
       teamData.selectedIndex
-    );
+    )
   };
 
   updateTeam = teamId => {
@@ -184,11 +197,74 @@ class ProductInfoBar extends Component {
       selectedTeam: teamDetail[selectedIndex].projectName
     });
     this.setSprint(teams, teams[selectedIndex].id, selectedIndex, true);
-    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID, teams[selectedIndex].id);
+    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType,teams[selectedIndex].id);
   };
 
   //method to set current sprint value and set sprint details
-
+  setProjectSprint=(res, sprintID, selectedIndex, isUpdate)=>{
+    let teamDetail, sprintsfromTeam;
+    let stateFromProjects;
+    if (isUpdate) {
+      teamDetail = res.map(ele => {
+        return {
+          teamId: ele.id,
+          teamName: ele.projectName,
+          sprintDetails: ele.sprintDetails
+        };
+      });
+      sprintsfromTeam = teamDetail.map(item => {
+        if (item.teamId === sprintID) {
+          return item.sprintDetails;
+        }
+      });
+    } else {
+    const resArray = [];
+      resArray.push(res);
+      sprintsfromTeam = resArray.map(item => {
+        if (item.id === sprintID) {
+          return item.sprintDetails;
+        }
+      });
+    }
+      let sprints = sprintsfromTeam[selectedIndex].reverse();
+      if (sprints.length > 0) {
+        stateFromProjects = sprints.filter(item => {
+          if (item.state === "ACTIVE") {
+            return item.id;
+          }
+        });
+        const sprintData = this.markSelected(sprints, stateFromProjects[0].id);
+        const sprintDetails = sprintData.list.map(ele => {
+          return {
+            id: ele.id,
+            projectName: ele.name
+          };
+        });
+        this.getProjectSprintData(
+          sprintDetails[sprintData.selectedIndex].id,
+          this.state.currentExecId,
+          sprintID
+        );
+        productMetrics = this.setProductMetricsJira(res.sprintCount);
+        this.props.repoDropValDispatch();
+        this.props.resetProjectRepoDispatch();
+        this.setState({
+          sprintData: sprintDetails,
+          selectedSprint: sprintDetails[sprintData.selectedIndex].projectName,
+          show: false
+        });
+      } else {
+        // this.getSprintData(
+        //   this.props.sprintData.id,
+        //   this.props.executiveId,
+        //   teamID
+        // );
+        this.setState({
+          sprintData: sprints,
+          selectedSprint: "No Sprints available"
+        });
+      }
+  };
   setSprint = (res, teamID, selectedIndex, isUpdate) => {
     // let sprints = res.data.sprintsfromTeam.reverse();
     let teamDetail, sprintsfromTeam;
@@ -243,11 +319,6 @@ class ProductInfoBar extends Component {
         show: false
       });
     } else {
-      // this.getSprintData(
-      //   this.props.sprintData.id,
-      //   this.props.executiveId,
-      //   teamID
-      // );
       this.setState({
         sprintData: sprints,
         selectedSprint: "No Sprints available"
@@ -257,10 +328,16 @@ class ProductInfoBar extends Component {
 
   setProductMetrics(data , headCount, index = 0) {
     const metrics = [
-      // { name: "Head Count", value: this.props.projDetails.totalMembers },
       { id : index++ , value: this.props.projDetails.totalMembers },
       { id : index++, value: `${data.completed} / ${data.total}` },
       { id : index++, value : headCount }
+    ];
+    return metrics;
+  }
+  setProductMetricsJira(data , index = 0) {
+    const metrics = [
+      { id : index++ , value: this.props.projDetails.totalMembers },
+      { id : index++, value: `${data.completed} / ${data.total}` },
     ];
     return metrics;
   }
@@ -282,7 +359,11 @@ class ProductInfoBar extends Component {
       sprintData: list,
       selectedSprint: list[selectedIndex].projectName
     });
-    this.getSprintData(sprintId, this.state.currentExecId, this.props.teamId);
+    if(this.props.currentSourceType !== 'Jira'){
+        this.getSprintData(sprintId, this.state.currentExecId, this.props.teamId);
+    }else{
+      this.getProjectSprintData(sprintId,this.state.currentExecId, this.props.projectID)
+    }
   };
 
   // Handling sprint Data ends
@@ -386,6 +467,7 @@ class ProductInfoBar extends Component {
   };
 
   render() {
+    console.log("projDetails",this.props.projDetails);
     let dimensionData = this.props.widgetProps;
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const activeLink = window.location.href.includes("/quality");
@@ -465,7 +547,7 @@ class ProductInfoBar extends Component {
                       </Dropdown>
                     ) : null}
                   </Col>
-                  <Col
+                  {this.props.currentSourceType!== 'Jira' && <Col
                     sm={4}
                     md={4}
                     lg={4}
@@ -499,7 +581,7 @@ class ProductInfoBar extends Component {
                         </Row>
                       </Dropdown>
                     ) : <><span className="text-white font-size-small">{labels[0].mappings.teamLabel}</span><Button variant="outline-dark" className="bg-prodAgg-btn text-white w-100 rounded border border-secondary">ALL</Button></>}
-                  </Col>
+                  </Col>}
                   <Col
                     sm={4}
                     md={4}
@@ -578,7 +660,7 @@ class ProductInfoBar extends Component {
                             {this.props.projectRecieved ? (
                               <Donut
                                 color={"#7a61ff"}
-                                percentage={this.props.projDetails.features}
+                                percentage={this.props.projDetails.backlogDetails[0]}
                                 bgTheme={bgTheme}
                               ></Donut>
                             ) : (
@@ -595,7 +677,7 @@ class ProductInfoBar extends Component {
                             >
                               <p className="font-size-smaller m-0 text-center">
                                 {this.props.projectRecieved
-                                  ? this.props.projDetails.features && `${this.props.projDetails.features.completed}/ ${this.props.projDetails.features.total}`
+                                  ? `${this.props.projDetails.backlogDetails[0].completed}/ ${this.props.projDetails.backlogDetails[0].total}`
                                   : "loading"}
                               </p>
                               <p className="font-size-small m-0 text-center m-0">
@@ -614,7 +696,7 @@ class ProductInfoBar extends Component {
                             {this.props.projectRecieved ? (
                               <Donut
                                 color={"#2ece95"}
-                                percentage={this.props.projDetails.userStory}
+                                percentage={this.props.projDetails.backlogDetails[1]}
                                 bgTheme={bgTheme}
                               ></Donut>
                             ) : (
@@ -631,7 +713,7 @@ class ProductInfoBar extends Component {
                             >
                               <p className="font-size-smaller m-0 text-left">
                                 {this.props.projectRecieved
-                                  ? this.props.projDetails.userStory && `${this.props.projDetails.userStory.completed}/ ${this.props.projDetails.userStory.total}`
+                                  ? `${this.props.projDetails.backlogDetails[1].completed}/ ${this.props.projDetails.backlogDetails[1].total}`
                                   : "loading"}
                               </p>
                               <p className="font-size-small m-0 text-center">
@@ -667,6 +749,8 @@ const mapStateToProps = state => {
     projectRecieved: state.productDetails.currentProject.projectDataReceived,
     sprintData: state.productDetails.currentSprint.sprintInfo,
     sprintDataReceived: state.productDetails.currentSprint.sprintReceived,
+    projectSprintData: state.productDetails.currentProjectSprint.sprintInfo,
+    projectSprintDataReceived: state.productDetails.currentProjectSprint.sprintReceived,
     velocityCharts: state.chartData.currentChartData.chartDetails,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
     chartDataReceived: state.chartData.currentChartData.chartDataReceived,
@@ -675,6 +759,7 @@ const mapStateToProps = state => {
     execDataReceived: state.execData.currentExecutiveInfo.executiveDataReceived,
     metricsData: state.execData.currentExecutiveInfo.executiveData,
     velocityCharts: state.chartData.currentChartData.chartDetails,
+    currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
   };
 };
 
@@ -685,6 +770,7 @@ const mapDispatchToProps = dispatch => {
     {
       projInsightDispatch,
       sprintInsightsDispatch,
+      projectSprintInsightsDispatch,
       repoDropValDispatch,
       resetProjectRepoDispatch,
       qualityDataDispatch,
