@@ -7,10 +7,10 @@ import Dimensions from "react-dimensions";
 var percentage, color, completed, total;
 
 class Donut extends Component {
-  render() {
+  render() {debugger
     color = this.props.color || "#0582EC";
-    completed = this.props.percentage && parseInt(this.props.percentage.completed);
-    total = this.props.percentage && parseInt(this.props.percentage.total);
+    completed = parseInt(this.props.percentage.completed);
+    total = parseInt(this.props.percentage.total);
     percentage = completed / total;
     if (isNaN(percentage)) {
       percentage = 0;

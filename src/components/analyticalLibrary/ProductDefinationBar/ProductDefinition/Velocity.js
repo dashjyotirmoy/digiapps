@@ -324,7 +324,7 @@ class Velocity extends Component {
 
   //function to fetch charts data
 
-  fetchChartsData = (props) => {
+  fetchChartsData = (props) => {debugger
     this.setState({
       all_data: false,
       charts: []
@@ -502,7 +502,7 @@ class Velocity extends Component {
 
 //function to map the state received from reducer
 
-const mapStateToProps = state => {
+const mapStateToProps = state => {console.log("state.productDetails.currentProject.projectDetails.sourceType",state.productDetails.currentProject.projectDetails.sourceType)
   return {
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
