@@ -536,7 +536,8 @@ class Quality extends Component {
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props.projectID !== nextProps.projectID) {
+    if ((this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId) && 
+        nextProps.projectID) {
       this.setState({
         all_data: true,
       });
@@ -740,7 +741,7 @@ class Quality extends Component {
   };
   setRepository = (res) => {
     const repositoryData = res.repositories;
-    if (repositoryData.length > 0 && repositoryData !== null) {
+    if (repositoryData.length > 0 || repositoryData !== null) {
       const { list } = this.markSelected(
         repositoryData,
         repositoryData[0].repoKey
@@ -761,6 +762,7 @@ class Quality extends Component {
       });
       this.props.repoDropValDispatch("");
     } else {
+      console.log("res",repositoryData);
       this.setState({
         repoData: [],
         selectedRepo: "",
@@ -1246,6 +1248,8 @@ const mapStateToProps = (state) => {
     widgetList: state.execData.widgetList,
     qualityData: state.qualityData.currentQualityData.qualityDetails,
     projectID: state.productDetails.currentProject.projectDetails.id,
+    sprintId: state.productDetails.currentSprint.sprintInfo.id,
+    projectSprintId: state.productDetails.currentProjectSprint.sprintInfo.id,
     currentRepo: state.qualityData.currentRepo,
     qualityBuildData: state.qualityData.qualityBuildDetails,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
