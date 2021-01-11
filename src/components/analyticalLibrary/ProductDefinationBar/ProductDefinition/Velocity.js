@@ -201,9 +201,8 @@ class Velocity extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (
-      this.props.sprintId !== nextProps.sprintId &&
-      nextProps.projId &&
-      nextProps.sprintId
+      (this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId) &&
+      nextProps.projId
     ) {
       this.setState({
         all_data: true
@@ -221,7 +220,7 @@ class Velocity extends Component {
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
     bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
-    if (this.props.projId && this.props.sprintId) {
+    if (this.props.projId && (this.props.sprintId || this.props.projectSprintId)) {
       this.setState({
         all_data: true
       });
@@ -234,6 +233,7 @@ class Velocity extends Component {
   }
 
   componentDidUpdate() {
+    // console.log("update",this.state.all_data);
     if (this.state.all_data) {
       this.fetchChartsData();
       this.setDefaultData();
@@ -324,7 +324,7 @@ class Velocity extends Component {
 
   //function to fetch charts data
 
-  fetchChartsData = (props) => {debugger
+  fetchChartsData = (props) => {
     this.setState({
       all_data: false,
       charts: []
@@ -334,9 +334,9 @@ class Velocity extends Component {
         this.state.clientId ? this.state.clientId:this.props.currentClientId,
         this.props.currentExecId,
         this.props.projId,
-        this.props.sourceType,
-        this.props.sprintId,
-        this.props.teamId
+        this.props.currentSourceType,
+        this.props.currentSourceType !== 'Jira'? this.props.sprintId:this.props.projectSprintId,
+        this.props.currentSourceType !== 'Jira'? this.props.teamId:''
       )
       .then(res => {
         this.createCharts(
@@ -502,7 +502,8 @@ class Velocity extends Component {
 
 //function to map the state received from reducer
 
-const mapStateToProps = state => {console.log("state.productDetails.currentProject.projectDetails.sourceType",state.productDetails.currentProject.projectDetails.sourceType)
+const mapStateToProps = state => {
+  console.log("state.productDetails.currentSprint.sprintInfo.id",state.productDetails)
   return {
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
@@ -510,13 +511,14 @@ const mapStateToProps = state => {console.log("state.productDetails.currentProje
     velocityCharts: state.chartData.currentChartData.chartDetails,
     projId: state.productDetails.currentProject.projectDetails.id,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
+    projectSprintId: state.productDetails.currentProjectSprint.sprintInfo.id,
     teamId: state.productDetails.currentSprint.teamId,
     currentRepo: state.chartData.currentRepo,
     velocityBuildData: state.chartData.velocityBuildDetails,
     velocityProjectData: state.chartData.velocityProjectDetails,
     organization: state.productDetails.currentProject.projectDetails.organization,
     velocityInsightDetails: state.insightData.velocityInsightDetails,
-    sourceType: state.productDetails.currentProject.projectDetails.sourceType,
+    currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
   };
 };
 

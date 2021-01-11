@@ -811,7 +811,8 @@ class Security extends Component {
 
 //function to map the state received from reducer
 
-const mapStateToProps = state => {console.log("state.chartData.currentTab",state.chartData.currentTab);
+const mapStateToProps = state => {
+  // console.log("state.chartData.currentTab",state.chartData.currentTab);
   return {
     // clientList: 
     currentExecId: state.execData.executiveId,

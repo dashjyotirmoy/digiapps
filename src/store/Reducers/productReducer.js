@@ -44,7 +44,7 @@ const prodReducer = (state = initialState, action) => {
       return {
         ...state,
         currentProjectSprint: {
-          sprintInfo: action.payload.data.sprintDetails[0],
+          sprintInfo: action.payload.data,
           sprintReceived: action.payload.sprintReceived
         }
       };

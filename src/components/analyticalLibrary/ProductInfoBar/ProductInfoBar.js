@@ -113,16 +113,17 @@ class ProductInfoBar extends Component {
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
     this.getProjectDetails(projects[selectedIndex].id,this.state.clientId,this.state.currentExecId,this.props.currentSourceType);
+    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType);
   };
 
   //axios call to fetch project details
 
-  getProjectDetails = (projectID,clientId,executiveId,sourceType) => {debugger
+  getProjectDetails = (projectID,clientId,executiveId,sourceType) => {
     // this.props.qualityDataDispatch(projectID, executiveId);
     this.props.projInsightDispatch(projectID,clientId,executiveId);
     api
       .getProjectInsightsData(projectID,clientId,executiveId)
-      .then(this.setTeams)
+      .then(this.setDynamicDrop)
       .catch(error => {
         console.error(error);
       });
@@ -150,10 +151,13 @@ class ProductInfoBar extends Component {
       projectID,
     );
   };
-  setTeams = res => {
-    let teams = res.data.teamDetails!== null ? res.data.teamDetails.reverse():this.setProjectSprint(
+  setDynamicDrop= res => {
+    res.data.sourceType !== 'Jira'? this.setTeams(res) : this.setProjectSprint(
       this.props.projDetails,this.props.projDetails.id,0
-    );
+    )
+  };
+  setTeams(res) {
+    let teams = res.data.teamDetails!== null ? res.data.teamDetails.reverse():"";
     const teamData = this.markSelected(teams, teams[0].teamId);
     const teamDetails = teamData.list.map(ele => {
       return {
@@ -246,6 +250,7 @@ class ProductInfoBar extends Component {
           sprintID
         );
         productMetrics = this.setProductMetricsJira(res.sprintCount);
+        this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType);
         this.props.repoDropValDispatch();
         this.props.resetProjectRepoDispatch();
         this.setState({
@@ -254,11 +259,6 @@ class ProductInfoBar extends Component {
           show: false
         });
       } else {
-        // this.getSprintData(
-        //   this.props.sprintData.id,
-        //   this.props.executiveId,
-        //   teamID
-        // );
         this.setState({
           sprintData: sprints,
           selectedSprint: "No Sprints available"
@@ -467,7 +467,6 @@ class ProductInfoBar extends Component {
   };
 
   render() {
-    console.log("projDetails",this.props.projDetails);
     let dimensionData = this.props.widgetProps;
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const activeLink = window.location.href.includes("/quality");
