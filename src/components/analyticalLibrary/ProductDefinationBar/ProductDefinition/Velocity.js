@@ -244,7 +244,7 @@ class Velocity extends Component {
     // let type;
     this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId)
     this.props
-      .velocityProjectDataDispatch(this.props.projId,this.state.clientId)
+      .velocityProjectDataDispatch(this.props.projId,this.props.currentClientId)
       .then(item => {
         if (this.props.velocityProjectData.jobDetailDtoList.length > 0) {
           this.setRepository(this.props.velocityProjectData);

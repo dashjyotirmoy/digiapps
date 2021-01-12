@@ -16,6 +16,7 @@ import Dropdown from "../../Dropdown/Dropdown";
 import Spinner from "../../Spinner/Spinner";
 import api from "../../../../utility/Http/devOpsApis";
 import { labelConst } from "../../../../utility/constants/labelsConstants";
+import { widgetListDispatch } from "../../../../store/actions/executiveInsights";
 class Insights extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +38,10 @@ class Insights extends Component {
       items: [],
       projectList:[],
       selectedProduct: "",
-      clientId:''
+      clientId:'',
+      insightVelocity: 'Velocity and Efficiency',
+      insightSecurity: 'Security',
+      insightQuality: 'Quality'
     }
   }
   // Project List Dropdown starts here
@@ -202,6 +206,8 @@ class Insights extends Component {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
+    const currentWidgetList = this.props.widgetList;
+    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "insights");
     if (this.state.show) {
       return <Spinner show="true" />;
     } else{
@@ -274,23 +280,25 @@ class Insights extends Component {
             <span className='mt-auto'><p className="font-size-small m-0 text-left">You are viewing data at <b>Repository</b> level</p></span>
         </Row>
         <Row className="m-0 p-0">
-          {labels[0].clientName !== 'wpc' && <Col            
+        {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightSecurity) && <Col            
             className="bg-card"
           >
             <CardChartSecurity insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" bgTheme={bgTheme}/>
           </Col>}
+          {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightVelocity) &&
           <Col
             
             className="bg-card p-0"
           >
             <CardChartVelocity insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme}/>
-          </Col>
+          </Col>}
+          {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightQuality) &&
           <Col
 
             className="bg-card"
           >
             <CardChartQuality insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" bgTheme={bgTheme}/>
-          </Col>
+          </Col>}
         </Row>
       </Container>
     );
@@ -306,7 +314,8 @@ const mapStateToProps = state => {
     velocityInsightDetails: state.insightData.velocityInsightDetails,
     securityDetails: state.insightData.securityDetails,
     qualityDetails: state.insightData.qualityDetails,
-    dropData: state.insightData.projectDropdownDetails
+    dropData: state.insightData.projectDropdownDetails,
+    widgetList: state.execData.widgetList
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -314,6 +323,7 @@ const mapDispatchToProps = dispatch => {
     {
        insightsQuality,
       insightsSecurity,
+      widgetListDispatch
     },
     dispatch
   );
