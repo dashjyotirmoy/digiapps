@@ -35,14 +35,14 @@ export const labelConst = [{
 	}
 },
 {
-	clientName: 'jra',
-	clientId: 'JRA',
+	clientName: 'blen',
+	clientId: 'BLEN',
 	mappings: {
 			navLogoUrl: 'overview',
 			bgColor: true,
-			logoName: 'DevOps Dashboard',
+			logoName: 'BLEN Dashboard',
 			projectLabel: 'Project',
-			teamLabel: 'Teams',
+			teamLabel: '',
 			sprintLabel: 'Sprints',
 			count: [{name:'Head Count'},{name:'Sprint Count'},{name: 'Team Head Count'}],
 			feature: 'Features',
