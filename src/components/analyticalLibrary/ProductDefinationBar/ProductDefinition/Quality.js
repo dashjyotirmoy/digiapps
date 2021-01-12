@@ -739,9 +739,9 @@ class Quality extends Component {
       selectedIndex: selectedIndex
     };
   };
-  setRepository = (res) => {
+  setRepository = (res) => {debugger
     const repositoryData = res.repositories;
-    if (repositoryData.length > 0 || repositoryData !== null) {
+    if (repositoryData.length > 0 && repositoryData !== null) {
       const { list } = this.markSelected(
         repositoryData,
         repositoryData[0].repoKey

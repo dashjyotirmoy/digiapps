@@ -9,6 +9,7 @@ import BuildColumnSummaryTrend from "../../OverView/BuildColumnSummaryTrend";
 import Spinner from "../../Spinner/Spinner";
 import { Row, Col,Card,} from "react-bootstrap";
 import { labelConst } from "../../../../utility/constants/labelsConstants";
+import { widgetListDispatch } from "../../../../store/actions/executiveInsights";
 
 class Overview extends Component {
   constructor(props){
@@ -25,6 +26,10 @@ class Overview extends Component {
       totalHigh:'',
       totalMedium:'',
       totalLow:'',
+      clientId:'',
+      appSecurity: "Application Security",
+      projectProd:  "Project Productivity",
+      defectmgmt: "Defect Management",
       "secuityData": [
         {
             "name": "Cross Site Scripting (Reflected)",
@@ -152,63 +157,49 @@ class Overview extends Component {
     ]
     }
   }
-  
-  // getTotalCount=()=>{
-  //   var items = this.props.summaryCharts.defectOverview
-  //     this.setState({
-  //       totalCritical: items.totalCriticalBugCount,
-  //       totalHigh: items.totalHighBugCount,
-  //       totalMedium: items.totalMediumBugCount,
-  //       totalLow: items.totalLowBugCount
-  //     })    
-  // };
   fetchChartsData = () => {
-     if(this.props.currentClientId){
+     if(this.props.currentExecId){
+      this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId); 
       this.props.summaryChartDataDispatch(this.props.currentClientId,this.props.currentExecId);
     }
     this.state.secuityData.sort((a, b)=> b.count -a.count);
     this.setState({
       show: false,
+      all_data: false
     });
   };
-
-  UNSAFE_componentWillMount() {
-    this.fetchChartsData();
+  componentDidMount() {
+    this.setState({
+      all_data: true
+    });
   }
-
-  componentDidMount() {  
-    this.fetchChartsData();
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if(this.props.currentClientId !== nextProps.currentClientId) {
-      nextProps.summaryChartDataDispatch(nextProps.currentClientId, nextProps.currentExecId);
-        this.setState({
-          all_data: false
-        });
+   componentDidUpdate() {
+    if (this.state.all_data && this.props.currentExecId) {
+      this.fetchChartsData();
     }
-  }
-
+   }
   render() {
         const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
         const labels = labelConst.filter((item)=> item.clientName === clientName );
         const bgTheme = labels[0].mappings.bgColor;
+        const currentWidgetList = this.props.widgetList;
+        const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "overview");
         if (this.state.show) {
           return <Spinner show="true"/>;
         } else {
           return (      
         <React.Fragment>
         <Row className={`px-3 py-4 ${bgTheme ? '' : 'bg-light'}`}>
-        <Col
+        {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.appSecurity) && <Col
                   sm={12}
                   md={12}
                   lg={5}
                   xl={5}
                   className="pr-0"
                 >
-              <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark':'card-border-light'}`}>
+                <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark':'card-border-light'}`}>
                 <h6 className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod text-white' : 'cardHeader'}`}>Application Security</h6>
-              <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
+                <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
                   <Col
                   sm={12}
                   md={12}
@@ -264,38 +255,30 @@ class Overview extends Component {
                 </Col>
                </Row> 
                </Card.Body>
-         </Col>
-         <Col
-                  sm={12}
-                  md={12}
-                  lg={7}
-                  xl={7}
+         </Col>} 
+              <Col
+                  className={`${currentTabWidgets[0] && currentTabWidgets[0].widgets && !currentTabWidgets[0].widgets.includes(this.state.appSecurity) ? 'col-md-12':'col-md-7'}`} 
                 >
                   <Row className="no-gutters">
+                  {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.projectProd) &&
                   <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}
-                  className="mb-3"
-                >
-                 <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark':'card-border-light'}`}>
-                    <h6 className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod text-white' : 'cardHeader'}`}>Project Productivity</h6>
+                  className={`${!currentTabWidgets[0].widgets.includes(this.state.appSecurity)? '':'col-12 mb-3'}`} 
+                 >
+                    <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark':'card-border-light'}`}>
+                        <h6 className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod text-white' : 'cardHeader'}`}>Project Productivity</h6>
 
-                    <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
-                  <Col className="pr-3">
-                 <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.velocityTrendsSummary} type='velocity' bgTheme={bgTheme}/>
-                 </Col>
-                 <Col>
-                 <div><BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.projectBurndownSummary} type='velocity' bgTheme={bgTheme}/></div>
-                </Col></Row>
-                </Card.Body>
-                </Col>
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={12}                  >
+                        <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
+                          <Col className="pr-3">
+                              <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.velocityTrendsSummary} type='velocity' bgTheme={bgTheme}/>
+                          </Col>
+                          <Col>
+                            <div><BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.projectBurndownSummary} type='velocity' bgTheme={bgTheme}/></div>
+                          </Col>
+                        </Row>
+                    </Card.Body>
+                </Col>}
+                {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.defectmgmt) &&<Col
+                  className={`${!currentTabWidgets[0].widgets.includes(this.state.appSecurity)? '':'col-12'}`}                  >
                 <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark':'card-border-light'}`}>
                     <h6 className={`m-0 font-weight-bold ${bgTheme ? 'bg-prodInfo-prod text-white' : 'cardHeader'}`}>Defect Management</h6>
                     <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
@@ -336,7 +319,7 @@ class Overview extends Component {
                 </Col>
                 </Row>
                 </Card.Body>    
-                </Col>
+                </Col>}
 
                   </Row>
                   
@@ -354,6 +337,7 @@ const mapStateToProps = state => {
   return {  
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
+    widgetList: state.execData.widgetList,
     summaryCharts: state.summaryData.summaryChartData,
   };
 };
@@ -361,7 +345,7 @@ const mapStateToProps = state => {
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({summaryChartDataDispatch }, dispatch);
+  return bindActionCreators({summaryChartDataDispatch,widgetListDispatch }, dispatch);
 };
 
 //Connect react component to redux
