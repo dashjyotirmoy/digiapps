@@ -290,7 +290,7 @@ class Insights extends Component {
             
             className="bg-card p-0"
           >
-            <CardChartVelocity insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme}/>
+            <CardChartVelocity insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme} sourceType={this.props.currentSourceType}/>
           </Col>}
           {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightQuality) &&
           <Col
@@ -315,7 +315,8 @@ const mapStateToProps = state => {
     securityDetails: state.insightData.securityDetails,
     qualityDetails: state.insightData.qualityDetails,
     dropData: state.insightData.projectDropdownDetails,
-    widgetList: state.execData.widgetList
+    widgetList: state.execData.widgetList,
+    currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
   };
 };
 const mapDispatchToProps = dispatch => {
