@@ -1,12 +1,13 @@
 import React from 'react';
 import ChartHOC from '../ChartHOC/ChartHOC';
-const BuildSingleLine = (props) => {
+const BuildSingleLine = (props) => {debugger
   let bgTheme= props.bgTheme;
+  let sourceType = props.sourceType;
   var options = {}
   let result = props.chartData.map(xaxisName => xaxisName.name)
   options = {
     title: {
-      text: 'Project > Team > Sprints',
+      text: sourceType!== 'Jira'?'Project > Team > Sprints':'Project > Sprints',
       align: "left",
       style: {
         color: bgTheme ? "#ffffff": "#333333",

@@ -9,6 +9,7 @@ import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 
 const CardChart = props => {
     const bgTheme = props.bgTheme;
+    const sourceType = props.sourceType;
     const [ open, setOpen ] = useState(false);
     let graphValue = [];
      let velocityVariance;
@@ -82,7 +83,7 @@ const CardChart = props => {
                         <span style={{fontSize: "12px",fontWeight: "bold" }} className={`badge btnSize w-auto ${btnClass()} ${bgTheme ? 'text-dark' : 'text-white'}`}>{btnLabel()}</span>
                     :" "}
                 </div>
-                {props.showChart!=="true" ?   <BuildSingleLine chartData={insightVal.graphValue} bgTheme={bgTheme}/>:''}
+                {props.showChart!=="true" ?   <BuildSingleLine chartData={insightVal.graphValue} bgTheme={bgTheme} sourceType={sourceType}/>:''}
                 </div>
                 {insightVal.content &&
                 <>
