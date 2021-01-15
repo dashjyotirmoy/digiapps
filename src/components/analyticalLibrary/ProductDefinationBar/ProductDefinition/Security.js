@@ -169,8 +169,8 @@ class Security extends Component {
       selectedBranch: branchDetail[selectedIndex].projectName,
       showInsights:true
     });
-    this.getReleaseDetails(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.projectID, this.state.selectedRepo);
-    this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.projectID,this.state.selectedRepo);
+    this.getReleaseDetails(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.projectID, this.state.selectedRepo);
+    this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.projectID,this.state.selectedRepo);
     
   };
   setRelease = (res) => {
@@ -214,7 +214,7 @@ class Security extends Component {
       alertActive:false,
       policyActive:false,
     });
-    this.props.securityReleaseDataDispatch(this.state.selectedBranch,this.state.clientId,this.props.projectID, this.state.selectedRepoId,releaseDetail[selectedIndex].projectName, this.state.selectedRepo) 
+    this.props.securityReleaseDataDispatch(this.state.selectedBranch,this.props.currentClientId,this.props.projectID, this.state.selectedRepoId,releaseDetail[selectedIndex].projectName, this.state.selectedRepo) 
       .then(() => { this.updateReleaseSecurityData(releaseId, selectedIndex) });  
   };
   getReleaseDetails = (branchName,clientId,projectID, projName) => {
@@ -452,7 +452,7 @@ class Security extends Component {
     this.setDefaultData();
     }
     
-    this.getBranchDetails(this.state.clientId,this.props.projectID, repoDetails[selectedIndex].projectName);
+    this.getBranchDetails(this.props.currentClientId,this.props.projectID, repoDetails[selectedIndex].projectName);
   };
 
   updateSecurityData = (repoId, selectedIndex) => {
@@ -481,10 +481,10 @@ class Security extends Component {
     
     this.setState({policyActive: policyCurrentState,alertActive:alertCurrentState});
     if(this.state.selectedRepo !== '' && this.state.selectedBranch !== '' && this.state.selectedRelease !== ''){
-      this.props.securityReleasePolicyDataDispatch(this.state.selectedBranch,this.state.clientId,this.props.projectID, this.props.currentRepo,this.state.selectedRelease,this.state.selectedRepo)
+      this.props.securityReleasePolicyDataDispatch(this.state.selectedBranch,this.props.currentClientId,this.props.projectID, this.props.currentRepo,this.state.selectedRelease,this.state.selectedRepo)
       .then(() => { this.setPolicyData(this.props.securityReleasePolicyData) });
      }else{
-     this.props.securityPolicyDataDispatch(this.state.clientId,this.props.projectID, this.props.currentRepo)
+     this.props.securityPolicyDataDispatch(this.props.currentClientId,this.props.projectID, this.props.currentRepo)
        .then(() => { this.setPolicyData(this.props.securityPolicyData) });
      }
    }
@@ -503,10 +503,10 @@ class Security extends Component {
      this.setState({ alertActive: alertCurrentState,policyActive:policyCurrentState });
      //(branchName,filterID,projectId,repoId,releaseName,repoName)
      if(this.state.selectedRepo !== '' && this.state.selectedBranch !== '' && this.state.selectedRelease !== ''){
-      this.props.securityReleaseAlertDataDispatch(this.state.selectedBranch,this.state.clientId,"all_time",this.props.projectID, this.props.currentRepo,this.state.selectedRelease,this.state.selectedRepo)
+      this.props.securityReleaseAlertDataDispatch(this.state.selectedBranch,this.props.currentClientId,"all_time",this.props.projectID, this.props.currentRepo,this.state.selectedRelease,this.state.selectedRepo)
       .then(() => { this.setAlertData(this.props.securityReleaseAlertData) });
      }else{
-     this.props.securityAlertDataDispatch(this.state.clientId,this.props.projectID, this.props.currentRepo)
+     this.props.securityAlertDataDispatch(this.props.currentClientId,this.props.projectID, this.props.currentRepo)
        .then(() => { this.setAlertData(this.props.securityAlertData) });
      }
    }
@@ -794,9 +794,9 @@ class Security extends Component {
                 </span>
                   </div>
                   </div>
-            <Card.Body className="p-0">
+                <Card.Body className="p-0">
                   <SecSastDast cardsSastDast={this.props.vulnerabilitytDetails} bgTheme={bgTheme}></SecSastDast>
-            </Card.Body>
+                </Card.Body>
           </Card.Body>
         </Col>}
         </Row> 
@@ -812,7 +812,7 @@ class Security extends Component {
 //function to map the state received from reducer
 
 const mapStateToProps = state => {
-  // console.log("state.chartData.currentTab",state.chartData.currentTab);
+
   return {
     // clientList: 
     currentExecId: state.execData.executiveId,

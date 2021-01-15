@@ -376,7 +376,7 @@ class Velocity extends Component {
     });
     this.props.velocityRepoDropValDispatch(repoDetails[selectedIndex].projectName);
     // if (repoId !== "selectProject") {
-      this.props.velocityBuildDataDispatch(this.props.projId,this.state.clientId,repoId)
+      this.props.velocityBuildDataDispatch(this.props.projId,this.props.currentClientId,repoId)
       .then(() => { this.setVelocityBuildData(this.props.velocityBuildData) });
   };
 
