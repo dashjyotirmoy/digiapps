@@ -7,6 +7,7 @@ const BuildPieKpi = (props) => {
   var categories = ['SCA','SAST','DAST']
 var colors= ['#ec5050','#ffc107','#20c997']
 var pieData=props.openVulnerability
+var bgTheme = props.bgTheme
 var dataArray = [...pieData]
 
 var dataArrayValue=dataArray.map(item=>[...Object.values(item).slice(1, 4)])
@@ -59,7 +60,7 @@ for (j = 0; j < drillDataLen; j += 1) {
       text: 'Open Vulnerabilities in Production',
       align: "left",
       style: {
-        color: "#333333",
+        color: bgTheme ? "#ffffff" : '#333333',
         fontSize: '13px',
         fontWeight:'bold'
       }

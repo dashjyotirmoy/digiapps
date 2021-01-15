@@ -72,8 +72,8 @@ class Insights extends Component {
       branchDropData: branchDetail,
        selectedBranch: branchDetail[selectedIndex].projectName
      });
-     this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.projectID,this.state.selectedProduct);
-     this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
+     this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.projectID,this.state.selectedProduct);
+     this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
     };
   setProject = (res) => {
     const projects = res.data;
@@ -91,7 +91,7 @@ class Insights extends Component {
       repoData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-    this.getBranchDetails(this.state.clientId,this.props.projectID, projects[selectedIndex].projectName);
+    this.getBranchDetails(this.props.currentClientId,this.props.projectID, projects[selectedIndex].projectName);
   }
   else{
     this.setState({
@@ -114,8 +114,8 @@ class Insights extends Component {
       branchDropData: branchDetail,
       selectedBranch: branchDetail[selectedIndex].projectName
     }); 
-    this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.projectID,this.state.selectedProduct);
-    this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
+    this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.projectID,this.state.selectedProduct);
+    this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
     
   };
   updateProject = projectId => {
@@ -131,7 +131,7 @@ class Insights extends Component {
       repoData: prrojDetail,
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
-    this.getBranchDetails(this.state.clientId,this.props.projectID, prrojDetail[selectedIndex].projectName);
+    this.getBranchDetails(this.props.currentClientId,this.props.projectID, prrojDetail[selectedIndex].projectName);
   };
  
   markSelected = (prodList, id) => {
@@ -160,7 +160,7 @@ class Insights extends Component {
     });
     //setTimeout(() => {
       api
-      .getProjectDropdownInsight(this.state.clientId,this.props.projectID)
+      .getProjectDropdownInsight(this.props.currentClientId,this.props.projectID)
       .then(this.setProject)
       .catch(error => {
         console.error(error);

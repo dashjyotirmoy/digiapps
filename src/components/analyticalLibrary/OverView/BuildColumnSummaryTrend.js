@@ -184,6 +184,7 @@ const BuildColumnSummaryTrend = (props) => {
       },
         style: {
             fontWeight: 'bold',
+            color: bgTheme ? "#ffffff" : '#333333',
         }
     },
       title:{

@@ -426,7 +426,7 @@ a:hover {
   position: sticky;
   top: 0;
   white-space: nowrap;
-  background-color: #E1E7F0;
+  /* background-color: #E1E7F0; */
 
 }
 .inner_table::-webkit-scrollbar,.inner_table_lighte::-webkit-scrollbar-thumb,.inner_table_overview_light::-webkit-scrollbar, .inner_table_overview::-webkit-scrollbar,.wrap2::-webkit-scrollbar,.wrap2_light::-webkit-scrollbar {

@@ -179,7 +179,7 @@ class Quality extends Component {
     if(this.state.selectedRepo !== '' && this.state.selectedBranch !== '' && this.state.selectedRelease !== ''){
     this.props.qualityDrilledDownDataFilterDispatch(
       this.state.selectedBranch,
-      this.state.clientId,
+      this.props.currentClientId,
       this.props.currentExecId,
       metricType,
       this.props.projectID,
@@ -191,7 +191,7 @@ class Quality extends Component {
     }else{
     this.props
       .qualityDrilledDownDataDispatch(
-        this.state.clientId,
+        this.props.currentClientId,
         this.props.currentExecId,
         metricType,
         this.state.selectedRepoKey,
@@ -624,7 +624,7 @@ class Quality extends Component {
         selectedRelease: ''
        });
     }
-    this.props.insightsQuality(this.state.selectedBranch,this.state.clientId,this.props.currentExecId, this.props.projectID,this.state.selectedRepo);
+    this.props.insightsQuality(this.state.selectedBranch,this.props.currentClientId,this.props.currentExecId, this.props.projectID,this.state.selectedRepo);
    };
    getReleaseDetails = (branchName,clientId,projectID, projName) => {
     api
@@ -648,7 +648,7 @@ class Quality extends Component {
       selectedBranch: branchDetail[selectedIndex].projectName,
       showInsights:true
     });
-    this.getReleaseDetails(branchDetail[selectedIndex].projectName,this.state.clientId,this.props.projectID,this.state.selectedRepo )
+    this.getReleaseDetails(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.projectID,this.state.selectedRepo )
     
   };
   updateRelease = releaseId => {
@@ -667,7 +667,7 @@ class Quality extends Component {
       showCode:true,
       showBuild:false,
     });
-    this.setReleaseData(this.state.selectedBranch,this.state.clientId,this.props.currentExecId, this.props.projectID,releaseDetail[selectedIndex].projectName,this.state.selectedRepo,releaseId,selectedIndex);    
+    this.setReleaseData(this.state.selectedBranch,this.props.currentClientId,this.props.currentExecId, this.props.projectID,releaseDetail[selectedIndex].projectName,this.state.selectedRepo,releaseId,selectedIndex);    
   };
   updateReleaseQualityData = (repoId) => {
     const qualityMetrics = this.createReleaseMetrics(
@@ -739,7 +739,7 @@ class Quality extends Component {
       selectedIndex: selectedIndex
     };
   };
-  setRepository = (res) => {debugger
+  setRepository = (res) => {
     const repositoryData = res.repositories;
     if (repositoryData.length > 0 && repositoryData !== null) {
       const { list } = this.markSelected(
@@ -829,7 +829,7 @@ class Quality extends Component {
       // this.removeChartComponent(0);
       // this.removeChartComponent(0);
     }
-    this.getBranchDetails(this.state.clientId,this.props.projectID, repoDetails[selectedIndex].projectName);
+    this.getBranchDetails(this.props.currentClientId,this.props.projectID, repoDetails[selectedIndex].projectName);
   };
 
   updateQualityData = (repoId, selectedIndex) => {
@@ -878,7 +878,7 @@ class Quality extends Component {
   }
 
   setBuild =()=>{
-    this.props.qualityBuildDataDispatch(this.props.projectID,this.state.clientId,this.props.currentRepo)
+    this.props.qualityBuildDataDispatch(this.props.projectID,this.props.currentClientId,this.props.currentRepo)
        .then(() => { this.setQualityBuildData(this.props.qualityBuildData) });
   }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import ChartHOC from '../ChartHOC/ChartHOC';
-const BuildSingleLine = (props) => {debugger
+const BuildSingleLine = (props) => {
   let bgTheme= props.bgTheme;
   let sourceType = props.sourceType;
   var options = {}
