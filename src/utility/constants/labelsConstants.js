@@ -42,7 +42,7 @@ export const labelConst = [{
 			bgColor: true,
 			logoName: 'BLEN Dashboard',
 			projectLabel: 'Project',
-			teamLabel: '',
+			teamLabel: 'Project',
 			sprintLabel: 'Sprints',
 			count: [{name:'Head Count'},{name:'Sprint Count'},{name: 'Team Head Count'}],
 			feature: 'Features',
