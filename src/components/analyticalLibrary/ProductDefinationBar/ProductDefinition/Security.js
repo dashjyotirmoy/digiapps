@@ -438,7 +438,7 @@ class Security extends Component {
 
     this.props.repoDropValDispatchSecurity(repoDetails[selectedIndex].id);
     if (repoId !== 'selectProject') {
-      this.props.securityRepoDataDispatch(this.props.projectID, repoId)
+      this.props.securityRepoDataDispatch(this.props.currentClientId,this.props.projectID, repoId)
       .then(() => { this.updateSecurityData(repoId, selectedIndex) });
       if (this.state.repoData[0].id !== 'selectProject') {
         this.state.repoData.unshift({id: "selectProject", projectName: "Select Repository"});

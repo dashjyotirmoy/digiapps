@@ -306,6 +306,7 @@ class Insights extends Component {
   }
 };
 const mapStateToProps = state => {
+  console.log("state.execData.currentClientId",state.execData.currentClientId);
   return {
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
