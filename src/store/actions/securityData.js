@@ -39,10 +39,10 @@ export const securityProjectDataDispatch = (clientId,projectId) =>
     }
   };
   
-export const securityRepoDataDispatch = (projectId, repoId) => 
+export const securityRepoDataDispatch = (clientId,projectId, repoId) => 
   async dispatch => {
     try {
-      const response = await api.getSecurityRepoData(projectId, repoId);
+      const response = await api.getSecurityRepoData(clientId,projectId, repoId);
       dispatch({
         type: actionTypes.SET_SECURITY_REPO_DETAILS,
         payload: {
