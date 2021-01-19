@@ -470,6 +470,7 @@ class ProductInfoBar extends Component {
     let dimensionData = this.props.widgetProps;
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const activeLink = window.location.href.includes("/quality");
+    const velocityLink = window.location.href.includes("/velocity");
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
     const projectDimensions = new Widgets();
@@ -581,7 +582,7 @@ class ProductInfoBar extends Component {
                       </Dropdown>
                     ) : <><span className="text-white font-size-small">{labels[0].mappings.teamLabel}</span><Button variant="outline-dark" className="bg-prodAgg-btn text-white w-100 rounded border border-secondary">ALL</Button></>}
                   </Col>}
-                  <Col
+                  {(velocityLink || labels[0].mappings.showSprintDrop) ? <Col
                     sm={4}
                     md={4}
                     lg={4}
@@ -613,7 +614,7 @@ class ProductInfoBar extends Component {
                           </Col>
                         </Row>
                       </Dropdown>):<><span className="text-white font-size-small">{labels[0].mappings.sprintLabel}</span><Button variant="outline-dark" className="bg-prodAgg-btn text-white repo-height w-100 rounded border border-secondary">ALL</Button></>}
-                  </Col>
+                  </Col>: null}
                 </Row>
               </Col>
               
