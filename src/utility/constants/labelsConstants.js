@@ -2,6 +2,7 @@ export const labelConst = [{
 	clientName: 'digitalops',
 	clientId: 'DOPS',
 	mappings: {
+			showSprintDrop: false,
 			navLogoUrl: 'overview',
 			bgColor: true,
 			logoName: 'DevOps Dashboard',
@@ -38,6 +39,7 @@ export const labelConst = [{
 	clientName: 'blen',
 	clientId: 'BLEN',
 	mappings: {
+			showSprintDrop: false,
 			navLogoUrl: 'overview',
 			bgColor: true,
 			logoName: 'BLEN Dashboard',
@@ -45,7 +47,7 @@ export const labelConst = [{
 			teamLabel: 'Project',
 			sprintLabel: 'Sprints',
 			count: [{name:'Head Count'},{name:'Sprint Count'},{name: 'Team Head Count'}],
-			feature: 'Features',
+			feature: 'Epics',
 			userStory: 'User Stories',
 			repository: 'Repository',
 			branch: 'Branch',
@@ -74,6 +76,7 @@ export const labelConst = [{
 	clientName: 'aia',
 	clientId: 'AIA',
 	mappings: {
+			showSprintDrop: true,
 			navLogoUrl: 'overview',
 			bgColor: false,
 			logoName: 'AIA Dashboard',
@@ -111,6 +114,7 @@ export const labelConst = [{
 	clientName: 'wpc',
 	clientId: 'WPC',
 	mappings: {
+			showSprintDrop: true,
 			navLogoUrl: 'velocity',
 			bgColor: true,
 			logoName: 'EY Dash',
