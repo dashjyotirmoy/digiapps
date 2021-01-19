@@ -224,8 +224,8 @@ const BuildColumnSummaryTrend = (props) => {
         }
       },
       series: {
-        groupPadding: 0.2,
-        pointWidth: 60,
+        groupPadding: 0.1,
+        pointWidth: 40,
         stacking: props.type !== 'qualityColumnReverse'?'normal':'',
         dataLabels: {
           formatter: function() {

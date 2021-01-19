@@ -90,7 +90,7 @@ for (j = 0; j < drillDataLen; j += 1) {
           style: {
             textOutline: false,
             fontWeight: 'bold',
-            color: '#ffffff'
+            color: bgTheme?'#ffffff':'#333333'
         },
       }
   }, {
@@ -103,7 +103,12 @@ for (j = 0; j < drillDataLen; j += 1) {
           distance: 10,
           formatter: function () {
               return '<b>'+this.y+'</b>';
-          }
+          },
+          style: {
+            textOutline: false,
+            fontWeight: 'bold',
+            color: bgTheme?'#ffffff':'#333333'
+        },
       },
       id: 'versions'
   }],
