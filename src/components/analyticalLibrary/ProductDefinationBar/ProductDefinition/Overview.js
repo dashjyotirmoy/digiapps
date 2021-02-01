@@ -189,7 +189,7 @@ class Overview extends Component {
         } else {
           return (      
         <React.Fragment>
-        <Row className={`px-3 py-4 ${bgTheme ? '' : 'bg-light'}`}>
+        <Row className={`px-3 py-4 mt-6 ${bgTheme ? '' : 'bg-light'}`}>
         {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.appSecurity) && <Col
                   sm={12}
                   md={12}

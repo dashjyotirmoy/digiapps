@@ -568,7 +568,7 @@ class Security extends Component {
 
         <React.Fragment>
          {this.props.securityDetails &&  this.state.showInsights?<SideNavbar  card={securityNav}/>:''}
-          <Row className={`px-3 py-4 d-flex justify-content-start ${bgTheme ? '' : 'bg-light'}`}>
+          <Row className={`px-3 py-4 mt-11 d-flex justify-content-start ${bgTheme ? '' : 'bg-light'}`}>
           {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.vulnerable) && 
             <Col sm={12} className="mb-3">
             <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark' : 'card-border-light'}`}>

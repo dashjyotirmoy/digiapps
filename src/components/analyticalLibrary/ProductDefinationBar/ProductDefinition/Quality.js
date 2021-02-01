@@ -913,7 +913,7 @@ class Quality extends Component {
       return (
         <React.Fragment>
           {this.props.qualityDetails && this.state.showInsights? <SideNavbar card={qualityNav}/>:''}
-          <Row className="p-0 px-3 m-0 mt-4">
+          <Row className="p-0 px-3 m-0 mt-12">
             <Col xl={2} lg={3} md={3}>
               <Dropdown
                 listData={this.state.repoData}

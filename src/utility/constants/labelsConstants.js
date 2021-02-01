@@ -42,7 +42,7 @@ export const labelConst = [{
 			showSprintDrop: false,
 			navLogoUrl: 'overview',
 			bgColor: true,
-			logoName: 'SLOAN Dash',
+			logoName: 'EY Dash',
 			projectLabel: 'Project',
 			teamLabel: 'Teams',
 			sprintLabel: 'Sprints',
