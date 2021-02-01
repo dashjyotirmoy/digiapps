@@ -124,7 +124,6 @@ class Velocity extends Component {
     let updatedList =list && list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
-
     updatedList && updatedList.map(ele => {
       ele.component = this.setChart(
         ele.type,
@@ -241,21 +240,16 @@ class Velocity extends Component {
   }
 
   setDefaultData() {
-    // let type;
     this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId)
     this.props
       .velocityProjectDataDispatch(this.props.projId,this.props.currentClientId)
       .then(item => {
-        if (this.props.velocityProjectData.jobDetailDtoList.length > 0) {
+        if (this.props.velocityProjectData.jobDetailDtoList.length > 0 || this.props.velocityProjectData.jobDetailDtoList !== null) {
           this.setRepository(this.props.velocityProjectData);
 
           this.setState({
             show: false
           });
-          // if (this.state.selectedRepo === "") {
-          //   type = this.setRawObjects(this.props.velocityProjectData);
-          //   this.createCharts(this.createChartObject(type));
-          // }
         }
         else {
           this.props.resetProjectRepoDispatch(
@@ -503,7 +497,7 @@ class Velocity extends Component {
 //function to map the state received from reducer
 
 const mapStateToProps = state => {
-  console.log("state.productDetails.currentSprint.sprintInfo.id",state.productDetails)
+  console.log("state.execData.widgetList",state.execData.widgetList)
   return {
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
