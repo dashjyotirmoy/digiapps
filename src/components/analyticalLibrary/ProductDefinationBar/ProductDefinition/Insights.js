@@ -71,7 +71,7 @@ class Insights extends Component {
      this.setState({
       branchDropData: branchDetail,
        selectedBranch: branchDetail[selectedIndex].projectName
-     });debugger
+     });
      this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.projectID,this.state.selectedProduct);
      this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
     };

@@ -37,7 +37,7 @@ class VelocityGraph {
     }
   };
 
-  formatDate(preFormatDate) {
+  formatDate(preFormatDate) {debugger
     let splitDate, postFormatDate;
     let monthsArray = [
       "Jan",
@@ -52,10 +52,10 @@ class VelocityGraph {
       "Oct",
       "Nov",
       "Dec"
-    ];
-    splitDate = preFormatDate.split("-");
-    postFormatDate =
-      splitDate[2] + " " + monthsArray[splitDate[1] - 1] + " " + splitDate[0];
+    ];debugger
+    splitDate = (preFormatDate!=="" && preFormatDate!==undefined)?preFormatDate.split("-"):"";
+    postFormatDate = splitDate!=="" ?
+      splitDate[2] + " " + monthsArray[splitDate[1] - 1] + " " + splitDate[0]:"";
     return postFormatDate;
   }
 
@@ -767,29 +767,29 @@ class VelocityGraph {
     let totalScopeIncrease;
     let hoursRemaining;
     let percentageCompleted;
-    let sprintStartDate = this.res.data.startDate.split("T");
-    let sprintEndDate = this.res.data.endDate.split("T");
+    let sprintStartDate = this.res.data.startDate!==null?this.res.data.startDate.split("T"):"";
+    let sprintEndDate = this.res.data.startDate!==null?this.res.data.endDate.split("T"):"";
 
-    start_scopeObj.x = new Date(sprintStartDate[0]).getTime();
+    start_scopeObj.x = sprintStartDate!=="" ? new Date(sprintStartDate[0]).getTime():0;
     start_scopeObj.y = parseInt(this.res.data.originalScope);
 
-    end_scopeObj.x = new Date(sprintEndDate[0]).getTime();
+    end_scopeObj.x = sprintEndDate!==""? new Date(sprintEndDate[0]).getTime():0;
     end_scopeObj.y =
       parseInt(this.res.data.originalScope) +
       parseInt(this.res.data.totalScopeIncrease);
     totalScope.push(start_scopeObj, end_scopeObj);
 
-    start_burnDownObj.x = new Date(sprintStartDate[0]).getTime();
-    start_burnDownObj.y = parseInt(this.res.data.burndown[0].remainingHours);
+    start_burnDownObj.x = sprintStartDate!==""?new Date(sprintStartDate[0]).getTime():0;
+    start_burnDownObj.y = this.res.data.burndown.length!==0?parseInt(this.res.data.burndown[0].remainingHours):0;
 
-    end_burnDownObj.x = new Date(sprintEndDate[0]).getTime();
+    end_burnDownObj.x = sprintEndDate!==""?new Date(sprintEndDate[0]).getTime():0;
     end_burnDownObj.y = 0;
     sprintBurndown.push(start_burnDownObj, end_burnDownObj);
 
-    averegeBurnDown = parseFloat(this.res.data.averageBurndown).toFixed(2);
+    averegeBurnDown = this.res.data.averageBurndown!==null?parseFloat(this.res.data.averageBurndown).toFixed(2):'';
     totalScopeIncrease = this.res.data.totalScopeIncrease;
-    hoursRemaining = this.res.data.hoursRemaining;
-    percentageCompleted = this.res.data.percentageCompleted;
+    hoursRemaining = this.res.data.hoursRemaining!==null?this.res.data.hoursRemaining:'';
+    percentageCompleted = this.res.data.percentageCompleted!==null?this.res.data.percentageCompleted:'';
     this.res.data.burndown.map(data => {
       let remaining_hours_object = {};
       let rawDate = data.date.split("T");
@@ -939,11 +939,11 @@ class VelocityGraph {
     av_burndown =
       Math.round(parseInt(this.res.data.averageBurndown) * 100) / 100;
 
-    startDate = this.res.data.startDate.split("T")[0];
-    endDate = this.res.data.endDate.split("T")[0];
-
-    rawDate = this.res.data.startDate.split("T");
-    xAxis_data.push(this.formatDate(rawDate[0]));
+    startDate = this.res.data.startDate!==null?this.res.data.startDate.split("T")[0]:"";
+    endDate = this.res.data.startDate!==null?this.res.data.endDate.split("T")[0]:"";
+debugger
+    rawDate = this.res.data.startDate!==null?this.res.data.startDate.split("T"):"";
+    xAxis_data.push(rawDate!==""?this.formatDate(rawDate[0]):this.formatDate(rawDate));
     remaining.push(parseInt(this.res.data.originalScope));
     completed.push(0);
     burndown.push(parseInt(this.res.data.originalScope));
