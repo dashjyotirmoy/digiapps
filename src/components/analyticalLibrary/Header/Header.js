@@ -73,7 +73,7 @@ componentDidMount() {
     });
     return (
       <Styles>
-        <Navbar bg="light" expand="md">
+        <Navbar bg="light" expand="md" className="position-fixed">
           <Navbar.Brand href={'/' + this.state.labelConst.clientName +'/execDashboard/'+this.state.labelConst.mappings.navLogoUrl}>{this.state.labelConst.mappings.logoName}</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">

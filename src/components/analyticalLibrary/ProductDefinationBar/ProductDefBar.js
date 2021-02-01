@@ -74,9 +74,9 @@ class ProductDefBar extends Component {
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     return (
       <ErrorBoundaries>
-        <Container fluid className={`${labels[0].mappings.bgColor ? '' : 'bg-white'}`}>
+        <Container fluid className={`position-fixed mt-5 py-2 ${labels[0].mappings.bgColor ? 'bg-dark' : 'bg-white'}`}>
           <Row className="d-flex w-100 p-0 m-0 text-white-50">
-            <Col md={8} lg={9} xl={9} className="p-0">
+            <Col className="p-0">
               {labels[0].mappings.bgColor ? <StyleMainTabDark>
                 {this.state.activeLink !== "" ? (
                   <Tabs

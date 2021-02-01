@@ -34,7 +34,32 @@ a:hover {
   color: unset;
   text-decoration: none;
 }
-
+.position-fixed{
+  position: fixed;
+  width: 100%;
+  z-index: 101;
+}
+.mt-6 {
+  margin-top: 6rem!important;
+}
+.mt-7 {
+  margin-top: 6.5rem!important;
+}
+.mt-8 {
+  margin-top: 8rem!important;
+}
+.mt-9 {
+  margin-top: 9rem!important;
+}
+.mt-10 {
+  margin-top: 10rem!important;
+}
+.mt-11 {
+  margin-top: 11rem!important;
+}
+.mt-12 {
+  margin-top: 12rem!important;
+}
 /*Position sticky*/
 .sticky-class{
   position: static;

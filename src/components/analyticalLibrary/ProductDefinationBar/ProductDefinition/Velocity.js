@@ -412,7 +412,7 @@ class Velocity extends Component {
       return (
         <React.Fragment>
           {this.props.velocityInsightDetails &&<SideNavbar card={velocityNav}/>}
-          <Row className={`px-3 py-4 d-flex justify-content-start`} style={{alignItems:'flex-end'}}>
+          <Row className={`px-3 py-4 mt-12 d-flex justify-content-start`} style={{alignItems:'flex-end'}}>
               <span className="px-3">
                 {this.state.showbutton ? (
                   <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>{labels[0].mappings.overviewBtn}</Button>

@@ -485,7 +485,7 @@ class ProductInfoBar extends Component {
     // } else {
       return (
         <>{!window.location.href.includes("/overview") ?
-        <div className={`h-10 ${bgTheme ? 'summary-view' : 'summary-light-view'}`}>
+        <div className={`position-fixed mt-7 h-10 ${bgTheme ? 'summary-view' : 'summary-light-view'}`}>
           <Container
             fluid
             className={`h-100 border-bottom border-top ${bgTheme ? 'border-dark' : 'border-light'}`}

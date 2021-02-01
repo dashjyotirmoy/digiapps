@@ -213,7 +213,7 @@ class Insights extends Component {
     } else{
       return (
       <Container fluid className="mt-3 Insights">
-        <Row className="p-0  m-0 mt-4 mb-3 d-flex justify-content-start row">          
+        <Row className="p-0  m-0 mt-12 mb-3 d-flex justify-content-start row">          
          
           <Col md={2}>
               <Dropdown
