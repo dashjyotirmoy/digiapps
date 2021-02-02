@@ -88,15 +88,15 @@ const BuildColumnSummaryTrend = (props) => {
       })
   } 
   else if(props.type === 'qualityColumnReverse'){
+      totalCritical=trendList.totalCriticalBugCount
+      totalHigh=trendList.totalHighBugCount
+      totalMedium=trendList.totalMediumBugCount
+      totalLow=trendList.totalLowBugCount
     trendList.projectDefectsSummary.forEach((item, index,itemArray)=> {
       critical.push(parseInt(item.criticalBugCount))
       high.push(parseInt(item.highBugCount))
       medium.push(parseInt(item.mediumBugCount))
       low.push(parseInt(item.lowBugCount))
-      totalCritical=trendList.totalCriticalBugCount
-      totalHigh=trendList.totalHighBugCount
-      totalMedium=trendList.totalMediumBugCount
-      totalLow=trendList.totalLowBugCount
       xAxisLabel.push(item.projectName)
       })
   } 
@@ -125,11 +125,11 @@ const BuildColumnSummaryTrend = (props) => {
 
     subtitle: {
       useHTML: props.type === 'securityTabReverse' || props.type==='qualityColumnReverse' ? true: false,
-      text: props.type === 'securityTabReverse'? `Scanned ${timeSince(newTime)} ago`:props.type==='qualityColumnReverse'?`<div style='font-size: 11px;width: 385px;display: inline-block;padding: 10px'>
-      <span style='margin-right: 5px'>Total Critical:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#a21220;border-radius: 5px">${totalCritical}</span></span>
-      <span style='margin-right: 5px'>Total High:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#ec5050;border-radius: 5px">${totalHigh}</span> </span>
-      <span style='margin-right: 5px'>Total Medium:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#ffc107;border-radius: 5px">${totalMedium}</span> </span>
-      <span>Total Low:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#20c997;border-radius: 5px">${totalLow}</span></span>
+      text: props.type === 'securityTabReverse'? `Scanned ${timeSince(newTime)} ago`:props.type==='qualityColumnReverse'?`<div style='font-size: 11px;width:100%;display: inline-flex;padding: 10px'>
+      <span style='margin-right: 5px;white-space:nowrap'>Total Critical:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#a21220;border-radius: 5px">${totalCritical}</span></span>
+      <span style='margin-right: 5px;white-space:nowrap'>Total High:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#ec5050;border-radius: 5px">${totalHigh}</span> </span>
+      <span style='margin-right: 5px;white-space:nowrap'>Total Medium:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#ffc107;border-radius: 5px">${totalMedium}</span> </span>
+      <span style='white-space:nowrap'>Total Low:<span style="color: #ffffff; font-weight:700;padding: 2px 3px; background-color:#20c997;border-radius: 5px">${totalLow}</span></span>
       </div>`:'',
       verticalAlign: props.type==='qualityColumnReverse' ? 'bottom': 'top',
       x: props.type==='qualityColumnReverse' ? -8:props.type==='securityTabReverse'? -15: 0,
