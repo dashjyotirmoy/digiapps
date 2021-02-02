@@ -200,8 +200,8 @@ class Velocity extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (
-      (this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId) &&
-      nextProps.projId
+      (this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId) &&
+      nextProps.projId 
     ) {
       this.setState({
         all_data: true
@@ -231,7 +231,7 @@ class Velocity extends Component {
     });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate() {debugger
     // console.log("update",this.state.all_data);
     if (this.state.all_data) {
       this.fetchChartsData();
@@ -318,7 +318,7 @@ class Velocity extends Component {
 
   //function to fetch charts data
 
-  fetchChartsData = (props) => {
+  fetchChartsData = (props) => {debugger
     this.setState({
       all_data: false,
       charts: []
