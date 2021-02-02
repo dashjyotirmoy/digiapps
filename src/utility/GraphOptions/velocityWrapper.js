@@ -37,7 +37,7 @@ class VelocityGraph {
     }
   };
 
-  formatDate(preFormatDate) {debugger
+  formatDate(preFormatDate) {
     let splitDate, postFormatDate;
     let monthsArray = [
       "Jan",
@@ -52,7 +52,7 @@ class VelocityGraph {
       "Oct",
       "Nov",
       "Dec"
-    ];debugger
+    ];
     splitDate = (preFormatDate!=="" && preFormatDate!==undefined)?preFormatDate.split("-"):"";
     postFormatDate = splitDate!=="" ?
       splitDate[2] + " " + monthsArray[splitDate[1] - 1] + " " + splitDate[0]:"";
@@ -941,7 +941,6 @@ class VelocityGraph {
 
     startDate = this.res.data.startDate!==null?this.res.data.startDate.split("T")[0]:"";
     endDate = this.res.data.startDate!==null?this.res.data.endDate.split("T")[0]:"";
-debugger
     rawDate = this.res.data.startDate!==null?this.res.data.startDate.split("T"):"";
     xAxis_data.push(rawDate!==""?this.formatDate(rawDate[0]):this.formatDate(rawDate));
     remaining.push(parseInt(this.res.data.originalScope));
