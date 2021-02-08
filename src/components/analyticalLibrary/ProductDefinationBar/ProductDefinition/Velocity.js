@@ -231,8 +231,7 @@ class Velocity extends Component {
     });
   }
 
-  componentDidUpdate() {debugger
-    // console.log("update",this.state.all_data);
+  componentDidUpdate() {
     if (this.state.all_data) {
       this.fetchChartsData();
       this.setDefaultData();
@@ -497,7 +496,6 @@ class Velocity extends Component {
 //function to map the state received from reducer
 
 const mapStateToProps = state => {
-  console.log("state.execData.widgetList",state.execData.widgetList)
   return {
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
