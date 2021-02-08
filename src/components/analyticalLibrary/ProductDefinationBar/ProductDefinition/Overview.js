@@ -54,7 +54,7 @@ class Overview extends Component {
       this.fetchChartsData();
     }
    }
-  render() {debugger
+  render() {
         const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
         const labels = labelConst.filter((item)=> item.clientName === clientName );
         const bgTheme = labels[0].mappings.bgColor;
