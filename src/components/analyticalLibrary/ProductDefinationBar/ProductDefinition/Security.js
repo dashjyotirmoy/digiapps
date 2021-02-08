@@ -598,15 +598,15 @@ class Security extends Component {
                   <h6 className="font-size-small font-weight-bold px-3 py-2">Vulnerabilities by SCA,SAST & DAST</h6>
                     <Row className="no-gutters px-3 ">                
                       <Col><BuildColumnSummaryTrend summaryTrend={this.props.securityProjectData.vulnerabilityAlerts} type="securityTabSCA" bgTheme={bgTheme}/></Col>
-                      <Col className="px-2">{this.props.vulnerabilitytDetails.totalVulnerability !== null ? <BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.totalVulnerability.toolVulnerabilityList[0]} type="securityTabSAST" bgTheme={bgTheme}/>:''}</Col>
-                      <Col>{this.props.vulnerabilitytDetails.totalVulnerability !== null ?<BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.totalVulnerability.toolVulnerabilityList[1]} type="securityTabDAST" bgTheme={bgTheme}/>:''}</Col>
+                      <Col className="px-2">{this.props.vulnerabilitytDetails.projectId !== null ? <BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.totalVulnerability.toolVulnerabilityList[0]} type="securityTabSAST" bgTheme={bgTheme}/>:''}</Col>
+                      <Col>{this.props.vulnerabilitytDetails.projectId !== null ?<BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.totalVulnerability.toolVulnerabilityList[1]} type="securityTabDAST" bgTheme={bgTheme}/>:''}</Col>
                     </Row>
                   </Col>
                   <Col sm={3} className="px-3">
-                  {this.props.vulnerabilitytDetails.openVulnerabilityInProduction!==null ? <BuildPieKpi openVulnerability={this.props.vulnerabilitytDetails.openVulnerabilityInProduction.toolVulnerabilityList}  type="securityTabPie" bgTheme={bgTheme}/>:''}
+                  {this.props.vulnerabilitytDetails.projectId!==null ? <BuildPieKpi openVulnerability={this.props.vulnerabilitytDetails.openVulnerabilityInProduction.toolVulnerabilityList}  type="securityTabPie" bgTheme={bgTheme}/>:''}
                   </Col>
                   <Col sm={4}>
-                  {this.props.vulnerabilitytDetails.newVulnerability!== null ? <BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.newVulnerability} type="securityTabReverse" bgTheme={bgTheme}/>:''}
+                  {this.props.vulnerabilitytDetails.projectId!== null ? <BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.newVulnerability} type="securityTabReverse" bgTheme={bgTheme}/>:''}
                   </Col>
                   </Row>
               </Card.Body>
