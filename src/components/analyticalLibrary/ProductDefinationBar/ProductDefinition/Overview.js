@@ -30,139 +30,15 @@ class Overview extends Component {
       appSecurity: "Application Security",
       projectProd:  "Project Productivity",
       defectmgmt: "Defect Management",
-      "secuityData": [
-        {
-            "name": "Cross Site Scripting (Reflected)",
-            "count": "704"
-        },
-        {
-            "name": "SQL Injection",
-            "count": "59"
-        },
-        {
-            "name": "Path Traversal",
-            "count": "99"
-        },
-        {
-            "name": "SQL Injection - Hypersonic SQL",
-            "count": "456"
-        },
-        {
-            "name": "Remote OS Command Injection",
-            "count": "52"
-        },
-        {
-            "name": "Open Source Vulnerabilities",
-            "count": "10"
-        },
-        {
-            "name": "Cross-Site Scripting: DOM",
-            "count": "5"
-        },
-        {
-            "name": "Key Management: Hardcoded Encryption Key",
-            "count": "44"
-        },
-        {
-            "name": "Dynamic Code Evaluation: Code Injection",
-            "count": "14"
-        },
-        {
-            "name": "Password Management: Empty Password",
-            "count": "7"
-        }
-    ],
-    "openVulnerability": [
-        {
-            "projectName": "Digital Insights",
-            "high": "15",
-            "medium": "15",
-            "low": "18"
-        },
-        {
-            "projectName": "DevSecOps Project",
-            "high": "17",
-            "medium": "15",
-            "low": "17"
-        }
-    ],
-    "averageTimeRemediation": [
-        {
-            "projectName": "Digital Insights",
-            "remediationList": [
-                {
-                    "date": "Fri Jun 10 14:11:09 GMT 2020",
-                    "remediationTime": "10.0"
-                },
-                {
-                    "date": "Fri Jul 24 14:11:09 GMT 2020",
-                    "remediationTime": "15.0"
-                },
-                {
-                    "date": "Fri Aug 07 14:11:09 GMT 2020",
-                    "remediationTime": "3.0"
-                },
-                {
-                    "date": "Fri Aug 21 14:11:09 GMT 2020",
-                    "remediationTime": "2.0"
-                },
-                {
-                    "date": "Fri Sept 04 14:11:09 GMT 2020",
-                    "remediationTime": "6.0"
-                },
-                {
-                    "date": "Fri Sept 18 14:11:09 GMT 2020",
-                    "remediationTime": "4.0"
-                },
-                {
-                    "date": "Fri Oct 02 14:11:09 GMT 2020",
-                    "remediationTime": "4.0"
-                }
-            ]
-        },
-        {
-            "projectName": "DevSecOps Project",
-            "remediationList": [
-                {
-                    "date": "Sun Jul 10 14:11:09 GMT 2020",
-                    "remediationTime": "2.0"
-                },
-                {
-                    "date": "Fri Jul 24 14:11:09 GMT 2020",
-                    "remediationTime": "12.0"
-                },
-                {
-                    "date": "Fri Aug 07 14:11:09 GMT 2020",
-                    "remediationTime": "10.0"
-                },
-                {
-                    "date": "Fri Aug 21 14:11:09 GMT 2020",
-                    "remediationTime": "3.0"
-                },
-                {
-                    "date": "Fri Sept 04 14:11:09 GMT 2020",
-                    "remediationTime": "3.0"
-                },
-                {
-                    "date": "Fri Sept 18 14:11:09 GMT 2020",
-                    "remediationTime": "8.0"
-                },
-                {
-                    "date": "Fri Oct 02 14:11:09 GMT 2020",
-                    "remediationTime": "4.0"
-                },
       
-            ]
         }
-    ]
     }
-  }
   fetchChartsData = () => {
      if(this.props.currentExecId){
       this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId); 
       this.props.summaryChartDataDispatch(this.props.currentClientId,this.props.currentExecId);
     }
-    this.state.secuityData.sort((a, b)=> b.count -a.count);
+    // this.state.secuityData.sort((a, b)=> b.count -a.count);
     this.setState({
       show: false,
       all_data: false
@@ -178,7 +54,7 @@ class Overview extends Component {
       this.fetchChartsData();
     }
    }
-  render() {
+  render() {debugger
         const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
         const labels = labelConst.filter((item)=> item.clientName === clientName );
         const bgTheme = labels[0].mappings.bgColor;
@@ -222,9 +98,9 @@ class Overview extends Component {
                       <div className={`${bgTheme ? 'inner_table_overview' : 'inner_table_overview_light'}`}>    
                       <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                         <tbody className={`${bgTheme ? 'tabrow text-light' : 'text-dark'}`}>
-                  {(this.state.secuityData!=null) ? 
+                  {(this.props.summaryCharts.securityOverview!=null) ? 
                       
-                    this.state.secuityData.map((item, index) => {
+                      this.props.summaryCharts.securityOverview.topTenVulnerabilityList.map((item, index) => {
                           return (
                             <tr className="f-12" key={index}>
                               <td style={{"border": "1px solid gray","width":"8rem"}}>{item.name}</td>
@@ -247,11 +123,13 @@ class Overview extends Component {
                   xl={7}
                   className="pl-3"                    
                 >
-               <div className="mb-3"><BuildColumnSummaryTrend summaryTrend={this.state.openVulnerability} type="securityOpen" bgTheme={bgTheme}/></div>
+               <div className="mb-3">
+                  {this.props.summaryCharts.securityOverview && <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.securityOverview.openVulnerabilitySummaryList} type="securityOpen" bgTheme={bgTheme}/> }
+                 </div>
                
                 </Col>
                 <Col sm={12}>
-                  <BuildSingleLineSummaryBurndown summaryBurndown={this.state.averageTimeRemediation} type="security" bgTheme={bgTheme}/>
+                  {this.props.summaryCharts.securityOverview && <BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.securityOverview.averageTimeRemediationList} type="security" bgTheme={bgTheme}/>}
                 </Col>
                </Row> 
                </Card.Body>
@@ -333,7 +211,7 @@ class Overview extends Component {
   }
 //function to map the state received from reducer
 
-const mapStateToProps = state => {
+const mapStateToProps = state => {console.log("state.summaryData.summaryChartData",state.summaryData.summaryChartData.securityOverview)
   return {  
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
