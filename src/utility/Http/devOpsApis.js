@@ -157,6 +157,11 @@ const getVulnerabilityData = (clientId,projectId) => {
     `/widget/security-insights/vulnerability-detail?clientId=${clientId}&productId=${projectId}`
   );
 };
+const getAIAVulnerabilityData = (clientId,projectId) => {
+  return devovOpsApi.get(
+    `/widget/security-insights/file-vulnerability-detail?clientId=${clientId}&productId=${projectId}`
+  );
+};
 export default {
   getAllClientList,
   getVelocityData,
@@ -188,5 +193,6 @@ export default {
   getSummaryData,
   getVulnerabilityData,
   getWidgetList,
-  getProjectSprintData
+  getProjectSprintData,
+  getAIAVulnerabilityData
 };

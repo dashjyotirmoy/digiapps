@@ -23,8 +23,17 @@ export const securityProjectDataDispatch = (clientId,projectId) =>
   export const vulnerabilityDataDispatch = (clientId,projectId) =>
   async dispatch => {
     try {
-      if (projectId) {
+      if (projectId !== '4198aab5-c701-41c2-b2dc-e631731dbdd2') {
         const response = await api.getVulnerabilityData(clientId,projectId);
+        dispatch({
+        type: actionTypes.SET_VULNERABILITY_DETAILS,
+        payload: {
+          vulnerabilitytDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+      }else{
+        const response = await api.getAIAVulnerabilityData(clientId,projectId);
         dispatch({
         type: actionTypes.SET_VULNERABILITY_DETAILS,
         payload: {
