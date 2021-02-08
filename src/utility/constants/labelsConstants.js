@@ -177,8 +177,9 @@ export const labelConst = [{
 			veryLow: 'Very Low',
 			major: 'Major',
 			minor: 'Minor',
-			tabItems: [{id:"1",name: 'Velocity and Efficiency',eventKey:'velocity'},
-						{id:"2",name: 'Quality',eventKey:'quality'},
+			tabItems: [{id:"1",name:'Overview',eventKey:'overview'},
+						{id:"2",name: 'Velocity and Efficiency',eventKey:'velocity'},
+						{id:"3",name: 'Quality',eventKey:'quality'},
 						// {id:"3",name:'Security',eventKey:'security'},
 						{id:"4",name: 'Insights',eventKey:'insights'}]
 	}

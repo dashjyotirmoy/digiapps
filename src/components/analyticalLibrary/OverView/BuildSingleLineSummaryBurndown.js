@@ -30,7 +30,7 @@ const BuildSingleLineSummaryBurndown = (props) => {
   if(burndownList!== undefined){
   if(props.type === 'security'){
     burndownList.forEach((item, index,itemArray)=> {
-      var dataDetails= item.remediationList;
+      var dataDetails= item.vulnerabilityRemediationList;
       var data=[];
       var name='';
       name=item.projectName;
@@ -60,7 +60,7 @@ else if(props.type === 'sastVulnerabilities' || props.type === 'dastVulnerabilit
 }
 else if(props.type === 'securityTab'){
     burndownList.forEach((item, index,itemArray)=> {
-      var dataDetails= item.remediationList;
+      var dataDetails= item.vulnerabilityRemediationList;
       var data=[];
       var name='';
       newTime=item.lastScanned.substring(0, 19);
