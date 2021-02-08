@@ -762,7 +762,6 @@ class Quality extends Component {
       });
       this.props.repoDropValDispatch("");
     } else {
-      console.log("res",repositoryData);
       this.setState({
         repoData: [],
         selectedRepo: "",

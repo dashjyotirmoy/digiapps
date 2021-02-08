@@ -211,7 +211,7 @@ class Overview extends Component {
   }
 //function to map the state received from reducer
 
-const mapStateToProps = state => {console.log("state.summaryData.summaryChartData",state.summaryData.summaryChartData.securityOverview)
+const mapStateToProps = state => {
   return {  
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,

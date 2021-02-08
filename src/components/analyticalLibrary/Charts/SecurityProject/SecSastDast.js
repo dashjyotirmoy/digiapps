@@ -6,7 +6,7 @@ import { Row, Col, Container, Card, Badge, ProgressBar, Button,ButtonGroup,Toggl
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Sec.css";
 import BuildSingleLineSummaryBurndown from "../../OverView/BuildSingleLineSummaryBurndown";
-const SecSastDast = props => {
+const SecSastDast = props => {debugger
   const sastData = [...props.cardsSastDast.sastDastDTO.sastVulnerabilityList];
   const dastData =  [...props.cardsSastDast.sastDastDTO.dastVulnerabilityList];
   let sastHighData=[];
