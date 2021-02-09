@@ -1,6 +1,6 @@
 import React from 'react';
 import ChartHOCSummary from '../Charts/ChartHOC/ChartHOCSummary';
-const BuildColumnSummaryTrend = (props) => {
+const BuildColumnSummaryTrend = (props) => {debugger
   var options = {}
   var planned=[]
   var actual=[]
