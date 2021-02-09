@@ -1,7 +1,7 @@
 //Component to render velocity and efficienty reports
 
 import React, { Component } from "react";
-import { summaryChartDataDispatch} from "../../../../store/actions/summaryChartData";
+import { summaryChartDataDispatch,summarySecurityChartDataDispatch} from "../../../../store/actions/summaryChartData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import BuildSingleLineSummaryBurndown from "../../OverView/BuildSingleLineSummaryBurndown";
@@ -37,6 +37,7 @@ class Overview extends Component {
      if(this.props.currentExecId){
       this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId); 
       this.props.summaryChartDataDispatch(this.props.currentClientId,this.props.currentExecId);
+      this.props.summarySecurityChartDataDispatch(this.props.currentClientId,this.props.currentExecId);
     }
     // this.state.secuityData.sort((a, b)=> b.count -a.count);
     this.setState({
@@ -55,6 +56,8 @@ class Overview extends Component {
     }
    }
   render() {
+    console.log("this.props.summarySecurityChart",this.props.summarySecurityChart);
+    console.log("this.props.summarySecurityChart.securityOverview",this.props.summarySecurityChart.securityOverview);
         const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
         const labels = labelConst.filter((item)=> item.clientName === clientName );
         const bgTheme = labels[0].mappings.bgColor;
@@ -98,9 +101,9 @@ class Overview extends Component {
                       <div className={`${bgTheme ? 'inner_table_overview' : 'inner_table_overview_light'}`}>    
                       <table className={`table table-hover ${bgTheme ? 'table-dark' : 'table-light'}`}>
                         <tbody className={`${bgTheme ? 'tabrow text-light' : 'text-dark'}`}>
-                  {(this.props.summaryCharts.securityOverview!=null) ? 
+                  {this.props.summarySecurityChart.securityOverview ?
                       
-                      this.props.summaryCharts.securityOverview.topTenVulnerabilityList.map((item, index) => {
+                      this.props.summarySecurityChart.securityOverview.topTenVulnerabilityList.map((item, index) => {
                           return (
                             <tr className="f-12" key={index}>
                               <td style={{"border": "1px solid gray","width":"8rem"}}>{item.name}</td>
@@ -124,12 +127,12 @@ class Overview extends Component {
                   className="pl-3"                    
                 >
                <div className="mb-3">
-                  {this.props.summaryCharts.securityOverview && <BuildColumnSummaryTrend summaryTrend={this.props.summaryCharts.securityOverview.openVulnerabilitySummaryList} type="securityOpen" bgTheme={bgTheme}/> }
+                  {this.props.summarySecurityChart.securityOverview && <BuildColumnSummaryTrend summaryTrend={this.props.summarySecurityChart.securityOverview.openVulnerabilitySummaryList} type="securityOpen" bgTheme={bgTheme}/>}
                  </div>
                
                 </Col>
                 <Col sm={12}>
-                  {this.props.summaryCharts.securityOverview && <BuildSingleLineSummaryBurndown summaryBurndown={this.props.summaryCharts.securityOverview.averageTimeRemediationList} type="security" bgTheme={bgTheme}/>}
+                  {this.props.summarySecurityChart.securityOverview && <BuildSingleLineSummaryBurndown summaryBurndown={this.props.summarySecurityChart.securityOverview.averageTimeRemediationList} type="security" bgTheme={bgTheme}/>}
                 </Col>
                </Row> 
                </Card.Body>
@@ -217,13 +220,14 @@ const mapStateToProps = state => {
     currentClientId: state.execData.currentClientId,
     widgetList: state.execData.widgetList,
     summaryCharts: state.summaryData.summaryChartData,
+    summarySecurityChart:state.summaryData.summarySecurityChartData
   };
 };
 
 //function to dispatch action to the reducer
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({summaryChartDataDispatch,widgetListDispatch }, dispatch);
+  return bindActionCreators({summaryChartDataDispatch,summarySecurityChartDataDispatch,widgetListDispatch }, dispatch);
 };
 
 //Connect react component to redux

@@ -600,16 +600,9 @@ class Security extends Component {
                   <Col sm={5} className="rounded" style={{border:'1px solid #999a9c'}}>
                   <h6 className="font-size-small font-weight-bold px-3 py-2">Vulnerabilities by SCA,SAST & DAST</h6>
                     <Row className="no-gutters px-3 "> 
-                    {/* {this.props.securityProjectData.totalVulnerability!=null && 
-                      this.props.securityProjectData.totalVulnerability.toolVulnerabilityList.map(item=>
-                       <Col className="pr-2"><BuildColumnSummaryTrend summaryTrend={item} type={'securityTab'+item.toolName} bgTheme={bgTheme}/></Col>
-                      )}  */}
-                    {this.props.securityProjectData.totalVulnerability!== undefined && 
-                     "aa" + this.props.securityProjectData.totalVulnerability
-                      }           
-                      {/* <Col><BuildColumnSummaryTrend summaryTrend={this.props.securityProjectData.vulnerabilityAlerts} type="securityTabSCA" bgTheme={bgTheme}/></Col>
-                      <Col className="px-2">{this.props.vulnerabilitytDetails.projectId !== null ? <BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.totalVulnerability.toolVulnerabilityList[0]} type="securityTabSAST" bgTheme={bgTheme}/>:''}</Col>
-                      <Col>{this.props.vulnerabilitytDetails.projectId !== null ?<BuildColumnSummaryTrend summaryTrend={this.props.vulnerabilitytDetails.totalVulnerability.toolVulnerabilityList[1]} type="securityTabDAST" bgTheme={bgTheme}/>:''}</Col> */}
+                    {this.props.vulnerabilitytDetails.totalVulnerability.toolVulnerabilityList.map((item,index)=>
+                       <Col className="pr-2"><BuildColumnSummaryTrend summaryTrend={item} type={'securityTab'+item.toolName} key={index} bgTheme={bgTheme}/></Col>
+                      )} 
                     </Row>
                   </Col>
                   <Col sm={3} className="px-3">
