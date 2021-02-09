@@ -19,3 +19,21 @@ export const summaryChartDataDispatch = (
     console.error(error);
   }
 };
+export const summarySecurityChartDataDispatch = (
+  clientId,execId
+) => async dispatch => {
+  try {
+    const response = await api.getFileSummaryData(
+      clientId,execId
+    );
+    dispatch({
+      type: actionTypes.SET_SUMMARY_SECURITY_CHARTS_DETAILS,
+      payload: {
+        summarySecurityChartDetails: response.data,
+        chartDataReceived: true
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};

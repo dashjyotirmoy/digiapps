@@ -1,6 +1,6 @@
 import React from 'react';
 import ChartHOCSummary from '../Charts/ChartHOC/ChartHOCSummary';
-const BuildColumnSummaryTrend = (props) => {
+const BuildColumnSummaryTrend = (props) => {debugger
   var options = {}
   var planned=[]
   var actual=[]
@@ -68,9 +68,9 @@ const BuildColumnSummaryTrend = (props) => {
       })
   }
   else if(props.type === 'securityTabSCA'){
-      high.push(parseInt(trendList.alertMetrics.high))
-      medium.push(parseInt(trendList.alertMetrics.medium))
-      low.push(parseInt(trendList.alertMetrics.low))
+      high.push(parseInt(trendList.high))
+      medium.push(parseInt(trendList.medium))
+      low.push(parseInt(trendList.low))
       xAxisLabel.push("SCA")
   }
   else if(props.type === 'securityTabSAST' || props.type === 'securityTabDAST'){

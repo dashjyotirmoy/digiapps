@@ -1,15 +1,15 @@
 import React from 'react';
 import ChartHOCSummary from '../Charts/ChartHOC/ChartHOCSummary';
 import { color } from 'highcharts';
-const BuildPieKpi = (props) => {
+const BuildPieKpi = (props) => {debugger
   var options = {}
   var data = []
-  var categories = ['SCA','SAST','DAST']
+  
 var colors= ['#ec5050','#ffc107','#20c997']
 var pieData=props.openVulnerability
 var bgTheme = props.bgTheme
 var dataArray = [...pieData]
-
+var categories = dataArray.map(item=> item.toolName);
 var dataArrayValue=dataArray.map(item=>[...Object.values(item).slice(1, 4)])
 pieData.forEach((item,index) => data.push({
                                     y : parseInt(item.total),

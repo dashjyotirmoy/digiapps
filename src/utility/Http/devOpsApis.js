@@ -33,6 +33,11 @@ const getSummaryData = (clientId,execId) => {
     `/summary/velocity?clientId=${clientId}&executiveId=${execId}`
   );
 };
+const getFileSummaryData = (clientId,execId) => {
+  return devovOpsApi.get(
+    `/summary/file-velocity?clientId=${clientId}&executiveId=${execId}`
+  );
+};
 const getProjectInsightsData = (projectId,clientId,execId) => {
   return devovOpsApi.get(
     `/project/${projectId}/project-insights?clientId=${clientId}&executiveId=${execId}`
@@ -194,5 +199,6 @@ export default {
   getVulnerabilityData,
   getWidgetList,
   getProjectSprintData,
-  getAIAVulnerabilityData
+  getAIAVulnerabilityData,
+  getFileSummaryData
 };
