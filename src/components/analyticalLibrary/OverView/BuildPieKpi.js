@@ -1,7 +1,7 @@
 import React from 'react';
 import ChartHOCSummary from '../Charts/ChartHOC/ChartHOCSummary';
 import { color } from 'highcharts';
-const BuildPieKpi = (props) => {debugger
+const BuildPieKpi = (props) => {
   var options = {}
   var data = []
   

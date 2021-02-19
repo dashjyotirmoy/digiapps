@@ -21,7 +21,7 @@ export const securityProjectDataDispatch = (clientId,projectId) =>
     }
   };
   export const vulnerabilityDataDispatch = (clientId,projectId) =>
-  async dispatch => {debugger
+  async dispatch => {
     try {
       if (clientId !== 'AIA' && clientId !== 'DOPS') {
         const response = await api.getVulnerabilityData(clientId,projectId);

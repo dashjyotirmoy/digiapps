@@ -317,7 +317,7 @@ class Velocity extends Component {
 
   //function to fetch charts data
 
-  fetchChartsData = (props) => {debugger
+  fetchChartsData = (props) => {
     this.setState({
       all_data: false,
       charts: []

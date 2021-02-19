@@ -6,6 +6,7 @@ const initialState = {
   qualityDrilledDownFilterDetails:{},
   qualityBuildDetails: {},
   qualityBuildReleaseDetails:{},
+  qualityBuildRepoDetails:{},
   currentQualityData: {
     qualityDetails: {}
   }
@@ -38,6 +39,11 @@ const qualityReducer = (state = initialState, action) => {
         return {
           ...state,
           qualityBuildReleaseDetails: action.payload.qualityBuildReleaseDetails
+        };
+        case actionType.SET_QUALITY_REPO_DETAILS:
+        return {
+          ...state,
+          qualityBuildRepoDetails: action.payload.qualityBuildRepoDetails
         };
     case actionType.SET_QUALITY_DETAILS:
       return {

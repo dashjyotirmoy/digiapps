@@ -42,18 +42,6 @@ const Grid = props => {
               </span>
             </TooltipHoc>
           </p>
-          {/* <p className="d-inline px-1">
-            <span className="d-inline-block" onClick={() => setModalShow(true)}>
-              <FontAwesomeIcon icon={faInfoCircle} />
-            </span>
-
-            <CenteredModal
-              chartName={props.chartData[ele.i].name}
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-            />
-          </p> */}
-
           <span
             className="show-cursor d-inline"
             onClick={() => props.removeDelegate(index)}

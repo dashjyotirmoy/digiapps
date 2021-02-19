@@ -34,7 +34,7 @@ export const qualityGraphInfo = {
       </div>
 `,
 
-  Coverage: `
+  "Coverage": `
     <div>
         <p>
           Code coverage is a measure which describes the degree of which the

@@ -17,8 +17,22 @@ export const qualityDataDispatch = (clientId,execId,projectId) =>
       console.error(error);
     }
   };
+  export const qualityRepoDataDispatch = (clientId,execId, projectId,repoName) =>
+  async dispatch => {
+    try {
+      const response = await api.getQualityRepoMetricsData(clientId,execId, projectId,repoName);
+      dispatch({
+        type: actionTypes.SET_QUALITY_REPO_DETAILS,
+        payload: {
+          qualityBuildRepoDetails: response.data,
+          chartDataReceived: true
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   export const qualityReleaseDataDispatch = (branchName,clientId,execId, projectId,releaseName, repoName) =>
-  //   sprintId
   async dispatch => {
     try {
       const response = await api.getQualityReleaseMetricsData(branchName,clientId,execId, projectId,releaseName, repoName);
