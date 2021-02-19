@@ -567,7 +567,7 @@ class Quality extends Component {
   branchOnSelectHandler= (branchId, evtKey) => {
     this.updateBranch(branchId);
   };
-  releaseOnSelectHandler = (releaseId, evtKey) => {debugger
+  releaseOnSelectHandler = (releaseId, evtKey) => {
     this.updateRelease(releaseId);
   };
   setBranch = (res) => {
@@ -776,9 +776,9 @@ class Quality extends Component {
       selectedRepoKey: res.data.repoKey,
       filterStatus: "Repository",
       showRemovedItemsList: []
-    });
+    });debugger
     this.props.repoDropValDispatch(res.repoName);
-    if (res.data.repoKey !== "selectProject") {
+    if (res.data.repoKey !== null) {
       this.setState({
         open: false
       })
@@ -855,7 +855,7 @@ class Quality extends Component {
     }
   }
 
-  setBuild =()=>{debugger
+  setBuild =()=>{
     this.props.qualityBuildDataDispatch(this.props.projectID,this.props.currentClientId,this.state.selectedRepo)
        .then(() => { this.setQualityBuildData(this.props.qualityBuildData) });
   }
