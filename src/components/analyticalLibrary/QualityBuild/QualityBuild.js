@@ -14,7 +14,7 @@ let StatusColor = {
 const QualityBuild = props => {
   const bgTheme = props.bgTheme;
   let QualityData = props.cardsData;
-
+debugger
   QualityData.testOverviewDTO.buildIds.sort((a, b) => b.localeCompare(a));
   return (
     <React.Fragment>

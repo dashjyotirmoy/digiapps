@@ -57,12 +57,17 @@ const getProjectSprintData = (sprintId,clientId,execId,projectId) => {
 
 const getQualityMetricsData = (clientId,execId, projectId) => {
   return devovOpsApi.get(
-    `/widget/quality-insights?clientId=${clientId}&executiveId=${execId}&projectId=${projectId}`
+    `/widget/quality-insights/project-detail?clientId=${clientId}&executiveId=${execId}&projectId=${projectId}`
+  );
+};
+const getQualityRepoMetricsData = (clientId,execId, projectId,repositoryName) => {
+  return devovOpsApi.get(
+    `/widget/quality-insights/repo-detail?clientId=${clientId}&executiveId=${execId}&projectId=${projectId}&repositoryName=${repositoryName}`
   );
 };
 const getQualityReleaseMetricsData = (branchName,clientId,execId, projectId,releaseName, repoName) => {
   return devovOpsApi.get(
-    `/widget/quality-insights?branchName=${branchName}&clientId=${clientId}&executiveId=${execId}&projectId=${projectId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
+    `/widget/quality-insights/repo-detail?branchName=${branchName}&clientId=${clientId}&executiveId=${execId}&projectId=${projectId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
   );
 };
 const getQualityMetricsDrilledDownData = (clientId,execId,metricsType,repoId, projectId) => {
@@ -200,5 +205,6 @@ export default {
   getWidgetList,
   getProjectSprintData,
   getAIAVulnerabilityData,
-  getFileSummaryData
+  getFileSummaryData,
+  getQualityRepoMetricsData
 };

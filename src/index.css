@@ -37,7 +37,7 @@ a:hover {
 .position-fixed{
   position: fixed;
   width: 100%;
-  z-index: 101;
+  z-index: 1001;
 }
 .mt-6 {
   margin-top: 6rem!important;

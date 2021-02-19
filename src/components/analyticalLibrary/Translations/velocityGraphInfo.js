@@ -39,9 +39,6 @@ export const velocityGraphInfo = {
     Here Deployment Lead Time is calculated from 01/01/2000 to 09/01/2000
     i.e, 9 days
   </p>`,
-
-  Throughput: ` `,
-
   "Deployment/ Change Frequency": ` <p>
   Deployment Lead Time depicts the time taken by a user story and/or a
   bug to change from new (when the work is created) to closed (when the

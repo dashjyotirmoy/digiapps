@@ -62,7 +62,6 @@ class QualityGraph {
       bugs_metrics_data,
       vul_metrics_data,
       codeSmell_metrics_data;
-
     bugs_metrics_data = this.res.data.bugs.bugsMetricsList;
     vul_metrics_data = this.res.data.vulnerabilities.vulnerabilitiesMetricsList;
     codeSmell_metrics_data = this.res.data.codeSmells.codeSmellsMetricsList;
@@ -202,7 +201,7 @@ class QualityGraph {
   generateArea(options) {
     let lines_to_cover = [],
       covered_lines = [];
-    this.res.data.coverageMetricsList.map(day_data => {
+      this.res.data.coverageMetricsList.map(day_data => {
       let to_cover_point = [],
         covered_point = [];
       let rawDate = day_data.date.split("T");
