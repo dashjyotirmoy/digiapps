@@ -56,8 +56,6 @@ class Overview extends Component {
     }
    }
   render() {
-    console.log("this.props.summarySecurityChart",this.props.summarySecurityChart);
-    console.log("this.props.summarySecurityChart.securityOverview",this.props.summarySecurityChart.securityOverview);
         const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
         const labels = labelConst.filter((item)=> item.clientName === clientName );
         const bgTheme = labels[0].mappings.bgColor;
