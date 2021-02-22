@@ -15,7 +15,7 @@ class CustDropdown extends Component {
     const arr = this.props.listData;
     const dropdownItems = arr.map((ele, index) => {
       return (
-        <Dropdown.Item key={index} eventKey={this.props.dropsLable !== "Repository"?ele.id:ele.projectName} className={`${bgTheme ? 'text-white': 'text-dark dropdown-light'}`}>
+        <Dropdown.Item key={index} eventKey={ele.id} className={`${bgTheme ? 'text-white': 'text-dark dropdown-light'}`}>
           {ele.projectName}
         </Dropdown.Item>
       );

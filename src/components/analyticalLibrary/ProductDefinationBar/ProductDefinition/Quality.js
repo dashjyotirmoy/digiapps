@@ -744,7 +744,7 @@ class Quality extends Component {
       );
       const repoDetails = list.map((ele) => {
         return {
-          id: ele.repositoryKey,
+          id: ele.repositoryName,
           projectName: ele.repositoryName,
         };
       });
@@ -777,7 +777,7 @@ class Quality extends Component {
       filterStatus: "Repository",
       showRemovedItemsList: []
     });debugger
-    this.props.repoDropValDispatch(res.repoName);
+    this.props.repoDropValDispatch(res.data.repoName);
     if (res.data.repoKey !== null) {
       this.setState({
         open: false
