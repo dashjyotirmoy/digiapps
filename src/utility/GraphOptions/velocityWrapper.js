@@ -82,7 +82,7 @@ class VelocityGraph {
   //function that Creates data for Control charts
 
 
-  generateControlChart(options) {
+  generateControlChart(options) {debugger
 
     let userStory = [],
       combinedURL,
@@ -333,7 +333,7 @@ class VelocityGraph {
     };
     options.yAxis = {
       min: -0.5,
-      max: controlChartYAxisMaxLimit + 15,
+      max: controlChartYAxisMaxLimit + 120,
       gridLineColor: "",
       title: {
         text: "Days",
@@ -366,7 +366,7 @@ class VelocityGraph {
       shared: false,
       useHTML: true,
       style: {
-        pointerEvents: "auto"
+        pointerEvents: "auto",
       },
       pointFormatter: function (t) {
         combinedURL = baseURL;
