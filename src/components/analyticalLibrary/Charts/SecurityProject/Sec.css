@@ -48,15 +48,15 @@ font-family: Helvetica;
  }
  /* Alert button */
  .Alertbg{
-  background-color: #1D2632!important;
-  border-color: #364D68!important;
-  color: #fff;
+  background-color: transparent;
+  border-color: #007bff !important;
+  color: #007bff;
   padding: .5rem 3rem;
 }
 .bgblue{
- background-color: #4A90E2!important;
+ background-color: #007bff!important;
  border-color: transparent;
- color: #333;
+ color: #fff;
  padding: .5rem 3rem;
 }
 .btnhighbg {
@@ -72,9 +72,9 @@ font-family: Helvetica;
   background: #056642;
 }
 .Alertbg:hover{
-  background-color: #1D2632!important;
+  background-color: #007bff !important;
   border-color: transparent;
-  color: #fff!important;
+  color: #fff !important;
   padding: .5rem 3rem;
  }
  .label-bg-light{
