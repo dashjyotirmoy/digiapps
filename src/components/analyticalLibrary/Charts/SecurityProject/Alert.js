@@ -163,10 +163,10 @@ const App = props => {
                 <p>Alerts</p>
                 <Col sm={2}>
 
-                  <select onChange={handleChange} className="drop repo-height text-white rounded border border-dark" style={{backgroundColor:'#33404d'}}>
+                  <select onChange={handleChange} className={`${bgTheme ? 'drop text-white': 'bg-prodAgg-light-btn border-primary'} repo-height rounded border`}>
                     {dropData.map(function (data, key) {
                       return (
-                        <option className="text-white" key={key} value={data.id}>{data.name}</option>)
+                        <option className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.id}>{data.name}</option>)
                     })}
                   </select>
 

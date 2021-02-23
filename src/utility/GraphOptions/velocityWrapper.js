@@ -311,7 +311,7 @@ class VelocityGraph {
         }
       },
       plotBands: [{
-        color: '#363E48',
+        color: this.res.bgTheme ? '#363E48':'#cfd2d7',
         from: sprintStartBand,
         to: sprintEndBand
       }],
