@@ -113,7 +113,7 @@ class ProductInfoBar extends Component {
       selectedProduct: prrojDetail[selectedIndex].projectName
     });
     this.getProjectDetails(projects[selectedIndex].id,this.state.clientId,this.state.currentExecId,this.props.currentSourceType);
-    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType);
+    {!window.location.href.includes('/quality') && this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType)}
   };
 
   //axios call to fetch project details
@@ -176,7 +176,7 @@ class ProductInfoBar extends Component {
       selectedTeamId: teamDetails[teamData.selectedIndex].id,
       show: false
     });
-    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType,teamDetails[teamData.selectedIndex].id);
+    {!window.location.href.includes('/quality') && this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType,teamDetails[teamData.selectedIndex].id)}
     this.setSprint(
       teams,
       teamDetails[teamData.selectedIndex].id,
@@ -201,7 +201,7 @@ class ProductInfoBar extends Component {
       selectedTeam: teamDetail[selectedIndex].projectName
     });
     this.setSprint(teams, teams[selectedIndex].id, selectedIndex, true);
-    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType,teams[selectedIndex].id);
+    {!window.location.href.includes('/quality') && this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType,teams[selectedIndex].id)}
   };
 
   //method to set current sprint value and set sprint details
@@ -250,7 +250,7 @@ class ProductInfoBar extends Component {
           sprintID
         );
         productMetrics = this.setProductMetricsJira(res.sprintCount);
-        this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType);
+        {!window.location.href.includes('/quality') && this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType)}
         this.props.repoDropValDispatch();
         this.props.resetProjectRepoDispatch();
         this.setState({

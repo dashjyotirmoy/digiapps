@@ -82,7 +82,7 @@ class VelocityGraph {
   //function that Creates data for Control charts
 
 
-  generateControlChart(options) {debugger
+  generateControlChart(options) {
 
     let userStory = [],
       combinedURL,
