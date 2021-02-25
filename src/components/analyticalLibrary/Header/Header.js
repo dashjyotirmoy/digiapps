@@ -34,9 +34,6 @@ class Header extends Component {
       navListItem: ["Red", "Black", "Blue"],
       labelConst: this.props.labelsConst,
       show: true,
-      clientList: [{name: "aia", clientId: "AIA"},
-        {name: "digitalops", clientId: "DOPS"},
-        {name: "wpc", clientId: "WPC"}]
     }
 getClientId = (clientDetails) => {
   let currentUrl = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
@@ -79,7 +76,7 @@ componentDidMount() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
               <Nav.Item>
-                {/* <div id="user-info" className="d-inline-block mr-2">
+                '{/* <div id="user-info" className="d-inline-block mr-2">
                   <p className="font-size-smaller m-0 text-left text-lg-right text-md-left text-sm-left text-xl-right">
                     <small>{this.state.userName}</small>
                   </p>
@@ -90,7 +87,7 @@ componentDidMount() {
                 <div id="user-info-image" className="d-inline-block mr-2">
                   <div className="circle-placeholder overflow-hidden rounded-circle">
                     <img src={john} alt="" className="h-100 w-100" />
-                  </div>
+                  '</div>
                 </div>
                 <div
                   id="user-info-icon"
@@ -99,7 +96,7 @@ componentDidMount() {
                   <Dropdown listData={this.state.navListItem}>
                     <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
                   </Dropdown> 
-                </div> */}
+                </div> */}'
                 <div id="user-info-image" className="d-flex mr-2">
                 <p className="align-middle font-size-xs m-0 mr-2 mt-1 text-left text-lg-right text-md-right text-sm-left text-xl-right text-white-50" style={{fontWeight: 'bold'}}>
                     {this.state.designation}

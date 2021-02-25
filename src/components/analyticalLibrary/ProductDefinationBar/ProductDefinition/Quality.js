@@ -688,7 +688,7 @@ class Quality extends Component {
   setReleaseData(selectedBranch,clientId,currentExecId,projectID,selectedRelease,selectedRepo,releaseId,selectedIndex) {
     let type;
     this.props.qualityReleaseDataDispatch(selectedBranch,clientId,currentExecId,projectID,selectedRelease,selectedRepo)
-      .then((item) => {
+      .then((item) => {debugger
         // if (this.props.qualityData.repositories.length > 0) {
         this.initialData = this.props.qualityBuildReleaseDetails;
         this.updateReleaseQualityData(releaseId,selectedIndex);
@@ -776,12 +776,13 @@ class Quality extends Component {
       selectedRepoKey: res.data.repoKey,
       filterStatus: "Repository",
       showRemovedItemsList: []
-    });debugger
-    this.props.repoDropValDispatch(res.data.repoName);
+    });
+    //this.props.repoDropValDispatch(res.data.repoName);
     if (res.data.repoKey !== null) {
       this.setState({
         open: false
       })
+      this.getBranchDetails(this.props.currentClientId,this.props.projectID, this.state.selectedRepo);
       this.updateQualityData(res.data.repoKey,res);
       if (this.state.repoData[0].id !== "selectProject") {
         this.state.repoData.unshift({
@@ -792,10 +793,11 @@ class Quality extends Component {
     } else {
       if (this.state.repoData[0].id === "selectProject") {
         this.state.repoData.shift();
-      }
+      }debugger
       let layout_instance = new Layout(2);
       this.setState({
         selectedRepo: "",
+        selectedBranch:"",
         showbutton: false,
         show: false,
         open: true,
@@ -803,14 +805,21 @@ class Quality extends Component {
         filterStatus: "Project",
       });
       let type;
-      type = this.setRawDefaultRepo(
-        this.initialData.repositories,
-        this.initialData.outstandingBugs,
-        this.initialData.averageDefectResolutionTime
-      );
+      this.props
+      .qualityDataDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId,this.props.currentExecId,this.props.projectID)
+      .then(
+        type = this.setRawDefaultRepo(
+          this.props.qualityData.repositories,
+          this.props.qualityData.outstandingBugs,
+          this.props.qualityData.averageDefectResolutionTime
+        )
+      ).catch((error) => {
+        console.error(error);
+      });
+      
       this.createCharts(this.createChartObject(type));
     }
-    this.getBranchDetails(this.props.currentClientId,this.props.projectID, this.state.selectedRepo);
+    
   };
 
   updateQualityData = (repoId,res) => {
