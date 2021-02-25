@@ -176,7 +176,7 @@ class ProductInfoBar extends Component {
       selectedTeamId: teamDetails[teamData.selectedIndex].id,
       show: false
     });
-    {!window.location.href.includes('/quality') && this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType,teamDetails[teamData.selectedIndex].id)}
+    this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType,teamDetails[teamData.selectedIndex].id);
     this.setSprint(
       teams,
       teamDetails[teamData.selectedIndex].id,
@@ -250,7 +250,7 @@ class ProductInfoBar extends Component {
           sprintID
         );
         productMetrics = this.setProductMetricsJira(res.sprintCount);
-        {!window.location.href.includes('/quality') && this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType)}
+        this.props.insightsVelocity(this.state.clientId,this.state.currentExecId, this.props.projectID,this.props.currentSourceType);
         this.props.repoDropValDispatch();
         this.props.resetProjectRepoDispatch();
         this.setState({
