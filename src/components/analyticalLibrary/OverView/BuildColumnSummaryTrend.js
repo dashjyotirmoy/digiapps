@@ -16,7 +16,7 @@ const BuildColumnSummaryTrend = (props) => {
   var newTime=''
   var fontWeight = props.type === 'securityTab'?'bold':''
   var height = props.type === 'securityOpen' ? '498px' : props.type === 'security' ? '300px':(props.type === 'securityTabSCA' || props.type === 'securityTabSAST' || props.type === 'securityTabDAST') ? '239px': props.type === 'qualityColumnReverse' ? '500px':props.type==='qualityColumn'?'240px': props.type==='qualityLine'?'240px':props.type==='securityTabReverse'?'289px':'240px'
-  var titleText = props.type === 'securityOpen'? 'Open Vulnerabilities per project in production':props.type === 'securityTab'?'Vulnerabilities by SCA, SAST & DAST':props.type==='qualityColumnReverse'?'Open Defects Count':props.type==='qualityColumn'?'Average Resolution Time for Defects':props.type==='securityTabReverse'?'New Vulnerabilities':props.type==='velocity'?'Velocity - Projects that need attention':''
+  var titleText = props.type === 'securityOpen'? 'Open Vulnerabilities per project in production':props.type === 'securityTab'?'Vulnerabilities by SCA, SAST & DAST':props.type==='qualityColumnReverse'?'Open Defects Count':props.type==='qualityColumn'?'Average Resolution Time for Defects':props.type==='securityTabReverse'?'New Vulnerabilities':props.type==='velocity'?'User Story Delivery Trend':''
   var chartType = props.type === 'qualityColumnReverse'? 'bar': props.type === 'securityTabReverse'?'bar': 'column'
   var trendList = props.summaryTrend
   var bgTheme = props.bgTheme
@@ -248,7 +248,7 @@ const BuildColumnSummaryTrend = (props) => {
   },
   series: props.type === 'velocity'?[
     {
-      name: 'Actual',
+      name: 'Delivered',
       data: actual,
       color: "#2fc5eb",
   
