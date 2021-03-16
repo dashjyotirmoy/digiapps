@@ -76,7 +76,7 @@ componentDidMount() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
               <Nav.Item>
-                '{/* <div id="user-info" className="d-inline-block mr-2">
+                {/* <div id="user-info" className="d-inline-block mr-2">
                   <p className="font-size-smaller m-0 text-left text-lg-right text-md-left text-sm-left text-xl-right">
                     <small>{this.state.userName}</small>
                   </p>
@@ -96,7 +96,7 @@ componentDidMount() {
                   <Dropdown listData={this.state.navListItem}>
                     <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
                   </Dropdown> 
-                </div> */}'
+                </div> */}
                 <div id="user-info-image" className="d-flex mr-2">
                 <p className="align-middle font-size-xs m-0 mr-2 mt-1 text-left text-lg-right text-md-right text-sm-left text-xl-right text-white-50" style={{fontWeight: 'bold'}}>
                     {this.state.designation}
