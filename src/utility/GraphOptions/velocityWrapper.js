@@ -333,7 +333,7 @@ class VelocityGraph {
     };
     options.yAxis = {
       min: -0.5,
-      max: controlChartYAxisMaxLimit + 120,
+      max: controlChartYAxisMaxLimit + 80,
       gridLineColor: "",
       title: {
         text: "Days",
