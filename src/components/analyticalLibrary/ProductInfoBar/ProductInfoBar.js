@@ -166,8 +166,8 @@ class ProductInfoBar extends Component {
         sprintDetails: ele.sprintDetails,
         headCount: ele.teamHeadCount
       };
-    });
-    productMetrics = this.setProductMetrics(res.data.sprintCount, teamDetails[teamData.selectedIndex].headCount);
+    });debugger
+    productMetrics = this.setProductMetrics(res.data.sprintCount, teamData.list.length>1?teamDetails[teamData.selectedIndex].headCount:'');
     this.props.repoDropValDispatch();
     this.props.resetProjectRepoDispatch();
     this.setState({
@@ -630,14 +630,14 @@ class ProductInfoBar extends Component {
                               className="d-flex d-inline-block 
                         flex-column h-100 justify-content-center max-w-18 w-auto "
                             >
-                              <p className={`font-metric-main-text m-0 text-center m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>
+                              {item.value!=='' && <p className={`font-metric-main-text m-0 text-center m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>
                                 <span>
                                   {item.value}{" "}
                                 </span>
-                              </p>
-                              <p className={`font-metric-sub-text m-0 text-center m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>
+                              </p>}
+                              {item.value!=='' && <p className={`font-metric-sub-text m-0 text-center m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>
                                 {labels[0].mappings.count[index].name}
-                              </p>
+                              </p>}
                             </div>
                           );
                         })}
