@@ -88,12 +88,21 @@ const getSecurityProjectData = (clientId,projectId) => {
   );
 };
 
-const getVelocityProjectData = (projectId,clientId) => {
+const getVelocityProjectData = (projectId,clientId,sourceType) => {
   return devovOpsApi.get(
-    `/build/${projectId}/jobs?clientId=${clientId}`
+    `/build/${projectId}/jobs?clientId=${clientId}&sourceTypeId=${sourceType}`
   );
 };
-
+const getBuildReleasePullData = (clientId,filter,productId,sourceTypeId) => {
+  return devovOpsApi.get(
+    `/build/${productId}/file-pull-request-metrics?clientId=${clientId}&filter=${filter}&sourceTypeId=${sourceTypeId}`
+  );
+};
+const getBuildReleaseData = (clientId,filter,productId,repositoryId,sourceTypeId) =>{
+  return devovOpsApi.get(
+    `/build/${productId}/file-build-release-metrics?clientId=${clientId}&filter=${filter}&repositoryId=${repositoryId}&sourceTypeId=${sourceTypeId}`
+  );
+};
 const getSecurityRepoData = (clientId,projectId, repoId) => {
   return devovOpsApi.get(
     `/widget/security-insights/repos?clientId=${clientId}&productId=${projectId}&projectId=${repoId}`
@@ -127,15 +136,15 @@ const getSecurityReleaseAlertData = (branchName,clientId,filterID,projectId,repo
     `/widget/security-insights/alerts?branchName=${branchName}&clientId=${clientId}&filter=${filterID}&productId=${projectId}&projectId=${repoId}&releaseNumber=${releaseName}&repositoryName=${repoName}`
   );
 }
-const getVelocityBuildData = (projectId,clientId,repoId) => {
+const getVelocityBuildData = (projectId,clientId,repoId,sourceTypeId) => {
   return devovOpsApi.get(
-    `/build/${projectId}/build-trend?clientId=${clientId}&projectId=${repoId}`
+    `/build/${projectId}/build-trend?clientId=${clientId}&projectId=${repoId}&sourceTypeId=${sourceTypeId}`
   );
 }
 
-const getQualityBuildData = (projectId,clientId,repoId) => {
+const getQualityBuildData = (projectId,clientId,repoId,sourceTypeId) => {
   return devovOpsApi.get(
-    `/build/${projectId}/build-metrics?clientId=${clientId}&projectId=${repoId}`
+    `/build/${projectId}/build-metrics?clientId=${clientId}&projectId=${repoId}&sourceTypeId=${sourceTypeId}`
   );
 }
 
@@ -206,5 +215,7 @@ export default {
   getProjectSprintData,
   getAIAVulnerabilityData,
   getFileSummaryData,
-  getQualityRepoMetricsData
+  getQualityRepoMetricsData,
+  getBuildReleasePullData,
+  getBuildReleaseData
 };

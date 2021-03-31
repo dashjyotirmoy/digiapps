@@ -29,10 +29,11 @@ export const labelConst = [{
 			major: 'Major',
 			minor: 'Minor',
 			tabItems: [{id:"1",name:'Overview',eventKey:'overview'},
-						{id:"2",name:'Security',eventKey:'security'},
-						{id:"3",name: 'Velocity and Efficiency',eventKey:'velocity'},
-						{id:"4",name: 'Quality',eventKey:'quality'},
-						{id:"5",name: 'Insights',eventKey:'insights'}],
+						{id:"2",name: 'Velocity and Efficiency',eventKey:'velocity'},
+						{id:"3",name: 'Quality',eventKey:'quality'},
+						{id:"4",name:'Security',eventKey:'security'},
+						{id:"5",name: 'Build and Release',eventKey:'buildrelease'},
+						{id:"6",name: 'Insights',eventKey:'insights'}],
 	}
 },
 {
@@ -68,7 +69,8 @@ export const labelConst = [{
 			tabItems: [{id:"1",name:'Overview',eventKey:'overview'},
 						{id:"2",name: 'Velocity and Efficiency',eventKey:'velocity'},
 						{id:"3",name: 'Quality',eventKey:'quality'},
-						{id:"4",name: 'Insights',eventKey:'insights'}],
+						{id:"4",name: 'Build and Release',eventKey:'buildrelease'},
+						{id:"5",name: 'Insights',eventKey:'insights'}],
 	}
 },
 {
@@ -105,7 +107,8 @@ export const labelConst = [{
 						// {id:"2",name:'Security',eventKey:'security'},
 						{id:"2",name: 'Velocity and Efficiency',eventKey:'velocity'},
 						{id:"3",name: 'Quality',eventKey:'quality'},
-						{id:"4",name: 'Insights',eventKey:'insights'}],
+						{id:"4",name: 'Build and Release',eventKey:'buildrelease'},
+						{id:"5",name: 'Insights',eventKey:'insights'}],
 	}
 },
 {
@@ -139,10 +142,11 @@ export const labelConst = [{
 			major: 'Major',
 			minor: 'Minor',
 			tabItems: [{id:"1",name:'Overview',eventKey:'overview'},
-						{id:"2",name:'Security',eventKey:'security'},
-						{id:"3",name: 'Velocity and Efficiency',eventKey:'velocity'},
-						{id:"4",name: 'Quality',eventKey:'quality'},
-						{id:"5",name: 'Insights',eventKey:'insights'}]
+						{id:"2",name: 'Velocity and Efficiency',eventKey:'velocity'},
+						{id:"3",name: 'Quality',eventKey:'quality'},
+						{id:"4",name:'Security',eventKey:'security'},
+						{id:"5",name: 'Build and Release',eventKey:'buildrelease'},
+						{id:"6",name: 'Insights',eventKey:'insights'}]
 
 	}
 },
@@ -181,6 +185,7 @@ export const labelConst = [{
 						{id:"2",name: 'Velocity and Efficiency',eventKey:'velocity'},
 						{id:"3",name: 'Quality',eventKey:'quality'},
 						// {id:"3",name:'Security',eventKey:'security'},
-						{id:"4",name: 'Insights',eventKey:'insights'}]
+						{id:"4",name: 'Build and Release',eventKey:'buildrelease'},
+						{id:"5",name: 'Insights',eventKey:'insights'}]
 	}
 }];

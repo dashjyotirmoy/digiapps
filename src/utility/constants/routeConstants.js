@@ -4,6 +4,7 @@ import Customer from "../../components/analyticalLibrary/ProductDefinationBar/Pr
 import Insights from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Insights";
 import Security from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Security";
 import Overview from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/Overview";
+import BuildRelease from "../../components/analyticalLibrary/ProductDefinationBar/ProductDefinition/BuildRelease";
 
 
 
@@ -31,5 +32,9 @@ export const routes = [
   {
     path: "/overview",
     component: Overview
+  },
+  {
+    path: "/buildrelease",
+    component: BuildRelease
   },
 ];

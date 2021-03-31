@@ -30,11 +30,11 @@ export const chartDataDispatch = (
   }
 };
 
-export const velocityProjectDataDispatch = (projectId,clientId) =>
+export const velocityProjectDataDispatch = (projectId,clientId,sourceType) =>
   async dispatch => {
     try {
       if (projectId) {
-        const response = await api.getVelocityProjectData(projectId,clientId);
+        const response = await api.getVelocityProjectData(projectId,clientId,sourceType);
         dispatch({
         type: actionTypes.SET_VELOCITY_PROJECT_DETAILS,
         payload: {
@@ -49,10 +49,10 @@ export const velocityProjectDataDispatch = (projectId,clientId) =>
     }
   };
 
-  export const velocityBuildDataDispatch = (projectId,clientId,repoId) => 
+  export const velocityBuildDataDispatch = (projectId,clientId,repoId,sourceTypeId) => 
   async dispatch => {
     try {
-      const response = await api.getVelocityBuildData(projectId,clientId,repoId);
+      const response = await api.getVelocityBuildData(projectId,clientId,repoId,sourceTypeId);
       dispatch({
         type: actionTypes.SET_VELOCITY_BUILD_DETAILS,
         payload: {

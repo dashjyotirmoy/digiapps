@@ -166,7 +166,7 @@ class ProductInfoBar extends Component {
         sprintDetails: ele.sprintDetails,
         headCount: ele.teamHeadCount
       };
-    });debugger
+    });
     productMetrics = this.setProductMetrics(res.data.sprintCount, teamData.list.length>1?teamDetails[teamData.selectedIndex].headCount:'');
     this.props.repoDropValDispatch();
     this.props.resetProjectRepoDispatch();

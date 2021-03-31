@@ -6,7 +6,7 @@ import qualityReducer from "../Reducers/qualityReducer";
 import securityReducer from '../Reducers/securityReducer';
 import insightReducer from '../Reducers/insightReducer';
 import summaryReducer from '../Reducers/summaryReducer';
-
+import buildReducer from '../Reducers/buildChartReducer';
 export default combineReducers({
   execData: execReducer,
   productDetails: prodReducer,
@@ -14,5 +14,6 @@ export default combineReducers({
   qualityData: qualityReducer,
   securityData: securityReducer,
   insightData: insightReducer,
-  summaryData: summaryReducer
+  summaryData: summaryReducer,
+  buildData: buildReducer
 });

@@ -3,7 +3,8 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
-import { chartDataDispatch, velocityProjectDataDispatch, velocityBuildDataDispatch, velocityRepoDropValDispatch } from "../../../../store/actions/chartData";
+import { buildReleasePullDataDispatch,buildReleaseDataDispatch,buildRepoDropValDispatch } from "../../../../store/actions/buildChartData";
+// import { velocityRepoDropValDispatch } from "../../../../store/actions/chartData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,12 +25,11 @@ import SideNavbar from "../../SideNavBar/SideNavbar";
 import Badge from 'react-bootstrap/Badge';
 import { labelConst } from "../../../../utility/constants/labelsConstants";
 import { widgetListDispatch } from "../../../../store/actions/executiveInsights";
-class Velocity extends Component {
+class BuildRelease extends Component {
   state = {
     charts: [],
     velocityBuildData: [],
     showbutton: true,
-    showDropdown: false,
     layout: {
       lg: [],
       md: []
@@ -41,7 +41,6 @@ class Velocity extends Component {
     selectedRepo: "",
     codeActive: true,
     buildActive: false,
-    componentType: "velocity",
     repoData: [],
     filterStatus: 'Team',
     showRemovedItemsList: [],
@@ -49,7 +48,8 @@ class Velocity extends Component {
     bgTheme:'',
     clientId:'',
     buildStatus: 'Build Trend',
-    selectWidget: 'Select Widget'
+    selectWidget: 'Select Widget',
+    repositoryWidgets:[]
   };
 
   addCharts = (event) => {
@@ -120,7 +120,7 @@ class Velocity extends Component {
 
   //function that create charts based on the data from services
 
-  createCharts = (list, removed) => {debugger
+  createCharts = (list, removed) => {
     let updatedList =list && list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
@@ -233,19 +233,33 @@ class Velocity extends Component {
 
   componentDidUpdate() {
     if (this.state.all_data) {
+      this.setRepoitoryWidget();
       this.fetchChartsData();
-      this.setDefaultData();
     }
   }
 
-  setDefaultData() {
-    this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId)
-      this.props
-      .velocityProjectDataDispatch(this.props.projId,this.props.currentClientId,'Jenkins')
+  setRepoitoryWidget() {
+    this.setState({
+      all_data: false,
+    });
+    this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId);
+    this.props
+      .buildReleasePullDataDispatch(this.props.currentClientId,'all_time',this.props.projId,this.props.currentSourceType)
       .then(item => {
-        if (this.props.velocityProjectData.jobDetailDtoList.length > 0 || this.props.velocityProjectData.jobDetailDtoList !== null) {
-          this.setRepository(this.props.velocityProjectData);
-
+        if (this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList.length > 0 || this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList !== null) {
+          this.setRepository(this.props.buildPullChart);
+          this.createCharts(
+              this.createChartObject(this.props.velocityCharts.details)
+            );
+            let layout_instance = new Layout(5);
+            this.setState({
+              layout: layout_instance.layout
+            });
+            this.setState({
+              response: this.props.velocityCharts,
+              received: true,
+              show: false
+            });
           this.setState({
             show: false
           });
@@ -265,7 +279,7 @@ class Velocity extends Component {
     const resetList = this.resetSelect(prodList);
     let selectedIndex = 0;
     const selectedParamList = resetList.map((ele, index) => {
-      if (ele.jobId === id) {
+      if (ele.repoId === id) {
         selectedIndex = index;
         return ele;
       }
@@ -285,16 +299,16 @@ class Velocity extends Component {
   };
 
   setRepository = res => {
-    const repositoryData = res.jobDetailDtoList;
+    const repositoryData = res.pullRequestDTO.pullRequestDetailDTOList;
     if (repositoryData !== null) {
       const { list } = this.markSelected(
         repositoryData,
-        repositoryData[0].jobId
+        repositoryData[0].repoId
       );
       const repoDetails = list.map(ele => {
         return {
-          id: ele.jobId,
-          projectName: ele.jobName
+          id: ele.repoId,
+          projectName: ele.repoName
         };
       });
 
@@ -302,16 +316,17 @@ class Velocity extends Component {
       this.setState({
         repoData: repoDetails,
         selectedRepo: "",
-        filterStatus: "Team"
+        filterStatus: "Team",
+        selectedRepo: repositoryData[0].repoName
       });
-
-      this.props.velocityRepoDropValDispatch("");
+      this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,this.state.selectedRepo,this.props.currentSourceType);
+      this.props.buildRepoDropValDispatch("");
     }  else {
       this.setState({
         repoData: [],
         selectedRepo: "",
       });
-      this.props.velocityRepoDropValDispatch("");
+      this.props.buildRepoDropValDispatch("");
     }
   };
 
@@ -319,22 +334,13 @@ class Velocity extends Component {
 
   fetchChartsData = (props) => {
     this.setState({
-      all_data: false,
       charts: []
     });
-    this.props
-      .chartDataDispatch(
-        this.state.clientId ? this.state.clientId:this.props.currentClientId,
-        this.props.currentExecId,
-        this.props.projId,
-        this.props.currentSourceType,
-        this.props.currentSourceType !== 'Jira'? this.props.sprintId:this.props.projectSprintId,
-        this.props.currentSourceType !== 'Jira'? this.props.teamId:''
-      )
-      .then(res => {
-        this.createCharts(
-          this.createChartObject(this.props.velocityCharts.details)
-        );
+    console.log('build release',this.props.buildReleaseChart);
+    console.log('build pull',this.props.buildPullChart);
+        // this.createCharts(
+        //   this.createChartObject(this.props.velocityCharts.details)
+        // );
         let layout_instance = new Layout(5);
         this.setState({
           layout: layout_instance.layout
@@ -344,22 +350,21 @@ class Velocity extends Component {
           received: true,
           show: false
         });
-      });
   };
 
   handleRepoChange = repoID => {
     this.updateRepository(repoID);
   };
 
-  updateRepository = (repoId) => {
+  updateRepository = (repoId) => {debugger
     const { list, selectedIndex } = this.markSelected(
-      this.props.velocityProjectData.jobDetailDtoList,
+      this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList,
       repoId
     );
     const repoDetails = list.map((ele) => {
       return {
-        id: ele.jobId,
-        projectName: ele.jobName,
+        id: ele.repoId,
+        projectName: ele.repoName,
       };
     });
     this.setState({
@@ -367,29 +372,11 @@ class Velocity extends Component {
       selectedRepoKey: repoDetails[selectedIndex].id,
       filterStatus: "Repository"
     });
-    this.props.velocityRepoDropValDispatch(repoDetails[selectedIndex].projectName);
-      this.props.velocityBuildDataDispatch(this.props.projId,this.props.currentClientId,repoId,'Jenkins')
+    this.props.buildRepoDropValDispatch(repoDetails[selectedIndex].projectName);
+    // if (repoId !== "selectProject") {
+      this.props.velocityBuildDataDispatch(this.props.projId,this.props.currentClientId,repoId)
       .then(() => { this.setVelocityBuildData(this.props.velocityBuildData) });
   };
-
-  setCode = () => {
-    this.setState({
-      componentType: "velocity",
-      buildActive: false,
-      showDropdown: false,
-      codeActive: true
-    });
-  }
-
-  setBuild = () => {
-      this.setState({
-        buildActive: true,
-        showDropdown: true,
-        componentType:"VelocityBuild",
-        codeActive: false
-      });
-  }
-
   setVelocityBuildData = (rawData) => {
     this.setState({
       velocityBuildData: rawData,
@@ -403,28 +390,12 @@ class Velocity extends Component {
     const bgTheme = labels[0].mappings.bgColor;
     const currentWidgetList = this.props.widgetList;
     const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === 'velocity');
-    let velocityNav=<CardChartVelocity showChart="true" insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme}/>
     if (this.state.show) {
       return <Spinner show="true" />;
     } else {
       return (
         <React.Fragment>
-          {this.props.velocityInsightDetails &&<SideNavbar card={velocityNav}/>}
           <Row className={`container-fluid px-3 py-4 mt-12 d-flex justify-content-start`} style={{alignItems:'flex-end'}}>
-              <span className="px-3">
-                {this.state.showbutton ? (
-                  <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>{labels[0].mappings.overviewBtn}</Button>
-                ) : null}
-              </span>
-
-            {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.buildStatus) &&
-             <span>
-                {this.state.showbutton ? (
-                  <Button variant="outline-dark" className={this.state.buildActive ? "bgblue" : "Alertbg"} onClick={this.setBuild}>{labels[0].mappings.buildBtn}</Button>
-                  ) : null}
-              </span>
-            }
-            {this.state.showDropdown ? (
           <Col md={2}>
               <Dropdown
                 listData={this.state.repoData}
@@ -458,9 +429,8 @@ class Velocity extends Component {
                 </Row>
               </Dropdown>
             </Col>
-               ) : null}
             <Col md={3} className="mt-auto"><p className={`font-size-small m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>You are viewing data at <b>{labels[0].mappings.teamLabel}</b>  level</p></Col>
-            {this.state.showRemovedItemsList.length !== 0 && this.state.componentType === "velocity" ? 
+            {this.state.showRemovedItemsList.length !== 0 ? 
             <span className="text-white ml-auto w-20">
             <p className={`m-0 font-size-smaller ${bgTheme ? '' : 'text-dark'}`}>Add Widgets</p>
             <select className={`repo-height rounded w-100 rounded ${bgTheme ? 'bg-prodAgg-btn text-white' : 'bg-prodAgg-light-btn'}`} value={this.state.selectWidget || ''} onChange={(event)=> this.addCharts(event)} >
@@ -473,7 +443,7 @@ class Velocity extends Component {
               )
                 }</select></span>: null}
          </Row>
-          {this.state.charts.length > 0 && this.state.componentType === "velocity"? (
+          {this.state.charts.length > 0 ? (
             <Grid
               chartData={this.state.charts}
               layouts={this.state.layout}
@@ -483,9 +453,6 @@ class Velocity extends Component {
               bgTheme={bgTheme}
             />
           ) : null}
-          {this.state.componentType === "VelocityBuild"? (
-            <VelocityBuild cardsData={this.state.velocityBuildData} bgTheme={bgTheme}/>
-            ) : null}
         </React.Fragment>
       );
     }
@@ -499,14 +466,12 @@ const mapStateToProps = state => {
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
     widgetList: state.execData.widgetList,
-    velocityCharts: state.chartData.currentChartData.chartDetails,
+    buildPullChart: state.buildData.buildReleasePullProjectDetails,
+    buildReleaseChart: state.buildData.buildReleaseProjectDetails,
     projId: state.productDetails.currentProject.projectDetails.id,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
     projectSprintId: state.productDetails.currentProjectSprint.sprintInfo.id,
     teamId: state.productDetails.currentSprint.teamId,
-    currentRepo: state.chartData.currentRepo,
-    velocityBuildData: state.chartData.velocityBuildDetails,
-    velocityProjectData: state.chartData.velocityProjectDetails,
     organization: state.productDetails.currentProject.projectDetails.organization,
     velocityInsightDetails: state.insightData.velocityInsightDetails,
     currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
@@ -517,10 +482,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ widgetListDispatch,
-    chartDataDispatch, velocityProjectDataDispatch, 
-    velocityBuildDataDispatch, velocityRepoDropValDispatch }, dispatch);
+  buildReleasePullDataDispatch,buildReleaseDataDispatch, buildRepoDropValDispatch
+  }, dispatch);
 };
 
 //Connect react component to redux
 
-export default connect(mapStateToProps, mapDispatchToProps)(Velocity);
+export default connect(mapStateToProps, mapDispatchToProps)(BuildRelease);
