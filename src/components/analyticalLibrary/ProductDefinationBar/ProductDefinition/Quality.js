@@ -688,7 +688,7 @@ class Quality extends Component {
   setReleaseData(selectedBranch,clientId,currentExecId,projectID,selectedRelease,selectedRepo,releaseId,selectedIndex) {
     let type;
     this.props.qualityReleaseDataDispatch(selectedBranch,clientId,currentExecId,projectID,selectedRelease,selectedRepo)
-      .then((item) => {debugger
+      .then((item) => {
         // if (this.props.qualityData.repositories.length > 0) {
         this.initialData = this.props.qualityBuildReleaseDetails;
         this.updateReleaseQualityData(releaseId,selectedIndex);
@@ -793,7 +793,7 @@ class Quality extends Component {
     } else {
       if (this.state.repoData[0].id === "selectProject") {
         this.state.repoData.shift();
-      }debugger
+      }
       let layout_instance = new Layout(2);
       this.setState({
         selectedRepo: "",
@@ -865,7 +865,7 @@ class Quality extends Component {
   }
 
   setBuild =()=>{
-    this.props.qualityBuildDataDispatch(this.props.projectID,this.props.currentClientId,this.state.selectedRepo)
+    this.props.qualityBuildDataDispatch(this.props.projectID,this.props.currentClientId,this.state.selectedRepo,'Jenkins')
        .then(() => { this.setQualityBuildData(this.props.qualityBuildData) });
   }
 
@@ -1244,7 +1244,8 @@ const mapStateToProps = (state) => {
     organization: state.productDetails.currentProject.projectDetails.organization,
     projId: state.productDetails.currentProject.projectDetails.id,
     qualityBuildReleaseDetails: state.qualityData.qualityBuildReleaseDetails,
-    qualityBuildRepoDetails: state.qualityData.qualityBuildRepoDetails
+    qualityBuildRepoDetails: state.qualityData.qualityBuildRepoDetails,
+    currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
   };
 };
 

@@ -47,10 +47,10 @@ export const qualityDataDispatch = (clientId,execId,projectId) =>
       console.error(error);
     }
   };
-  export const qualityBuildDataDispatch = (projectId,clientId,repoId) => 
+  export const qualityBuildDataDispatch = (projectId,clientId,repoId,sourceTypeId) => 
   async dispatch => {
     try {
-      const response = await api.getQualityBuildData(projectId,clientId,repoId);
+      const response = await api.getQualityBuildData(projectId,clientId,repoId,sourceTypeId);
       dispatch({
         type: actionTypes.SET_QUALITY_BUILD_DETAILS,
         payload: {
