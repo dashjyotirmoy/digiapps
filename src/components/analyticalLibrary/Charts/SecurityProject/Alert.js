@@ -21,9 +21,9 @@ const App = props => {
   const [showAlertData, setAlertData] = React.useState(props.cardsData);
   // const [repoItem,setrepoItem]=React.useState(selectItem)
 
-  let dropData = [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_month", name: "Last 3 Months" }];
-  const handleChange = (type) => {
-    props.securityMonthAlertDataDispatch(props.projectID, props.currentRepo, type.target.value).then(item => {
+  let dropData = [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_months", name: "Last 3 Months" }];
+  const handleChange = (type) => {debugger
+    props.securityMonthAlertDataDispatch(props.currentClientId,type.target.value,props.projectID, props.currentRepo).then(item => {
       // filterData();
 
     });
@@ -269,6 +269,7 @@ const mapStateToProps = state => {
   return {
     currentExecId: state.execData.executiveId,
     securityProjectData: state.securityData.securityProjectDetails,
+    currentClientId: state.execData.currentClientId,
     securityRepoData: state.securityData.securityRepoDetails,
     securityPolicyData: state.securityData.securityPolicyDetails,
     securityAlertData: state.securityData.securityAlertDetails,

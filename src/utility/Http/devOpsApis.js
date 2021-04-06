@@ -95,12 +95,12 @@ const getVelocityProjectData = (projectId,clientId,sourceType) => {
 };
 const getBuildReleasePullData = (clientId,filter,productId,sourceTypeId) => {
   return devovOpsApi.get(
-    `/build/${productId}/file-pull-request-metrics?clientId=${clientId}&filter=${filter}&sourceTypeId=${sourceTypeId}`
+    `/build/${productId}/pull-request-metrics?clientId=${clientId}&filter=${filter}&sourceTypeId=${sourceTypeId}`
   );
 };
 const getBuildReleaseData = (clientId,filter,productId,repositoryId,sourceTypeId) =>{
   return devovOpsApi.get(
-    `/build/${productId}/file-build-release-metrics?clientId=${clientId}&filter=${filter}&repositoryId=${repositoryId}&sourceTypeId=${sourceTypeId}`
+    `/build/${productId}/build-release-metrics?clientId=${clientId}&filter=${filter}&repositoryId=${repositoryId}&sourceTypeId=${sourceTypeId}`
   );
 };
 const getSecurityRepoData = (clientId,projectId, repoId) => {
@@ -148,7 +148,7 @@ const getQualityBuildData = (projectId,clientId,repoId,sourceTypeId) => {
   );
 }
 
-const getSecurityMonthAlertData = (clientId,projectId, repoId, filtertype) => {
+const getSecurityMonthAlertData = (clientId,filtertype,projectId, repoId) => {
   return devovOpsApi.get(
     `/widget/security-insights/alerts?clientId=${clientId}&filter=${filtertype}&productId=${projectId}&projectId=${repoId}`
   );

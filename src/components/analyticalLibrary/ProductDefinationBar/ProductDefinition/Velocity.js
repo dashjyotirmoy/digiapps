@@ -138,7 +138,7 @@ class Velocity extends Component {
 
   //function that identifies the chart to render based on type during createCharts() execution
 
-  setChart = (type, title, data) => {
+  setChart = (type, title, data) => {debugger
     switch (type) {
       case "VelocityTrends":
         return (
