@@ -142,10 +142,10 @@ export const securityPolicyDataDispatch = (clientId,projectId, repoId) =>
       console.error(error);
     }
   }
-  export const securityMonthAlertDataDispatch = (projectId, repoId, filterType) => 
+  export const securityMonthAlertDataDispatch = (clientId,filterType,projectId, repoId) => 
   async dispatch => {
     try {
-      const response = await api.getSecurityMonthAlertData(projectId, repoId, filterType);
+      const response = await api.getSecurityMonthAlertData(clientId,filterType,projectId, repoId);
       dispatch({
         type: actionTypes.SET_SECURITY_MONTH_ALERT_DETAILS,
         payload: {

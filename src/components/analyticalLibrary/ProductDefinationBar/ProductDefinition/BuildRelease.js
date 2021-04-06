@@ -241,7 +241,7 @@ class BuildRelease extends Component {
   setRepoitoryWidget() {
     this.setState({
       all_data: false,
-    });
+    });debugger
     this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId);
     this.props
       .buildReleasePullDataDispatch(this.props.currentClientId,'all_time',this.props.projId,this.props.currentSourceType)
@@ -319,6 +319,7 @@ class BuildRelease extends Component {
         filterStatus: "Team",
         selectedRepo: repositoryData[0].repoName
       });
+      debugger
       this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,this.state.selectedRepo,this.props.currentSourceType);
       this.props.buildRepoDropValDispatch("");
     }  else {
