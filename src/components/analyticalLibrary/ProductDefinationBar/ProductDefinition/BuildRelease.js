@@ -319,8 +319,7 @@ class BuildRelease extends Component {
         filterStatus: "Team",
         selectedRepo: repositoryData[0].repoName
       });
-      debugger
-      this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,this.state.selectedRepo,this.props.currentSourceType);
+      this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repositoryData[0].repoId,this.props.currentSourceType);
       this.props.buildRepoDropValDispatch("");
     }  else {
       this.setState({
