@@ -489,9 +489,11 @@ return options;
       close_pr_details = [],
       repoName = [],
       IDsData=this.res.data;
-      IDsData.map(item=> open_pr_details.push(parseInt(item.openPRDetail.count)));
-      IDsData.map(item=> close_pr_details.push(parseInt(item.closedPRDetail.count)));
-      IDsData.map(item=> repoName.push(item.repoName));
+      IDsData.map(item=> {
+        open_pr_details.push(parseInt(item.openPRDetail.count));
+        close_pr_details.push(parseInt(item.closedPRDetail.count));
+        repoName.push(item.repoName);
+    });
     options.chart = {
       type: "column",
       height: 300,
@@ -583,21 +585,21 @@ return options;
       series: {
         stacking: "normal",
         pointWidth: 20,
-        dataLabels: {
-          enabled: true,
-          formatter: function() {
-            if(this.y){
-              return this.y;
-            }
-          },
-          y: -50,
-          style: {
-            textOutline: false,
-            fontWeight: 'normal',
-            color: this.res.bgTheme ? "#ffffff":"#333333",
-            fontSize: '14px'
-          }, 
-        },
+        // dataLabels: {
+        //   enabled: true,
+        //   formatter: function() {
+        //     if(this.y){
+        //       return this.y;
+        //     }
+        //   },
+          //y: -50,
+          // style: {
+          //   textOutline: false,
+          //   fontWeight: 'normal',
+          //   color: this.res.bgTheme ? "#ffffff":"#333333",
+          //   fontSize: '14px'
+          // }, 
+        //},
         cursor: "pointer",
         // point: {
         //   events: {
@@ -607,10 +609,10 @@ return options;
         //   }
         // }
       },
-      bar: {
-        borderColor: "",
-        borderRadiusTopLeft: 4
-      }
+      // bar: {
+      //   borderColor: "",
+      //   borderRadiusTopLeft: 4
+      // }
     };
     options.series = [
       {
