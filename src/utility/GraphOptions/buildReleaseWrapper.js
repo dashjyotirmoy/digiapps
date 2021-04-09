@@ -242,7 +242,7 @@ class BuildReleaseGraph {
     };
     options.tooltip= {
       pointFormatter: function() {debugger
-        return type==='MeanTimeMergePullRequest'?`${this.series.name}:${this.options.y}`:`${Math.floor(this.options.y)} days ${(Math.floor(this.options.y*100)%100)} Minutes<br/>`;
+        return type==='MeanTimeMergePullRequest'?`${this.series.name}:${this.options.y}`:`${Math.floor(this.options.y)} days ${(Math.floor(this.options.y*100)%100)} hours<br/>`;
       }
     };
     options.series = [
