@@ -23,7 +23,10 @@ class VelocityGraph {
       case "ControlChartHigh":
         updatedOptions = this.generateControlChart(baseOptions);
         return updatedOptions;
-      case "VelocityTrends":
+      case "BuildResult":
+        updatedOptions = this.generateBuildResults(baseOptions);
+        return updatedOptions;
+        case "VelocityTrends":
         updatedOptions = this.generateVelocityTrends(baseOptions);
         return updatedOptions;
       case "SprintBurndown":
@@ -676,7 +679,7 @@ class VelocityGraph {
 
     options.tooltip = {
       formatter: function () {
-        return `${this.point.xAxis}<br>${this.series.name}: ${this.point.actual_value}`;
+        return `${this.point.xAxis_data}<br>${this.series.name}: ${this.point.actual_value}`;
       }
     };
     options.plotOptions = {

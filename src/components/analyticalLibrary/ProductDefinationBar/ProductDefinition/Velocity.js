@@ -120,7 +120,7 @@ class Velocity extends Component {
 
   //function that create charts based on the data from services
 
-  createCharts = (list, removed) => {debugger
+  createCharts = (list, removed) => {
     let updatedList =list && list.filter((ele, index) => {
       if (index !== removed) return Object.assign({}, ele);
     });
@@ -138,7 +138,7 @@ class Velocity extends Component {
 
   //function that identifies the chart to render based on type during createCharts() execution
 
-  setChart = (type, title, data) => {debugger
+  setChart = (type, title, data) => {
     switch (type) {
       case "VelocityTrends":
         return (

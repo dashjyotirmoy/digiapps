@@ -11,18 +11,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown
 } from "@fortawesome/free-solid-svg-icons";
+import StackedBar from "../../Charts/StackedBar/StackedBar";
+import PieChart from "../../Charts/PieChart/PieChart";
+import LineHigh from "../../Charts/LineHigh/LineHigh";
+import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
 import VelocityTrend from "../../Charts/VelocityTrends/VelocityTrend";
-import SprintBurndown from "../../Charts/SprintBurnDown/SprintBurnDown";
 import Spinner from "../../Spinner/Spinner";
 import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
 import { translations } from "../../Translations/Translations";
 import Layout from "../../../../utility/layoutManager/layoutManager";
 import { Row, Col, Button } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
-import VelocityBuild from './VelocityBuild';
-import CardChartVelocity from "../../CardChart/CardChartVelocity";
-import SideNavbar from "../../SideNavBar/SideNavbar";
-import Badge from 'react-bootstrap/Badge';
 import { labelConst } from "../../../../utility/constants/labelsConstants";
 import { widgetListDispatch } from "../../../../store/actions/executiveInsights";
 class BuildRelease extends Component {
@@ -47,9 +46,34 @@ class BuildRelease extends Component {
     removed: [],
     bgTheme:'',
     clientId:'',
-    buildStatus: 'Build Trend',
     selectWidget: 'Select Widget',
-    repositoryWidgets:[]
+    repositoryWidgets:[{
+      name:'Build Result',
+      type:'BuildResult',
+      title:'Build Result'
+    },    {
+      name:'Mean Time Broken Build',
+      type:'MeanTimeBrokenBuild',
+      title:'Mean Time Broken Build'
+    },    {
+      name:'Open Closed Pull Requests',
+      type:'OpenClosedPullRequests',
+      title:'Open Closed Pull Requests'
+    },{
+      name:'Mean Time Merge Pull Request',
+      type:'MeanTimeMergePullRequest',
+      title:'Mean Time Merge Pull Request'
+    },{
+      name:'Committed Prs With And Without Rework',
+      type:'CommittedPrsWithAndWithoutRework',
+      title:'Committed Prs With And Without Rework'
+    },{
+      name:'Release Cadence',
+      type:'ReleaseCadence',
+      title:'Release Cadence'
+    }
+  ],
+
   };
 
   addCharts = (event) => {
@@ -127,7 +151,7 @@ class BuildRelease extends Component {
     updatedList && updatedList.map(ele => {
       ele.component = this.setChart(
         ele.type,
-        translations[ele.title.toLowerCase()] || ele.title,
+        ele.title,
         ele.data
       );
     });
@@ -140,29 +164,26 @@ class BuildRelease extends Component {
 
   setChart = (type, title, data) => {
     switch (type) {
-      case "VelocityTrends":
+      case "BuildResult":
+        return (
+          <PieChart title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
+        );
+      case "MeanTimeBrokenBuild":
+        return (
+          <ColumnHigh title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
+        );
+      case "OpenClosedPullRequests":
+        return (
+          <StackedBar title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
+        );
+      case "MeanTimeMergePullRequest":
+      case "ReleaseCadence":
+        return (
+          <LineHigh title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
+        );
+        case "CommittedPrsWithAndWithoutRework":
         return (
           <VelocityTrend title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
-        );
-      case "ControlChartHigh":
-        return (
-          <ControlChartHigh
-            title={title}
-            type={type}
-            data={data}
-            key={title}
-            projID={this.props.projId}
-            organization={this.props.organization}
-            bgTheme={this.state.bgTheme}
-          />
-        );
-      case "ProjectBurnDown":
-        return (
-          <BreakDownHigh title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
-        );
-      case "SprintBurndown":
-        return (
-          <SprintBurndown title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
         );
       default:
         return "";
@@ -175,20 +196,8 @@ class BuildRelease extends Component {
     const processedData = rawData && rawData.map(ele => {
       return {
         name: ele.name,
-        type:
-          ele.name === "Velocity Trend"
-            ? "VelocityTrends"
-            : ele.name === "Project Story Burndown"
-              ? "ProjectBurnDown"
-              : ele.name === "Sprint Effort Burndown"
-                ? "SprintBurndown"
-                : "ControlChartHigh",
-        data:
-          ele.name === "Velocity Trend" ||
-            ele.name === "Sprint Effort Burndown" ||
-            ele.name === "Project Story Burndown"
-            ? ele
-            : ele.metrics,
+        type: ele.type,
+        data: ele.data,
         title: ele.name,
         component: {}
       };
@@ -204,7 +213,8 @@ class BuildRelease extends Component {
       nextProps.projId 
     ) {
       this.setState({
-        all_data: true
+        all_data: true,
+        build_data: true
       });
     }
     if(this.props.currentClientId !== nextProps.currentClientId){
@@ -221,7 +231,8 @@ class BuildRelease extends Component {
     bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
     if (this.props.projId && (this.props.sprintId || this.props.projectSprintId)) {
       this.setState({
-        all_data: true
+        all_data: true,
+        build_data: true
       });
     }
     let layout_instance = new Layout(5);
@@ -234,35 +245,49 @@ class BuildRelease extends Component {
   componentDidUpdate() {
     if (this.state.all_data) {
       this.setRepoitoryWidget();
-      this.fetchChartsData();
+    }
+    if(this.state.build_data && this.props.buildReleaseChart){
+        this.setBuildReleaseData(this.props.buildReleaseChart);
     }
   }
-
+  setBuildReleaseData(releaseData){debugger
+    this.setState({
+      build_data:false
+    });
+    this.state.repositoryWidgets.map((item)=>{
+      if(item.type==='BuildResult'){
+        return Object.assign(item, {data: releaseData.buildDTO});
+      }else if(item.type==='MeanTimeBrokenBuild'){
+        return Object.assign(item, {data: releaseData.brokenBuildDTO}); 
+      }else if(item.type==='ReleaseCadence'){
+        return Object.assign(item, {data: releaseData.releaseCadenceDTOList});
+      }else{
+        return Object.assign(item, {data: this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList});
+      }
+    });
+    this.createCharts(
+      this.createChartObject(this.state.repositoryWidgets)
+    );
+    let layout_instance = new Layout(6);
+    this.setState({
+      layout: layout_instance.layout
+    });
+    this.setState({
+      // response: this.props.velocityCharts,
+      received: true,
+      show: false
+    });
+  }
   setRepoitoryWidget() {
     this.setState({
       all_data: false,
-    });debugger
+    });
     this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId);
     this.props
       .buildReleasePullDataDispatch(this.props.currentClientId,'all_time',this.props.projId,this.props.currentSourceType)
       .then(item => {
         if (this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList.length > 0 || this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList !== null) {
           this.setRepository(this.props.buildPullChart);
-          this.createCharts(
-              this.createChartObject(this.props.velocityCharts.details)
-            );
-            let layout_instance = new Layout(5);
-            this.setState({
-              layout: layout_instance.layout
-            });
-            this.setState({
-              response: this.props.velocityCharts,
-              received: true,
-              show: false
-            });
-          this.setState({
-            show: false
-          });
         }
         else {
           this.props.resetProjectRepoDispatch(
@@ -311,15 +336,13 @@ class BuildRelease extends Component {
           projectName: ele.repoName
         };
       });
-
-      // repoDetails.unshift({id: "selectProject", projectName: "select Project"});
+      this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repositoryData[0].repoId,this.props.currentSourceType);
       this.setState({
         repoData: repoDetails,
         selectedRepo: "",
         filterStatus: "Team",
         selectedRepo: repositoryData[0].repoName
       });
-      this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repositoryData[0].repoId,this.props.currentSourceType);
       this.props.buildRepoDropValDispatch("");
     }  else {
       this.setState({
@@ -330,33 +353,11 @@ class BuildRelease extends Component {
     }
   };
 
-  //function to fetch charts data
-
-  fetchChartsData = (props) => {
-    this.setState({
-      charts: []
-    });
-    console.log('build release',this.props.buildReleaseChart);
-    console.log('build pull',this.props.buildPullChart);
-        // this.createCharts(
-        //   this.createChartObject(this.props.velocityCharts.details)
-        // );
-        let layout_instance = new Layout(5);
-        this.setState({
-          layout: layout_instance.layout
-        });
-        this.setState({
-          response: this.props.velocityCharts,
-          received: true,
-          show: false
-        });
-  };
-
   handleRepoChange = repoID => {
     this.updateRepository(repoID);
   };
 
-  updateRepository = (repoId) => {debugger
+  updateRepository = (repoId) => {
     const { list, selectedIndex } = this.markSelected(
       this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList,
       repoId
@@ -371,19 +372,15 @@ class BuildRelease extends Component {
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
       filterStatus: "Repository"
-    });
+    });debugger
     this.props.buildRepoDropValDispatch(repoDetails[selectedIndex].projectName);
-    // if (repoId !== "selectProject") {
-      this.props.velocityBuildDataDispatch(this.props.projId,this.props.currentClientId,repoId)
-      .then(() => { this.setVelocityBuildData(this.props.velocityBuildData) });
+    this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType);
+    this.setBuildReleaseData(this.props.buildReleaseChart);
+      this.setState({
+        repoData: repoDetails,
+        selectedRepo: repoDetails[selectedIndex].projectName
+      });
   };
-  setVelocityBuildData = (rawData) => {
-    this.setState({
-      velocityBuildData: rawData,
-    })
-  }
-
-
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );

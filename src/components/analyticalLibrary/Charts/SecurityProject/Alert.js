@@ -22,7 +22,7 @@ const App = props => {
   // const [repoItem,setrepoItem]=React.useState(selectItem)
 
   let dropData = [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_months", name: "Last 3 Months" }];
-  const handleChange = (type) => {debugger
+  const handleChange = (type) => {
     props.securityMonthAlertDataDispatch(props.currentClientId,type.target.value,props.projectID, props.currentRepo).then(item => {
       // filterData();
 
