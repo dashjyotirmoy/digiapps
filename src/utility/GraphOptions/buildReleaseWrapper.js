@@ -43,7 +43,7 @@ class BuildReleaseGraph {
 
     options.tooltip = {
       pointFormat:
-        "{point.name}: {point.y}"
+        `{point.name}: {point.y}<br>Total Build Count:${total_build_count}`
     };
     options.chart = {
       height: 0,
@@ -69,20 +69,11 @@ class BuildReleaseGraph {
       }
     };
     options.xAxis = {
-      type: "datetime",
-      dateTimeLabelFormats: {
-        day: "%b %e"
-      },
       labels: {
         style: {
           color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
       },
-      lineWidth: 1,
-      tickLength: 0,
-      style: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
-      }
     };
     options.yAxis = {
       title: {
@@ -290,9 +281,9 @@ class BuildReleaseGraph {
     };
     options.xAxis = {
       categories: xAxis,
-      style: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
-      },
+      // style: {
+      //   color: this.res.bgTheme ? "#f5f5f5":"#333333",
+      // },
       labels: {
         style: {
           color: this.res.bgTheme ? "#f5f5f5":"#333333",
@@ -531,7 +522,12 @@ return options;
     };
     options.xAxis = {
       tickWidth: 0,
-      categories: repoName
+      categories: repoName,
+      labels: {
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        }
+      },
     };
 
     options.legend = {
