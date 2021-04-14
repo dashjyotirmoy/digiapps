@@ -250,7 +250,7 @@ class BuildRelease extends Component {
         this.setBuildReleaseData(this.props.buildReleaseChart);
     }
   }
-  setBuildReleaseData(releaseData){debugger
+  setBuildReleaseData(releaseData){
     this.setState({
       build_data:false
     });
@@ -372,10 +372,14 @@ class BuildRelease extends Component {
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
       filterStatus: "Repository"
-    });debugger
+    });
     this.props.buildRepoDropValDispatch(repoDetails[selectedIndex].projectName);
-    this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType);
-    this.setBuildReleaseData(this.props.buildReleaseChart);
+    this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType)
+    .then(item => {
+      this.setBuildReleaseData(this.props.buildReleaseChart);
+    }).catch(error => {
+      console.error(error);
+    });
       this.setState({
         repoData: repoDetails,
         selectedRepo: repoDetails[selectedIndex].projectName
