@@ -55,7 +55,7 @@ class BuildReleaseGraph {
       align: "left",
       x:-8,
       y:5,
-      width: this.res.containerWidth-4,
+      width: this.res.containerWidth,
       style: {
         width:'100%',
         padding: '17px 9px',
@@ -130,7 +130,7 @@ class BuildReleaseGraph {
 
   //function that generated data fro coverage chart
 
-  generateMeanMergePR(options,type) {
+  generateMeanMergePR(options,type) {debugger
     let yAxis = [],
      repoName=[],
      hour=0,
@@ -139,7 +139,6 @@ class BuildReleaseGraph {
      function dayHour(time){
           hour = time;
           day = 0;
-          // minute = parseInt((hour % 1)*60);
       if (hour>24){
           day = parseInt(hour / 24);
           hour = parseInt(hour % 24);
@@ -150,12 +149,18 @@ class BuildReleaseGraph {
       }
      };
      meanData && meanData.map((item)=>{
+       console.log("MeanData",meanData);
       type==="MeanTimeMergePullRequest"? yAxis.push(parseInt(item.meanMergeTime)):
       dayHour(parseInt(item.timeTaken));
       type==="MeanTimeMergePullRequest"?repoName.push(item.repoName):repoName.push(item.releaseName);
     });
     options.chart = {
-      type: "line"
+      type: "bar",
+      scrollablePlotArea: {
+        minWidth: 300,
+        scrollPositionX: 2,
+        opacity: 1
+    }
     };
     options.xAxis = {
       type: "datetime",
@@ -190,29 +195,37 @@ class BuildReleaseGraph {
     };
     options.title = {
       useHTML: true,
-      text: `<div style="width: ${this.res.containerWidth-4}px;border-radius: 50px 20px;padding: 17px 9px"><h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6></div>`,
+      text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6>`,
       align: "left",
       x:-8,
       y:5,
+      width: this.res.containerWidth,
       style: {
         width:'100%',
+        padding: '17px 9px',
         backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
+        'border-radius': '10px 10px 0 0',
+        borderWidth:'2px',
         fontFamily: 'Arial'
       }
     };
-    options.plotOpions = {
-      area: {
-        stacking: "normal",
-        lineColor: "#666666",
-        lineWidth: 1,
-        marker: {
-          lineWidth: 1,
-          lineColor: "#666666"
-        }
-      }
+    options.plotOptions = {
+      series:{
+        cursor: "pointer",
+        point: {
+            events: {
+              click: function () {
+                if(this.y !== 0){ 
+                  console.log(this)
+                  // window.open(newURL, "_blank")
+                };
+              }
+            }
+          }
+      },
     };
     options.legend = {
       enabled: true,
@@ -232,9 +245,9 @@ class BuildReleaseGraph {
       y: 48,
     };
     options.tooltip= {
-      pointFormatter: function() {debugger
-        return type==='MeanTimeMergePullRequest'?`${this.series.name}:${this.options.y}`:`${Math.floor(this.options.y)} days ${(Math.floor(this.options.y*100)%100)} hours<br/>`;
-      }
+      pointFormatter: function (t) {
+            return type==='MeanTimeMergePullRequest'?`${this.series.name}:${this.options.y}`:`${Math.floor(this.options.y)} days ${(Math.floor(this.options.y*100)%100)} hours<br/>`;
+          }
     };
     options.series = [
       {
@@ -248,7 +261,7 @@ class BuildReleaseGraph {
 
   // function that generates data for Average defect resolution time
 
-  generateMeanTimeBrokenBuild(options) {debugger
+  generateMeanTimeBrokenBuild(options) {
     let xAxis = [],
         yAxis= [];
     this.res.data.brokenBuildList && this.res.data.brokenBuildList.map(data => {
@@ -266,7 +279,7 @@ class BuildReleaseGraph {
       align: "left",
       x:-8,
       y:5,
-      width: this.res.containerWidth-4,
+      width: this.res.containerWidth,
       style: {
         width:'100%',
         padding: '17px 9px',
@@ -372,7 +385,7 @@ options.title = {
   align: "left",
   x:-8,
   y:5,
-  width: this.res.containerWidth+4,
+  width: this.res.containerWidth,
   style: {
     width:'100%',
     padding: '17px 9px',
@@ -487,7 +500,6 @@ return options;
     });
     options.chart = {
       type: "column",
-      height: 300,
       //backgroundColor: ""
     };
     options.title = {
@@ -496,7 +508,7 @@ return options;
       align: "left",
       x:-8,
       y:5,
-      width: this.res.containerWidth-4,
+      width: this.res.containerWidth,
       style: {
         width:'100%',
         padding: '17px 9px',
@@ -510,7 +522,6 @@ return options;
       }
     };
     options.yAxis = {
-      min: -1,
       labels: {
         enabled: false
       },
@@ -522,6 +533,13 @@ return options;
     };
     options.xAxis = {
       tickWidth: 0,
+      
+      min: 0,
+      max: 4,
+      scrollbar: {
+          enabled: true
+      },
+      tickLength: 0,
       categories: repoName,
       labels: {
         style: {
@@ -547,68 +565,12 @@ return options;
         color: this.res.bgTheme ? "#d3d3d3":"#333333",
       },
     };
-
-    // options.tooltip = {
-    //   headerFormat: '',
-    //   pointFormatter: function (t) {
-    //     combinedURL = baseURL;
-    //     let x = this.x;
-    //     let y = this.y;
-    //     //let points = this.series.chart.series[2].points;
-        
-    //     // IDs.push(IDs.mediumBugs.ids);
-    //     let IDs = this.series.name === 'Medium' ? IDsData.mediumBugs.ids: this.series.name=== 'Critical'? IDsData.criticalBugs.ids:this.series.name=== 'High'? IDsData.highBugs.ids:IDsData.lowBugs.ids;
-    //     let newIDs = "(";
-    //     let idCount = 0;
-    //     IDs.map(ele => {
-    //       let id = ele.toString();
-    //       newIDs += id;
-    //       idCount++;
-    //       if (idCount > 0) {
-    //         newIDs += ",";
-    //       }
-    //     });
-    //     newIDs.slice(0, -1);
-    //     newIDs = newIDs.substring(0, newIDs.length - 1);
-    //     newIDs += ")";
-    //     newURL = baseURL.replace("(work_item_ids)", newIDs);
-    //     newURL = newURL.replace("project_id", projID);
-    //     newURL = newURL.replace("organization_name", organization);
-    //     return this.series.name + " " + this.y;
-    //   }
-    // };
     options.plotOptions = {
       series: {
         stacking: "normal",
         pointWidth: 20,
-        // dataLabels: {
-        //   enabled: true,
-        //   formatter: function() {
-        //     if(this.y){
-        //       return this.y;
-        //     }
-        //   },
-          //y: -50,
-          // style: {
-          //   textOutline: false,
-          //   fontWeight: 'normal',
-          //   color: this.res.bgTheme ? "#ffffff":"#333333",
-          //   fontSize: '14px'
-          // }, 
-        //},
-        cursor: "pointer",
-        // point: {
-        //   events: {
-        //     click: function () {
-        //       if(this.y !== 0){ window.open(newURL, "_blank")};
-        //     }
-        //   }
-        // }
+        cursor: "pointer",        
       },
-      // bar: {
-      //   borderColor: "",
-      //   borderRadiusTopLeft: 4
-      // }
     };
     options.series = [
       {
