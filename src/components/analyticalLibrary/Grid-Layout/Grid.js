@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Container, Button, ButtonToolbar } from "react-bootstrap";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Container} from "react-bootstrap";
 import ModalBackDrop from "../ModalBackDrop/ModalBackDrop";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,14 +12,18 @@ import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 import { qualityGraphInfo } from "../Translations/qualityGraphInfo";
 import { velocityGraphInfo } from "../Translations/velocityGraphInfo";
 import { buildGraphInfo } from "../Translations/buildGraphInfo";
-// import { VelocityModalContent } from '../ModalFunc/VelocityModalContent';
 
 //
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const Grid = props => {debugger
+const Grid = props => {
   const bgTheme = props.bgTheme;
+  let dropData = [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_months", name: "Last 3 Months" }];
+  // const handleChange = (name,event) => {
+  //   props.onSelectFilter(name,event.target.value);
+  //   // this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType);
+  // };
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
       <div key={ele.i} className={`${bgTheme ? 'card-border-dark bg-dark-theme' : 'card-border-light'}`}>
@@ -25,6 +31,12 @@ const Grid = props => {debugger
           className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
           style={{ zIndex: "1",right:'11px',top:'15px'}}
         >
+          {props.chartData[ele.i].showDrop && <select onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].name,event.target.value)} className={`${bgTheme ? 'drop text-white': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
+                    {dropData.map(function (data, key) {
+                      return (
+                        <option className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.id}>{data.name}</option>)
+                    })}
+                  </select>}
           <p
             className="d-inline px-1"
             data-toggle="tooltip"
@@ -75,5 +87,4 @@ const Grid = props => {debugger
     </Container>
   );
 };
-
 export default Grid;

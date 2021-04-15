@@ -149,7 +149,6 @@ class BuildReleaseGraph {
       }
      };
      meanData && meanData.map((item)=>{
-       console.log("MeanData",meanData);
       type==="MeanTimeMergePullRequest"? yAxis.push(parseInt(item.meanMergeTime)):
       dayHour(parseInt(item.timeTaken));
       type==="MeanTimeMergePullRequest"?repoName.push(item.repoName):repoName.push(item.releaseName);
@@ -533,12 +532,6 @@ return options;
     };
     options.xAxis = {
       tickWidth: 0,
-      
-      min: 0,
-      max: 4,
-      scrollbar: {
-          enabled: true
-      },
       tickLength: 0,
       categories: repoName,
       labels: {

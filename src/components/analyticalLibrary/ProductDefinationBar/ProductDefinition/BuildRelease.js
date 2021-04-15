@@ -50,27 +50,33 @@ class BuildRelease extends Component {
     repositoryWidgets:[{
       name:'Build Result',
       type:'BuildResult',
-      title:'Build Result'
+      title:'Build Result',
+      showDrop: true,
     },    {
       name:'Mean Time Broken Build',
       type:'MeanTimeBrokenBuild',
-      title:'Mean Time Broken Build'
+      title:'Mean Time Broken Build',
+      showDrop: false,
     },    {
       name:'Open Closed Pull Requests',
       type:'OpenClosedPullRequests',
-      title:'Open Closed Pull Requests'
+      title:'Open Closed Pull Requests',
+      showDrop: true,
     },{
       name:'Mean Time Merge Pull Request',
       type:'MeanTimeMergePullRequest',
-      title:'Mean Time Merge Pull Request'
+      title:'Mean Time Merge Pull Request',
+      showDrop: false,
     },{
       name:'Committed Prs With And Without Rework',
       type:'CommittedPrsWithAndWithoutRework',
-      title:'Committed Prs With And Without Rework'
+      title:'Committed Prs With And Without Rework',
+      showDrop: false,
     },{
       name:'Release Cadence',
       type:'ReleaseCadence',
-      title:'Release Cadence'
+      title:'Release Cadence',
+      showDrop: true,
     }
   ],
 
@@ -199,6 +205,7 @@ class BuildRelease extends Component {
         type: ele.type,
         data: ele.data,
         title: ele.name,
+        showDrop: ele.showDrop,
         component: {}
       };
     });
@@ -250,7 +257,7 @@ class BuildRelease extends Component {
         this.setBuildReleaseData(this.props.buildReleaseChart);
     }
   }
-  setBuildReleaseData(releaseData){
+  setBuildReleaseData(releaseData){debugger
     this.setState({
       build_data:false
     });
@@ -322,7 +329,25 @@ class BuildRelease extends Component {
     });
     return defaultList;
   };
-
+  handleFilter = (name,filterValue) => {debugger
+    if(name==="Build Result" || name==="Release Cadence"){
+      const buildRelsult = this.state.repositoryWidgets.filter(item=>item.name===name);
+      this.props.buildReleaseDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.buildReleaseChart.repoId,this.props.currentSourceType)
+      .then(item => {
+        this.setBuildReleaseData(this.props.buildReleaseChart);
+      }).catch(error => {
+        console.error(error);
+      });
+    }else if(name==="Open Closed Pull Requests"){
+      this.props
+      .buildReleasePullDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.currentSourceType)
+      .then(item => {
+        this.setBuildReleaseData(this.props.buildReleaseChart);
+      }).catch(error => {
+        console.error(error);
+      });
+    }
+  };
   setRepository = res => {
     const repositoryData = res.pullRequestDTO.pullRequestDetailDTOList;
     if (repositoryData !== null) {
@@ -452,6 +477,7 @@ class BuildRelease extends Component {
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
               bgTheme={bgTheme}
+              onSelectFilter={this.handleFilter}
             />
           ) : null}
         </React.Fragment>
