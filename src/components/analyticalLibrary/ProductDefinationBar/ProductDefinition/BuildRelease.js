@@ -179,7 +179,7 @@ class BuildRelease extends Component {
       case "MeanTimeMergePullRequest":
       case "ReleaseCadence":
         return (
-          <LineHigh title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
+          <StackedBar title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
         );
         case "CommittedPrsWithAndWithoutRework":
         return (

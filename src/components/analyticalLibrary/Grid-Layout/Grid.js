@@ -9,13 +9,14 @@ import { TooltipHoc } from "../TooltiHOC/TooltipHoc";
 
 import { qualityGraphInfo } from "../Translations/qualityGraphInfo";
 import { velocityGraphInfo } from "../Translations/velocityGraphInfo";
+import { buildGraphInfo } from "../Translations/buildGraphInfo";
 // import { VelocityModalContent } from '../ModalFunc/VelocityModalContent';
 
 //
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const Grid = props => {
+const Grid = props => {debugger
   const bgTheme = props.bgTheme;
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
@@ -33,7 +34,8 @@ const Grid = props => {
               bgTheme={bgTheme}
               info={
                 velocityGraphInfo[props.chartData[ele.i].name] ||
-                qualityGraphInfo[props.chartData[ele.i].name]
+                qualityGraphInfo[props.chartData[ele.i].name] ||
+                buildGraphInfo[props.chartData[ele.i].name]
               }
               chartName={props.chartData[ele.i].name}
             >
