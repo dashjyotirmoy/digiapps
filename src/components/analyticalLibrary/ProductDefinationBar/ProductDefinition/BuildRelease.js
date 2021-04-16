@@ -50,35 +50,39 @@ class BuildRelease extends Component {
     selectWidget: 'Select Widget',
     dropData: [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_months", name: "Last 3 Months" }],
     repositoryWidgets:[{
-      name:'Build Result',
+      name:'Build Results',
       type:'BuildResult',
       title:'Build Result',
       showDrop: true,
-    },    {
-      name:'Mean Time Broken Build',
+    },
+    {
+      name:'Mean Time to Fix Broken Builds',
       type:'MeanTimeBrokenBuild',
       title:'Mean Time Broken Build',
       showDrop: false,
-    },    {
-      name:'Open Closed Pull Requests',
-      type:'OpenClosedPullRequests',
-      title:'Open Closed Pull Requests',
-      showDrop: true,
-    },{
-      name:'Mean Time Merge Pull Request',
-      type:'MeanTimeMergePullRequest',
-      title:'Mean Time Merge Pull Request',
-      showDrop: false,
-    },{
-      name:'Committed Prs With And Without Rework',
-      type:'CommittedPrsWithAndWithoutRework',
-      title:'Committed Prs With And Without Rework',
-      showDrop: false,
-    },{
+    },
+    {
       name:'Release Cadence',
       type:'ReleaseCadence',
       title:'Release Cadence',
       showDrop: true,
+    },
+    {
+      name:'Open v/s Closed Pull Requests',
+      type:'OpenClosedPullRequests',
+      title:'Open Closed Pull Requests',
+      showDrop: true,
+    },
+    {
+      name:'Mean Time to Merge Pull Requests',
+      type:'MeanTimeMergePullRequest',
+      title:'Mean Time Merge Pull Request',
+      showDrop: false,
+    },{
+      name:'Commited PRs with & without Rework',
+      type:'CommittedPrsWithAndWithoutRework',
+      title:'Committed Prs With And Without Rework',
+      showDrop: false,
     }
   ],
 
@@ -185,9 +189,12 @@ class BuildRelease extends Component {
           <StackedBar title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
         );
       case "MeanTimeMergePullRequest":
+        return (
+          <LineHigh title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
+        );
       case "ReleaseCadence":
         return (
-          <StackedBar title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
+          <VelocityTrend title={title} type={type} data={data} key={title} bgTheme={this.state.bgTheme}/>
         );
         case "CommittedPrsWithAndWithoutRework":
         return (
@@ -259,7 +266,7 @@ class BuildRelease extends Component {
         this.setBuildReleaseData(this.props.buildReleaseChart);
     }
   }
-  setBuildReleaseData(releaseData){debugger
+  setBuildReleaseData(releaseData){
     this.setState({
       build_data:false
     });
@@ -271,7 +278,7 @@ class BuildRelease extends Component {
       }else if(item.type==='ReleaseCadence'){
         return Object.assign(item, {data: releaseData.releaseCadenceDTOList});
       }else{
-        return Object.assign(item, {data: this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList});
+        return Object.assign(item, {data: this.props.buildPullChart.pullRequestDTO});
       }
     });
     this.createCharts(
@@ -331,7 +338,7 @@ class BuildRelease extends Component {
     });
     return defaultList;
   };
-  handleFilter = (name,filterValue) => {debugger
+  handleFilter = (name,filterValue) => {
     if(name==="Build Result" || name==="Release Cadence"){
       const buildRelsult = this.state.repositoryWidgets.filter(item=>item.name===name);
       this.props.buildReleaseDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.buildReleaseChart.repoId,this.props.currentSourceType)
@@ -380,7 +387,7 @@ class BuildRelease extends Component {
     }
   };
 
-  handleRepoChange = repoID => {debugger
+  handleRepoChange = repoID => { 
     this.updateRepository(repoID);
   };
 
