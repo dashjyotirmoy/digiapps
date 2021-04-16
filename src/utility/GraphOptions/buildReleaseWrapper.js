@@ -16,8 +16,10 @@ class BuildReleaseGraph {
         updatedOptions = this.generateBuildResultPie(baseOptions);
         return updatedOptions;
       case "MeanTimeMergePullRequest":
+        updatedOptions = this.generateMeanMergePullLineHigh(baseOptions);
+        return updatedOptions;
       case "ReleaseCadence":
-        updatedOptions = this.generateMeanMergePR(baseOptions,type);
+        updatedOptions = this.generateReleaseCadence(baseOptions,type);
         return updatedOptions;
       case "OpenClosedPullRequests":
         updatedOptions = this.generatePullRequestsBarHigh(baseOptions);
@@ -128,10 +130,123 @@ class BuildReleaseGraph {
     });
     return points_array;
   };
-
-  //function that generated data fro coverage chart
-
-  generateMeanMergePR(options,type) {debugger
+  generateMeanMergePullLineHigh(options,type) {
+    let yAxis = [],
+     repoName=[],
+     meanData= this.res.data,
+     averageMergeTime=meanData.averageMergeTime,
+     totalPrCount=meanData.totalPRCount;
+     meanData.pullRequestDetailDTOList && meanData.pullRequestDetailDTOList.map((item)=>{
+      yAxis.push(parseInt(item.meanMergeTime));
+      repoName.push(item.repoName);
+    });
+    options.chart = {
+      height: 0,
+      backgroundColor: ""
+    };
+    options.title = {
+      useHTML: true,
+      text: `<h6 style="display:block;font-weight:bold;margin-bottom:0px">${this.res.title}</h6>`,
+      align: "left",
+      x:-8,
+      y:5,
+      width: this.res.containerWidth-4,
+      style: {
+        width:'100%',
+        padding: '17px 9px',
+        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        fontSize: '14px',
+        fontWeight:'bold',
+        'border-radius': '10px 10px 0 0',
+        borderWidth:'2px',
+        fontFamily: 'Arial'
+      }
+    };
+    options.subtitle = {
+      verticalAlign: 'bottom',
+      align: 'left',
+      x:-8,
+      y:26,
+      width: this.res.containerWidth,
+      useHTML: true,
+      text: `
+      <div>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageMergeTime}hrs</b></span><b style="margin-left:10px">Average time taken across repos</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${totalPrCount}</b></span><b style="margin-left:5px">Total no. of PRs</b></span>
+      </div>`,
+      style: {
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+      }
+    };
+    options.xAxis = {
+      type: "datetime",
+      categories: repoName,
+      labels: {
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        }
+      },
+      dateTimeLabelFormats: {
+        day: "%b %e"
+      },
+      lineWidth: 0,
+      tickLength: 0,
+      style: {
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+      }
+    };
+    options.yAxis = {
+      maxPadding: 0.4,
+      gridLineColor: "",
+      labels: {
+        enabled: true,
+        format: "{value}",
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        }
+      },
+      title: {
+        text: ``,
+        rotation: 0
+      }
+    };
+    options.legend = {
+      enabled: true,
+      itemStyle: {
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        fontWeight: "bold"
+      },
+      itemHoverStyle: {
+        color: this.res.bgTheme ? "#D3D3D3":"#333333",
+        fontWeight: ""
+      },
+      backgroundColor: "transparent",
+      floating: true,
+      verticalAlign: 'top',
+      align: 'right',
+      x: -30,
+      y: 48,
+    };
+    options.tooltip= {
+      pointFormatter: function (t) {
+            return `${this.series.name}:${this.options.y}`;
+          }
+    };
+    options.series = [
+      {
+        name: "Mean Merge Time",
+        data: yAxis,
+        type: "line",
+        marker: {
+          enabled: true
+        },
+        color: "#9EF988",
+      },
+    ];
+    return options;
+  }
+  generateReleaseCadence(options,type) {
     let yAxis = [],
      repoName=[],
      hour=0,
@@ -150,9 +265,8 @@ class BuildReleaseGraph {
       }
      };
      meanData && meanData.map((item)=>{
-      type==="MeanTimeMergePullRequest"? yAxis.push(parseInt(item.meanMergeTime)):
       dayHour(parseInt(item.timeTaken));
-      type==="MeanTimeMergePullRequest"?repoName.push(item.repoName):repoName.push(item.releaseName);
+      repoName.push(item.releaseName);
     });
     options.chart = {
       type: "bar",
@@ -247,12 +361,12 @@ class BuildReleaseGraph {
     };
     options.tooltip= {
       pointFormatter: function (t) {
-            return type==='MeanTimeMergePullRequest'?`${this.series.name}:${this.options.y}`:`${Math.floor(this.options.y)} days ${(Math.floor(this.options.y*100)%100)} hours<br/>`;
+            return `${Math.floor(this.options.y)} days ${(Math.floor(this.options.y*100)%100)} hours<br/>`;
           }
     };
     options.series = [
       {
-        name: type === "MeanTimeMergePullRequest"?"Mean Merge Time":"Time Taken",
+        name: "Time Taken",
         data: yAxis,
         color: "#5173CE",
       },
@@ -262,7 +376,7 @@ class BuildReleaseGraph {
 
   // function that generates data for Average defect resolution time
 
-  generateMeanTimeBrokenBuild(options) {
+  generateMeanTimeBrokenBuild(options) {debugger
     let xAxis = [],
         yAxis= [];
     this.res.data.brokenBuildList && this.res.data.brokenBuildList.map(data => {
@@ -342,7 +456,9 @@ class BuildReleaseGraph {
       }
     };
     options.tooltip = {
-      pointFormat: `{point.y}`
+      pointFormatter: function (t) {debugger
+        return `${this.series.name}:${this.point.y}`;
+      }
     };
     options.plotOptions = {
       column: {
@@ -359,7 +475,7 @@ class BuildReleaseGraph {
     options.series = [
       {
         name: "Broken Build",
-        data: xAxis,
+        data: yAxis,
         color: "#7d12ff",
         borderWidth: 0
       }
@@ -370,7 +486,7 @@ class BuildReleaseGraph {
   let reWorkedPrCount=[],
   prCount = [],
   xAxis_data=[];
-  this.res.data.map((data, index) => {
+  this.res.data.pullRequestDetailDTOList.map((data, index) => {
     xAxis_data.push(data.repoName);
     reWorkedPrCount.push(parseInt(data.reworkedPRCount));
     prCount.push(parseInt(data.prCount));
@@ -460,7 +576,7 @@ options.legend = {
 };
 
 options.tooltip = {
-  formatter: function () {debugger
+  formatter: function () {
     return `${this.x}<br>${this.series.name}: ${this.point.y}`;
   }
 };
@@ -498,7 +614,7 @@ return options;
     let open_pr_details = [],
       close_pr_details = [],
       repoName = [],
-      IDsData=this.res.data;
+      IDsData=this.res.data.pullRequestDetailDTOList;
       IDsData.map(item=> {
         open_pr_details.push(parseInt(item.openPRDetail.count));
         close_pr_details.push(parseInt(item.closedPRDetail.count));
@@ -580,7 +696,7 @@ return options;
         color: "#20c997"
       },
       {
-        name: "Close PR",
+        name: "Closed PR",
         data:  close_pr_details,
         color: "#ffc107"
       }

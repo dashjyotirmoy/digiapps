@@ -17,13 +17,9 @@ import { buildGraphInfo } from "../Translations/buildGraphInfo";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const Grid = props => {debugger
+const Grid = props => {
   const bgTheme = props.bgTheme;
   const defaultFilter = props.defaultFilter;
-  // const handleChange = (name,event) => {
-  //   props.onSelectFilter(name,event.target.value);
-  //   // this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType);
-  // };
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
       <div key={ele.i} className={`${bgTheme ? 'card-border-dark bg-dark-theme' : 'card-border-light'}`}>
