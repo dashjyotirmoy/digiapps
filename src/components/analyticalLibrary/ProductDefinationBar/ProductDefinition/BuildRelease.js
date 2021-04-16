@@ -46,7 +46,9 @@ class BuildRelease extends Component {
     removed: [],
     bgTheme:'',
     clientId:'',
+    defaultFilter:'',
     selectWidget: 'Select Widget',
+    dropData: [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_months", name: "Last 3 Months" }],
     repositoryWidgets:[{
       name:'Build Result',
       type:'BuildResult',
@@ -378,7 +380,7 @@ class BuildRelease extends Component {
     }
   };
 
-  handleRepoChange = repoID => {
+  handleRepoChange = repoID => {debugger
     this.updateRepository(repoID);
   };
 
@@ -396,7 +398,8 @@ class BuildRelease extends Component {
     this.setState({
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
-      filterStatus: "Repository"
+      filterStatus: "Repository",
+      defaultFilter: this.state.dropData[0].id
     });
     this.props.buildRepoDropValDispatch(repoDetails[selectedIndex].projectName);
     this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType)
@@ -477,6 +480,8 @@ class BuildRelease extends Component {
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
               bgTheme={bgTheme}
+              defaultFilter= {this.state.defaultFilter}
+              dropData= {this.state.dropData}
               onSelectFilter={this.handleFilter}
             />
           ) : null}

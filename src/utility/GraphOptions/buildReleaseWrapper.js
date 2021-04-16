@@ -76,6 +76,7 @@ class BuildReleaseGraph {
       },
     };
     options.yAxis = {
+      maxPadding: 0.4,
       title: {
         text: ``
       },
@@ -179,6 +180,7 @@ class BuildReleaseGraph {
       }
     };
     options.yAxis = {
+      maxPadding: 0.4,
       gridLineColor: "",
       labels: {
         enabled: true,
@@ -264,8 +266,8 @@ class BuildReleaseGraph {
     let xAxis = [],
         yAxis= [];
     this.res.data.brokenBuildList && this.res.data.brokenBuildList.map(data => {
-      yAxis.push(parseFloat(data.buildNumber));
-      xAxis.push(parseInt(data.meanFixTime));
+      xAxis.push(parseFloat(data.buildNumber));
+      yAxis.push(parseInt(data.meanFixTime));
     });
     options.chart = {
       type: "column",
@@ -321,8 +323,13 @@ class BuildReleaseGraph {
     options.yAxis = {
       min: 0,
       // max: 15,
+      maxPadding: 0.4,
       tickInterval: 2,
       gridLineColor: "transparent",
+      title: {
+        text: ``,
+        rotation: 0
+      },
       labels: {
         format: "{value}",
         style: {
@@ -352,7 +359,7 @@ class BuildReleaseGraph {
     options.series = [
       {
         name: "Broken Build",
-        data: yAxis,
+        data: xAxis,
         color: "#7d12ff",
         borderWidth: 0
       }
@@ -417,7 +424,7 @@ options.yAxis = {
   gridLineColor: "transparent",
   tickInterval: 20,
   title: {
-    text: " ",
+    text: ``,
     style: {
       color: this.res.bgTheme ? "#f5f5f5":'#333333',
     }
@@ -453,8 +460,8 @@ options.legend = {
 };
 
 options.tooltip = {
-  formatter: function () {
-    return `${this.point.xAxis}<br>${this.series.name}: ${this.point.y}`;
+  formatter: function () {debugger
+    return `${this.x}<br>${this.series.name}: ${this.point.y}`;
   }
 };
 options.plotOptions = {
@@ -521,6 +528,7 @@ return options;
       }
     };
     options.yAxis = {
+      maxPadding: 0.4,
       labels: {
         enabled: false
       },
