@@ -339,7 +339,7 @@ class BuildRelease extends Component {
     return defaultList;
   };
   handleFilter = (name,filterValue) => {
-    if(name==="Build Result" || name==="Release Cadence"){
+    if(name==="Build Results" || name==="Release Cadence"){
       const buildRelsult = this.state.repositoryWidgets.filter(item=>item.name===name);
       this.props.buildReleaseDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.buildReleaseChart.repoId,this.props.currentSourceType)
       .then(item => {
@@ -347,7 +347,7 @@ class BuildRelease extends Component {
       }).catch(error => {
         console.error(error);
       });
-    }else if(name==="Open Closed Pull Requests"){
+    }else if(name==="Open v/s Closed Pull Requests"){
       this.props
       .buildReleasePullDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.currentSourceType)
       .then(item => {
@@ -409,7 +409,7 @@ class BuildRelease extends Component {
       defaultFilter: this.state.dropData[0].id
     });
     this.props.buildRepoDropValDispatch(repoDetails[selectedIndex].projectName);
-    this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType)
+    this.props.buildReleaseDataDispatch(this.props.currentClientId,this.state.dropData[0].id,this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType)
     .then(item => {
       this.setBuildReleaseData(this.props.buildReleaseChart);
     }).catch(error => {

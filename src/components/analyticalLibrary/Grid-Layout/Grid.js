@@ -27,10 +27,10 @@ const Grid = props => {
           className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
           style={{ zIndex: "1",right:'11px',top:'15px'}}
         >
-          {props.chartData[ele.i].showDrop && <select defaultValue={defaultFilter} onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].name,event.target.value)} className={`${bgTheme ? 'drop text-white': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
+          {props.chartData[ele.i].showDrop && <select  onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].name,event.target.value)} className={`${bgTheme ? 'drop text-white': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
                     {props.dropData.map(function (data, key) {
                       return (
-                        <option className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.id}>{data.name}</option>)
+                        <option className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.id} selected={defaultFilter===data.id}>{data.name}</option>)
                     })}
                   </select>}
           <p
