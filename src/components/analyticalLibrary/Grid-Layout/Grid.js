@@ -17,9 +17,9 @@ import { buildGraphInfo } from "../Translations/buildGraphInfo";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const Grid = props => {
+const Grid = props => {debugger
   const bgTheme = props.bgTheme;
-  let dropData = [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_months", name: "Last 3 Months" }];
+  const defaultFilter = props.defaultFilter;
   // const handleChange = (name,event) => {
   //   props.onSelectFilter(name,event.target.value);
   //   // this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType);
@@ -31,8 +31,8 @@ const Grid = props => {
           className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
           style={{ zIndex: "1",right:'11px',top:'15px'}}
         >
-          {props.chartData[ele.i].showDrop && <select onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].name,event.target.value)} className={`${bgTheme ? 'drop text-white': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
-                    {dropData.map(function (data, key) {
+          {props.chartData[ele.i].showDrop && <select defaultValue={defaultFilter} onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].name,event.target.value)} className={`${bgTheme ? 'drop text-white': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
+                    {props.dropData.map(function (data, key) {
                       return (
                         <option className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.id}>{data.name}</option>)
                     })}
