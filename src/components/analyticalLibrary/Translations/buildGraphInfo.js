@@ -1,5 +1,5 @@
 export const buildGraphInfo = {
-  "Build Result": `
+  "Build Results": `
   <div>
         <p>
         This chart shows total(per long live branches), successful and failed builds for the selected repository.
@@ -7,26 +7,26 @@ export const buildGraphInfo = {
       </div>
 `,
 
-  "Mean Time Broken Build": `
+  "Mean Time to Fix Broken Builds": `
     <div>
         <p>
         This chart shows the average time taken to fix a broken build of a long live branch for the selected repository.
         </p>
       </div>
 `,
-  "Open Closed Pull Requests": `
+  "Open v/s Closed Pull Requests": `
    <div>
         <p>
           This chart shows the number of open and closed pull requests for all repos of the selected.
         </p>
       </div>
 `,
-  "Mean Time Merge Pull Request": `<div>
+  "Mean Time to Merge Pull Requests": `<div>
   <p>
     This chart shows the average time taken to merge a pull request for each repo.
   </p>
 </div>`,
-"Committed Prs With And Without Rework": `<div>
+"Commited PRs with & without Rework": `<div>
 <p>
   This chart shows the comparison between PRs with rework and PRs without any rework.
 </p>

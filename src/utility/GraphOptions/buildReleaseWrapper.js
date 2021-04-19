@@ -49,6 +49,9 @@ class BuildReleaseGraph {
     };
     options.chart = {
       height: 0,
+      borderColor:'#999a9c',
+      shadow: true,
+      height: 289,
       //backgroundColor: ""
     };
     options.title = {
@@ -172,8 +175,8 @@ class BuildReleaseGraph {
       useHTML: true,
       text: `
       <div>
-      <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageMergeTime}hrs</b></span><b style="margin-left:10px">Average time taken across repos</b></span>
-      <span style="margin-right:10px"><span style="font-size: 16px"><b>${totalPrCount}</b></span><b style="margin-left:5px">Total no. of PRs</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageMergeTime}hrs</b></span><b style="margin-left:10px">Average Time</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${totalPrCount}</b></span><b style="margin-left:5px">Total PRs</b></span>
       </div>`,
       style: {
         color: this.res.bgTheme ? "#f5f5f5":'#333333',
@@ -246,11 +249,15 @@ class BuildReleaseGraph {
     ];
     return options;
   }
-  generateReleaseCadence(options,type) {
+  generateReleaseCadence(options,type) {debugger
     let yAxis = [],
      repoName=[],
      hour=0,
      day=0,
+     linkedPullRequest=[],
+     linkedUserStory=[],
+     linkedPullRequestLabel=[],
+     linkedUserStoryLabel=[],
      meanData= this.res.data;
      function dayHour(time){
           hour = time;
@@ -267,6 +274,14 @@ class BuildReleaseGraph {
      meanData && meanData.map((item)=>{
       dayHour(parseInt(item.timeTaken));
       repoName.push(item.releaseName);
+      linkedPullRequest.push(item.linkedPullRequest);
+      linkedUserStory.push(item.linkedUserStory);
+      linkedPullRequestLabel.push(item.linkedPullRequest.url && item.linkedPullRequest.url.map(item=>
+        item.substring(item.lastIndexOf("/") + 1))
+      );
+      linkedUserStoryLabel.push(item.linkedUserStory.url && item.linkedUserStory.url.map(item=>
+          item.substring(item.lastIndexOf("/") + 1))
+      );
     });
     options.chart = {
       type: "bar",
@@ -304,8 +319,11 @@ class BuildReleaseGraph {
         }
       },
       title: {
-        text: ``,
-        rotation: 0
+        text: `Day's`,
+        rotation: -90,
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        }
       }
     };
     options.title = {
@@ -329,17 +347,8 @@ class BuildReleaseGraph {
     };
     options.plotOptions = {
       series:{
-        cursor: "pointer",
-        point: {
-            events: {
-              click: function () {
-                if(this.y !== 0){ 
-                  console.log(this)
-                  // window.open(newURL, "_blank")
-                };
-              }
-            }
-          }
+        stickyTracking: false,
+        // cursor: "pointer",
       },
     };
     options.legend = {
@@ -360,13 +369,42 @@ class BuildReleaseGraph {
       y: 48,
     };
     options.tooltip= {
-      pointFormatter: function (t) {
-            return `${Math.floor(this.options.y)} days ${(Math.floor(this.options.y*100)%100)} hours<br/>`;
-          }
+      enabled: true,
+      useHTML: true,
+      hideDelay: 3000,
+      style: {
+        pointerEvents: 'auto'
+      },
+      formatter: function (t) {debugger
+            return `${Math.floor(this.y)} days ${(Math.floor(this.y*100)%100)} hours
+            <br/><div style='width: 230px;max-height:10px,overflow: auto;'><table style="border: 1px solid black;"><tr><th style="border: 1px solid black;">Linked Pull Request</th><th style="border: 1px solid black;">Linked User Story</th></tr>
+                  <td style="border: 1px solid black;"><a href="${linkedPullRequest[this.point.index].url}" target="_blank"/>${linkedPullRequestLabel[this.point.index]}</a></td>
+                  <td style="border: 1px solid black;"><a href="${linkedUserStory[this.point.index].url}" target="_blank"/>${linkedUserStoryLabel[this.point.index]}</a></td>
+                  </table></div>`;
+          },
     };
     options.series = [
       {
         name: "Time Taken",
+      //   point: {
+      //     events: {
+      //         click: function() {
+      //             this.series.chart.update({
+      //                 tooltip: {
+      //                     enabled: true
+      //                 }
+      //             });
+      //         },
+      //         mouseOut: function() {
+      //             this.series.chart.update({
+      //                 tooltip: {
+      //                     enabled: false
+      //                 }
+
+      //             })
+      //         }
+      //     }
+      // },
         data: yAxis,
         color: "#5173CE",
       },
@@ -376,9 +414,12 @@ class BuildReleaseGraph {
 
   // function that generates data for Average defect resolution time
 
-  generateMeanTimeBrokenBuild(options) {debugger
+  generateMeanTimeBrokenBuild(options) {
     let xAxis = [],
-        yAxis= [];
+        yAxis= [],
+        numberOfAttempts = this.res.data.numberOfAttempts===null ? 0:parseInt(this.res.data.numberOfAttempts),
+        timeTaken = this.res.data.averageFixTime===null ? 0:parseInt(this.res.data.averageFixTime),
+        recoveryAttempt = this.res.data.brokenBuildList;
     this.res.data.brokenBuildList && this.res.data.brokenBuildList.map(data => {
       xAxis.push(parseFloat(data.buildNumber));
       yAxis.push(parseInt(data.meanFixTime));
@@ -406,6 +447,22 @@ class BuildReleaseGraph {
         borderWidth:'2px',
         fontFamily: 'Arial'
       }    
+    };
+    options.subtitle = {
+      verticalAlign: 'bottom',
+      align: 'left',
+      x:-8,
+      y:26,
+      width: this.res.containerWidth,
+      useHTML: true,
+      text: `
+      <div>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${numberOfAttempts}</b></span><b style="margin-left:10px">Total Attempts</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${timeTaken}</b></span><b style="margin-left:10px">Average Time</b></span>
+      </div>`,
+      style: {
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+      }
     };
     options.xAxis = {
       categories: xAxis,
@@ -456,8 +513,8 @@ class BuildReleaseGraph {
       }
     };
     options.tooltip = {
-      pointFormatter: function (t) {debugger
-        return `${this.series.name}:${this.point.y}`;
+      pointFormatter: function () {
+        return `${this.series.name}:${this.y}<br>Recovery Attempt Count: ${recoveryAttempt[this.index].recoveryAttemptCount}`;
       }
     };
     options.plotOptions = {
@@ -474,11 +531,11 @@ class BuildReleaseGraph {
 
     options.series = [
       {
-        name: "Broken Build",
+        name: "Mean Time",
         data: yAxis,
         color: "#7d12ff",
         borderWidth: 0
-      }
+      },
     ];
     return options;
   }
@@ -691,15 +748,16 @@ return options;
     };
     options.series = [
       {
+        name: "Closed PR",
+        data:  close_pr_details,
+        color: "#ffc107"
+      },
+      {
         name: "Open PR",
         data: open_pr_details,
         color: "#20c997"
       },
-      {
-        name: "Closed PR",
-        data:  close_pr_details,
-        color: "#ffc107"
-      }
+      
     ];
     return options;
   }
