@@ -49,6 +49,9 @@ class BuildReleaseGraph {
     };
     options.chart = {
       height: 0,
+      borderColor:'#999a9c',
+      shadow: true,
+      height: 289,
       //backgroundColor: ""
     };
     options.title = {
@@ -378,7 +381,9 @@ class BuildReleaseGraph {
 
   generateMeanTimeBrokenBuild(options) {debugger
     let xAxis = [],
-        yAxis= [];
+        yAxis= [],
+        numberOfAttempts = this.res.data.numberOfAttempts===null ? 0:parseInt(this.res.data.numberOfAttempts),
+        recoveryAttempt = this.res.data.brokenBuildList;
     this.res.data.brokenBuildList && this.res.data.brokenBuildList.map(data => {
       xAxis.push(parseFloat(data.buildNumber));
       yAxis.push(parseInt(data.meanFixTime));
@@ -406,6 +411,21 @@ class BuildReleaseGraph {
         borderWidth:'2px',
         fontFamily: 'Arial'
       }    
+    };
+    options.subtitle = {
+      verticalAlign: 'bottom',
+      align: 'left',
+      x:-8,
+      y:26,
+      width: this.res.containerWidth,
+      useHTML: true,
+      text: `
+      <div>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${numberOfAttempts}</b></span><b style="margin-left:10px">No of Attempts</b></span>
+      </div>`,
+      style: {
+        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+      }
     };
     options.xAxis = {
       categories: xAxis,
@@ -456,8 +476,8 @@ class BuildReleaseGraph {
       }
     };
     options.tooltip = {
-      pointFormatter: function (t) {debugger
-        return `${this.series.name}:${this.point.y}`;
+      pointFormatter: function (t,index) {debugger
+        return `${this.series.name}:${this.y}<br>Recovery Attempt Count: ${recoveryAttempt[this.index].recoveryAttemptCount}`;
       }
     };
     options.plotOptions = {
@@ -478,7 +498,7 @@ class BuildReleaseGraph {
         data: yAxis,
         color: "#7d12ff",
         borderWidth: 0
-      }
+      },
     ];
     return options;
   }
@@ -691,15 +711,16 @@ return options;
     };
     options.series = [
       {
+        name: "Closed PR",
+        data:  close_pr_details,
+        color: "#ffc107"
+      },
+      {
         name: "Open PR",
         data: open_pr_details,
         color: "#20c997"
       },
-      {
-        name: "Closed PR",
-        data:  close_pr_details,
-        color: "#ffc107"
-      }
+      
     ];
     return options;
   }
