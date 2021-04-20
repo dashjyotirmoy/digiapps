@@ -174,6 +174,7 @@ class BuildReleaseGraph {
       categories: repoName,
       labels: {
         style: {
+          width:'50px',
           color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
       },
@@ -201,7 +202,7 @@ class BuildReleaseGraph {
         }
       },
       title: {
-        text: `Time`,
+        text: `Average Merge Time`,
         rotation: -90,
         style: {
           color: this.res.bgTheme ? "#f5f5f5":'#333333',
@@ -248,6 +249,7 @@ class BuildReleaseGraph {
      repoName=[],
      hour=0,
      day=0,
+     releaseCadence=[],
      linkedPullRequest=[],
      linkedUserStory=[],
      linkedPullRequestLabel=[],
@@ -257,16 +259,17 @@ class BuildReleaseGraph {
           hour = time;
           day = 0;
       if (hour>24){
-          day = parseInt(hour / 24);
-          hour = parseInt(hour % 24);
-          yAxis.push(parseFloat(day+'.'+hour));
+          day = parseInt(hour / 24) +' '+'days';
+          hour = parseInt(hour % 24)+' '+'hours';
+          return (day,hour);
       }else{
-          hour = parseInt(hour);
-          yAxis.push(hour);
+          day='';
+          hour = parseInt(hour)+' '+'hours';
+          return (day,hour);
       }
      };
      meanData && meanData.map((item)=>{
-      dayHour(parseInt(item.timeTaken));
+      releaseCadence.push(parseInt(item.timeTaken));
       repoName.push(item.releaseName);
       linkedPullRequest.push(item.linkedPullRequest);
       linkedUserStory.push(item.linkedUserStory);
@@ -317,7 +320,7 @@ class BuildReleaseGraph {
         }
       },
       title: {
-        text: `Day's`,
+        text: `Time Taken`,
         rotation: -90,
         style: {
           color: this.res.bgTheme ? "#f5f5f5":"#333333",
@@ -372,7 +375,8 @@ class BuildReleaseGraph {
         pointerEvents: 'auto'
       },
       formatter: function (t) {
-            return `${Math.floor(this.y)} days ${(Math.floor(this.y*100)%100)} hours
+            dayHour(this.y);
+            return `${this.series.name}: ${day} ${hour}
             <br/><div style='width: 230px;max-height:10px,overflow: auto;'><table style="border: 1px solid black;"><tr><th style="border: 1px solid black;">Linked Pull Request</th><th style="border: 1px solid black;">Linked User Story</th></tr>
                   <td style="border: 1px solid black;"><a style="
                   color: #1a0dab;
@@ -396,7 +400,7 @@ class BuildReleaseGraph {
                   });
               },
             }},
-        data: yAxis,
+        data: releaseCadence,
         color: "#5173CE",
       },
     ];
@@ -405,16 +409,32 @@ class BuildReleaseGraph {
 
   // function that generates data for Average defect resolution time
 
-  generateMeanTimeBrokenBuild(options) {
+  generateMeanTimeBrokenBuild(options) {debugger
     let xAxis = [],
         yAxis= [],
+        buildData=[],
+        hour=0,
+        day=0,
         numberOfAttempts = this.res.data.numberOfAttempts===null ? 0:parseInt(this.res.data.numberOfAttempts),
         timeTaken = this.res.data.averageFixTime===null ? 0:parseInt(this.res.data.averageFixTime),
         recoveryAttempt = this.res.data.brokenBuildList;
-    this.res.data.brokenBuildList && this.res.data.brokenBuildList.map(data => {
-      xAxis.push(parseFloat(data.buildNumber));
-      yAxis.push(parseInt(data.meanFixTime));
-    });
+        function dayHour(time){
+          hour = time;
+          day = 0;
+          if (hour>24){
+            day = parseInt(hour / 24) +' '+'days';
+            hour = parseInt(hour % 24)+' '+'hours';
+            return (day,hour);
+        }else{
+            day='';
+            hour = parseInt(hour)+' '+'hours';
+            return (day,hour);
+        }
+        };
+        recoveryAttempt && recoveryAttempt.map(data => {debugger
+          xAxis.push(parseFloat(data.buildNumber));
+          buildData.push(parseInt(data.meanFixTime));
+        });
     options.chart = {
       type: "column",
       height: 0,
@@ -449,7 +469,6 @@ class BuildReleaseGraph {
       text: `
       <div>
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${numberOfAttempts}</b></span><b style="margin-left:10px">Total Attempts</b></span>
-      <span style="margin-right:10px;color:yellow"><span style="font-size: 16px"><b>${timeTaken}</b></span><b style="margin-left:10px">Average Time</b></span>
       </div>`,
       style: {
         color: this.res.bgTheme ? "#f5f5f5":'#333333',
@@ -496,6 +515,13 @@ class BuildReleaseGraph {
         value: timeTaken,
         width: '1',
         zIndex: 4,
+        dashStyle: 'dash',
+        label: {
+          text: timeTaken,
+          style: {
+            color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          }
+        },
         line: {
           dataLabels: {
             enabled: true
@@ -503,7 +529,7 @@ class BuildReleaseGraph {
         }
       }],
       title: {
-        text: `Average Time (in days)`,
+        text: `Average Time`,
         rotation: -90,
         style: {
           color: this.res.bgTheme ? "#f5f5f5":'#333333',
@@ -521,8 +547,9 @@ class BuildReleaseGraph {
       }
     };
     options.tooltip = {
-      pointFormatter: function () {
-        return `${this.series.name}:${this.y}<br>Recovery Attempt Count: ${recoveryAttempt[this.index].recoveryAttemptCount}`;
+      pointFormatter: function () {debugger
+        dayHour(this.y);
+        return `${this.series.name}: ${day} ${hour}`;
       }
     };
     options.plotOptions = {
@@ -540,8 +567,15 @@ class BuildReleaseGraph {
     options.series = [
       {
         name: "Mean Time",
-        data: yAxis,
+        data: buildData,
         color: "#7d12ff",
+        borderWidth: 0
+      },
+      {
+        name: "Average Time",
+        type: "line",
+        data: timeTaken,
+        color: "yellow",
         borderWidth: 0
       },
     ];
@@ -701,10 +735,7 @@ return options;
         if(item.closedPRDetail.count !== "0"){
         close_pr_details.push(parseInt(item.closedPRDetail.count));
         repoName.push(item.repoName);
-        closedPRDetail.push(item.closedPRDetail);
-        closedPRDetailLabel.push(item.closedPRDetail.uriList && item.closedPRDetail.uriList.map(item=>
-        item.substring(item.lastIndexOf("/") + 1))
-      );
+        closedPRDetail.push(item.closedPRDetail.uriList.map((urlList)=> `<a href="${urlList}" target="_blank">${urlList.substring(urlList.lastIndexOf("/") + 1)}</a>`));
     }
         if(item.openPRDetail.count !== "0"){
           open_pr_details.push(parseInt(item.openPRDetail.count));
@@ -741,11 +772,17 @@ return options;
     options.yAxis = {
       maxPadding: 0.4,
       labels: {
-        enabled: false
+        enabled: true,
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        }
       },
       title: {
-        text: ``,
-        rotation: 0
+        text: `PR Count`,
+        rotation: 0,
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        }
       },
       gridLineWidth: 0
     };
@@ -802,9 +839,7 @@ return options;
     //         return `${this.y}
     //         <br/><div style='width: 130px;max-height:10px,overflow: auto;'><table style="border: 1px solid black;"><tr><th style="border: 1px solid black;">Linked Pull Request</th></tr>
     //               <td style="border: 1px solid black;">
-    //               (closedPRDetail[this.point.index].urlList.map((item)=>
-    //               <a href="{item[this.point.index].uriList}" target="_blank"/>{item[this.point.index]}</a>
-    //                 ))
+    //                 {closedPRDetail[this.point.index]}
     //               </td>
     //             </table></div>`;
     //       },
