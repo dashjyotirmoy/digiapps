@@ -118,21 +118,6 @@ class BuildReleaseGraph {
   }
 
   //function that generates metrics for bugs , vulnerabilites and codesmells
-  generateData = rawData => {
-    let points_array = [];
-    rawData.map(bvc => {
-      let point_data = {};
-      let rawDate = bvc.date.split("T");
-      point_data.x = new Date(rawDate[0]).getTime();
-      point_data.y = parseInt(bvc.value);
-      point_data.blocker = bvc.blocker;
-      point_data.critical = bvc.critical;
-      point_data.major = bvc.major;
-      point_data.minor = bvc.minor;
-      points_array.push(point_data);
-    });
-    return points_array;
-  };
   generateMeanMergePullLineHigh(options,type) {
     let yAxis = [],
      repoName=[],
@@ -140,8 +125,10 @@ class BuildReleaseGraph {
      averageMergeTime=meanData.averageMergeTime,
      totalPrCount=meanData.totalPRCount;
      meanData.pullRequestDetailDTOList && meanData.pullRequestDetailDTOList.map((item)=>{
+      if(item.meanMergeTime !== "0"){
       yAxis.push(parseInt(item.meanMergeTime));
       repoName.push(item.repoName);
+      }
     });
     options.chart = {
       height: 0,
@@ -190,8 +177,12 @@ class BuildReleaseGraph {
           color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
       },
-      dateTimeLabelFormats: {
-        day: "%b %e"
+      title: {
+        text: `Repository Name`,
+        rotation: 0,
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        }
       },
       lineWidth: 0,
       tickLength: 0,
@@ -210,8 +201,11 @@ class BuildReleaseGraph {
         }
       },
       title: {
-        text: ``,
-        rotation: 0
+        text: `Time`,
+        rotation: -90,
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        }
       }
     };
     options.legend = {
@@ -249,7 +243,7 @@ class BuildReleaseGraph {
     ];
     return options;
   }
-  generateReleaseCadence(options,type) {debugger
+  generateReleaseCadence(options,type) {
     let yAxis = [],
      repoName=[],
      hour=0,
@@ -299,14 +293,18 @@ class BuildReleaseGraph {
           color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
       },
-      dateTimeLabelFormats: {
-        day: "%b %e"
-      },
       lineWidth: 0,
       tickLength: 0,
       style: {
         color: this.res.bgTheme ? "#f5f5f5":"#333333",
-      }
+      },
+      title: {
+        text: `Release Name`,
+        rotation: 0,
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        }
+      },
     };
     options.yAxis = {
       maxPadding: 0.4,
@@ -345,12 +343,11 @@ class BuildReleaseGraph {
         fontFamily: 'Arial'
       }
     };
-    options.plotOptions = {
-      series:{
-        stickyTracking: false,
-        // cursor: "pointer",
-      },
-    };
+    options.plotOptions= {
+      series: {
+          stickyTracking: true
+      }
+  };
     options.legend = {
       enabled: true,
       itemStyle: {
@@ -371,40 +368,34 @@ class BuildReleaseGraph {
     options.tooltip= {
       enabled: true,
       useHTML: true,
-      hideDelay: 3000,
       style: {
         pointerEvents: 'auto'
       },
-      formatter: function (t) {debugger
+      formatter: function (t) {
             return `${Math.floor(this.y)} days ${(Math.floor(this.y*100)%100)} hours
             <br/><div style='width: 230px;max-height:10px,overflow: auto;'><table style="border: 1px solid black;"><tr><th style="border: 1px solid black;">Linked Pull Request</th><th style="border: 1px solid black;">Linked User Story</th></tr>
-                  <td style="border: 1px solid black;"><a href="${linkedPullRequest[this.point.index].url}" target="_blank"/>${linkedPullRequestLabel[this.point.index]}</a></td>
-                  <td style="border: 1px solid black;"><a href="${linkedUserStory[this.point.index].url}" target="_blank"/>${linkedUserStoryLabel[this.point.index]}</a></td>
+                  <td style="border: 1px solid black;"><a style="
+                  color: #1a0dab;
+                  text-decoration: underline;" href="${linkedPullRequest[this.point.index].url}" target="_blank"/>${linkedPullRequestLabel[this.point.index]}</a></td>
+                  <td style="border: 1px solid black;"><a style="
+                  color: #1a0dab;
+                  text-decoration: underline;" href="${linkedUserStory[this.point.index].url}" target="_blank"/>${linkedUserStoryLabel[this.point.index]}</a></td>
                   </table></div>`;
           },
     };
     options.series = [
       {
         name: "Time Taken",
-      //   point: {
-      //     events: {
-      //         click: function() {
-      //             this.series.chart.update({
-      //                 tooltip: {
-      //                     enabled: true
-      //                 }
-      //             });
-      //         },
-      //         mouseOut: function() {
-      //             this.series.chart.update({
-      //                 tooltip: {
-      //                     enabled: false
-      //                 }
-
-      //             })
-      //         }
-      //     }
-      // },
+        point: {
+          events: {
+              click: function() {
+                  this.series.chart.update({
+                      tooltip: {
+                          enabled: true
+                      }
+                  });
+              },
+            }},
         data: yAxis,
         color: "#5173CE",
       },
@@ -458,7 +449,7 @@ class BuildReleaseGraph {
       text: `
       <div>
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${numberOfAttempts}</b></span><b style="margin-left:10px">Total Attempts</b></span>
-      <span style="margin-right:10px"><span style="font-size: 16px"><b>${timeTaken}</b></span><b style="margin-left:10px">Average Time</b></span>
+      <span style="margin-right:10px;color:yellow"><span style="font-size: 16px"><b>${timeTaken}</b></span><b style="margin-left:10px">Average Time</b></span>
       </div>`,
       style: {
         color: this.res.bgTheme ? "#f5f5f5":'#333333',
@@ -466,9 +457,12 @@ class BuildReleaseGraph {
     };
     options.xAxis = {
       categories: xAxis,
-      // style: {
-      //   color: this.res.bgTheme ? "#f5f5f5":"#333333",
-      // },
+      title: {
+        text: `Build Number`,
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        }
+      },
       labels: {
         style: {
           color: this.res.bgTheme ? "#f5f5f5":"#333333",
@@ -497,9 +491,23 @@ class BuildReleaseGraph {
       maxPadding: 0.4,
       tickInterval: 2,
       gridLineColor: "transparent",
+      plotLines: [{
+        color: 'yellow',
+        value: timeTaken,
+        width: '1',
+        zIndex: 4,
+        line: {
+          dataLabels: {
+            enabled: true
+          },
+        }
+      }],
       title: {
-        text: ``,
-        rotation: 0
+        text: `Average Time (in days)`,
+        rotation: -90,
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        }
       },
       labels: {
         format: "{value}",
@@ -543,10 +551,15 @@ class BuildReleaseGraph {
   let reWorkedPrCount=[],
   prCount = [],
   xAxis_data=[];
-  this.res.data.pullRequestDetailDTOList.map((data, index) => {
-    xAxis_data.push(data.repoName);
-    reWorkedPrCount.push(parseInt(data.reworkedPRCount));
-    prCount.push(parseInt(data.prCount));
+  this.res.data.pullRequestDetailDTOList.map((data) => {
+    if(data.prCount!=="0"){
+      xAxis_data.push(data.repoName);
+      prCount.push(parseInt(data.prCount));
+    }
+    if(data.reworkedPRCount!=="0"){
+      xAxis_data.push(data.repoName);
+      reWorkedPrCount.push(parseInt(data.reworkedPRCount));
+    }
   });
 
 options.chart = {
@@ -587,7 +600,14 @@ options.xAxis = {
       color: this.res.bgTheme ? "#f5f5f5":'#333333',
     }
     // format: "Sprint {value}"
-  }
+  },
+  title: {
+    text: `Repository Name`,
+    rotation: 0,
+    style: {
+      color: this.res.bgTheme ? "#f5f5f5":'#333333',
+    }
+  },
 };
 
 options.yAxis = {
@@ -597,7 +617,8 @@ options.yAxis = {
   gridLineColor: "transparent",
   tickInterval: 20,
   title: {
-    text: ``,
+    text: `PR Count`,
+    rotation: -90,
     style: {
       color: this.res.bgTheme ? "#f5f5f5":'#333333',
     }
@@ -671,11 +692,28 @@ return options;
     let open_pr_details = [],
       close_pr_details = [],
       repoName = [],
+      closedPRDetail=[],
+      openPRDetail=[],
+      closedPRDetailLabel=[],
+      openPRDetailLabel=[],
       IDsData=this.res.data.pullRequestDetailDTOList;
       IDsData.map(item=> {
-        open_pr_details.push(parseInt(item.openPRDetail.count));
+        if(item.closedPRDetail.count !== "0"){
         close_pr_details.push(parseInt(item.closedPRDetail.count));
         repoName.push(item.repoName);
+        closedPRDetail.push(item.closedPRDetail);
+        closedPRDetailLabel.push(item.closedPRDetail.uriList && item.closedPRDetail.uriList.map(item=>
+        item.substring(item.lastIndexOf("/") + 1))
+      );
+    }
+        if(item.openPRDetail.count !== "0"){
+          open_pr_details.push(parseInt(item.openPRDetail.count));
+          repoName.push(item.repoName);
+          openPRDetail.push(item.openPRDetail);
+          openPRDetailLabel.push(item.openPRDetail.uriList && item.openPRDetail.uriList.map(item=>
+            item.substring(item.lastIndexOf("/") + 1))
+        );
+        }
     });
     options.chart = {
       type: "column",
@@ -715,6 +753,13 @@ return options;
       tickWidth: 0,
       tickLength: 0,
       categories: repoName,
+      title: {
+        text: `Repository Name`,
+        rotation: -90,
+        style: {
+          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        }
+      },
       labels: {
         style: {
           color: this.res.bgTheme ? "#f5f5f5":"#333333",
@@ -741,23 +786,46 @@ return options;
     };
     options.plotOptions = {
       series: {
+        stickyTracking: true,
         stacking: "normal",
         pointWidth: 20,
         cursor: "pointer",        
       },
     };
+    // options.tooltip={
+    //   enabled: true,
+    //   useHTML: true,
+    //   style: {
+    //     pointerEvents: 'auto'
+    //   },
+    //   formatter: function (t) {debugger
+    //         return `${this.y}
+    //         <br/><div style='width: 130px;max-height:10px,overflow: auto;'><table style="border: 1px solid black;"><tr><th style="border: 1px solid black;">Linked Pull Request</th></tr>
+    //               <td style="border: 1px solid black;">
+    //               (closedPRDetail[this.point.index].urlList.map((item)=>
+    //               <a href="{item[this.point.index].uriList}" target="_blank"/>{item[this.point.index]}</a>
+    //                 ))
+    //               </td>
+    //             </table></div>`;
+    //       },
+    //     };
     options.series = [
-      {
-        name: "Closed PR",
-        data:  close_pr_details,
-        color: "#ffc107"
-      },
       {
         name: "Open PR",
         data: open_pr_details,
-        color: "#20c997"
+        color: "#20c997",
+        tooltip: {
+          pointFormat: `{point.name}<br>{point.series.name}:<b>{point.y}{point.data}`,
+       },
       },
-      
+      {
+        name: "Closed PR",
+        data:  close_pr_details,
+        color: "#ffc107",
+        tooltip: {
+          pointFormat: `{point.name}<br>{point.series.name}:<b>{point.y}`,
+       },
+      }     
     ];
     return options;
   }
