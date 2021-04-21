@@ -59,7 +59,7 @@ class BuildRelease extends Component {
       name:'Mean Time to Fix Broken Builds',
       type:'MeanTimeBrokenBuild',
       title:'Mean Time Broken Build',
-      showDrop: false,
+      showDrop: true,
     },
     {
       name:'Release Cadence',
@@ -77,12 +77,12 @@ class BuildRelease extends Component {
       name:'Mean Time to Merge Pull Requests',
       type:'MeanTimeMergePullRequest',
       title:'Mean Time Merge Pull Request',
-      showDrop: false,
+      showDrop: true,
     },{
       name:'Commited PRs with & without Rework',
       type:'CommittedPrsWithAndWithoutRework',
       title:'Committed Prs With And Without Rework',
-      showDrop: false,
+      showDrop: true,
     }
   ],
 

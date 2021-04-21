@@ -4,7 +4,7 @@ class Options {
     enabled: false
   };
   legend = {
-    enabled: false
+    enabled: true
   };
   title = {};
   tootltip = {};
