@@ -42,17 +42,10 @@ class BuildReleaseGraph {
     const fail_build_count = parseInt(this.res.data.failedBuildCount);
     const success_build_count = parseInt(this.res.data.successfulBuildCount);
     const total_build_count = parseInt(this.res.data.totalBuildCount);
-
-    options.tooltip = {
-      pointFormat:
-        `{point.name}: {point.y}<br>Total Build Count:${total_build_count}`
-    };
     options.chart = {
-      height: 0,
-      borderColor:'#999a9c',
-      shadow: true,
-      height: 289,
-      //backgroundColor: ""
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: false,
     };
     options.title = {
       useHTML: true,
@@ -73,46 +66,55 @@ class BuildReleaseGraph {
         fontFamily: 'Arial'
       }
     };
-    options.xAxis = {
-      labels: {
-        style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
-        }
+    options.legend = {
+      enabled: true,
+      itemStyle: {
+        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        fontWeight: "bold"
       },
+      itemHoverStyle: {
+        color: this.res.bgTheme ? "#D3D3D3":"#333333",
+        fontWeight: ""
+      },
+      backgroundColor: "transparent",
+      floating: true,
+      verticalAlign: 'top',
+      align: 'right',
+      x: -30,
+      y: 48,
     };
-    options.yAxis = {
-      maxPadding: 0.4,
-      title: {
-        text: ``
-      },
-      labels: {
-        style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
-        }
-      },
-      gridLineColor: ""
+    options.tooltip = {
+      pointFormat:
+        `{series.name}: {point.y}<br>Total Build Count:${total_build_count}`
     };
     options.plotOptions= {
       pie: {
-          shadow: false,
-          center: ['50%', '50%'],
-          colors: ['#B14891','#9C82D4'],
-          borderColor: null,
-          dataLabels: {
-            connectorWidth: 0
-        }
+        allowPointSelect: true,
+        cursor: 'pointer',
+        size: 150,
+        dataLabels: {
+            enabled: false
+        },
+        showInLegend: true
       }
     };
-    options.series = [{
-      data:[{
+    options.series = 
+    [{
+      name: 'Count',
+      colorByPoint: true,
+      data:[
+        {
+          name: 'Build Success',
+          y: success_build_count,
+          color:'#20c997',
+          sliced: true,
+          selected: true
+        },{
+        name: 'Build Failed',
         y: fail_build_count,
-        name: 'Build Failed'
+        color:'#ec5050'
       },
-      {
-        y: success_build_count,
-        name: 'Build Success',
-
-      }]}
+      ]}
     ];
     return options;
   }
@@ -121,9 +123,24 @@ class BuildReleaseGraph {
   generateMeanMergePullLineHigh(options,type) {
     let yAxis = [],
      repoName=[],
+     hour=0,
+     day=0,
      meanData= this.res.data,
      averageMergeTime=meanData.averageMergeTime,
      totalPrCount=meanData.totalPRCount;
+     function dayHour(time){
+      hour = time;
+      day = 0;
+        if (hour>24){
+            day = parseInt(hour / 24) +' '+'days';
+            hour = parseInt(hour % 24)+' '+'hours';
+            return (day,hour);
+        }else{
+            day='';
+            hour = parseInt(hour)+' '+'hours';
+            return (day,hour);
+        }
+      };
      meanData.pullRequestDetailDTOList && meanData.pullRequestDetailDTOList.map((item)=>{
       if(item.meanMergeTime !== "0"){
       yAxis.push(parseInt(item.meanMergeTime));
@@ -228,7 +245,8 @@ class BuildReleaseGraph {
     };
     options.tooltip= {
       pointFormatter: function (t) {
-            return `${this.series.name}:${this.options.y}`;
+        dayHour(this.y);
+            return `${this.series.name}: ${day} ${hour}`;
           }
     };
     options.series = [
@@ -250,10 +268,12 @@ class BuildReleaseGraph {
      hour=0,
      day=0,
      releaseCadence=[],
-     linkedPullRequest=[],
-     linkedUserStory=[],
-     linkedPullRequestLabel=[],
-     linkedUserStoryLabel=[],
+     userStory=[],
+     pullRequest=[],
+    //  linkedPullRequest=[],
+    //  linkedUserStory=[],
+    //  linkedPullRequestLabel=[],
+    //  linkedUserStoryLabel=[],
      meanData= this.res.data;
      function dayHour(time){
           hour = time;
@@ -270,18 +290,19 @@ class BuildReleaseGraph {
      };
      meanData && meanData.map((item)=>{
       releaseCadence.push(parseInt(item.timeTaken));
+      userStory.push(parseInt(item.linkedUserStory.count));
+      pullRequest.push(parseInt(item.linkedPullRequest.count));
       repoName.push(item.releaseName);
-      linkedPullRequest.push(item.linkedPullRequest);
-      linkedUserStory.push(item.linkedUserStory);
-      linkedPullRequestLabel.push(item.linkedPullRequest.url && item.linkedPullRequest.url.map(item=>
-        item.substring(item.lastIndexOf("/") + 1))
-      );
-      linkedUserStoryLabel.push(item.linkedUserStory.url && item.linkedUserStory.url.map(item=>
-          item.substring(item.lastIndexOf("/") + 1))
-      );
+      // linkedPullRequest.push(item.linkedPullRequest);
+      // linkedUserStory.push(item.linkedUserStory);
+      // linkedPullRequestLabel.push(item.linkedPullRequest.url && item.linkedPullRequest.url.map(item=>
+      //   item.substring(item.lastIndexOf("/") + 1))
+      // );
+      // linkedUserStoryLabel.push(item.linkedUserStory.url && item.linkedUserStory.url.map(item=>
+      //     item.substring(item.lastIndexOf("/") + 1))
+      // );
     });
     options.chart = {
-      type: "bar",
       scrollablePlotArea: {
         minWidth: 300,
         scrollPositionX: 2,
@@ -347,9 +368,6 @@ class BuildReleaseGraph {
       }
     };
     options.plotOptions= {
-      series: {
-          stickyTracking: true
-      }
   };
     options.legend = {
       enabled: true,
@@ -370,38 +388,31 @@ class BuildReleaseGraph {
     };
     options.tooltip= {
       enabled: true,
-      useHTML: true,
-      style: {
-        pointerEvents: 'auto'
-      },
       formatter: function (t) {
             dayHour(this.y);
-            return `${this.series.name}: ${day} ${hour}
-            <br/><div style='width: 230px;max-height:10px,overflow: auto;'><table style="border: 1px solid black;"><tr><th style="border: 1px solid black;">Linked Pull Request</th><th style="border: 1px solid black;">Linked User Story</th></tr>
-                  <td style="border: 1px solid black;"><a style="
-                  color: #1a0dab;
-                  text-decoration: underline;" href="${linkedPullRequest[this.point.index].url}" target="_blank"/>${linkedPullRequestLabel[this.point.index]}</a></td>
-                  <td style="border: 1px solid black;"><a style="
-                  color: #1a0dab;
-                  text-decoration: underline;" href="${linkedUserStory[this.point.index].url}" target="_blank"/>${linkedUserStoryLabel[this.point.index]}</a></td>
-                  </table></div>`;
+            return `${this.x}<br>${this.series.name}: ${day} ${hour}
+            <br>Linked User Story: ${userStory[this.point.index]}<br>
+            Linked Pull Request: ${pullRequest[this.point.index]}`;
           },
     };
     options.series = [
       {
+        type: "column",
         name: "Time Taken",
-        point: {
-          events: {
-              click: function() {
-                  this.series.chart.update({
-                      tooltip: {
-                          enabled: true
-                      }
-                  });
-              },
-            }},
         data: releaseCadence,
         color: "#5173CE",
+      },
+      {
+        type: "line",
+        name: "User Story",
+        data: userStory,
+        color: "green",
+      },
+      {
+        type: "line",
+        name: "Pull Request",
+        data: pullRequest,
+        color: "orange",
       },
     ];
     return options;
@@ -409,10 +420,11 @@ class BuildReleaseGraph {
 
   // function that generates data for Average defect resolution time
 
-  generateMeanTimeBrokenBuild(options) {debugger
+  generateMeanTimeBrokenBuild(options) {
     let xAxis = [],
         yAxis= [],
         buildData=[],
+        recoveryAttemptCount=[],
         hour=0,
         day=0,
         numberOfAttempts = this.res.data.numberOfAttempts===null ? 0:parseInt(this.res.data.numberOfAttempts),
@@ -431,9 +443,10 @@ class BuildReleaseGraph {
             return (day,hour);
         }
         };
-        recoveryAttempt && recoveryAttempt.map(data => {debugger
+        recoveryAttempt && recoveryAttempt.map(data => {
           xAxis.push(parseFloat(data.buildNumber));
           buildData.push(parseInt(data.meanFixTime));
+          recoveryAttemptCount.push(parseInt(data.recoveryAttemptCount));
         });
     options.chart = {
       type: "column",
@@ -547,9 +560,9 @@ class BuildReleaseGraph {
       }
     };
     options.tooltip = {
-      pointFormatter: function () {debugger
+      pointFormatter: function () {
         dayHour(this.y);
-        return `${this.series.name}: ${day} ${hour}`;
+        return `${this.series.name}: ${day} ${hour}<br>Recovery Attempts: ${recoveryAttemptCount[this.index]}`;
       }
     };
     options.plotOptions = {
@@ -577,21 +590,21 @@ class BuildReleaseGraph {
         data: timeTaken,
         color: "yellow",
         borderWidth: 0
-      },
+      },      
     ];
     return options;
   }
   generateComittedPrs(options) {
   let reWorkedPrCount=[],
   prCount = [],
-  xAxis_data=[];
-  this.res.data.pullRequestDetailDTOList.map((data) => {
+  xAxis_data=[],
+  comittedData= this.res.data.pullRequestDetailDTOList;
+  comittedData && comittedData.map((data) => {
+    xAxis_data.push(data.repoName);
     if(data.prCount!=="0"){
-      xAxis_data.push(data.repoName);
       prCount.push(parseInt(data.prCount));
     }
-    if(data.reworkedPRCount!=="0"){
-      xAxis_data.push(data.repoName);
+    if(data.reworkedPRCount!=="0"){      
       reWorkedPrCount.push(parseInt(data.reworkedPRCount));
     }
   });
@@ -706,15 +719,15 @@ options.plotOptions = {
 
 options.series = [
   {
-    name: "ReWorked PR Count",
-    data: reWorkedPrCount,
-    color: "#3185ab",
-  },
-  {
     name: "PR Count",
     data: prCount,
-    color: "#ad5a5d",
+    color: '#20c997',
   },
+  {
+    name: "ReWorked PR Count",
+    data: reWorkedPrCount,
+    color: '#ec5050',
+  }  
 ];
 
 return options;
@@ -848,7 +861,7 @@ return options;
       {
         name: "Open PR",
         data: open_pr_details,
-        color: "#20c997",
+        color: "#ffc107",
         tooltip: {
           pointFormat: `{point.name}<br>{point.series.name}:<b>{point.y}{point.data}`,
        },
@@ -856,7 +869,7 @@ return options;
       {
         name: "Closed PR",
         data:  close_pr_details,
-        color: "#ffc107",
+        color: "#20c997",
         tooltip: {
           pointFormat: `{point.name}<br>{point.series.name}:<b>{point.y}`,
        },
