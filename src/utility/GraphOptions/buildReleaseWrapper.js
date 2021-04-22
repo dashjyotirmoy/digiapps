@@ -602,7 +602,7 @@ class BuildReleaseGraph {
   prCount = [],
   xAxis_data=[],
   comittedData= this.res.data.pullRequestDetailDTOList;
-  comittedData && comittedData.map((data) => {debugger
+  comittedData && comittedData.map((data) => {
     if(data.prCount!=="0" || data.reworkedPRCount!=="0"){
       xAxis_data.push(data.repoName);
       prCount.push(parseInt(data.prCount));
@@ -837,7 +837,7 @@ return options;
     //   style: {
     //     pointerEvents: 'auto'
     //   },
-    //   formatter: function (t) {debugger
+    //   formatter: function (t) {
     //         return `${this.y}
     //         <br/><div style='width: 130px;max-height:10px,overflow: auto;'><table style="border: 1px solid black;"><tr><th style="border: 1px solid black;">Linked Pull Request</th></tr>
     //               <td style="border: 1px solid black;">

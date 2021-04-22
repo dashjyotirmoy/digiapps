@@ -174,7 +174,7 @@ class BuildRelease extends Component {
 
   //function that identifies the chart to render based on type during createCharts() execution
 
-  setChart = (type, title, data) => {debugger
+  setChart = (type, title, data) => {
     switch (type) {
       case "BuildResult":
         return (
@@ -224,10 +224,8 @@ class BuildRelease extends Component {
   //compare the current props and incoming props
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (
-      (this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId) &&
-      nextProps.projId 
-    ) {
+    if (this.props.projId !== nextProps.projId ||this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId)
+    {
       this.setState({
         all_data: true,
         build_data: true
@@ -258,7 +256,7 @@ class BuildRelease extends Component {
     });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate() {debugger
     if (this.state.all_data) {
       this.setRepoitoryWidget();
     }
@@ -266,7 +264,7 @@ class BuildRelease extends Component {
         this.setBuildReleaseData(this.props.buildReleaseChart);
     }
   }
-  setBuildReleaseFilterData(releaseData,name){debugger
+  setBuildReleaseFilterData(releaseData,name){
     this.setState({
       build_data:false
     });
