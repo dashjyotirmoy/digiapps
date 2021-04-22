@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import Grid from "../../Grid-Layout/Grid";
 import ControlChartHigh from "../../Charts/ControlChartHigh/ControlChartHigh";
-import { buildReleasePullDataDispatch,buildReleaseDataDispatch,buildRepoDropValDispatch } from "../../../../store/actions/buildChartData";
+import { buildPullDataDispatch,buildReleaseDataDispatch,buildRepoDropValDispatch } from "../../../../store/actions/buildChartData";
 // import { velocityRepoDropValDispatch } from "../../../../store/actions/chartData";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -174,7 +174,7 @@ class BuildRelease extends Component {
 
   //function that identifies the chart to render based on type during createCharts() execution
 
-  setChart = (type, title, data) => {
+  setChart = (type, title, data) => {debugger
     switch (type) {
       case "BuildResult":
         return (
@@ -266,19 +266,59 @@ class BuildRelease extends Component {
         this.setBuildReleaseData(this.props.buildReleaseChart);
     }
   }
+  setBuildReleaseFilterData(releaseData,name){debugger
+    this.setState({
+      build_data:false
+    });
+    this.state.repositoryWidgets.filter((item)=>{
+      if(name==='Build Results'){
+        return Object.assign(this.state.repositoryWidgets[0], {data: releaseData.buildDTO});
+        
+      }else if(name==='Mean Time to Fix Broken Builds'){
+          return Object.assign(this.state.repositoryWidgets[1], {data: releaseData.brokenBuildDTO});
+          
+      }else if(name==='Release Cadence'){
+        return Object.assign(this.state.repositoryWidgets[2], {data: releaseData.releaseCadenceDTOList});
+         
+      }else if(name==='Open v/s Closed Pull Requests'){
+        return Object.assign(this.state.repositoryWidgets[3], {data: releaseData.pullRequestDTO}); 
+      }
+      else if(name==='Mean Time to Merge Pull Requests'){
+        return Object.assign(this.state.repositoryWidgets[4], {data: releaseData.pullRequestDTO}); 
+      }else {
+        return Object.assign(this.state.repositoryWidgets[5], {data: releaseData.pullRequestDTO}); 
+      }
+    });
+    this.createCharts(
+      this.createChartObject(this.state.repositoryWidgets)
+    );
+    let layout_instance = new Layout(6);
+    this.setState({
+      layout: layout_instance.layout
+    });
+    this.setState({
+      // response: this.props.velocityCharts,
+      received: true,
+      show: false
+    });
+  }
   setBuildReleaseData(releaseData){
     this.setState({
       build_data:false
     });
     this.state.repositoryWidgets.map((item)=>{
       if(item.type==='BuildResult'){
-        return Object.assign(item, {data: releaseData.buildDTO});
+        Object.assign(item, {data: releaseData.buildDTO});
+        
       }else if(item.type==='MeanTimeBrokenBuild'){
-        return Object.assign(item, {data: releaseData.brokenBuildDTO}); 
+          Object.assign(item, {data: releaseData.brokenBuildDTO});
+          
       }else if(item.type==='ReleaseCadence'){
-        return Object.assign(item, {data: releaseData.releaseCadenceDTOList});
+        Object.assign(item, {data: releaseData.releaseCadenceDTOList});
+         
       }else{
-        return Object.assign(item, {data: this.props.buildPullChart.pullRequestDTO});
+        Object.assign(item, {data: this.props.buildPullChart.pullRequestDTO});
+         
       }
     });
     this.createCharts(
@@ -300,7 +340,7 @@ class BuildRelease extends Component {
     });
     this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId);
     this.props
-      .buildReleasePullDataDispatch(this.props.currentClientId,'all_time',this.props.projId,this.props.currentSourceType)
+      .buildPullDataDispatch(this.props.currentClientId,'all_time',this.props.projId,this.props.currentSourceType)
       .then(item => {
         if (this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList.length > 0 || this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList !== null) {
           this.setRepository(this.props.buildPullChart);
@@ -338,20 +378,19 @@ class BuildRelease extends Component {
     });
     return defaultList;
   };
-  handleFilter = (name,filterValue) => {
-    if(name==="Build Results" || name==="Release Cadence"){
-      const buildRelsult = this.state.repositoryWidgets.filter(item=>item.name===name);
+  handelFilter = (name,filterValue) => {
+    if(name==="Build Results" || name==="Release Cadence" || name==='Mean Time to Fix Broken Builds'){
       this.props.buildReleaseDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.buildReleaseChart.repoId,this.props.currentSourceType)
       .then(item => {
-        this.setBuildReleaseData(this.props.buildReleaseChart);
+        this.setBuildReleaseFilterData(this.props.buildReleaseChart,name);
       }).catch(error => {
         console.error(error);
       });
-    }else if(name==="Open v/s Closed Pull Requests"){
+    }else if(name==="Open v/s Closed Pull Requests" || name==='Mean Time to Merge Pull Requests'|| name==='Commited PRs with & without Rework'){
       this.props
-      .buildReleasePullDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.currentSourceType)
+      .buildPullDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.currentSourceType)
       .then(item => {
-        this.setBuildReleaseData(this.props.buildReleaseChart);
+        this.setBuildReleaseFilterData(this.props.buildPullChart,name);
       }).catch(error => {
         console.error(error);
       });
@@ -489,7 +528,7 @@ class BuildRelease extends Component {
               bgTheme={bgTheme}
               defaultFilter= {this.state.defaultFilter}
               dropData= {this.state.dropData}
-              onSelectFilter={this.handleFilter}
+              onSelectFilter={this.handelFilter}
             />
           ) : null}
         </React.Fragment>
@@ -505,7 +544,7 @@ const mapStateToProps = state => {
     currentExecId: state.execData.executiveId,
     currentClientId: state.execData.currentClientId,
     widgetList: state.execData.widgetList,
-    buildPullChart: state.buildData.buildReleasePullProjectDetails,
+    buildPullChart: state.buildData.buildPullProjectDetails,
     buildReleaseChart: state.buildData.buildReleaseProjectDetails,
     projId: state.productDetails.currentProject.projectDetails.id,
     sprintId: state.productDetails.currentSprint.sprintInfo.id,
@@ -521,7 +560,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ widgetListDispatch,
-  buildReleasePullDataDispatch,buildReleaseDataDispatch, buildRepoDropValDispatch
+  buildPullDataDispatch,buildReleaseDataDispatch, buildRepoDropValDispatch
   }, dispatch);
 };
 

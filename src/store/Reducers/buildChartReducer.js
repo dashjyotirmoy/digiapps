@@ -1,7 +1,7 @@
 import * as actionType from "../actions/actionTypes";
 
 const initialState = {
-  buildReleasePullProjectDetails: "",
+  buildPullProjectDetails: "",
   buildReleaseProjectDetails: ""
 };
 const chartReducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const chartReducer = (state = initialState, action) => {
     case actionType.SET_BUILD_RELEASE_PULL_DETAILS:
       return {
         ...state,
-        buildReleasePullProjectDetails: action.payload.buildReleasePullProjectDetails
+        buildPullProjectDetails: action.payload.buildPullProjectDetails
       };
       case actionType.SET_BUILD_RELEASE_DETAILS:
       return {

@@ -1,6 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import api from "../../utility/Http/devOpsApis";
-export const buildReleasePullDataDispatch = (clientId,filter,productId,sourceTypeId) =>
+export const buildPullDataDispatch = (clientId,filter,productId,sourceTypeId) =>
   async dispatch => {
     try {
       if (productId) {
@@ -8,7 +8,7 @@ export const buildReleasePullDataDispatch = (clientId,filter,productId,sourceTyp
         dispatch({
         type: actionTypes.SET_BUILD_RELEASE_PULL_DETAILS,
         payload: {
-          buildReleasePullProjectDetails: response.data,
+          buildPullProjectDetails: response.data,
           chartDataReceived: true
         }
       });

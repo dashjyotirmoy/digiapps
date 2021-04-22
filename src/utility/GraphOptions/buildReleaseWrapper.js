@@ -406,13 +406,19 @@ class BuildReleaseGraph {
         type: "line",
         name: "User Story",
         data: userStory,
-        color: "green",
+        color: "#20c997",
+        marker: {
+          enabled: false
+        },
       },
       {
         type: "line",
         name: "Pull Request",
         data: pullRequest,
         color: "orange",
+        marker: {
+          enabled: false
+        },
       },
     ];
     return options;
@@ -518,10 +524,7 @@ class BuildReleaseGraph {
       },
     };
     options.yAxis = {
-      min: 0,
-      // max: 15,
       maxPadding: 0.4,
-      tickInterval: 2,
       gridLineColor: "transparent",
       plotLines: [{
         color: 'yellow',
@@ -599,16 +602,15 @@ class BuildReleaseGraph {
   prCount = [],
   xAxis_data=[],
   comittedData= this.res.data.pullRequestDetailDTOList;
-  comittedData && comittedData.map((data) => {
-    xAxis_data.push(data.repoName);
-    if(data.prCount!=="0"){
+  comittedData && comittedData.map((data) => {debugger
+    if(data.prCount!=="0" || data.reworkedPRCount!=="0"){
+      xAxis_data.push(data.repoName);
       prCount.push(parseInt(data.prCount));
-    }
-    if(data.reworkedPRCount!=="0"){      
       reWorkedPrCount.push(parseInt(data.reworkedPRCount));
     }
   });
-
+console.log("prCount",prCount);
+console.log("reWorkedPrCount",reWorkedPrCount);
 options.chart = {
   height: 0,
   backgroundColor: ""
@@ -646,7 +648,6 @@ options.xAxis = {
     style: {
       color: this.res.bgTheme ? "#f5f5f5":'#333333',
     }
-    // format: "Sprint {value}"
   },
   title: {
     text: `Repository Name`,
@@ -658,11 +659,8 @@ options.xAxis = {
 };
 
 options.yAxis = {
-  min: 0,
-  // max: 160,
   maxPadding: 0.4,
   gridLineColor: "transparent",
-  tickInterval: 20,
   title: {
     text: `PR Count`,
     rotation: -90,
@@ -675,10 +673,6 @@ options.yAxis = {
       color: this.res.bgTheme ? "#f5f5f5":'#333333',
     },
     format: "{value}"
-  },
-  lineColor: "blue",
-  stackLabels: {
-    enabled: false
   },
 };
 
@@ -710,16 +704,11 @@ options.plotOptions = {
     borderRadius: 6,
     pointWidth: 10
   },
-
-  column: {
-    pointPadding: 0.2,
-    borderWidth: 0
-  }
 };
 
 options.series = [
   {
-    name: "PR Count",
+    name: "Worked PR Count",
     data: prCount,
     color: '#20c997',
   },
