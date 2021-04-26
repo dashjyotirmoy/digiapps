@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import Select from 'react-select';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Container} from "react-bootstrap";
@@ -19,7 +20,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Grid = props => {
   const bgTheme = props.bgTheme;
-  const defaultFilter = props.defaultFilter;
+  const defaultFilter= props.defaultFilter;
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
       <div key={ele.i} className={`${bgTheme ? 'card-border-dark bg-dark-theme' : 'card-border-light'}`}>
@@ -27,10 +28,16 @@ const Grid = props => {
           className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
           style={{ zIndex: "1",right:'11px',top:'15px'}}
         >
+          {/* {props.chartData[ele.i].showDrop &&
+            <Select 
+            options={props.dropData}
+            onChange={event => {debugger 
+              props.onSelectFilter(props.chartData[ele.i].name,event.value)}}
+            />} */}
           {props.chartData[ele.i].showDrop && <select  onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].name,event.target.value)} className={`border ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
                     {props.dropData.map(function (data, key) {
                       return (
-                        <option className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.id} selected={defaultFilter===data.id}>{data.name}</option>)
+                        <option className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.value} selected={defaultFilter===data.value}>{data.label}</option>)
                     })}
                   </select>}
           <p

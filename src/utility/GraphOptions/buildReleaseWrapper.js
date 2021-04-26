@@ -403,22 +403,17 @@ class BuildReleaseGraph {
         color: "#5173CE",
       },
       {
-        type: "line",
-        name: "User Story",
+        name: "",
         data: userStory,
-        color: "#20c997",
-        marker: {
-          enabled: false
-        },
+        visible: false,
+        showInLegend: false,
+        
       },
       {
-        type: "line",
-        name: "Pull Request",
+        name: "",
         data: pullRequest,
-        color: "orange",
-        marker: {
-          enabled: false
-        },
+        showInLegend: false,
+        visible: false,
       },
     ];
     return options;
@@ -706,12 +701,12 @@ options.plotOptions = {
 
 options.series = [
   {
-    name: "Worked PR Count",
+    name: "Pr without rework",
     data: prCount,
     color: '#20c997',
   },
   {
-    name: "ReWorked PR Count",
+    name: "Pr with Rework",
     data: reWorkedPrCount,
     color: '#ec5050',
   }  

@@ -34,7 +34,6 @@ class BuildRelease extends Component {
       md: []
     },
     gridCol: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    // dropData: [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_month", name: "Last 3 Months" }],
     gridBreakpoints: { lg: 1200, md: 768, sm: 576, xs: 480, xxs: 0 },
     show: true,
     selectedRepo: "",
@@ -46,9 +45,9 @@ class BuildRelease extends Component {
     removed: [],
     bgTheme:'',
     clientId:'',
-    defaultFilter:'',
+    defaultFilter:"All Time",
     selectWidget: 'Select Widget',
-    dropData: [{ id: "all_time", name: "All Time" }, { id: "last_1_month", name: "Last Month" }, { id: "last_3_months", name: "Last 3 Months" }],
+    dropData: [{value: "all_time", label: "All Time" },{ value: "last_1_month", label: "Last Month" }, { value: "last_3_months", label: "Last 3 Months" }],
     repositoryWidgets:[{
       name:'Build Results',
       type:'BuildResult',
@@ -79,7 +78,7 @@ class BuildRelease extends Component {
       title:'Mean Time Merge Pull Request',
       showDrop: true,
     },{
-      name:'Commited PRs with & without Rework',
+      name:'Committed PRs with & without Rework',
       type:'CommittedPrsWithAndWithoutRework',
       title:'Committed Prs With And Without Rework',
       showDrop: true,
@@ -333,7 +332,7 @@ class BuildRelease extends Component {
     });
     return defaultList;
   };
-  handelFilter = (name,filterValue) => {
+  handelFilter = (name,filterValue) => {debugger
     if(name==="Build Results" || name==="Release Cadence" || name==='Mean Time to Fix Broken Builds'){
       this.props.buildReleaseDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.buildReleaseChart.repoId,this.props.currentSourceType)
       .then(item => {
