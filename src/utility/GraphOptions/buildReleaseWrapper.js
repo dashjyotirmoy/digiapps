@@ -732,19 +732,15 @@ return options;
       openPRDetailLabel=[],
       IDsData=this.res.data.pullRequestDetailDTOList;
       IDsData.map(item=> {
-        if(item.closedPRDetail.count !== "0"){
-        close_pr_details.push(parseInt(item.closedPRDetail.count));
+        if(item.closedPRDetail.count !== "0" || item.openPRDetail.count !== "0"){
         repoName.push(item.repoName);
-        closedPRDetail.push(item.closedPRDetail.uriList.map((urlList)=> `<a href="${urlList}" target="_blank">${urlList.substring(urlList.lastIndexOf("/") + 1)}</a>`));
-    }
-        if(item.openPRDetail.count !== "0"){
-          open_pr_details.push(parseInt(item.openPRDetail.count));
-          repoName.push(item.repoName);
-          openPRDetail.push(item.openPRDetail);
-          openPRDetailLabel.push(item.openPRDetail.uriList && item.openPRDetail.uriList.map(item=>
-            item.substring(item.lastIndexOf("/") + 1))
-        );
-        }
+        close_pr_details.push(parseInt(item.closedPRDetail.count));
+        open_pr_details.push(parseInt(item.openPRDetail.count));
+    //     openPRDetailLabel.push(item.openPRDetail.uriList && item.openPRDetail.url.map(item=>
+    //       item.substring(item.lastIndexOf("/") + 1))
+    //   );
+    //     closedPRDetail.push(item.closedPRDetail.url.map((urlList)=> `<a href="${urlList}" target="_blank">${urlList.substring(urlList.lastIndexOf("/") + 1)}</a>`));
+      }
     });
     options.chart = {
       type: "column",
