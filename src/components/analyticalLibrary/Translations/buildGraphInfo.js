@@ -17,7 +17,7 @@ export const buildGraphInfo = {
   "Open v/s Closed Pull Requests": `
    <div>
         <p>
-          This chart shows the number of open and closed pull requests for all repos of the selected.
+          This chart shows the number of open and closed pull request for all repos of the selected Project.
         </p>
       </div>
 `,
@@ -26,7 +26,7 @@ export const buildGraphInfo = {
     This chart shows the average time taken to merge a pull request for each repo.
   </p>
 </div>`,
-"Commited PRs with & without Rework": `<div>
+"Committed PRs with & without Rework": `<div>
 <p>
   This chart shows the comparison between PRs with rework and PRs without any rework.
 </p>
