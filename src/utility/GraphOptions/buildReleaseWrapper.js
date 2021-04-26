@@ -609,8 +609,6 @@ class BuildReleaseGraph {
       reWorkedPrCount.push(parseInt(data.reworkedPRCount));
     }
   });
-console.log("prCount",prCount);
-console.log("reWorkedPrCount",reWorkedPrCount);
 options.chart = {
   height: 0,
   backgroundColor: ""
