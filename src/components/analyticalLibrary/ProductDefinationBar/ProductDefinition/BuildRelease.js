@@ -111,7 +111,7 @@ class BuildRelease extends Component {
       layout: layouts
     });
   }
-  }
+  };
   addChartList= (list,removedindex) => {
     let updatedList = [...this.state.charts];
     let updatedRemoveBadge = this.state.showRemovedItemsList.filter((ele,index)=>{
@@ -129,7 +129,7 @@ class BuildRelease extends Component {
       charts: updatedList,
       showRemovedItemsList: updatedRemoveBadge
     });
-  }
+  };
   //function to remove a chart component from the grid layout
 
   removeChartComponent = chartIndex => {
@@ -220,50 +220,7 @@ class BuildRelease extends Component {
     });
     return processedData;
   };
-
   //compare the current props and incoming props
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props.projId !== nextProps.projId ||this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId)
-    {
-      this.setState({
-        all_data: true,
-        build_data: true
-      });
-    }
-    if(this.props.currentClientId !== nextProps.currentClientId){
-      this.setState({
-        clientId: nextProps.currentClientId
-      });
-    }
-  }
-
-  componentDidMount() {
-    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
-    const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
-    bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
-    if (this.props.projId && (this.props.sprintId || this.props.projectSprintId)) {
-      this.setState({
-        all_data: true,
-        build_data: true
-      });
-    }
-    let layout_instance = new Layout(5);
-    this.setState({
-      layout: layout_instance.layout,
-      bgTheme: bgTheme
-    });
-  }
-
-  componentDidUpdate() {debugger
-    if (this.state.all_data) {
-      this.setRepoitoryWidget();
-    }
-    if(this.state.build_data && this.props.buildReleaseChart){
-        this.setBuildReleaseData(this.props.buildReleaseChart);
-    }
-  }
   setBuildReleaseFilterData(releaseData,name){
     this.setState({
       build_data:false
@@ -299,8 +256,8 @@ class BuildRelease extends Component {
       received: true,
       show: false
     });
-  }
-  setBuildReleaseData(releaseData){
+  };
+  setBuildReleaseData(releaseData){debugger
     this.setState({
       build_data:false
     });
@@ -331,7 +288,7 @@ class BuildRelease extends Component {
       received: true,
       show: false
     });
-  }
+  };
   setRepoitoryWidget() {
     this.setState({
       all_data: false,
@@ -352,7 +309,7 @@ class BuildRelease extends Component {
       .catch(error => {
         console.error(error);
       });
-  }
+  };
 
   markSelected = (prodList, id) => {
     const resetList = this.resetSelect(prodList);
@@ -407,7 +364,13 @@ class BuildRelease extends Component {
           projectName: ele.repoName
         };
       });
-      this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repositoryData[0].repoId,this.props.currentSourceType);
+      this.props.buildReleaseDataDispatch(this.props.currentClientId,this.state.dropData[0].id,this.props.projId,repositoryData[0].repoId,this.props.currentSourceType)
+      .then(item => {
+        this.setBuildReleaseData(this.props.buildReleaseChart);
+      }).catch(error => {
+        console.error(error);
+      });
+      // this.props.buildReleaseDataDispatch(this.props.currentClientId,'all_time',this.props.projId,repositoryData[0].repoId,this.props.currentSourceType);
       this.setState({
         repoData: repoDetails,
         selectedRepo: "",
@@ -456,6 +419,47 @@ class BuildRelease extends Component {
         repoData: repoDetails,
         selectedRepo: repoDetails[selectedIndex].projectName
       });
+  };
+  UNSAFE_componentWillReceiveProps(nextProps) {debugger
+    if (this.props.projId !== nextProps.projId)
+    {
+      this.setState({
+        all_data: true,
+        build_data: true
+      });
+    }
+    if(this.props.currentClientId !== nextProps.currentClientId){
+      this.setState({
+        clientId: nextProps.currentClientId
+      });
+    }
+  };
+
+  componentDidMount() {
+    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = labels[0].mappings.bgColor;
+    bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
+    if (this.props.projId && (this.props.sprintId || this.props.projectSprintId)) {
+      this.setState({
+        all_data: true,
+        build_data: true
+      });
+    }
+    let layout_instance = new Layout(6);
+    this.setState({
+      layout: layout_instance.layout,
+      bgTheme: bgTheme
+    });
+  };
+
+  componentDidUpdate() {debugger
+    if (this.state.all_data) {
+      this.setRepoitoryWidget();
+    }
+    if(this.state.build_data && this.props.buildReleaseChart){
+        this.setBuildReleaseData(this.props.buildReleaseChart);
+    }
   };
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
