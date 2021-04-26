@@ -257,7 +257,7 @@ class BuildRelease extends Component {
       show: false
     });
   };
-  setBuildReleaseData(releaseData){debugger
+  setBuildReleaseData(releaseData){
     this.setState({
       build_data:false
     });
@@ -420,7 +420,7 @@ class BuildRelease extends Component {
         selectedRepo: repoDetails[selectedIndex].projectName
       });
   };
-  UNSAFE_componentWillReceiveProps(nextProps) {debugger
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.projId !== nextProps.projId)
     {
       this.setState({
@@ -453,13 +453,13 @@ class BuildRelease extends Component {
     });
   };
 
-  componentDidUpdate() {debugger
+  componentDidUpdate() {
     if (this.state.all_data) {
       this.setRepoitoryWidget();
     }
-    if(this.state.build_data && this.props.buildReleaseChart){
-        this.setBuildReleaseData(this.props.buildReleaseChart);
-    }
+    // if(this.state.build_data && this.props.buildReleaseChart){
+    //     this.setBuildReleaseData(this.props.buildReleaseChart);
+    // }
   };
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
