@@ -457,9 +457,9 @@ class BuildRelease extends Component {
     if (this.state.all_data) {
       this.setRepoitoryWidget();
     }
-    if(this.state.build_data && this.props.buildReleaseChart){
-        this.setBuildReleaseData(this.props.buildReleaseChart);
-    }
+    // if(this.state.build_data && this.props.buildReleaseChart){
+    //     this.setBuildReleaseData(this.props.buildReleaseChart);
+    // }
   };
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
