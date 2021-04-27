@@ -34,12 +34,18 @@ const Grid = props => {
             onChange={event => {debugger 
               props.onSelectFilter(props.chartData[ele.i].name,event.value)}}
             />} */}
-          {props.chartData[ele.i].showDrop && <select  onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].name,event.target.value)} className={`border ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
-                    {props.dropData.map(function (data, key) {
+          {props.chartData[ele.i].showFilter && <select  style={{ fontSize: 'smaller',width: '5rem'}} onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].name,event.target.value)} className={`border font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
+                    {props.dropFilter.map(function (data, key) {
                       return (
-                        <option className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.value} selected={defaultFilter===data.value}>{data.label}</option>)
+                        <option style={{ fontSize: 'medium'}} className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.value} selected={defaultFilter===data.value}>{data.label}</option>)
                     })}
                   </select>}
+          {props.chartData[ele.i].showDrop && <select style={{ fontSize: 'smaller',width: '6rem'}} onChange={(event)=>props.onSelectDrop(props.chartData[ele.i].name,event.target.value)} className={`border ml-2 font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
+                    {props.dropData.map(function (data, key) {
+                      return (
+                        <option style={{ fontSize: 'medium'}} className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.value} selected={defaultFilter===data.value}>{data.label}</option>)
+                    })}
+          </select>}
           <p
             className="d-inline px-1"
             data-toggle="tooltip"
