@@ -179,7 +179,7 @@ class BuildReleaseGraph {
       useHTML: true,
       text: `
       <div>
-      <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageMergeTime}hrs</b></span><b style="margin-left:10px;color:yellow">Average Time</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageMergeTime}hrs</b></span><b style="margin-left:10px;color:#ffa500">Average Time</b></span>
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${totalPrCount}</b></span><b style="margin-left:5px">Total PRs</b></span>
       </div>`,
       style: {
@@ -226,7 +226,7 @@ class BuildReleaseGraph {
         }
       },
       plotLines: [{
-        color: 'yellow',
+        color: '#ffa500',
         value: averageMergeTime,
         width: '1',
         zIndex: 4,
@@ -531,7 +531,7 @@ class BuildReleaseGraph {
       maxPadding: 0.4,
       gridLineColor: "transparent",
       plotLines: [{
-        color: 'yellow',
+        color: '#ffa500',
         value: timeTaken,
         width: '1',
         zIndex: 4,
@@ -595,7 +595,7 @@ class BuildReleaseGraph {
         name: "Average Time",
         type: "line",
         data: timeTaken,
-        color: "yellow",
+        color: "#ffa500",
         borderWidth: 0
       },      
     ];

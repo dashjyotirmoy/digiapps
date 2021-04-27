@@ -428,10 +428,10 @@ class BuildRelease extends Component {
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
       filterStatus: "Repository",
-      defaultFilter: this.state.dropData[0].id
+      defaultFilter: this.state.dropFilter[0].value
     });
     this.props.buildRepoDropValDispatch(repoDetails[selectedIndex].projectName);
-    this.props.buildReleaseDataDispatch(this.props.currentClientId,this.state.dropData[0].id,this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType)
+    this.props.buildReleaseDataDispatch(this.props.currentClientId,this.state.dropFilter[0].value,this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType)
     .then(item => {
       this.setBuildReleaseData(this.props.buildReleaseChart);
     }).catch(error => {
