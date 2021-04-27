@@ -126,7 +126,7 @@ class BuildReleaseGraph {
      hour=0,
      day=0,
      meanData= this.res.data,
-     averageMergeTime=meanData.averageMergeTime,
+     averageMergeTime=parseInt(meanData.averageMergeTime),
      totalPrCount=meanData.totalPRCount;
      function dayHour(time){
       hour = time;
@@ -179,7 +179,7 @@ class BuildReleaseGraph {
       useHTML: true,
       text: `
       <div>
-      <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageMergeTime}hrs</b></span><b style="margin-left:10px">Average Time</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageMergeTime}hrs</b></span><b style="margin-left:10px;color:yellow">Average Time</b></span>
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${totalPrCount}</b></span><b style="margin-left:5px">Total PRs</b></span>
       </div>`,
       style: {
@@ -224,7 +224,20 @@ class BuildReleaseGraph {
         style: {
           color: this.res.bgTheme ? "#f5f5f5":'#333333',
         }
-      }
+      },
+      plotLines: [{
+        color: 'yellow',
+        value: averageMergeTime,
+        width: '1',
+        zIndex: 4,
+        dashStyle: 'dash',
+        label: {
+          text: averageMergeTime+'hrs',
+          style: {
+            color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          }
+        },
+    }]
     };
     options.legend = {
       enabled: true,
@@ -717,10 +730,6 @@ return options;
     let open_pr_details = [],
       close_pr_details = [],
       repoName = [],
-      closedPRDetail=[],
-      openPRDetail=[],
-      closedPRDetailLabel=[],
-      openPRDetailLabel=[],
       IDsData=this.res.data.pullRequestDetailDTOList;
       IDsData.map(item=> {
         if(item.closedPRDetail.count !== "0" || item.openPRDetail.count !== "0"){
@@ -812,21 +821,6 @@ return options;
         cursor: "pointer",        
       },
     };
-    // options.tooltip={
-    //   enabled: true,
-    //   useHTML: true,
-    //   style: {
-    //     pointerEvents: 'auto'
-    //   },
-    //   formatter: function (t) {
-    //         return `${this.y}
-    //         <br/><div style='width: 130px;max-height:10px,overflow: auto;'><table style="border: 1px solid black;"><tr><th style="border: 1px solid black;">Linked Pull Request</th></tr>
-    //               <td style="border: 1px solid black;">
-    //                 {closedPRDetail[this.point.index]}
-    //               </td>
-    //             </table></div>`;
-    //       },
-    //     };
     options.series = [
       {
         name: "Open PR",
