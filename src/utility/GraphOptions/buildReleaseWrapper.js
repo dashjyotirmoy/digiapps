@@ -142,9 +142,9 @@ class BuildReleaseGraph {
         }
       };
      meanData.pullRequestDetailDTOList && meanData.pullRequestDetailDTOList.map((item)=>{
-      if(item.meanMergeTime !== "0"){
-      yAxis.push(parseInt(item.meanMergeTime));
-      repoName.push(item.repoName);
+      if(parseInt(item.meanMergeTime) !== 0){
+        yAxis.push(parseInt(item.meanMergeTime));
+        repoName.push(item.repoName);
       }
     });
     options.chart = {
@@ -270,11 +270,7 @@ class BuildReleaseGraph {
      releaseCadence=[],
      userStory=[],
      pullRequest=[],
-    //  linkedPullRequest=[],
-    //  linkedUserStory=[],
-    //  linkedPullRequestLabel=[],
-    //  linkedUserStoryLabel=[],
-     meanData= this.res.data;
+     meanData= this.res.data.releaseCadenceDTOList;
      function dayHour(time){
           hour = time;
           day = 0;
@@ -289,18 +285,10 @@ class BuildReleaseGraph {
       }
      };
      meanData && meanData.map((item)=>{
-      releaseCadence.push(parseInt(item.timeTaken));
-      userStory.push(parseInt(item.linkedUserStory.count));
-      pullRequest.push(parseInt(item.linkedPullRequest.count));
+      releaseCadence.push({'y':parseInt(item.timeTaken),'url':item.url});
+      userStory.push(parseInt(item.linkedUserStoryCount));
+      pullRequest.push(parseInt(item.linkedPullRequestCount));
       repoName.push(item.releaseName);
-      // linkedPullRequest.push(item.linkedPullRequest);
-      // linkedUserStory.push(item.linkedUserStory);
-      // linkedPullRequestLabel.push(item.linkedPullRequest.url && item.linkedPullRequest.url.map(item=>
-      //   item.substring(item.lastIndexOf("/") + 1))
-      // );
-      // linkedUserStoryLabel.push(item.linkedUserStory.url && item.linkedUserStory.url.map(item=>
-      //     item.substring(item.lastIndexOf("/") + 1))
-      // );
     });
     options.chart = {
       scrollablePlotArea: {
@@ -401,6 +389,14 @@ class BuildReleaseGraph {
         name: "Time Taken",
         data: releaseCadence,
         color: "#5173CE",
+        cursor: 'pointer',
+            point: {
+                events: {
+                    click: function () {
+                        window.open(this.options.url, '_blank');
+                    }
+                }
+            }
       },
       {
         name: "",
@@ -729,12 +725,8 @@ return options;
       IDsData.map(item=> {
         if(item.closedPRDetail.count !== "0" || item.openPRDetail.count !== "0"){
         repoName.push(item.repoName);
-        close_pr_details.push(parseInt(item.closedPRDetail.count));
-        open_pr_details.push(parseInt(item.openPRDetail.count));
-    //     openPRDetailLabel.push(item.openPRDetail.uriList && item.openPRDetail.url.map(item=>
-    //       item.substring(item.lastIndexOf("/") + 1))
-    //   );
-    //     closedPRDetail.push(item.closedPRDetail.url.map((urlList)=> `<a href="${urlList}" target="_blank">${urlList.substring(urlList.lastIndexOf("/") + 1)}</a>`));
+        close_pr_details.push({'y':parseInt(item.closedPRDetail.count),'url':item.closedPRDetail.url});
+        open_pr_details.push({'y': parseInt(item.openPRDetail.count),'url':item.openPRDetail.url});
       }
     });
     options.chart = {
@@ -843,6 +835,14 @@ return options;
         tooltip: {
           pointFormat: `{point.name}<br>{point.series.name}:<b>{point.y}{point.data}`,
        },
+       cursor: 'pointer',
+            point: {
+                events: {
+                    click: function () {
+                        window.open(this.options.url, '_blank');
+                    }
+                }
+            }
       },
       {
         name: "Closed PR",
@@ -851,6 +851,14 @@ return options;
         tooltip: {
           pointFormat: `{point.name}<br>{point.series.name}:<b>{point.y}`,
        },
+       cursor: 'pointer',
+            point: {
+                events: {
+                    click: function () {
+                        window.open(this.options.url, '_blank');
+                    }
+                }
+            }
       }     
     ];
     return options;

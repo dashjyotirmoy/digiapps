@@ -47,41 +47,48 @@ class BuildRelease extends Component {
     clientId:'',
     defaultFilter:"All Time",
     selectWidget: 'Select Widget',
-    dropData: [{value: "all_time", label: "All Time" },{ value: "last_1_month", label: "Last Month" }, { value: "last_3_months", label: "Last 3 Months" }],
+    dropFilter: [{value: "all_time", label: "All Time" },{ value: "last_1_month", label: "Last Month" }, { value: "last_3_months", label: "Last 3 Months" }],
+    dropData: [{value: "all_branches", label: "All Branches" },{ value: "long_live_branches", label: "Long Live Branches" }],
     repositoryWidgets:[{
       name:'Build Results',
       type:'BuildResult',
       title:'Build Result',
       showDrop: true,
+      showFilter: true
     },
     {
       name:'Mean Time to Fix Broken Builds',
       type:'MeanTimeBrokenBuild',
       title:'Mean Time Broken Build',
       showDrop: true,
+      showFilter: true
     },
     {
       name:'Release Cadence',
       type:'ReleaseCadence',
       title:'Release Cadence',
-      showDrop: true,
+      showDrop: false,
+      showFilter: true
     },
     {
       name:'Open v/s Closed Pull Requests',
       type:'OpenClosedPullRequests',
       title:'Open Closed Pull Requests',
-      showDrop: true,
+      showDrop: false,
+      showFilter: true
     },
     {
       name:'Mean Time to Merge Pull Requests',
       type:'MeanTimeMergePullRequest',
       title:'Mean Time Merge Pull Request',
-      showDrop: true,
+      showDrop: false,
+      showFilter: true
     },{
       name:'Committed PRs with & without Rework',
       type:'CommittedPrsWithAndWithoutRework',
       title:'Committed Prs With And Without Rework',
-      showDrop: true,
+      showDrop: false,
+      showFilter: true
     }
   ],
 
@@ -214,6 +221,7 @@ class BuildRelease extends Component {
         data: ele.data,
         title: ele.name,
         showDrop: ele.showDrop,
+        showFilter: ele.showFilter,
         component: {}
       };
     });
@@ -226,13 +234,13 @@ class BuildRelease extends Component {
     });
     this.state.repositoryWidgets.filter((item)=>{
       if(name==='Build Results'){
-        return Object.assign(this.state.repositoryWidgets[0], {data: releaseData.buildDTO});
+        return Object.assign(this.state.repositoryWidgets[0], {data: releaseData.buildResultDTO.allBranchesBuildDTO});
         
       }else if(name==='Mean Time to Fix Broken Builds'){
-          return Object.assign(this.state.repositoryWidgets[1], {data: releaseData.brokenBuildDTO});
+          return Object.assign(this.state.repositoryWidgets[1], {data: releaseData.meanTimeToFixBrokenBuildDTO.allBranchesBrokenBuildDTO});
           
       }else if(name==='Release Cadence'){
-        return Object.assign(this.state.repositoryWidgets[2], {data: releaseData.releaseCadenceDTOList});
+        return Object.assign(this.state.repositoryWidgets[2], {data: releaseData.releaseDetailDTO});
          
       }else if(name==='Open v/s Closed Pull Requests'){
         return Object.assign(this.state.repositoryWidgets[3], {data: releaseData.pullRequestDTO}); 
@@ -262,13 +270,13 @@ class BuildRelease extends Component {
     });
     this.state.repositoryWidgets.map((item)=>{
       if(item.type==='BuildResult'){
-        Object.assign(item, {data: releaseData.buildDTO});
+        Object.assign(item, {data: releaseData.buildResultDTO.allBranchesBuildDTO});
         
       }else if(item.type==='MeanTimeBrokenBuild'){
-          Object.assign(item, {data: releaseData.brokenBuildDTO});
+          Object.assign(item, {data: releaseData.meanTimeToFixBrokenBuildDTO.allBranchesBrokenBuildDTO});
           
       }else if(item.type==='ReleaseCadence'){
-        Object.assign(item, {data: releaseData.releaseCadenceDTOList});
+        Object.assign(item, {data: releaseData.releaseDetailDTO});
          
       }else{
         Object.assign(item, {data: this.props.buildPullChart.pullRequestDTO});
@@ -332,7 +340,22 @@ class BuildRelease extends Component {
     });
     return defaultList;
   };
-  handelFilter = (name,filterValue) => {debugger
+  handelDrop = (name,dropValue) => {debugger
+    if(dropValue==="long_live_branches"){
+      if(name==="Build Results"){
+        return Object.assign(this.state.repositoryWidgets[0], {data: this.props.buildReleaseChart.buildResultDTO.onlylongLiveBranchesBuildDTO});
+      }else{
+        return Object.assign(this.state.repositoryWidgets[1], {data: this.props.buildReleaseChart.meanTimeToFixBrokenBuildDTO.onlylongLiveBranchesBuildDTO}); 
+      }
+    }else{
+      if(name==="Build Results"){
+        return Object.assign(this.state.repositoryWidgets[0], {data: this.props.buildReleaseChart.buildResultDTO.allBranchesBuildDTO});
+      }else{
+        return Object.assign(this.state.repositoryWidgets[1], {data: this.props.buildReleaseChart.meanTimeToFixBrokenBuildDTO.allBranchesBrokenBuildDTO}); 
+      }
+    }
+  };
+  handelFilter = (name,filterValue) => {
     if(name==="Build Results" || name==="Release Cadence" || name==='Mean Time to Fix Broken Builds'){
       this.props.buildReleaseDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.buildReleaseChart.repoId,this.props.currentSourceType)
       .then(item => {
@@ -363,7 +386,7 @@ class BuildRelease extends Component {
           projectName: ele.repoName
         };
       });
-      this.props.buildReleaseDataDispatch(this.props.currentClientId,this.state.dropData[0].id,this.props.projId,repositoryData[0].repoId,this.props.currentSourceType)
+      this.props.buildReleaseDataDispatch(this.props.currentClientId,this.state.dropFilter[0].value,this.props.projId,repositoryData[0].repoId,this.props.currentSourceType)
       .then(item => {
         this.setBuildReleaseData(this.props.buildReleaseChart);
       }).catch(error => {
@@ -420,7 +443,7 @@ class BuildRelease extends Component {
       });
   };
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props.projId !== nextProps.projId)
+    if (this.props.projId !== nextProps.projId || this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId)
     {
       this.setState({
         all_data: true,
@@ -529,7 +552,9 @@ class BuildRelease extends Component {
               bgTheme={bgTheme}
               defaultFilter= {this.state.defaultFilter}
               dropData= {this.state.dropData}
+              dropFilter= {this.state.dropFilter}
               onSelectFilter={this.handelFilter}
+              onSelectDrop={this.handelDrop}
             />
           ) : null}
         </React.Fragment>
