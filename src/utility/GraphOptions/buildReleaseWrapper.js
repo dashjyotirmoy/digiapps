@@ -126,7 +126,7 @@ class BuildReleaseGraph {
      hour=0,
      day=0,
      meanData= this.res.data,
-     averageMergeTime=parseInt(meanData.averageMergeTime),
+     averageMergeTime=parseFloat(meanData.averageMergeTime).toFixed(2),
      totalPrCount=meanData.totalPRCount;
      function dayHour(time){
       hour = time;
@@ -283,6 +283,7 @@ class BuildReleaseGraph {
      releaseCadence=[],
      userStory=[],
      pullRequest=[],
+     averageTime=parseFloat(this.res.data.averageTimeTaken).toFixed(2),
      meanData= this.res.data.releaseCadenceDTOList;
      function dayHour(time){
           hour = time;
@@ -347,7 +348,25 @@ class BuildReleaseGraph {
         style: {
           color: this.res.bgTheme ? "#f5f5f5":"#333333",
         }
-      }
+      },
+      plotLines: [{
+        color: '#ffa500',
+        value: averageTime,
+        width: '1',
+        zIndex: 4,
+        dashStyle: 'dash',
+        label: {
+          text: averageTime,
+          style: {
+            color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          }
+        },
+        line: {
+          dataLabels: {
+            enabled: true
+          },
+        }
+      }],
     };
     options.title = {
       useHTML: true,
@@ -369,6 +388,22 @@ class BuildReleaseGraph {
       }
     };
     options.plotOptions= {
+  };
+  options.subtitle = {
+    verticalAlign: 'bottom',
+    align: 'left',
+    x:-8,
+    y:26,
+    width: this.res.containerWidth,
+    useHTML: true,
+    text: `
+    <div>
+    <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageTime}hrs</b></span><b style="margin-left:10px;color:#ffa500">Average Time</b></span>
+    
+    </div>`,
+    style: {
+      color: this.res.bgTheme ? "#f5f5f5":'#333333',
+    }
   };
     options.legend = {
       enabled: true,

@@ -228,24 +228,24 @@ class BuildRelease extends Component {
     return processedData;
   };
   //compare the current props and incoming props
-  setBuildReleaseFilterData(releaseData,name){
+  setBuildReleaseFilterData(releaseData,type){
     this.setState({
       build_data:false
     });
     this.state.repositoryWidgets.filter((item)=>{
-      if(name==='Build Results'){
+      if(type==='BuildResult'){
         return Object.assign(this.state.repositoryWidgets[0], {data: releaseData.buildResultDTO.allBranchesBuildDTO});
         
-      }else if(name==='Mean Time to Fix Broken Builds'){
+      }else if(type==='MeanTimeBrokenBuild'){
           return Object.assign(this.state.repositoryWidgets[1], {data: releaseData.meanTimeToFixBrokenBuildDTO.allBranchesBrokenBuildDTO});
           
-      }else if(name==='Release Cadence'){
+      }else if(type==='ReleaseCadence'){
         return Object.assign(this.state.repositoryWidgets[2], {data: releaseData.releaseDetailDTO});
          
-      }else if(name==='Open v/s Closed Pull Requests'){
+      }else if(type==='OpenClosedPullRequests'){
         return Object.assign(this.state.repositoryWidgets[3], {data: releaseData.pullRequestDTO}); 
       }
-      else if(name==='Mean Time to Merge Pull Requests'){
+      else if(type==='MeanTimeMergePullRequest'){
         return Object.assign(this.state.repositoryWidgets[4], {data: releaseData.pullRequestDTO}); 
       }else {
         return Object.assign(this.state.repositoryWidgets[5], {data: releaseData.pullRequestDTO}); 
@@ -340,34 +340,58 @@ class BuildRelease extends Component {
     });
     return defaultList;
   };
-  handelDrop = (name,dropValue) => {debugger
+  handelDrop = (type,dropValue) => {
+    const data = this.props.buildReleaseChart;
     if(dropValue==="long_live_branches"){
-      if(name==="Build Results"){
-        return Object.assign(this.state.repositoryWidgets[0], {data: this.props.buildReleaseChart.buildResultDTO.onlylongLiveBranchesBuildDTO});
+      if(type==="BuildResult"){
+        this.setState({
+          repositoryWidgets: [
+             ...this.state.repositoryWidgets,
+             Object.assign(this.state.repositoryWidgets[0], {data: data.buildResultDTO.onlylongLiveBranchesBuildDTO}),
+          ]
+        });
       }else{
-        return Object.assign(this.state.repositoryWidgets[1], {data: this.props.buildReleaseChart.meanTimeToFixBrokenBuildDTO.onlylongLiveBranchesBuildDTO}); 
+        this.setState({
+          repositoryWidgets: [
+             ...this.state.repositoryWidgets,
+             Object.assign(this.state.repositoryWidgets[1], {data: data.meanTimeToFixBrokenBuildDTO.onlylongLiveBranchesBuildDTO}),
+          ]
+        });
       }
     }else{
-      if(name==="Build Results"){
-        return Object.assign(this.state.repositoryWidgets[0], {data: this.props.buildReleaseChart.buildResultDTO.allBranchesBuildDTO});
+      if(type==="Build Results"){
+        this.setState({
+          repositoryWidgets: [
+             ...this.state.repositoryWidgets,
+             Object.assign(this.state.repositoryWidgets[0], {data: data.buildResultDTO.allBranchesBuildDTO}),
+          ]
+        });
       }else{
-        return Object.assign(this.state.repositoryWidgets[1], {data: this.props.buildReleaseChart.meanTimeToFixBrokenBuildDTO.allBranchesBrokenBuildDTO}); 
+        this.setState({
+          repositoryWidgets: [
+             ...this.state.repositoryWidgets,
+             Object.assign(this.state.repositoryWidgets[1], {data: data.meanTimeToFixBrokenBuildDTO.allBranchesBrokenBuildDTO}),
+          ]
+        });
       }
     }
+    this.createCharts(
+      this.createChartObject(this.state.repositoryWidgets)
+    );
   };
-  handelFilter = (name,filterValue) => {
-    if(name==="Build Results" || name==="Release Cadence" || name==='Mean Time to Fix Broken Builds'){
+  handelFilter = (type,filterValue) => {debugger
+    if(type==="BuildResult" || type==="ReleaseCadence" || type==='MeanTimeBrokenBuild'){
       this.props.buildReleaseDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.buildReleaseChart.repoId,this.props.currentSourceType)
       .then(item => {
-        this.setBuildReleaseFilterData(this.props.buildReleaseChart,name);
+        this.setBuildReleaseFilterData(this.props.buildReleaseChart,type);
       }).catch(error => {
         console.error(error);
       });
-    }else if(name==="Open v/s Closed Pull Requests" || name==='Mean Time to Merge Pull Requests'|| name==='Commited PRs with & without Rework'){
+    }else if(type==="OpenClosedPullRequests" || type==='MeanTimeMergePullRequest'|| type==='CommittedPrsWithAndWithoutRework'){
       this.props
       .buildPullDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.currentSourceType)
       .then(item => {
-        this.setBuildReleaseFilterData(this.props.buildPullChart,name);
+        this.setBuildReleaseFilterData(this.props.buildPullChart,type);
       }).catch(error => {
         console.error(error);
       });
