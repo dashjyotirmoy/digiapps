@@ -142,8 +142,8 @@ class BuildReleaseGraph {
         }
       };
      meanData.pullRequestDetailDTOList && meanData.pullRequestDetailDTOList.map((item)=>{
-      if(parseInt(item.meanMergeTime) !== 0){
-        yAxis.push(parseInt(item.meanMergeTime));
+      if(parseFloat(item.meanMergeTime) !== 0.0){
+        yAxis.push(parseFloat(item.meanMergeTime));
         repoName.push(item.repoName);
       }
     });
