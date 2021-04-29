@@ -45,7 +45,7 @@ class BuildRelease extends Component {
     removed: [],
     bgTheme:'',
     clientId:'',
-    defaultFilter:"All Time",
+    defaultFilter:"all_time",
     selectWidget: 'Select Widget',
     dropFilter: [{value: "all_time", label: "All Time" },{ value: "last_1_month", label: "Last Month" }, { value: "last_3_months", label: "Last 3 Months" }],
     dropData: [{value: "all_branches", label: "All Branches" },{ value: "long_live_branches", label: "Long Live Branches" }],
@@ -344,35 +344,15 @@ class BuildRelease extends Component {
     const data = this.props.buildReleaseChart;
     if(dropValue==="long_live_branches"){
       if(type==="BuildResult"){
-        this.setState({
-          repositoryWidgets: [
-             ...this.state.repositoryWidgets,
-             Object.assign(this.state.repositoryWidgets[0], {data: data.buildResultDTO.onlylongLiveBranchesBuildDTO}),
-          ]
-        });
+        Object.assign(this.state.repositoryWidgets[0], {data: data.buildResultDTO.onlylongLiveBranchesBuildDTO});
       }else{
-        this.setState({
-          repositoryWidgets: [
-             ...this.state.repositoryWidgets,
-             Object.assign(this.state.repositoryWidgets[1], {data: data.meanTimeToFixBrokenBuildDTO.onlylongLiveBranchesBuildDTO}),
-          ]
-        });
+        Object.assign(this.state.repositoryWidgets[1], {data: data.meanTimeToFixBrokenBuildDTO.onlylongLiveBranchesBuildDTO});
       }
     }else{
       if(type==="Build Results"){
-        this.setState({
-          repositoryWidgets: [
-             ...this.state.repositoryWidgets,
-             Object.assign(this.state.repositoryWidgets[0], {data: data.buildResultDTO.allBranchesBuildDTO}),
-          ]
-        });
+        Object.assign(this.state.repositoryWidgets[0], {data: data.buildResultDTO.allBranchesBuildDTO});
       }else{
-        this.setState({
-          repositoryWidgets: [
-             ...this.state.repositoryWidgets,
-             Object.assign(this.state.repositoryWidgets[1], {data: data.meanTimeToFixBrokenBuildDTO.allBranchesBrokenBuildDTO}),
-          ]
-        });
+        Object.assign(this.state.repositoryWidgets[1], {data: data.meanTimeToFixBrokenBuildDTO.allBranchesBrokenBuildDTO});
       }
     }
     this.createCharts(
@@ -452,7 +432,7 @@ class BuildRelease extends Component {
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
       filterStatus: "Repository",
-      defaultFilter: this.state.dropFilter[0].value
+      defaultFilter: 'all_time'
     });
     this.props.buildRepoDropValDispatch(repoDetails[selectedIndex].projectName);
     this.props.buildReleaseDataDispatch(this.props.currentClientId,this.state.dropFilter[0].value,this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType)

@@ -28,17 +28,23 @@ const Grid = props => {
           className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
           style={{ zIndex: "1",right:'11px',top:'15px'}}
         >
-          {/* {props.chartData[ele.i].showDrop &&
+          {/* {props.chartData[ele.i].showFilter &&
+            <Select 
+              options={props.dropFilter}
+              onChange={event => {debugger 
+              props.onSelectFilter(props.chartData[ele.i].type,event.value)}}
+            />}
+          {props.chartData[ele.i].showDrop && 
             <Select 
             options={props.dropData}
             onChange={event => {debugger 
-              props.onSelectFilter(props.chartData[ele.i].name,event.value)}}
-            />} */}
-          {props.chartData[ele.i].showDrop && <select style={{ fontSize: 'smaller',width: '6rem'}} onChange={(event)=>props.onSelectDrop(props.chartData[ele.i].type,event.target.value)} className={`border mr-2 font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
-                    {props.dropData.map(function (data, key) {
-                      return (
-                        <option style={{ fontSize: 'medium'}} className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.value} selected={defaultFilter===data.value}>{data.label}</option>)
-                    })}
+            props.onSelectDrop(props.chartData[ele.i].type,event.value)}}
+          />} */}
+           {props.chartData[ele.i].showDrop && <select style={{ fontSize: 'smaller',width: '6rem'}} onChange={(event)=>props.onSelectDrop(props.chartData[ele.i].type,event.target.value)} className={`border mr-2 font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
+                     {props.dropData.map(function (data, key) {
+                       return (
+                         <option style={{ fontSize: 'medium'}} className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.value} selected={defaultFilter===data.value}>{data.label}</option>)
+                     })}
           </select>}
           {props.chartData[ele.i].showFilter && <select  style={{ fontSize: 'smaller',width: '5rem'}} onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].type,event.target.value)} className={`border font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
                     {props.dropFilter.map(function (data, key) {
