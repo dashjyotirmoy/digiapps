@@ -134,11 +134,11 @@ class BuildReleaseGraph {
         if (hour>24){
             day = parseInt(hour / 24) +' '+'days';
             hour = parseInt(hour % 24)+' '+'hours';
-            return (day,hour);
+            return (day +" "+ hour);
         }else{
             day='';
-            hour = parseInt(hour)+' '+'hours';
-            return (day,hour);
+            hour = parseFloat(hour).toFixed(2)+' '+'hours';
+            return (day +" "+ hour);
         }
       };
      meanData.pullRequestDetailDTOList && meanData.pullRequestDetailDTOList.map((item)=>{
@@ -179,7 +179,7 @@ class BuildReleaseGraph {
       useHTML: true,
       text: `
       <div>
-      <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageMergeTime}hrs</b></span><b style="margin-left:10px;color:#ffa500">Average Time</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${dayHour(averageMergeTime)}</b></span><b style="margin-left:10px;color:#ffa500">Average Time</b></span>
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${totalPrCount}</b></span><b style="margin-left:5px">Total PRs</b></span>
       </div>`,
       style: {
@@ -285,17 +285,17 @@ class BuildReleaseGraph {
      pullRequest=[],
      averageTime=parseFloat(this.res.data.averageTimeTaken).toFixed(2),
      meanData= this.res.data.releaseCadenceDTOList;
-     function dayHour(time){
+     function dayHour(time){debugger
           hour = time;
           day = 0;
       if (hour>24){
           day = parseInt(hour / 24) +' '+'days';
           hour = parseInt(hour % 24)+' '+'hours';
-          return (day,hour);
+          return (day +" "+ hour);
       }else{
           day='';
-          hour = parseInt(hour)+' '+'hours';
-          return (day,hour);
+          hour = parseFloat(hour).toFixed(2)+' '+'hours';
+          return (day+" "+hour);
       }
      };
      meanData && meanData.map((item)=>{
@@ -398,8 +398,7 @@ class BuildReleaseGraph {
     useHTML: true,
     text: `
     <div>
-    <span style="margin-right:10px"><span style="font-size: 16px"><b>${averageTime}hrs</b></span><b style="margin-left:10px;color:#ffa500">Average Time</b></span>
-    
+    <span style="margin-right:10px"><span style="font-size: 16px"><b>${dayHour(averageTime)}</b></span><b style="margin-left:10px;color:#ffa500">Average Time</b></span>
     </div>`,
     style: {
       color: this.res.bgTheme ? "#f5f5f5":'#333333',
@@ -481,11 +480,11 @@ class BuildReleaseGraph {
           if (hour>24){
             day = parseInt(hour / 24) +' '+'days';
             hour = parseInt(hour % 24)+' '+'hours';
-            return (day,hour);
+            return (day +" "+ hour);
         }else{
             day='';
             hour = parseInt(hour)+' '+'hours';
-            return (day,hour);
+            return (day +" "+ hour);
         }
         };
         recoveryAttempt && recoveryAttempt.map(data => {
@@ -527,6 +526,7 @@ class BuildReleaseGraph {
       text: `
       <div>
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${numberOfAttempts}</b></span><b style="margin-left:10px">Total Attempts</b></span>
+      <span style="margin-right:10px"><span style="font-size: 16px"><b>${dayHour(timeTaken)}</b></span><b style="margin-left:10px;color:#ffa500">Average Time</b></span>
       </div>`,
       style: {
         color: this.res.bgTheme ? "#f5f5f5":'#333333',
@@ -625,14 +625,7 @@ class BuildReleaseGraph {
         data: buildData,
         color: "#7d12ff",
         borderWidth: 0
-      },
-      {
-        name: "Average Time",
-        type: "line",
-        data: timeTaken,
-        color: "#ffa500",
-        borderWidth: 0
-      },      
+      },     
     ];
     return options;
   }
@@ -745,12 +738,12 @@ options.plotOptions = {
 
 options.series = [
   {
-    name: "Pr without rework",
+    name: "PR without rework",
     data: prCount,
     color: '#20c997',
   },
   {
-    name: "Pr with Rework",
+    name: "PR with Rework",
     data: reWorkedPrCount,
     color: '#ec5050',
   }  
