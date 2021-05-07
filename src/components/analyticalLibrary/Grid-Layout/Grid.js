@@ -20,33 +20,23 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Grid = props => {
   const bgTheme = props.bgTheme;
+  const chartData = props.chartData;
   const defaultFilter= props.defaultFilter;
+  const defaultDrop= props.defaultDrop;
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
-      <div key={ele.i} className={`${bgTheme ? 'card-border-dark bg-dark-theme' : 'card-border-light'}`}>
+      <div key={index} className={`${bgTheme ? 'card-border-dark bg-dark-theme' : 'card-border-light'}`}>
         <div
           className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
           style={{ zIndex: "1",right:'11px',top:'15px'}}
         >
-          {/* {props.chartData[ele.i].showFilter &&
-            <Select 
-              options={props.dropFilter}
-              onChange={event => {debugger 
-              props.onSelectFilter(props.chartData[ele.i].type,event.value)}}
-            />}
-          {props.chartData[ele.i].showDrop && 
-            <Select 
-            options={props.dropData}
-            onChange={event => {debugger 
-            props.onSelectDrop(props.chartData[ele.i].type,event.value)}}
-          />} */}
-           {props.chartData[ele.i].showDrop && <select style={{ fontSize: 'smaller',width: '6rem'}} onChange={(event)=>props.onSelectDrop(props.chartData[ele.i].type,event.target.value)} className={`border mr-2 font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
+           {chartData[index].showDrop && <select style={{ fontSize: 'smaller',width: '6rem'}} onChange={(event)=>props.onSelectDrop(chartData[index].type,event.target.value)} className={`border mr-2 font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
                      {props.dropData.map(function (data, key) {
                        return (
-                         <option style={{ fontSize: 'medium'}} className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.value} selected={defaultFilter===data.value}>{data.label}</option>)
+                         <option style={{ fontSize: 'medium'}} className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.value} selected={defaultDrop===data.value}>{data.label}</option>)
                      })}
           </select>}
-          {props.chartData[ele.i].showFilter && <select  style={{ fontSize: 'smaller',width: '5rem'}} onChange={(event)=>props.onSelectFilter(props.chartData[ele.i].type,event.target.value)} className={`border font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
+          {chartData[index].showFilter && <select  style={{ fontSize: 'smaller',width: '5rem'}} onChange={(event)=>props.onSelectFilter(chartData[index].type,event.target.value)} className={`border font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
                     {props.dropFilter.map(function (data, key) {
                       return (
                         <option style={{ fontSize: 'medium'}} className={`${bgTheme ?'text-white':'text-dark'}`} key={key} value={data.value} selected={defaultFilter===data.value}>{data.label}</option>)
@@ -60,11 +50,11 @@ const Grid = props => {
             <TooltipHoc
               bgTheme={bgTheme}
               info={
-                velocityGraphInfo[props.chartData[ele.i].name] ||
-                qualityGraphInfo[props.chartData[ele.i].name] ||
-                buildGraphInfo[props.chartData[ele.i].name]
+                velocityGraphInfo[chartData[index].name] ||
+                qualityGraphInfo[chartData[index].name] ||
+                buildGraphInfo[chartData[index].name]
               }
-              chartName={props.chartData[ele.i].name}
+              chartName={chartData[index].name}
             >
               <span className="d-inline-block">
                 <FontAwesomeIcon icon={faInfoCircle} />
@@ -80,7 +70,7 @@ const Grid = props => {
             </span>
           </span>
         </div>
-        {props.chartData[ele.i].component}
+        {chartData[index].component}
       </div>
     );
   });
