@@ -285,7 +285,7 @@ class BuildReleaseGraph {
      pullRequest=[],
      averageTime=parseFloat(this.res.data.averageTimeTaken).toFixed(2),
      meanData= this.res.data.releaseCadenceDTOList;
-     function dayHour(time){debugger
+     function dayHour(time){
           hour = time;
           day = 0;
       if (hour>24){

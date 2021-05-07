@@ -45,50 +45,51 @@ class BuildRelease extends Component {
     removed: [],
     bgTheme:'',
     clientId:'',
-    defaultFilter:"all_time",
+    defaultFilter:"",
+    defaultDrop:"",
+    resetFilter: false,
     selectWidget: 'Select Widget',
-    dropFilter: [{value: "all_time", label: "All Time" },{ value: "last_1_month", label: "Last Month" }, { value: "last_3_months", label: "Last 3 Months" }],
+    dropFilter: [{ value: "all_time", label: "All Time" },{ value: "last_1_month", label: "Last Month" }, { value: "last_3_months", label: "Last 3 Months" }],
     dropData: [{value: "all_branches", label: "All Branches" },{ value: "long_live_branches", label: "Long Live Branches" }],
     repositoryWidgets:[{
       name:'Build Results',
       type:'BuildResult',
-      title:'Build Result',
       showDrop: true,
-      showFilter: true
+      showFilter: true,
+      
     },
     {
       name:'Mean Time to Fix Broken Builds',
       type:'MeanTimeBrokenBuild',
-      title:'Mean Time Broken Build',
       showDrop: true,
-      showFilter: true
+      showFilter: true,
+   
     },
     {
       name:'Release Cadence',
       type:'ReleaseCadence',
-      title:'Release Cadence',
       showDrop: false,
-      showFilter: true
+      showFilter: true,
+   
     },
     {
       name:'Open v/s Closed Pull Requests',
       type:'OpenClosedPullRequests',
-      title:'Open Closed Pull Requests',
       showDrop: false,
-      showFilter: true
+      showFilter: true,
+     
     },
     {
       name:'Mean Time to Merge Pull Requests',
       type:'MeanTimeMergePullRequest',
-      title:'Mean Time Merge Pull Request',
       showDrop: false,
-      showFilter: true
+      showFilter: true,
+  
     },{
       name:'Committed PRs with & without Rework',
       type:'CommittedPrsWithAndWithoutRework',
-      title:'Committed Prs With And Without Rework',
       showDrop: false,
-      showFilter: true
+      showFilter: true,
     }
   ],
 
@@ -216,6 +217,7 @@ class BuildRelease extends Component {
   createChartObject = rawData => {
     const processedData = rawData && rawData.map(ele => {
       return {
+        i:ele.i,
         name: ele.name,
         type: ele.type,
         data: ele.data,
@@ -229,9 +231,9 @@ class BuildRelease extends Component {
   };
   //compare the current props and incoming props
   setBuildReleaseFilterData(releaseData,type){
-    this.setState({
-      build_data:false
-    });
+    // this.setState({
+    //   build_data:false
+    // });
     this.state.repositoryWidgets.filter((item)=>{
       if(type==='BuildResult'){
         return Object.assign(this.state.repositoryWidgets[0], {data: releaseData.buildResultDTO.allBranchesBuildDTO});
@@ -265,9 +267,9 @@ class BuildRelease extends Component {
     });
   };
   setBuildReleaseData(releaseData){
-    this.setState({
-      build_data:false
-    });
+    // this.setState({
+    //   build_data:false
+    // });
     this.state.repositoryWidgets.map((item)=>{
       if(item.type==='BuildResult'){
         Object.assign(item, {data: releaseData.buildResultDTO.allBranchesBuildDTO});
@@ -291,7 +293,6 @@ class BuildRelease extends Component {
       layout: layout_instance.layout
     });
     this.setState({
-      // response: this.props.velocityCharts,
       received: true,
       show: false
     });
@@ -340,13 +341,16 @@ class BuildRelease extends Component {
     });
     return defaultList;
   };
-  handelDrop = (type,dropValue) => {
+  handelDrop = (type,dropValue) => {debugger
+    this.setState({
+      defaultDrop:''
+    });
     const data = this.props.buildReleaseChart;
     if(dropValue==="long_live_branches"){
       if(type==="BuildResult"){
         Object.assign(this.state.repositoryWidgets[0], {data: data.buildResultDTO.onlylongLiveBranchesBuildDTO});
       }else{
-        Object.assign(this.state.repositoryWidgets[1], {data: data.meanTimeToFixBrokenBuildDTO.onlylongLiveBranchesBuildDTO});
+        Object.assign(this.state.repositoryWidgets[1], {data: data.meanTimeToFixBrokenBuildDTO.onlyLongLiveBranchesBrokenBuildDTO});
       }
     }else{
       if(type==="Build Results"){
@@ -359,18 +363,22 @@ class BuildRelease extends Component {
       this.createChartObject(this.state.repositoryWidgets)
     );
   };
-  handelFilter = (type,filterValue) => {debugger
+  handelFilter = (type,filterValue) => {
+    this.setState({
+      defaultFilter:'',
+      defaultDrop: 'all_branches'
+    })
     if(type==="BuildResult" || type==="ReleaseCadence" || type==='MeanTimeBrokenBuild'){
-      this.props.buildReleaseDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.buildReleaseChart.repoId,this.props.currentSourceType)
-      .then(item => {
+      return this.props.buildReleaseDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.buildReleaseChart.repoId,this.props.currentSourceType)
+      .then(()=> {
         this.setBuildReleaseFilterData(this.props.buildReleaseChart,type);
       }).catch(error => {
         console.error(error);
       });
     }else if(type==="OpenClosedPullRequests" || type==='MeanTimeMergePullRequest'|| type==='CommittedPrsWithAndWithoutRework'){
-      this.props
+      return this.props
       .buildPullDataDispatch(this.props.currentClientId,filterValue,this.props.projId,this.props.currentSourceType)
-      .then(item => {
+      .then(() => {
         this.setBuildReleaseFilterData(this.props.buildPullChart,type);
       }).catch(error => {
         console.error(error);
@@ -390,7 +398,7 @@ class BuildRelease extends Component {
           projectName: ele.repoName
         };
       });
-      this.props.buildReleaseDataDispatch(this.props.currentClientId,this.state.dropFilter[0].value,this.props.projId,repositoryData[0].repoId,this.props.currentSourceType)
+      this.props.buildReleaseDataDispatch(this.props.currentClientId,"all_time",this.props.projId,repositoryData[0].repoId,this.props.currentSourceType)
       .then(item => {
         this.setBuildReleaseData(this.props.buildReleaseChart);
       }).catch(error => {
@@ -412,7 +420,6 @@ class BuildRelease extends Component {
       this.props.buildRepoDropValDispatch("");
     }
   };
-
   handleRepoChange = repoID => { 
     this.updateRepository(repoID);
   };
@@ -432,10 +439,12 @@ class BuildRelease extends Component {
       selectedRepo: repoDetails[selectedIndex].projectName,
       selectedRepoKey: repoDetails[selectedIndex].id,
       filterStatus: "Repository",
-      defaultFilter: 'all_time'
+      defaultFilter: 'all_time',
+      defaultDrop:'all_branches'
+      
     });
     this.props.buildRepoDropValDispatch(repoDetails[selectedIndex].projectName);
-    this.props.buildReleaseDataDispatch(this.props.currentClientId,this.state.dropFilter[0].value,this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType)
+    this.props.buildReleaseDataDispatch(this.props.currentClientId,"all_time",this.props.projId,repoDetails[selectedIndex].id,this.props.currentSourceType)
     .then(item => {
       this.setBuildReleaseData(this.props.buildReleaseChart);
     }).catch(error => {
@@ -446,12 +455,13 @@ class BuildRelease extends Component {
         selectedRepo: repoDetails[selectedIndex].projectName
       });
   };
+  
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.projId !== nextProps.projId || this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId)
     {
       this.setState({
         all_data: true,
-        build_data: true
+        // build_data: true
       });
     }
     if(this.props.currentClientId !== nextProps.currentClientId){
@@ -469,7 +479,7 @@ class BuildRelease extends Component {
     if (this.props.projId && (this.props.sprintId || this.props.projectSprintId)) {
       this.setState({
         all_data: true,
-        build_data: true
+        // build_data: true
       });
     }
     let layout_instance = new Layout(6);
@@ -554,9 +564,11 @@ class BuildRelease extends Component {
               breakpoint={this.state.gridBreakpoints}
               columnSize={this.state.gridCol}
               bgTheme={bgTheme}
+              dropFilter={this.state.dropFilter}
+              dropData={this.state.dropData}
               defaultFilter= {this.state.defaultFilter}
-              dropData= {this.state.dropData}
-              dropFilter= {this.state.dropFilter}
+              defaultDrop= {this.state.defaultDrop}
+              resetAll={this.state.resetFilter}
               onSelectFilter={this.handelFilter}
               onSelectDrop={this.handelDrop}
             />
