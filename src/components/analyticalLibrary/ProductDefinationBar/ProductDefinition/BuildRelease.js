@@ -17,8 +17,6 @@ import LineHigh from "../../Charts/LineHigh/LineHigh";
 import ColumnHigh from "../../Charts/ColumnHigh/ColumnHigh";
 import VelocityTrend from "../../Charts/VelocityTrends/VelocityTrend";
 import Spinner from "../../Spinner/Spinner";
-import BreakDownHigh from "../../Charts/ProjectBreakDown/ProjectBreakDown";
-import { translations } from "../../Translations/Translations";
 import Layout from "../../../../utility/layoutManager/layoutManager";
 import { Row, Col, Button } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
@@ -409,7 +407,9 @@ class BuildRelease extends Component {
         repoData: repoDetails,
         selectedRepo: "",
         filterStatus: "Team",
-        selectedRepo: repositoryData[0].repoName
+        selectedRepo: repositoryData[0].repoName,
+        defaultFilter: 'all_time',
+        defaultDrop:'all_branches'
       });
       this.props.buildRepoDropValDispatch("");
     }  else {
@@ -456,7 +456,7 @@ class BuildRelease extends Component {
       });
   };
   
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {debugger
     if (this.props.projId !== nextProps.projId || this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId)
     {
       this.setState({
