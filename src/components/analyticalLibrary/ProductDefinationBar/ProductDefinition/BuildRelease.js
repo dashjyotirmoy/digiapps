@@ -333,7 +333,7 @@ class BuildRelease extends Component {
     });
     return defaultList;
   };
-  handelDrop = (type,dropValue) => {debugger
+  handelDrop = (type,dropValue) => {
     this.setState({
       defaultDrop:''
     });
@@ -477,7 +477,11 @@ class BuildRelease extends Component {
         all_data: true,
       });
     }
-    
+    let layout_instance = new Layout(6);
+    this.setState({
+      layout: layout_instance.layout,
+      bgTheme: bgTheme
+    });
   };
 
   componentDidUpdate() {
