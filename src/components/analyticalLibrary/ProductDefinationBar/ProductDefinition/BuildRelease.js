@@ -229,9 +229,6 @@ class BuildRelease extends Component {
   };
   //compare the current props and incoming props
   setBuildReleaseFilterData(releaseData,type){
-    // this.setState({
-    //   build_data:false
-    // });
     this.state.repositoryWidgets.filter((item)=>{
       if(type==='BuildResult'){
         return Object.assign(this.state.repositoryWidgets[0], {data: releaseData.buildResultDTO.allBranchesBuildDTO});
@@ -254,7 +251,7 @@ class BuildRelease extends Component {
     this.createCharts(
       this.createChartObject(this.state.repositoryWidgets)
     );
-    let layout_instance = new Layout(6);
+    let layout_instance = new Layout(this.props.widgetList[4].widgets.length);
     this.setState({
       layout: layout_instance.layout
     });
@@ -265,9 +262,6 @@ class BuildRelease extends Component {
     });
   };
   setBuildReleaseData(releaseData){
-    // this.setState({
-    //   build_data:false
-    // });
     this.state.repositoryWidgets.map((item)=>{
       if(item.type==='BuildResult'){
         Object.assign(item, {data: releaseData.buildResultDTO.allBranchesBuildDTO});
@@ -286,7 +280,7 @@ class BuildRelease extends Component {
     this.createCharts(
       this.createChartObject(this.state.repositoryWidgets)
     );
-    let layout_instance = new Layout(6);
+    let layout_instance = new Layout(this.props.widgetList[4].widgets.length);
     this.setState({
       layout: layout_instance.layout
     });
@@ -425,6 +419,9 @@ class BuildRelease extends Component {
   };
 
   updateRepository = (repoId) => {
+    this.setState({
+      show: true
+    })
     const { list, selectedIndex } = this.markSelected(
       this.props.buildPullChart.pullRequestDTO.pullRequestDetailDTOList,
       repoId
@@ -456,12 +453,11 @@ class BuildRelease extends Component {
       });
   };
   
-  UNSAFE_componentWillReceiveProps(nextProps) {debugger
-    if (this.props.projId !== nextProps.projId || this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId)
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props.projId !== nextProps.projId || this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId)
     {
       this.setState({
         all_data: true,
-        // build_data: true
       });
     }
     if(this.props.currentClientId !== nextProps.currentClientId){
@@ -479,14 +475,9 @@ class BuildRelease extends Component {
     if (this.props.projId && (this.props.sprintId || this.props.projectSprintId)) {
       this.setState({
         all_data: true,
-        // build_data: true
       });
     }
-    let layout_instance = new Layout(6);
-    this.setState({
-      layout: layout_instance.layout,
-      bgTheme: bgTheme
-    });
+    
   };
 
   componentDidUpdate() {
@@ -501,8 +492,8 @@ class BuildRelease extends Component {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
-    const currentWidgetList = this.props.widgetList;
-    const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === 'velocity');
+    // const currentWidgetList = this.props.widgetList;
+    // = currentWidgetList && currentWidgetList.filter(item=>item.name === 'buildrelease');
     if (this.state.show) {
       return <Spinner show="true" />;
     } else {
