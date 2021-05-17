@@ -99,7 +99,7 @@ class ProductInfoBar extends Component {
 
   //function to update project details when project dropdown values are changed
 
-  updateProject = projectId => {debugger
+  updateProject = projectId => {
     const projects = [...this.state.productData];
     const { list, selectedIndex } = this.markSelected(projects, projectId);
     const prrojDetail = list.map(ele => {

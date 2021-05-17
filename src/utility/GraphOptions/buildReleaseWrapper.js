@@ -3,7 +3,7 @@
 import Options from "./optionsModel";
 
 class BuildReleaseGraph {
-  constructor(props) {debugger
+  constructor(props) {
     this.res = props;
     this.options = this.generateOption(props.type);
   }
