@@ -121,10 +121,10 @@ export const projectDropdownDispatch = (
     });
 };
 export const branchDropdownDispatch = (
-  projectId, repoName
+  clientId, projectId, repoName
 ) => async dispatch => {
   api
-    .getBranchDropdownInsight(projectId, repoName)
+    .getBranchDropdownInsight(clientId, projectId, repoName)
     .then(response => {
       dispatch({
         type: actionTypes.LOAD_BRANCH_DROPDOWN_DETAILS,

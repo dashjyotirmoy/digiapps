@@ -6,7 +6,8 @@ import CardChartVelocity from "../../CardChart/CardChartVelocity";
 import CardChartQuality from "../../CardChart/CardChartQuality";
 import { connect } from "react-redux";
 import { insightsQuality,
-  insightsSecurity
+  insightsSecurity,
+  projectDropdownDispatch
 } from "../../../../store/actions/sprintInsights";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -41,7 +42,7 @@ class Insights extends Component {
       clientId:'',
       insightVelocity: 'Velocity and Efficiency',
       insightSecurity: 'Security',
-      insightQuality: 'Quality'
+      insightQuality: 'Quality',
     }
   }
   // Project List Dropdown starts here
@@ -70,10 +71,13 @@ class Insights extends Component {
      });
      this.setState({
       branchDropData: branchDetail,
-       selectedBranch: branchDetail[selectedIndex].projectName
+      selectedBranch: branchDetail[selectedIndex].projectName,
      });
      this.props.insightsSecurity(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.projectID,this.state.selectedProduct);
      this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
+    this.setState({
+      show:false
+    })
     };
   setProject = (res) => {
     const projects = res.data;
@@ -118,7 +122,7 @@ class Insights extends Component {
     this.props.insightsQuality(branchDetail[selectedIndex].projectName,this.props.currentClientId,this.props.currentExecId, this.props.projectID,this.state.selectedProduct);
     
   };
-  updateProject = projectId => {
+  updateProject = projectId => {debugger
     const projects = [...this.state.repoData];
     const { list, selectedIndex } = this.markSelected(projects, projectId);
     const prrojDetail = list.map(ele => {
@@ -129,7 +133,8 @@ class Insights extends Component {
     });
     this.setState({
       repoData: prrojDetail,
-      selectedProduct: prrojDetail[selectedIndex].projectName
+      selectedProduct: prrojDetail[selectedIndex].projectName,
+      show: true
     });
     this.getBranchDetails(this.props.currentClientId,this.props.projectID, prrojDetail[selectedIndex].projectName);
   };
@@ -158,18 +163,12 @@ class Insights extends Component {
     this.setState({
       all_data: false
     });
-    //setTimeout(() => {
-      api
-      .getProjectDropdownInsight(this.props.currentClientId,this.props.projectID)
+   this.props.widgetListDispatch(this.state.clientId ? this.state.clientId:this.props.currentClientId);
+   api.getProjectDropdownInsight(this.props.currentClientId,this.props.projectID)
       .then(this.setProject)
       .catch(error => {
         console.error(error);
       });
-      
-      
-      //},3000); 
-
-   // this.setDefaultData();
   }
   componentDidUpdate() {
     if (this.state.all_data) {
@@ -177,10 +176,10 @@ class Insights extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (
-      this.props.projectID !== nextProps.projectID
-    ) {
+      this.props.projectID !== nextProps.projectID || this.props.teamId !== nextProps.teamId)
+      {
       this.setState({
         all_data: true
       });
@@ -196,7 +195,7 @@ class Insights extends Component {
     const labels = labelConst.filter((item)=> item.clientName === clientName );
     const bgTheme = labels[0].mappings.bgColor;
     bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
-    if (this.state.selectedRepo === undefined || this.state.selectedRepo === "") {
+    if (this.props.projectID && this.props.teamId) {
       this.setState({
         all_data: true
       });
@@ -281,21 +280,19 @@ class Insights extends Component {
         </Row>
         <Row className="m-0 p-0">
         {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightSecurity) && <Col            
-            className="bg-card"
+            className='bg-card'
           >
             <CardChartSecurity insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" bgTheme={bgTheme}/>
           </Col>}
           {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightVelocity) &&
           <Col
-            
-            className="bg-card p-0"
+           className='bg-card p-0'
           >
             <CardChartVelocity insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme} sourceType={this.props.currentSourceType}/>
           </Col>}
           {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightQuality) &&
           <Col
-
-            className="bg-card"
+            className='bg-card p-0'
           >
             <CardChartQuality insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" bgTheme={bgTheme}/>
           </Col>}
@@ -324,6 +321,7 @@ const mapDispatchToProps = dispatch => {
     {
        insightsQuality,
       insightsSecurity,
+      projectDropdownDispatch,
       widgetListDispatch
     },
     dispatch

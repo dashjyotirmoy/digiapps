@@ -4,7 +4,7 @@ import VelocityGraph from "../../../../utility/GraphOptions/velocityWrapper";
 import BuildReleaseGraph from "../../../../utility/GraphOptions/buildReleaseWrapper";
 import Dimensions from "react-dimensions";
 
-const VelocityTrend = React.forwardRef((props, ref) => {debugger
+const VelocityTrend = React.forwardRef((props, ref) => {
   const activeLink = window.location.href.includes("/velocity");
   var temp_options;
   let options = {};
