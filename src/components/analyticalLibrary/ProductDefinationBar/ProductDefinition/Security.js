@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col,Button, Card } from "react-bootstrap";
 import Dropdown from "../../Dropdown/Dropdown";
+import Badge from 'react-bootstrap/Badge';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
@@ -556,7 +557,8 @@ class Security extends Component {
     console.log("total vulnerability",this.props.vulnerabilitytDetails.totalVulnerability);
   
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
-    const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const labels = labelConst.filter((item)=> item.clientName === clientName );debugger
+    const toolName = labels[0].mappings.tabItems.filter((item)=> item.name === 'Security');
     const bgTheme = labels[0].mappings.bgColor;
     let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" bgTheme={bgTheme}/>
     const currentWidgetList = this.props.widgetList;
@@ -575,10 +577,17 @@ class Security extends Component {
           {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.vulnerable) && 
             <Col sm={12} className="mb-3">
             <Card.Body className={`p-0 ${bgTheme ? 'card-border-dark' : 'card-border-light'}`}>
-                <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod text-light' : 'cardHeader text-dark'}`}>
-                  <h6 className="font-weight-bold mb-1 p-0">Vulnerabilities</h6>
-                  { !this.state.policyActive?(
-                      <div className="text-right">               
+                <div className={`${bgTheme ? 'bg-prodInfo-prod text-light' : 'cardHeader text-dark'}`}>
+                  <span className="font-weight-bold mb-1 p-0">Vulnerabilities</span>
+                  <div className="d-inline-flex float-right">
+                    {toolName[0].toolsDetails.map((item)=>{
+                    const {name,label} = item;
+                    return (<Badge variant={`${bgTheme? "secondary":"light"}`} key={name} className="mx-1" style={{'line-height':'1.5'}}>
+                                  {name} - {label}
+                              </Badge>)})
+                    }
+                    {!this.state.policyActive?(
+                      <div>               
                         <span className="font-size-small">
                             <FontAwesomeIcon  className="highbg ml-3" icon={faSquare} />{" "}
                             {labels[0].mappings.high}
@@ -594,7 +603,7 @@ class Security extends Component {
                         </div>
                         
                     ):<div></div>
-                  }</div>
+                  }</div></div>
                 <Card.Body className="p-0">
                   <Row className={`no-gutters p-3 ${bgTheme ? 'bg-dark-theme' : 'bg-white'}`}>
                   <Col sm={5} className="rounded" style={{border:'1px solid #999a9c'}}>
