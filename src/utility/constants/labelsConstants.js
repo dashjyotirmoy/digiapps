@@ -31,7 +31,11 @@ export const labelConst = [{
 			tabItems: [{id:"1",name:'Overview',eventKey:'overview'},
 						{id:"2",name: 'Velocity and Efficiency',eventKey:'velocity'},
 						{id:"3",name: 'Quality',eventKey:'quality'},
-						{id:"4",name:'Security',eventKey:'security'},
+						{id:"4",name:'Security',eventKey:'security',toolsDetails:
+																[{name:'SCA',label:'WhiteSource'},
+																{name:'SAST',label:'Fortify'},
+																{name:'DAST',label:'OWASP ZAP'}]
+						},
 						{id:"5",name: 'Build and Release',eventKey:'buildrelease'},
 						{id:"6",name: 'Insights',eventKey:'insights'}],
 	}
@@ -144,7 +148,11 @@ export const labelConst = [{
 			tabItems: [{id:"1",name:'Overview',eventKey:'overview'},
 						{id:"2",name: 'Velocity and Efficiency',eventKey:'velocity'},
 						{id:"3",name: 'Quality',eventKey:'quality'},
-						{id:"4",name:'Security',eventKey:'security'},
+						{id:"4",name:'Security',eventKey:'security',toolsDetails:
+																				[{name:'SCA',label:'WhiteSource'},
+																				{name:'SAST',label:'Fortify'},
+																				{name:'DAST',label:'OWASP ZAP'}]
+						},
 						{id:"5",name: 'Build and Release',eventKey:'buildrelease'},
 						{id:"6",name: 'Insights',eventKey:'insights'}]
 
