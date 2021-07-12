@@ -73,6 +73,14 @@ export const currentTabDispatch = type => dispatch => {
     }
   });
 };
+export const currentThemeSelected = type => dispatch => {
+  dispatch({
+    type: actionTypes.SET_CURRENT_THEME,
+    payload: {
+      currentTheme: type
+    }
+  });
+};
 
 export const velocityRepoDropValDispatch = type => dispatch => {
   dispatch({

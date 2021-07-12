@@ -193,7 +193,7 @@ class Insights extends Component {
   componentDidMount() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
+    const bgTheme = (this.props.selectedTheme === "dark");
     bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
     if (this.props.projectID && this.props.teamId) {
       this.setState({
@@ -204,14 +204,14 @@ class Insights extends Component {
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
+    const bgTheme = (this.props.selectedTheme === "dark");
     const currentWidgetList = this.props.widgetList;
     const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "insights");
     if (this.state.show) {
       return <Spinner show="true" />;
     } else{
       return (
-      <Container fluid className="mt-3 Insights">
+      <Container fluid className={`pt-3 Insights ${bgTheme ? 'bg-dark-theme' : 'bg-light'}`}>
         <Row className="p-0  m-0 mt-12 mb-3 d-flex justify-content-start row">          
          
           <Col md={2}>
@@ -276,7 +276,7 @@ class Insights extends Component {
                 </Row>
               </Dropdown>
             </Col>
-            <span className='mt-auto'><p className="font-size-small m-0 text-left">You are viewing data at <b>Repository</b> level</p></span>
+            <span className='mt-auto'><p className={`font-size-small m-0 text-left ${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>You are viewing data at <b>Repository</b> level</p></span>
         </Row>
         <Row className="m-0 p-0">
         {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightSecurity) && <Col            
@@ -286,13 +286,13 @@ class Insights extends Component {
           </Col>}
           {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightVelocity) &&
           <Col
-           className='bg-card p-0'
+           className='bg-card'
           >
             <CardChartVelocity insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme} sourceType={this.props.currentSourceType}/>
           </Col>}
           {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.insightQuality) &&
           <Col
-            className='bg-card p-0'
+            className='bg-card'
           >
             <CardChartQuality insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" bgTheme={bgTheme}/>
           </Col>}
@@ -314,6 +314,7 @@ const mapStateToProps = state => {
     dropData: state.insightData.projectDropdownDetails,
     widgetList: state.execData.widgetList,
     currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
+    selectedTheme: state.chartData.currentTheme,
   };
 };
 const mapDispatchToProps = dispatch => {

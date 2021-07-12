@@ -341,8 +341,12 @@ a:hover {
 }
 /* insight */
 .bg-dark-theme {
-  background-color: #232d3b !important;
+  background-color: #1d2632 !important;
   color: #fff !important;
+}
+.bg-light {
+  background-color: #fff !important;
+  color: #232d3b !important;
 }
 .show{
   display: block;

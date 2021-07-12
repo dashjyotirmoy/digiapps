@@ -58,7 +58,7 @@ class Overview extends Component {
   render() {
         const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
         const labels = labelConst.filter((item)=> item.clientName === clientName );
-        const bgTheme = labels[0].mappings.bgColor;
+        const bgTheme = (this.props.selectedTheme === "dark");
         const currentWidgetList = this.props.widgetList;
         const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "overview");
         if (this.state.show) {
@@ -66,7 +66,7 @@ class Overview extends Component {
         } else {
           return (      
         <React.Fragment>
-        <Row className={`px-3 py-4 mt-6 ${bgTheme ? '' : 'bg-light'}`}>
+        <Row className={`px-3 py-4 mt-6 ${bgTheme ? 'bg-dark-theme' : 'bg-light'}`}>
         {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.appSecurity) && <Col
                   sm={12}
                   md={12}
@@ -218,7 +218,8 @@ const mapStateToProps = state => {
     currentClientId: state.execData.currentClientId,
     widgetList: state.execData.widgetList,
     summaryCharts: state.summaryData.summaryChartData,
-    summarySecurityChart:state.summaryData.summarySecurityChartData
+    summarySecurityChart:state.summaryData.summarySecurityChartData,
+    selectedTheme: state.chartData.currentTheme,
   };
 };
 

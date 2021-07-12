@@ -1,4 +1,5 @@
 import Options from "./optionsModel";
+import store from '../../store/store';
 import { faGreaterThanEqual } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -18,22 +19,23 @@ class VelocityGraph {
 
   generateOption = type => {
     const baseOptions = new Options();
+    const bgTheme = store.getState().chartData.currentTheme==='dark';
     let updatedOptions = {};
     switch (type) {
       case "ControlChartHigh":
-        updatedOptions = this.generateControlChart(baseOptions);
+        updatedOptions = this.generateControlChart(baseOptions,bgTheme);
         return updatedOptions;
       case "BuildResult":
-        updatedOptions = this.generateBuildResults(baseOptions);
+        updatedOptions = this.generateBuildResults(baseOptions,bgTheme);
         return updatedOptions;
         case "VelocityTrends":
-        updatedOptions = this.generateVelocityTrends(baseOptions);
+        updatedOptions = this.generateVelocityTrends(baseOptions,bgTheme);
         return updatedOptions;
       case "SprintBurndown":
-        updatedOptions = this.generateSprintBurnDown(baseOptions);
+        updatedOptions = this.generateSprintBurnDown(baseOptions,bgTheme);
         return updatedOptions;
       case "ProjectBurnDown":
-        updatedOptions = this.generateProjectBurnDown(baseOptions);
+        updatedOptions = this.generateProjectBurnDown(baseOptions,bgTheme);
         return updatedOptions;
       default:
         return null;
@@ -85,7 +87,7 @@ class VelocityGraph {
   //function that Creates data for Control charts
 
 
-  generateControlChart(options) {
+  generateControlChart(options,bgTheme) {
 
     let userStory = [],
       combinedURL,
@@ -295,8 +297,8 @@ class VelocityGraph {
       style: {
         width:'100%',
         padding: '9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? '#ffffff':"#2E2E38",
+        backgroundColor: bgTheme ? '#334154c7' :'#E1E7F0',
+        color: bgTheme ? '#ffffff':"#2E2E38",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -310,11 +312,11 @@ class VelocityGraph {
       },
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         }
       },
       plotBands: [{
-        color: this.res.bgTheme ? '#363E48':'#cfd2d7',
+        color: bgTheme ? '#363E48':'#cfd2d7',
         from: sprintStartBand,
         to: sprintEndBand
       }],
@@ -331,7 +333,7 @@ class VelocityGraph {
       lineWidth: 0,
       tickLength: 0,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        color: bgTheme ? "#f5f5f5":'#333333',
       }
     };
     options.yAxis = {
@@ -341,12 +343,12 @@ class VelocityGraph {
       title: {
         text: "Days",
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         }
       },
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         }
       },
       plotLines: [
@@ -438,11 +440,11 @@ class VelocityGraph {
       y: -30,
       x: -30,
       itemStyle: {
-        color: this.res.bgTheme ? "#ffffff":'#333333',
+        color: bgTheme ? "#ffffff":'#333333',
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#D3D3D3":'#333333',
+        color: bgTheme ? "#D3D3D3":'#333333',
       },
       labelFormatter: function () {
         if (this.name === "Bug" || this.name === "User Story") {
@@ -520,7 +522,7 @@ class VelocityGraph {
     return options;
   }
 
-  generateVelocityTrends(options) {
+  generateVelocityTrends(options,bgTheme) {
     let planned_Velocity_Percentage = [],
       actual_Velocity_Percentage = [],
       limit_Percentage,
@@ -582,8 +584,8 @@ class VelocityGraph {
       style: {
         width:'100%',
         padding: '17px 9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? '#ffffff':"#2E2E38",
+        backgroundColor: bgTheme ? '#334154c7' :'#E1E7F0',
+        color: bgTheme ? '#ffffff':"#2E2E38",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -598,7 +600,7 @@ class VelocityGraph {
       categories: xAxis_data,
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         }
         // format: "Sprint {value}"
       }
@@ -613,12 +615,12 @@ class VelocityGraph {
       title: {
         text: " ",
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         }
       },
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         },
         format: "{value} %"
       },
@@ -668,11 +670,11 @@ class VelocityGraph {
       x: 0,
       y: 40,
       itemStyle: {
-        color: this.res.bgTheme ? "#ffffff":'#333333',
+        color: bgTheme ? "#ffffff":'#333333',
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#d3d3d3":'#333333',
+        color: bgTheme ? "#d3d3d3":'#333333',
       },
       
     };
@@ -724,7 +726,7 @@ class VelocityGraph {
           shape: "callout",
           backgroundColor: "#5cbef2",
           borderColor: "#ECEDEE",
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
           borderWidth: 0,
           borderRadius: 5,
           y: -10,
@@ -758,7 +760,7 @@ class VelocityGraph {
     return options;
   }
 
-  generateSprintBurnDown(options) {
+  generateSprintBurnDown(options,bgTheme) {
     let remainingHours = [];
     let totalScope = [];
     let sprintBurndown = [];
@@ -820,8 +822,8 @@ class VelocityGraph {
       style: {
         width:'100%',
         padding: '9px',
-        backgroundColor: this.res.bgTheme ?'#334154c7':'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":'#2E2E38',
+        backgroundColor: bgTheme ?'#334154c7':'#E1E7F0',
+        color: bgTheme ? "#f5f5f5":'#2E2E38',
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -844,7 +846,7 @@ class VelocityGraph {
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${totalScopeIncrease}</b></span><b style="margin-left:5px">Total scope increase</b></span>
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${hoursRemaining}</b></span><b style="margin-left:5px">Hours remaining</b></span> </div>`,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        color: bgTheme ? "#f5f5f5":'#333333',
       }
     };
 
@@ -858,7 +860,7 @@ class VelocityGraph {
       tickLength: 0,
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         }
       }
     };
@@ -870,7 +872,7 @@ class VelocityGraph {
       gridLineWidth: 0,
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         }
       },
       title: {
@@ -890,7 +892,7 @@ class VelocityGraph {
       x: -30,
       y: 47,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        color: bgTheme ? "#f5f5f5":'#333333',
         fontWeight: "normal"
       }
     };
@@ -927,7 +929,7 @@ class VelocityGraph {
 
   }
 
-  generateProjectBurnDown(options) {
+  generateProjectBurnDown(options,bgTheme) {
     let remaining = [],
       completed = [],
       burndown = [],
@@ -974,7 +976,7 @@ class VelocityGraph {
     });
     options.chart = {
       height: 0,
-      backgroundColor: this.res.bgTheme ? "#232d3b":"#ffffff" 
+      backgroundColor: bgTheme ? "#232d3b":"#ffffff" 
     };
 
     options.title = {
@@ -987,8 +989,8 @@ class VelocityGraph {
       style: {
         width:'100%',
         padding: '9px',
-        backgroundColor: this.res.bgTheme ?'#334154c7':'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":'#2E2E38',
+        backgroundColor: bgTheme ?'#334154c7':'#E1E7F0',
+        color: bgTheme ? "#f5f5f5":'#2E2E38',
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -1011,7 +1013,7 @@ class VelocityGraph {
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${this.res.data.remainingStoryPoints}</b></span><b style="margin-left:5px">Story points remaining</b></span> </div>`,
       style: {
         width:'100%',
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        color: bgTheme ? "#f5f5f5":'#333333',
         padding: '8px',
         fontFamily: 'Arial',
       }
@@ -1021,7 +1023,7 @@ class VelocityGraph {
       labels: {
         enabled: true,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         }
       },
       title: {
@@ -1038,11 +1040,11 @@ class VelocityGraph {
       y: 48,
       backgroundColor: "transparent",
       itemStyle: {
-        color: this.res.bgTheme ? "#ffffff":'#333333',
+        color: bgTheme ? "#ffffff":'#333333',
         fontWeight: "normal"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#d3d3d3":'#333333',
+        color: bgTheme ? "#d3d3d3":'#333333',
       }
     };
     options.xAxis = {
@@ -1051,7 +1053,7 @@ class VelocityGraph {
       categories: xAxis_data,
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme ? "#f5f5f5":'#333333',
         }
       },
       lineColor: "transparent"

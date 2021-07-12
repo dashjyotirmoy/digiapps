@@ -41,7 +41,7 @@ class SideNavbar extends Component {
                     <span><FontAwesomeIcon className="high mr-2" icon={faEye} /></span>}
                      Insights</Button>
                 <div id="mySidenav" className="sidenav" 
-                style={{ width: this.state.width, display: this.state.display,marginTop:'154px',zIndex:102}}>
+                style={{ width: this.state.width, display: this.state.display,marginTop:'12rem',zIndex:102}}>
                 {this.props.card}
                 </div>
             </>

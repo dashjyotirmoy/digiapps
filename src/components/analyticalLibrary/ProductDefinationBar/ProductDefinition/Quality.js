@@ -241,7 +241,7 @@ class Quality extends Component {
           layout: layout_instance.layout,
           qualityStatusDetails:this.props.qualityData.defectsAggregateDTOList,
           show: false,
-          // showbutton: false,
+          showbutton: false,
         });
         if (this.state.selectedRepo === "") {
           type = this.setRawDefaultRepo(
@@ -532,7 +532,7 @@ class Quality extends Component {
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if ((this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId) && 
+    if ((this.props.selectedTheme !== nextProps.selectedTheme || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId) && 
         nextProps.projectID) {
       this.setState({
         all_data: true,
@@ -545,11 +545,12 @@ class Quality extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount() {debugger
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
-    bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
+    const bgTheme = this.props.selectedTheme || labels[0].mappings.bgColor;
+    bgTheme==='dark' ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
+    const bgType = (bgTheme==='dark');
     if (
       this.state.selectedRepo === undefined ||
       this.state.selectedRepo === ""
@@ -561,7 +562,7 @@ class Quality extends Component {
     let layout_instance = new Layout(2);
     this.setState({
       layout: layout_instance.layout,
-      bgTheme: bgTheme
+      bgTheme: bgType
     });
   }
   branchOnSelectHandler= (branchId, evtKey) => {
@@ -889,7 +890,7 @@ class Quality extends Component {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const activeLink = window.location.href.includes("/quality");
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
+    const bgTheme = (this.props.selectedTheme === "dark");
     const currentWidgetList = this.props.widgetList;
     const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === 'quality');
     let qualityNav=<CardChartQuality showChart="true" insights={this.props.qualityDetails} cardName="Code Quality Analysis" cardHeader="Quality" bgTheme={bgTheme}/>
@@ -900,7 +901,7 @@ class Quality extends Component {
       return (
         <React.Fragment>
           {this.props.qualityDetails && this.state.showInsights? <SideNavbar card={qualityNav}/>:''}
-          <Row className="p-0 px-3 m-0 mt-12">
+          <Row className={`p-0 px-3 m-0 mt-12 ${bgTheme ? 'bg-dark-theme':'bg-light'}`}>
             <Col xl={2} lg={3} md={3}>
               <Dropdown
                 listData={this.state.repoData}
@@ -1039,7 +1040,7 @@ class Quality extends Component {
                 </Row>
               </Col>
               </Row>
-          <Row className="p-0 px-3 m-0 mt-2 justify-content-between">
+        <Row className={`p-0 px-3 m-0 mt-2 justify-content-between ${bgTheme ? 'bg-dark-theme':'bg-light'}`}>
           <Col md={3}>
               <span>
               {this.state.showbutton ? (
@@ -1070,10 +1071,10 @@ class Quality extends Component {
                  </option>
                  )
                    }</select></span>: null}</Col>
-          </Row>
+        </Row>
           <Row
             className={classnames(
-              " Quality  w-100 p-0 m-0 mt-3",
+              "Quality  w-100 p-0 m-0 mt-3",
               { "d-none": !this.state.selectedRepo || this.state.componentType !== "quality" }
             )}
           >
@@ -1239,13 +1240,13 @@ const mapStateToProps = (state) => {
     projectSprintId: state.productDetails.currentProjectSprint.sprintInfo.id,
     currentRepo: state.qualityData.currentRepo,
     qualityBuildData: state.qualityData.qualityBuildDetails,
-    sprintId: state.productDetails.currentSprint.sprintInfo.id,
     qualityDetails: state.qualityData.qualityDetails,
     organization: state.productDetails.currentProject.projectDetails.organization,
     projId: state.productDetails.currentProject.projectDetails.id,
     qualityBuildReleaseDetails: state.qualityData.qualityBuildReleaseDetails,
     qualityBuildRepoDetails: state.qualityData.qualityBuildRepoDetails,
     currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
+    selectedTheme: state.chartData.currentTheme,
   };
 };
 

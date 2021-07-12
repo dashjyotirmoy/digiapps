@@ -4,14 +4,15 @@ import React, { Component } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownMenu from "./DropdownMenu";
 import DropdownToggle from "./DropdownToggle";
+import { connect } from "react-redux";
 import './Dropdown.css';
-import { labelConst } from "../../../utility/constants/labelsConstants";
+// import { labelConst } from "../../../utility/constants/labelsConstants";
 
 class CustDropdown extends Component {
   render() {
-    const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
-    const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
+    // const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
+    // const labels = labelConst.filter((item)=> item.clientName === clientName );
+    const bgTheme = (this.props.selectedTheme === 'dark');
     const arr = this.props.listData;
     const dropdownItems = arr.map((ele, index) => {
       return (
@@ -47,4 +48,9 @@ class CustDropdown extends Component {
     );
   }
 }
-export default CustDropdown;
+const mapStateToProps = (state) => {
+  return {
+    selectedTheme: state.chartData.currentTheme,
+  };
+};
+export default connect(mapStateToProps, null)(CustDropdown);

@@ -25,9 +25,9 @@ const Grid = props => {
   const defaultDrop= props.defaultDrop;
   const gridItem = props.layouts["lg"].map((ele, index) => {
     return (
-      <div key={index} className={`${bgTheme ? 'card-border-dark bg-dark-theme' : 'card-border-light'}`}>
+      <div key={index} className={`${bgTheme ? 'card-border-dark bg-dark-theme' : 'card-border-light bg-light'}`}>
         <div
-          className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'bg-light text-muted'}`}
+          className={`position-absolute text-right bg-transparent ${bgTheme ? 'text-white border-dark' : 'text-muted'}`}
           style={{ zIndex: "1",right:'11px',top:'15px'}}
         >
            {chartData[index].showDrop && <select style={{ fontSize: 'smaller',width: '6rem'}} onChange={(event)=>props.onSelectDrop(chartData[index].type,event.target.value)} className={`border mr-2 font-weight-bold ${bgTheme ? 'bg-prodAgg-btn text-white border-secondary': 'bg-prodAgg-light-btn border-primary'} rounded border`}>
@@ -86,6 +86,7 @@ const Grid = props => {
         breakpoints={props.breakpoint}
         cols={props.columnSize}
         preventCollision={false}
+        bgTheme={bgTheme}
       >
         {gridItem}
       </ResponsiveGridLayout>
