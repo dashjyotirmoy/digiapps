@@ -4,7 +4,7 @@ export const labelConst = [{
 	mappings: {
 			showSprintDrop: false,
 			navLogoUrl: 'overview',
-			bgColor: true,
+			bgColor: 'dark',
 			logoName: 'DevOps Dashboard',
 			projectLabel: 'Project',
 			teamLabel: 'Teams',
@@ -46,7 +46,7 @@ export const labelConst = [{
 	mappings: {
 			showSprintDrop: false,
 			navLogoUrl: 'overview',
-			bgColor: true,
+			bgColor: 'light',
 			logoName: 'EY Dash',
 			projectLabel: 'Project',
 			teamLabel: 'Teams',
@@ -83,7 +83,7 @@ export const labelConst = [{
 	mappings: {
 			showSprintDrop: false,
 			navLogoUrl: 'overview',
-			bgColor: true,
+			bgColor: 'dark',
 			logoName: 'BLEN Dashboard',
 			projectLabel: 'Project',
 			teamLabel: 'Project',
@@ -121,7 +121,7 @@ export const labelConst = [{
 	mappings: {
 			showSprintDrop: true,
 			navLogoUrl: 'overview',
-			bgColor: false,
+			bgColor: 'light',
 			logoName: 'AIA Dashboard',
 			projectLabel: 'Projects',
 			teamLabel: 'Teams',
@@ -164,7 +164,7 @@ export const labelConst = [{
 	mappings: {
 			showSprintDrop: true,
 			navLogoUrl: 'velocity',
-			bgColor: true,
+			bgColor: 'dark',
 			logoName: 'EY Dash',
 			projectLabel: 'Portfolio',
 			teamLabel: 'Projects',

@@ -2,6 +2,7 @@ import * as actionType from "../actions/actionTypes";
 
 const initialState = {
   currentTab: "",
+  currentTheme: '',
   chartType: "",
   currentRepo: "",
   currentChartData: {
@@ -15,6 +16,11 @@ const chartReducer = (state = initialState, action) => {
       return {
         ...state,
         currentTab: action.payload.currentTab
+      };
+    case actionType.SET_CURRENT_THEME:
+      return {
+        ...state,
+        currentTheme: action.payload.currentTheme
       };
     case actionType.SET_CHART_TYPE:
       return {

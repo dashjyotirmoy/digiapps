@@ -1,34 +1,36 @@
 //Wrapper class which contains logic for providing data to the analytical graph components
 
 import Options from "./optionsModel";
-
+import store from '../../store/store';
 class BuildReleaseGraph {
+  
   constructor(props) {
     this.res = props;
     this.options = this.generateOption(props.type);
   }
-
+  
   generateOption = type => {
     const baseOptions = new Options();
+    const bgTheme = store.getState().chartData.currentTheme;
     let updatedOptions = {};
     switch (type) {
       case "BuildResult":
-        updatedOptions = this.generateBuildResultPie(baseOptions);
+        updatedOptions = this.generateBuildResultPie(baseOptions,bgTheme);
         return updatedOptions;
       case "MeanTimeMergePullRequest":
-        updatedOptions = this.generateMeanMergePullLineHigh(baseOptions);
+        updatedOptions = this.generateMeanMergePullLineHigh(baseOptions,bgTheme);
         return updatedOptions;
       case "ReleaseCadence":
-        updatedOptions = this.generateReleaseCadence(baseOptions,type);
+        updatedOptions = this.generateReleaseCadence(baseOptions,bgTheme);
         return updatedOptions;
       case "OpenClosedPullRequests":
-        updatedOptions = this.generatePullRequestsBarHigh(baseOptions);
+        updatedOptions = this.generatePullRequestsBarHigh(baseOptions,bgTheme);
         return updatedOptions;
       case "CommittedPrsWithAndWithoutRework":
-        updatedOptions = this.generateComittedPrs(baseOptions);
+        updatedOptions = this.generateComittedPrs(baseOptions,bgTheme);
         return updatedOptions;
       case "MeanTimeBrokenBuild":
-        updatedOptions = this.generateMeanTimeBrokenBuild(baseOptions);
+        updatedOptions = this.generateMeanTimeBrokenBuild(baseOptions,bgTheme);
         return updatedOptions;
       default:
         return null;
@@ -37,8 +39,7 @@ class BuildReleaseGraph {
 
   //function that Creates data for Bugs, vulnerabilities and codesmells chart
 
-  generateBuildResultPie(options) {
-
+  generateBuildResultPie(options,bgTheme) {
     const fail_build_count = parseInt(this.res.data.failedBuildCount);
     const success_build_count = parseInt(this.res.data.successfulBuildCount);
     const total_build_count = parseInt(this.res.data.totalBuildCount);
@@ -57,8 +58,8 @@ class BuildReleaseGraph {
       style: {
         width:'100%',
         padding: '17px 9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        backgroundColor: bgTheme === 'dark' ? '#334154c7' :'#E1E7F0',
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -69,11 +70,11 @@ class BuildReleaseGraph {
     options.legend = {
       enabled: true,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontWeight: "bold"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#D3D3D3":"#333333",
+        color: bgTheme === 'dark' ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
       backgroundColor: "transparent",
@@ -120,7 +121,7 @@ class BuildReleaseGraph {
   }
 
   //function that generates metrics for bugs , vulnerabilites and codesmells
-  generateMeanMergePullLineHigh(options,type) {
+  generateMeanMergePullLineHigh(options,bgTheme) {
     let yAxis = [],
      repoName=[],
      hour=0,
@@ -161,8 +162,8 @@ class BuildReleaseGraph {
       style: {
         width:'100%',
         padding: '17px 9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        backgroundColor: bgTheme === 'dark' ? '#334154c7' :'#E1E7F0',
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -183,7 +184,7 @@ class BuildReleaseGraph {
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${totalPrCount}</b></span><b style="margin-left:5px">Total PRs</b></span>
       </div>`,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
       }
     };
     options.xAxis = {
@@ -192,20 +193,20 @@ class BuildReleaseGraph {
       labels: {
         style: {
           width:'50px',
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       },
       title: {
         text: `Repository Name`,
         rotation: 0,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
         }
       },
       lineWidth: 0,
       tickLength: 0,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
       }
     };
     options.yAxis = {
@@ -215,14 +216,14 @@ class BuildReleaseGraph {
         enabled: true,
         format: "{value}",
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       },
       title: {
         text: `Average Merge Time`,
         rotation: -90,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
         }
       },
       plotLines: [{
@@ -234,7 +235,7 @@ class BuildReleaseGraph {
         label: {
           text: averageMergeTime+'hrs',
           style: {
-            color: this.res.bgTheme ? "#f5f5f5":'#333333',
+            color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
           }
         },
     }]
@@ -242,11 +243,11 @@ class BuildReleaseGraph {
     options.legend = {
       enabled: true,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontWeight: "bold"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#D3D3D3":"#333333",
+        color: bgTheme === 'dark' ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
       backgroundColor: "transparent",
@@ -275,7 +276,7 @@ class BuildReleaseGraph {
     ];
     return options;
   }
-  generateReleaseCadence(options,type) {
+  generateReleaseCadence(options,bgTheme) {
     let yAxis = [],
      repoName=[],
      hour=0,
@@ -316,19 +317,19 @@ class BuildReleaseGraph {
       categories: repoName,
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       },
       lineWidth: 0,
       tickLength: 0,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
       },
       title: {
         text: `Release Name`,
         rotation: 0,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
         }
       },
     };
@@ -339,14 +340,14 @@ class BuildReleaseGraph {
         enabled: true,
         format: "{value}",
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       },
       title: {
         text: `Time Taken`,
         rotation: -90,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       },
       plotLines: [{
@@ -358,7 +359,7 @@ class BuildReleaseGraph {
         label: {
           text: averageTime,
           style: {
-            color: this.res.bgTheme ? "#f5f5f5":'#333333',
+            color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
           }
         },
         line: {
@@ -378,8 +379,8 @@ class BuildReleaseGraph {
       style: {
         width:'100%',
         padding: '17px 9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        backgroundColor: bgTheme === 'dark' ? '#334154c7' :'#E1E7F0',
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -401,17 +402,17 @@ class BuildReleaseGraph {
     <span style="margin-right:10px"><span style="font-size: 16px"><b>${dayHour(averageTime)}</b></span><b style="margin-left:10px;color:#ffa500">Average Time</b></span>
     </div>`,
     style: {
-      color: this.res.bgTheme ? "#f5f5f5":'#333333',
+      color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
     }
   };
     options.legend = {
       enabled: true,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontWeight: "bold"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#D3D3D3":"#333333",
+        color: bgTheme === 'dark' ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
       backgroundColor: "transparent",
@@ -464,7 +465,7 @@ class BuildReleaseGraph {
 
   // function that generates data for Average defect resolution time
 
-  generateMeanTimeBrokenBuild(options) {
+  generateMeanTimeBrokenBuild(options,bgTheme) {
     let xAxis = [],
         yAxis= [],
         buildData=[],
@@ -507,8 +508,8 @@ class BuildReleaseGraph {
       style: {
         width:'100%',
         padding: '17px 9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        backgroundColor: bgTheme === 'dark' ? '#334154c7' :'#E1E7F0',
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -529,7 +530,7 @@ class BuildReleaseGraph {
       <span style="margin-right:10px"><span style="font-size: 16px"><b>${dayHour(timeTaken)}</b></span><b style="margin-left:10px;color:#ffa500">Average Time</b></span>
       </div>`,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":'#333333',
+        color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
       }
     };
     options.xAxis = {
@@ -537,12 +538,12 @@ class BuildReleaseGraph {
       title: {
         text: `Build Number`,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
         }
       },
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       }
     };
@@ -555,11 +556,11 @@ class BuildReleaseGraph {
       x: -30,
       y: 48,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontWeight: "bold"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#D3D3D3":"#333333",
+        color: bgTheme === 'dark' ? "#D3D3D3":"#333333",
       },
     };
     options.yAxis = {
@@ -574,7 +575,7 @@ class BuildReleaseGraph {
         label: {
           text: timeTaken,
           style: {
-            color: this.res.bgTheme ? "#f5f5f5":'#333333',
+            color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
           }
         },
         line: {
@@ -587,13 +588,13 @@ class BuildReleaseGraph {
         text: `Average Time`,
         rotation: -90,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":'#333333',
+          color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
         }
       },
       labels: {
         format: "{value}",
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333"
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333"
         }
       },
       lineColor: "blue",
@@ -629,7 +630,7 @@ class BuildReleaseGraph {
     ];
     return options;
   }
-  generateComittedPrs(options) {
+  generateComittedPrs(options,bgTheme) {
   let reWorkedPrCount=[],
   prCount = [],
   xAxis_data=[],
@@ -660,8 +661,8 @@ options.title = {
   style: {
     width:'100%',
     padding: '17px 9px',
-    backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-    color: this.res.bgTheme ? '#ffffff':"#2E2E38",
+    backgroundColor: bgTheme === 'dark' ? '#334154c7' :'#E1E7F0',
+    color: bgTheme === 'dark' ? '#ffffff':"#2E2E38",
     fontSize: '14px',
     fontWeight:'bold',
     'border-radius': '10px 10px 0 0',
@@ -676,14 +677,14 @@ options.xAxis = {
   categories: xAxis_data,
   labels: {
     style: {
-      color: this.res.bgTheme ? "#f5f5f5":'#333333',
+      color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
     }
   },
   title: {
     text: `Repository Name`,
     rotation: 0,
     style: {
-      color: this.res.bgTheme ? "#f5f5f5":'#333333',
+      color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
     }
   },
 };
@@ -695,12 +696,12 @@ options.yAxis = {
     text: `PR Count`,
     rotation: -90,
     style: {
-      color: this.res.bgTheme ? "#f5f5f5":'#333333',
+      color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
     }
   },
   labels: {
     style: {
-      color: this.res.bgTheme ? "#f5f5f5":'#333333',
+      color: bgTheme === 'dark' ? "#f5f5f5":'#333333',
     },
     format: "{value}"
   },
@@ -715,11 +716,11 @@ options.legend = {
   x: 0,
   y: 40,
   itemStyle: {
-    color: this.res.bgTheme ? "#ffffff":'#333333',
+    color: bgTheme === 'dark' ? "#ffffff":'#333333',
     fontWeight: "normal"
   },
   itemHoverStyle: {
-    color: this.res.bgTheme ? "#d3d3d3":'#333333',
+    color: bgTheme === 'dark' ? "#d3d3d3":'#333333',
   },
   
 };
@@ -754,7 +755,7 @@ return options;
 
 
   //function that creates data for Bar chart
-  generatePullRequestsBarHigh(options) {
+  generatePullRequestsBarHigh(options,bgTheme) {
     let open_pr_details = [],
       close_pr_details = [],
       repoName = [],
@@ -780,8 +781,8 @@ return options;
       style: {
         width:'100%',
         padding: '17px 9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        backgroundColor: bgTheme === 'dark' ? '#334154c7' :'#E1E7F0',
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -794,14 +795,14 @@ return options;
       labels: {
         enabled: true,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       },
       title: {
         text: `PR Count`,
         rotation: 0,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       },
       gridLineWidth: 0
@@ -814,12 +815,12 @@ return options;
         text: `Repository Name`,
         rotation: -90,
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       },
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         }
       },
     };
@@ -834,11 +835,11 @@ return options;
       x: -30,
       y: 48,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme === 'dark' ? "#f5f5f5":"#333333",
         fontWeight: "bold"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#d3d3d3":"#333333",
+        color: bgTheme === 'dark' ? "#d3d3d3":"#333333",
       },
     };
     options.plotOptions = {

@@ -1,6 +1,7 @@
 //Wrapper class which contains logic for providing data to the analytical graph components
 
 import Options from "./optionsModel";
+import store from '../../store/store';
 
 class QualityGraph { 
   constructor(props) {
@@ -10,19 +11,21 @@ class QualityGraph {
 
   generateOption = type => {
     const baseOptions = new Options();
+    const bgTheme = store.getState().chartData.currentTheme==='dark';
+
     let updatedOptions = {};
     switch (type) {
       case "MultipleLineHigh":
-        updatedOptions = this.generateMultipleLine(baseOptions);
+        updatedOptions = this.generateMultipleLine(baseOptions,bgTheme);
         return updatedOptions;
       case "AreaHigh":
-        updatedOptions = this.generateArea(baseOptions);
+        updatedOptions = this.generateArea(baseOptions,bgTheme);
         return updatedOptions;
       case "BarHigh":
-        updatedOptions = this.generateBar(baseOptions);
+        updatedOptions = this.generateBar(baseOptions,bgTheme);
         return updatedOptions;
       case "DefectHigh":
-        updatedOptions = this.generateDefect(baseOptions);
+        updatedOptions = this.generateDefect(baseOptions,bgTheme);
         return updatedOptions;
       default:
         return null;
@@ -55,7 +58,7 @@ class QualityGraph {
 
   //function that Creates data for Bugs, vulnerabilities and codesmells chart
 
-  generateMultipleLine(options) {
+  generateMultipleLine(options,bgTheme) {
     let bugs_array,
       vulnerabilities_array,
       code_smells_array,
@@ -91,8 +94,8 @@ class QualityGraph {
       style: {
         width:'100%',
         padding: '17px 9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        backgroundColor: bgTheme ? '#334154c7' :'#E1E7F0',
+        color: bgTheme ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -107,13 +110,13 @@ class QualityGraph {
       },
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme ? "#f5f5f5":"#333333",
         }
       },
       lineWidth: 1,
       tickLength: 0,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme ? "#f5f5f5":"#333333",
       }
     };
     options.yAxis = {
@@ -122,7 +125,7 @@ class QualityGraph {
       },
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme ? "#f5f5f5":"#333333",
         }
       },
       gridLineColor: ""
@@ -130,11 +133,11 @@ class QualityGraph {
     options.legend = {
       enabled: true,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "bold"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#D3D3D3":"#333333",
+        color: bgTheme ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
       backgroundColor: "transparent",
@@ -198,7 +201,7 @@ class QualityGraph {
 
   //function that generated data fro coverage chart
 
-  generateArea(options) {
+  generateArea(options,bgTheme) {
     let lines_to_cover = [],
       covered_lines = [];
       this.res.data.coverageMetricsList.map(day_data => {
@@ -223,7 +226,7 @@ class QualityGraph {
       type: "datetime",
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme ? "#f5f5f5":"#333333",
         }
       },
       dateTimeLabelFormats: {
@@ -232,7 +235,7 @@ class QualityGraph {
       lineWidth: 0,
       tickLength: 0,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme ? "#f5f5f5":"#333333",
       }
     };
     options.yAxis = {
@@ -241,7 +244,7 @@ class QualityGraph {
         enabled: true,
         format: "{value}K",
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme ? "#f5f5f5":"#333333",
         }
       },
       title: {
@@ -257,8 +260,8 @@ class QualityGraph {
       y:5,
       style: {
         width:'100%',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        backgroundColor: bgTheme ? '#334154c7' :'#E1E7F0',
+        color: bgTheme ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
         fontFamily: 'Arial'
@@ -278,11 +281,11 @@ class QualityGraph {
     options.legend = {
       enabled: true,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "bold"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#D3D3D3":"#333333",
+        color: bgTheme ? "#D3D3D3":"#333333",
         fontWeight: ""
       },
       backgroundColor: "transparent",
@@ -320,7 +323,7 @@ class QualityGraph {
 
   // function that generates data for Average defect resolution time
 
-  generateDefect(options) {
+  generateDefect(options,bgTheme) {
     let final_data = [];
     this.res.data && this.res.data.map(data => {
       let temp_data = {},
@@ -348,8 +351,8 @@ class QualityGraph {
       style: {
         width:'100%',
         padding: '17px 9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        backgroundColor: bgTheme ? '#334154c7' :'#E1E7F0',
+        color: bgTheme ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -365,11 +368,11 @@ class QualityGraph {
       lineWidth: 0,
       tickLength: 0,
       style: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme ? "#f5f5f5":"#333333",
       },
       labels: {
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333",
+          color: bgTheme ? "#f5f5f5":"#333333",
         }
       }
     };
@@ -382,11 +385,11 @@ class QualityGraph {
       x: -30,
       y: 48,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "bold"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#D3D3D3":"#333333",
+        color: bgTheme ? "#D3D3D3":"#333333",
       },
     };
     options.yAxis = {
@@ -397,13 +400,13 @@ class QualityGraph {
       title: {
         text: "Days",
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333"
+          color: bgTheme ? "#f5f5f5":"#333333"
         }
       },
       labels: {
         format: "{value}",
         style: {
-          color: this.res.bgTheme ? "#f5f5f5":"#333333"
+          color: bgTheme ? "#f5f5f5":"#333333"
         }
       },
       lineColor: "blue",
@@ -442,7 +445,7 @@ class QualityGraph {
 
 
   //function that creates data for Bar chart
-  generateBar(options) {
+  generateBar(options,bgTheme) {
     let critical_value = [],
     combinedURL,
     baseURL = "https://dev.azure.com/organization_name/project_id/_queries/query/?wiql=SELECT [System.Id]%2C[System.WorkItemType]%2C[System.Title] FROM WorkItems WHERE [System.Id] IN (work_item_ids)&name=Cycle time work items",
@@ -473,8 +476,8 @@ class QualityGraph {
       style: {
         width:'100%',
         padding: '17px 9px',
-        backgroundColor: this.res.bgTheme ? '#334154c7' :'#E1E7F0',
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        backgroundColor: bgTheme ? '#334154c7' :'#E1E7F0',
+        color: bgTheme ? "#f5f5f5":"#333333",
         fontSize: '14px',
         fontWeight:'bold',
         'border-radius': '10px 10px 0 0',
@@ -508,11 +511,11 @@ class QualityGraph {
       x: -30,
       y: 48,
       itemStyle: {
-        color: this.res.bgTheme ? "#f5f5f5":"#333333",
+        color: bgTheme ? "#f5f5f5":"#333333",
         fontWeight: "bold"
       },
       itemHoverStyle: {
-        color: this.res.bgTheme ? "#d3d3d3":"#333333",
+        color: bgTheme ? "#d3d3d3":"#333333",
       },
     };
 
@@ -560,7 +563,7 @@ class QualityGraph {
           style: {
             textOutline: false,
             fontWeight: 'normal',
-            color: this.res.bgTheme ? "#ffffff":"#333333",
+            color: bgTheme ? "#ffffff":"#333333",
             fontSize: '14px'
           }, 
         },

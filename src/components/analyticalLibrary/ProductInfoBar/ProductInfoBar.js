@@ -472,7 +472,7 @@ class ProductInfoBar extends Component {
     const activeLink = window.location.href.includes("/quality");
     const velocityLink = window.location.href.includes("/velocity");
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
+    const bgTheme = (this.props.selectedTheme === "dark");
     const projectDimensions = new Widgets();
     const Components = projectDimensions.loadDimensions(dimensionData);
     const prodAggViewIcon = this.state.prodAggView
@@ -758,8 +758,8 @@ const mapStateToProps = state => {
     resetTab: state.qualityData.resetTab,
     execDataReceived: state.execData.currentExecutiveInfo.executiveDataReceived,
     metricsData: state.execData.currentExecutiveInfo.executiveData,
-    velocityCharts: state.chartData.currentChartData.chartDetails,
     currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
+    selectedTheme: state.chartData.currentTheme,
   };
 };
 

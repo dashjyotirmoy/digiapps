@@ -557,9 +557,9 @@ class Security extends Component {
     console.log("total vulnerability",this.props.vulnerabilitytDetails.totalVulnerability);
   
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
-    const labels = labelConst.filter((item)=> item.clientName === clientName );debugger
+    const labels = labelConst.filter((item)=> item.clientName === clientName );
     const toolName = labels[0].mappings.tabItems.filter((item)=> item.name === 'Security');
-    const bgTheme = labels[0].mappings.bgColor;
+    const bgTheme = (this.props.selectedTheme === "dark");
     let securityNav=<CardChartSecurity showChart="true" insights={this.props.securityDetails} cardName="Open Source Vulnerabilities Risk" cardHeader="Security" bgTheme={bgTheme}/>
     const currentWidgetList = this.props.widgetList;
     const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === "security");
@@ -624,10 +624,10 @@ class Security extends Component {
               </Card.Body>
             </Card.Body> 
           </Col>}</Row>
-          <Row className={`px-3 d-flex justify-content-between ${bgTheme ? '' : 'bg-light'}`}>
+          <Row className={`px-3 d-flex justify-content-between ${bgTheme ? 'bg-dark-theme' : 'bg-light'}`}>
           {currentTabWidgets[0] && currentTabWidgets[0].widgets && currentTabWidgets[0].widgets.includes(this.state.openSourceVul) && 
           <Col >
-          <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark' : 'bg-white card-border-light'}`}>
+          <Card.Body className={`p-0 ${bgTheme ? 'bg-dark-theme card-border-dark' : 'bg-light card-border-light'}`}>
             <div className={`d-inline-flex w-100 justify-content-between ${bgTheme ? 'bg-prodInfo-prod' :'cardHeader'}`}>
               <h6 className="font-weight-bold mb-1">Open Source Vulnerabilities</h6>
               { !this.state.policyActive?(
@@ -840,7 +840,8 @@ const mapStateToProps = state => {
     currentRepo: state.securityData.currentRepo,
    // sprintId: state.productDetails.currentSprint.sprintInfo.id,
     securityDetails: state.securityData.securityDetails,
-    vulnerabilitytDetails:state.securityData.vulnerabilitytDetails
+    vulnerabilitytDetails:state.securityData.vulnerabilitytDetails,
+    selectedTheme: state.chartData.currentTheme,
   };
 };
 

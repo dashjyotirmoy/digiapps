@@ -200,7 +200,7 @@ class Velocity extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (
-      (this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId) &&
+      (this.props.selectedTheme !== nextProps.selectedTheme || this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId || this.props.projectSprintId !== nextProps.projectSprintId) &&
       nextProps.projId 
     ) {
       this.setState({
@@ -217,8 +217,9 @@ class Velocity extends Component {
   componentDidMount() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
-    bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
+    const bgTheme = this.props.selectedTheme || labels[0].mappings.bgColor;
+    bgTheme==='dark' ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
+    const bgType = (bgTheme==='dark');
     if (this.props.projId && (this.props.sprintId || this.props.projectSprintId)) {
       this.setState({
         all_data: true
@@ -227,7 +228,7 @@ class Velocity extends Component {
     let layout_instance = new Layout(5);
     this.setState({
       layout: layout_instance.layout,
-      bgTheme: bgTheme
+      bgTheme: bgType
     });
   }
 
@@ -400,7 +401,7 @@ class Velocity extends Component {
   render() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
+    const bgTheme = (this.props.selectedTheme === "dark");
     const currentWidgetList = this.props.widgetList;
     const currentTabWidgets = currentWidgetList && currentWidgetList.filter(item=>item.name === 'velocity');
     let velocityNav=<CardChartVelocity showChart="true" insights={this.props.velocityInsightDetails} cardName="Velocity Variance" cardHeader="Velocity and Efficiency" bgTheme={bgTheme}/>
@@ -410,7 +411,8 @@ class Velocity extends Component {
       return (
         <React.Fragment>
           {this.props.velocityInsightDetails &&<SideNavbar card={velocityNav}/>}
-          <Row className={`container-fluid px-3 py-4 mt-12 d-flex justify-content-start`} style={{alignItems:'flex-end'}}>
+          <div className={`${bgTheme ? 'bg-dark-theme':'bg-light'}`}>
+          <Row className="container-fluid px-3 py-4 mt-12 d-flex justify-content-start" style={{alignItems:'flex-end'}}>
               <span className="px-3">
                 {this.state.showbutton ? (
                   <Button variant="outline-dark" className={this.state.codeActive ? "bgblue" : "Alertbg"} onClick={this.setCode}>{labels[0].mappings.overviewBtn}</Button>
@@ -486,6 +488,7 @@ class Velocity extends Component {
           {this.state.componentType === "VelocityBuild"? (
             <VelocityBuild cardsData={this.state.velocityBuildData} bgTheme={bgTheme}/>
             ) : null}
+            </div>
         </React.Fragment>
       );
     }
@@ -510,6 +513,7 @@ const mapStateToProps = state => {
     organization: state.productDetails.currentProject.projectDetails.organization,
     velocityInsightDetails: state.insightData.velocityInsightDetails,
     currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
+    selectedTheme: state.chartData.currentTheme,
   };
 };
 

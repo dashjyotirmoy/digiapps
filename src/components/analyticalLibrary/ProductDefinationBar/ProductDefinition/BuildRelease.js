@@ -179,7 +179,7 @@ class BuildRelease extends Component {
 
   //function that identifies the chart to render based on type during createCharts() execution
 
-  setChart = (type, title, data) => {
+  setChart = (type, title, data) => {debugger
     switch (type) {
       case "BuildResult":
         return (
@@ -454,7 +454,7 @@ class BuildRelease extends Component {
   };
   
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props.projId !== nextProps.projId || this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId)
+    if (this.props.selectedTheme !== nextProps.selectedTheme || this.props.projId !== nextProps.projId || this.props.teamId !== nextProps.teamId || this.props.sprintId !== nextProps.sprintId)
     {
       this.setState({
         all_data: true,
@@ -470,8 +470,9 @@ class BuildRelease extends Component {
   componentDidMount() {
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
-    bgTheme ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
+    const bgTheme = this.props.selectedTheme || labels[0].mappings.bgColor;
+    bgTheme==='dark' ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
+    const bgType = (bgTheme==='dark');
     if (this.props.projId && (this.props.sprintId || this.props.projectSprintId)) {
       this.setState({
         all_data: true,
@@ -480,7 +481,7 @@ class BuildRelease extends Component {
     let layout_instance = new Layout(6);
     this.setState({
       layout: layout_instance.layout,
-      bgTheme: bgTheme
+      bgTheme: bgType
     });
   };
 
@@ -492,18 +493,17 @@ class BuildRelease extends Component {
     //     this.setBuildReleaseData(this.props.buildReleaseChart);
     // }
   };
-  render() {
+  render() {debugger
     const clientName = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     const labels = labelConst.filter((item)=> item.clientName === clientName );
-    const bgTheme = labels[0].mappings.bgColor;
-    // const currentWidgetList = this.props.widgetList;
-    // = currentWidgetList && currentWidgetList.filter(item=>item.name === 'buildrelease');
+    const bgTheme = (this.props.selectedTheme === "dark");
+    // bgTheme==='dark' ? document.body.style.background = '#1d2632': document.body.style.background = '#ffffff';
     if (this.state.show) {
       return <Spinner show="true" />;
     } else {
       return (
         <React.Fragment>
-          <Row className={`container-fluid px-3 py-4 mt-12 d-flex justify-content-start`} style={{alignItems:'flex-end'}}>
+          <Row className={`container-fluid px-3 py-4 mt-12 d-flex justify-content-start ${bgTheme ? 'bg-dark-theme' : 'bg-light'}`} style={{alignItems:'flex-end'}}>
           <Col md={2}>
               <Dropdown
                 listData={this.state.repoData}
@@ -537,18 +537,19 @@ class BuildRelease extends Component {
                 </Row>
               </Dropdown>
             </Col>
-            <Col md={3} className="mt-auto"><p className={`font-size-small m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>You are viewing data at <b>{labels[0].mappings.teamLabel}</b>  level</p></Col>
-            {this.state.showRemovedItemsList.length !== 0 ? 
-            <span className="text-white ml-auto w-20">
-            <p className={`m-0 font-size-smaller ${bgTheme ? '' : 'text-dark'}`}>Add Widgets</p>
-            <select className={`repo-height rounded w-100 rounded ${bgTheme ? 'bg-prodAgg-btn text-white' : 'bg-prodAgg-light-btn'}`} value={this.state.selectWidget || ''} onChange={(event)=> this.addCharts(event)} >
-                     <option selected value=''>{this.state.selectWidget}</option>
-              {
-                this.state.showRemovedItemsList && this.state.showRemovedItemsList.map((item, index) =>
-                <option key={index} value={item.name} className={`${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
+            <Col md={3} className="mt-auto">
+              <p className={`font-size-small m-0 ${bgTheme ? 'text-white' : 'text-dark'}`}>You are viewing data at <b>{labels[0].mappings.teamLabel}</b>  level</p></Col>
+                {this.state.showRemovedItemsList.length !== 0 ? 
+                    <span className="text-white ml-auto w-20">
+                        <p className={`m-0 font-size-smaller ${bgTheme ? '' : 'text-dark'}`}>Add Widgets</p>
+                        <select className={`repo-height rounded w-100 rounded ${bgTheme ? 'bg-prodAgg-btn text-white' : 'bg-prodAgg-light-btn'}`} value={this.state.selectWidget || ''} onChange={(event)=> this.addCharts(event)} >
+                        <option selected value=''>{this.state.selectWidget}</option>
+                  {
+                  this.state.showRemovedItemsList && this.state.showRemovedItemsList.map((item, index) =>
+                    <option key={index} value={item.name} className={`${bgTheme ? 'text-white' : 'font-aggegate-sub-text-clr'}`}>
                         {item.name}
-              </option>
-              )
+                  </option>
+                  )
                 }</select></span>: null}
          </Row>
           {this.state.charts.length > 0 ? (
@@ -590,6 +591,7 @@ const mapStateToProps = state => {
     organization: state.productDetails.currentProject.projectDetails.organization,
     velocityInsightDetails: state.insightData.velocityInsightDetails,
     currentSourceType: state.productDetails.currentProject.projectDetails.sourceType,
+    selectedTheme: state.chartData.currentTheme,
   };
 };
 
